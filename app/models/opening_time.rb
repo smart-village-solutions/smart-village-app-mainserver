@@ -1,2 +1,0 @@
-class OpeningTime < ApplicationRecord
-end
