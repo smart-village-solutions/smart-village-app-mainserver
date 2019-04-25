@@ -10,13 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_165518) do
+ActiveRecord::Schema.define(version: 2019_04_25_121032) do
 
   create_table "adresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "addition"
     t.string "city"
     t.string "street"
     t.string "zip"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "data_provider_id"
+    t.bigint "operating_company_id"
+    t.bigint "point_of_interest_id"
+    t.index ["data_provider_id"], name: "index_adresses_on_data_provider_id"
+    t.index ["operating_company_id"], name: "index_adresses_on_operating_company_id"
+    t.index ["point_of_interest_id"], name: "index_adresses_on_point_of_interest_id"
+  end
+
+  create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.integer "tmb_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -28,6 +41,20 @@ ActiveRecord::Schema.define(version: 2019_04_24_165518) do
     t.string "fax"
     t.string "email"
     t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "operating_company_id"
+    t.bigint "data_provider_id"
+    t.bigint "point_of_interest_id"
+    t.index ["data_provider_id"], name: "index_contacts_on_data_provider_id"
+    t.index ["operating_company_id"], name: "index_contacts_on_operating_company_id"
+    t.index ["point_of_interest_id"], name: "index_contacts_on_point_of_interest_id"
+  end
+
+  create_table "data_providers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.string "logo"
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -50,6 +77,62 @@ ActiveRecord::Schema.define(version: 2019_04_24_165518) do
     t.string "region"
     t.string "state"
     t.string "country"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "media_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "caption_text"
+    t.string "copyright"
+    t.string "height"
+    t.string "width"
+    t.string "link"
+    t.string "type"
+    t.string "source_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "opening_times", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.datetime "date_from"
+    t.datetime "date_to"
+    t.string "time_from"
+    t.string "time_to"
+    t.integer "sort_number"
+    t.boolean "open"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "operating_companies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "point_of_interests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "external_id"
+    t.string "name"
+    t.string "description"
+    t.string "mobile_description"
+    t.boolean "active"
+    t.string "thumbnail_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "prices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.integer "price"
+    t.boolean "group_price"
+    t.integer "age_from"
+    t.integer "age_to"
+    t.integer "min_adult_count"
+    t.integer "max_adult_count"
+    t.integer "min_children_count"
+    t.integer "max_children_count"
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
