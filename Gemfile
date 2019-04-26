@@ -48,6 +48,7 @@ group :development, :test do
   gem "annotate"
   gem "guard"
   gem "guard-rspec"
+  gem "shoulda-matchers"
 end
 
 group :development do

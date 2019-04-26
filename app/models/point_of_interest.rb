@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: point_of_interests
@@ -13,14 +15,14 @@
 #
 
 class PointOfInterest < ApplicationRecord
-    has_many :adresses, as: :adressable
-    has_many :contacts, as: :contactable
-    has_one :operating_company, as: :companyable
-    has_one :data_provider, as: :provideable
-    has_many :prices, as: :priceable
-    has_many :media_contents, as: :mediable
-    has_many :opening_hours, as: :openingable
-    has_many :accessibilty_informations, as: :accessable
-    has_many :certificates
-    has_one :thumbnail_url, as: :web_urlable
+  has_many :adresses, as: :adressable
+  has_many :contacts, as: :contactable
+  has_one :operating_company, as: :companyable
+  has_one :data_provider, as: :provideable
+  has_many :prices, as: :priceable
+  has_many :media_contents, as: :mediable
+  has_many :opening_hours, as: :openingable
+  has_many :accessibilty_informations, as: :accessable
+  has_many :certificates
+  has_one :web_url, as: :web_urlable
 end
