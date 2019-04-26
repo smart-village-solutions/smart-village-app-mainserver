@@ -11,7 +11,7 @@ class CreatePrices < ActiveRecord::Migration[5.2]
       t.integer :min_children_count
       t.integer :max_children_count
       t.string :description
-
+      t.references :priceable, polymorphic: true, index: true
       t.timestamps
     end
   end

@@ -9,7 +9,7 @@ class CreateOpeningHours < ActiveRecord::Migration[5.2]
       t.integer :sort_number
       t.boolean :open
       t.string :description
-
+      t.references :openingable, polymorphic: true, index: true
       t.timestamps
     end
   end
