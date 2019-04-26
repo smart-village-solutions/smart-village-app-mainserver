@@ -7,7 +7,7 @@ class CreateLocations < ActiveRecord::Migration[5.2]
       t.string :region
       t.string :state
       t.string :country
-
+      t.references :locateable, polymorphic: true, index: true
       t.timestamps
     end
   end

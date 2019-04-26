@@ -8,7 +8,7 @@ class CreateMediaContents < ActiveRecord::Migration[5.2]
       t.string :link
       t.string :type
       t.string :source_url
-
+      t.references :mediable, polymorphic: true, index: true
       t.timestamps
     end
   end
