@@ -115,21 +115,27 @@ ActiveRecord::Schema.define(version: 2019_04_26_112042) do
 
   create_table "opening_hours", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "weekday"
-    t.datetime "date_from"
-    t.datetime "date_to"
-    t.string "time_from"
-    t.string "time_to"
+    t.date "date_from"
+    t.date "date_to"
+    t.time "time_from"
+    t.time "time_to"
     t.integer "sort_number"
     t.boolean "open"
     t.string "description"
+    t.string "openingable_type"
+    t.bigint "openingable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["openingable_type", "openingable_id"], name: "index_opening_hours_on_openingable_type_and_openingable_id"
   end
 
   create_table "operating_companies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
+    t.string "companyable_type"
+    t.bigint "companyable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["companyable_type", "companyable_id"], name: "index_operating_companies_on_companyable_type_and_companyable_id"
   end
 
   create_table "point_of_interests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
