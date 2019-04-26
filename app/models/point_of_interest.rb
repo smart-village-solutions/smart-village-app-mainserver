@@ -23,4 +23,5 @@ class PointOfInterest < ApplicationRecord
     has_many :opening_hours, as: :openingable
     has_many :accessibilty_informations, as: :accessable
     has_many :certificates
+    has_one :thumbnail_url, as: :web_urlable
 end

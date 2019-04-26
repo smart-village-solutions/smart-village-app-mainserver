@@ -6,7 +6,6 @@ class CreatePointOfInterests < ActiveRecord::Migration[5.2]
       t.string :description
       t.string :mobile_description
       t.boolean :active
-      t.string :thumbnail_url
 
       t.timestamps
     end

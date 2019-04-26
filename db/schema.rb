@@ -143,7 +143,6 @@ ActiveRecord::Schema.define(version: 2019_04_26_112042) do
     t.string "description"
     t.string "mobile_description"
     t.boolean "active"
-    t.string "thumbnail_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
