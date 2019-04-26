@@ -8,7 +8,6 @@
 #  phone            :string(255)
 #  fax              :string(255)
 #  email            :string(255)
-#  url              :string(255)
 #  contactable_type :string(255)
 #  contactable_id   :bigint(8)
 #  created_at       :datetime         not null
