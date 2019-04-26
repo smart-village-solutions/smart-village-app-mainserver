@@ -7,9 +7,7 @@
 #  copyright     :string(255)
 #  height        :string(255)
 #  width         :string(255)
-#  link          :string(255)
 #  type          :string(255)
-#  source_url    :string(255)
 #  mediable_type :string(255)
 #  mediable_id   :bigint(8)
 #  created_at    :datetime         not null
@@ -18,4 +16,5 @@
 
 class MediaContent < ApplicationRecord
   belongs_to :media_contentable, polymorphic: true
+  has_one :source_url, as: :web_urlable
 end
