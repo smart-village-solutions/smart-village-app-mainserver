@@ -15,6 +15,6 @@
 #
 
 class MediaContent < ApplicationRecord
-  belongs_to :media_contentable, polymorphic: true
-  has_one :source_url, as: :web_urlable
+  belongs_to :mediable, polymorphic: true
+  has_one :web_url, as: :web_urlable
 end
