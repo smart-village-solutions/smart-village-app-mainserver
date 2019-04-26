@@ -102,9 +102,7 @@ ActiveRecord::Schema.define(version: 2019_04_26_112042) do
     t.string "copyright"
     t.string "height"
     t.string "width"
-    t.string "link"
     t.string "type"
-    t.string "source_url"
     t.string "mediable_type"
     t.bigint "mediable_id"
     t.datetime "created_at", null: false
