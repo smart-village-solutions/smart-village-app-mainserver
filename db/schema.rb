@@ -55,7 +55,6 @@ ActiveRecord::Schema.define(version: 2019_04_26_112042) do
     t.string "phone"
     t.string "fax"
     t.string "email"
-    t.string "url"
     t.string "contactable_type"
     t.bigint "contactable_id"
     t.datetime "created_at", null: false
