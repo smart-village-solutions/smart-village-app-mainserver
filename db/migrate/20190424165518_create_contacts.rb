@@ -6,7 +6,6 @@ class CreateContacts < ActiveRecord::Migration[5.2]
       t.string :phone
       t.string :fax
       t.string :email
-      t.string :url
       t.references :contactable, polymorphic: true, index: true
       t.timestamps
     end

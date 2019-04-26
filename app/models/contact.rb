@@ -17,4 +17,5 @@
 
 class Contact < ApplicationRecord
     belongs_to :contactable, polymorphic: true
+    has_one :web_url, as: :web_urlable
 end
