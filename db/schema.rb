@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_26_112042) do
+ActiveRecord::Schema.define(version: 2019_04_29_142017) do
 
   create_table "accessibilty_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(version: 2019_04_26_112042) do
     t.integer "tmb_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "ancestry"
+    t.index ["ancestry"], name: "index_categories_on_ancestry"
   end
 
   create_table "certificates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -103,11 +105,11 @@ ActiveRecord::Schema.define(version: 2019_04_26_112042) do
     t.string "height"
     t.string "width"
     t.string "type"
-    t.string "mediaable_type"
-    t.bigint "mediaable_id"
+    t.string "mediable_type"
+    t.bigint "mediable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["mediaable_type", "mediaable_id"], name: "index_media_contents_on_mediaable_type_and_mediaable_id"
+    t.index ["mediable_type", "mediable_id"], name: "index_media_contents_on_mediable_type_and_mediable_id"
   end
 
   create_table "opening_hours", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
