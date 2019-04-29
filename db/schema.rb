@@ -103,11 +103,11 @@ ActiveRecord::Schema.define(version: 2019_04_26_112042) do
     t.string "height"
     t.string "width"
     t.string "type"
-    t.string "mediable_type"
-    t.bigint "mediable_id"
+    t.string "mediaable_type"
+    t.bigint "mediaable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["mediable_type", "mediable_id"], name: "index_media_contents_on_mediable_type_and_mediable_id"
+    t.index ["mediaable_type", "mediaable_id"], name: "index_media_contents_on_mediaable_type_and_mediaable_id"
   end
 
   create_table "opening_hours", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
