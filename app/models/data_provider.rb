@@ -1,7 +1,7 @@
 class DataProvider < ApplicationRecord
+    belongs_to :provideable, polymorphic: true
     has_many :adresses, as: :adressable
     has_many :contacts, as: :contactable
-    belongs_to :provideable, polymorphic: true
 end
 
 # == Schema Information

@@ -1,6 +1,6 @@
 class Location < ApplicationRecord
-    has_one :geo_location, as: :geo_locateable
     belongs_to :locateable, polymorphic: true
+    has_one :geo_location, as: :geo_locateable
 end
 
 # == Schema Information
