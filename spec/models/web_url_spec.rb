@@ -3,6 +3,12 @@ require 'rails_helper'
 RSpec.describe WebUrl, type: :model do
   it { should belong_to(:web_urlable) }
 
+  describe "#url" do
+    it "only accepts valid urls" do
+      url = WebUrl.create(url: "test")
+      expect(url).to be_valid
+    end
+  end
 end
 
 # == Schema Information
