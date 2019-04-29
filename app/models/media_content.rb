@@ -1,5 +1,5 @@
 class MediaContent < ApplicationRecord
-  belongs_to :mediable, polymorphic: true
+  belongs_to :mediaable, polymorphic: true
   has_one :web_url, as: :web_urlable
 end
 
@@ -13,8 +13,8 @@ end
 #  height        :string(255)
 #  width         :string(255)
 #  type          :string(255)
-#  mediable_type :string(255)
-#  mediable_id   :bigint(8)
+#  mediaable_type :string(255)
+#  mediaable_id   :bigint(8)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

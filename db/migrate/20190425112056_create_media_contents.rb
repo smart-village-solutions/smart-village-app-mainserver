@@ -6,7 +6,7 @@ class CreateMediaContents < ActiveRecord::Migration[5.2]
       t.string :height
       t.string :width
       t.string :type
-      t.references :mediable, polymorphic: true, index: true
+      t.references :mediaable, polymorphic: true, index: true
       t.timestamps
     end
   end
