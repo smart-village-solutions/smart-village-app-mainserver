@@ -1,3 +1,14 @@
+FactoryBot.define do
+  factory :location do
+    name { "MyString" }
+    department { "MyString" }
+    district { "MyString" }
+    region { "MyString" }
+    state { "MyString" }
+    country { "MyString" }
+  end
+end
+
 # == Schema Information
 #
 # Table name: locations
@@ -14,14 +25,3 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
-
-FactoryBot.define do
-  factory :location do
-    name { "MyString" }
-    department { "MyString" }
-    district { "MyString" }
-    region { "MyString" }
-    state { "MyString" }
-    country { "MyString" }
-  end
-end

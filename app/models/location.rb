@@ -1,3 +1,8 @@
+class Location < ApplicationRecord
+    has_one :geo_location, as: :geo_locateable
+    belongs_to :locateable, polymorphic: true
+end
+
 # == Schema Information
 #
 # Table name: locations
@@ -14,8 +19,3 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
-
-class Location < ApplicationRecord
-    has_one :geo_location, as: :geo_locateable
-    belongs_to :locateable, polymorphic: true
-end

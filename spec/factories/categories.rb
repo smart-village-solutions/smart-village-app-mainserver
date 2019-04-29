@@ -1,3 +1,10 @@
+FactoryBot.define do
+  factory :category do
+    name { "MyString" }
+    tmb_id { 1 }
+  end
+end
+
 # == Schema Information
 #
 # Table name: categories
@@ -8,10 +15,3 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-
-FactoryBot.define do
-  factory :category do
-    name { "MyString" }
-    tmb_id { 1 }
-  end
-end

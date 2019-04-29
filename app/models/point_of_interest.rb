@@ -1,18 +1,6 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: point_of_interests
-#
-#  id                 :bigint(8)        not null, primary key
-#  external_id        :integer
-#  name               :string(255)
-#  description        :string(255)
-#  mobile_description :string(255)
-#  active             :boolean
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#
+
 
 class PointOfInterest < ApplicationRecord
   has_many :adresses, as: :adressable
@@ -26,3 +14,17 @@ class PointOfInterest < ApplicationRecord
   has_many :certificates
   has_one :web_url, as: :web_urlable
 end
+
+# == Schema Information
+#
+# Table name: point_of_interests
+#
+#  id                 :bigint(8)        not null, primary key
+#  external_id        :integer
+#  name               :string(255)
+#  description        :string(255)
+#  mobile_description :string(255)
+#  active             :boolean
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#

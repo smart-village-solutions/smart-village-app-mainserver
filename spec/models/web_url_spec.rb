@@ -1,3 +1,10 @@
+require 'rails_helper'
+
+RSpec.describe WebUrl, type: :model do
+  it { should belong_to(:web_urlable) }
+
+end
+
 # == Schema Information
 #
 # Table name: web_urls
@@ -10,10 +17,3 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-
-require 'rails_helper'
-
-RSpec.describe WebUrl, type: :model do
-  it { should belong_to(:web_urlable) }
-
-end

@@ -1,3 +1,10 @@
+require 'rails_helper'
+
+RSpec.describe MediaContent, type: :model do
+  it { should belong_to(:mediable) }
+  it { should have_one(:web_url) }
+end
+
 # == Schema Information
 #
 # Table name: media_contents
@@ -13,10 +20,3 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
-
-require 'rails_helper'
-
-RSpec.describe MediaContent, type: :model do
-  it { should belong_to(:mediable) }
-  it { should have_one(:web_url) }
-end

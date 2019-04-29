@@ -1,3 +1,16 @@
+FactoryBot.define do
+  factory :opening_hour do
+    weekday { "MyString" }
+    date_from { "2019-04-25 17:27:48" }
+    date_to { "2019-04-25 17:27:48" }
+    time_from { "MyString" }
+    time_to { "MyString" }
+    sort_number { 1 }
+    open { false }
+    description { "MyString" }
+  end
+end
+
 # == Schema Information
 #
 # Table name: opening_hours
@@ -16,16 +29,3 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-
-FactoryBot.define do
-  factory :opening_hour do
-    weekday { "MyString" }
-    date_from { "2019-04-25 17:27:48" }
-    date_to { "2019-04-25 17:27:48" }
-    time_from { "MyString" }
-    time_to { "MyString" }
-    sort_number { 1 }
-    open { false }
-    description { "MyString" }
-  end
-end

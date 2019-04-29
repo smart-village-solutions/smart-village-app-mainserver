@@ -1,3 +1,7 @@
+class OpeningHour < ApplicationRecord
+  belongs_to :openingable, polymorphic: true
+end
+
 # == Schema Information
 #
 # Table name: opening_hours
@@ -16,7 +20,3 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-
-class OpeningHour < ApplicationRecord
-  belongs_to :openingable, polymorphic: true
-end

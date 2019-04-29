@@ -1,3 +1,10 @@
+FactoryBot.define do
+  factory :web_url do
+    url { "MyString" }
+    description { "MyString" }
+  end
+end
+
 # == Schema Information
 #
 # Table name: web_urls
@@ -10,10 +17,3 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-
-FactoryBot.define do
-  factory :web_url do
-    url { "MyString" }
-    description { "MyString" }
-  end
-end

@@ -1,3 +1,7 @@
+class Price < ApplicationRecord
+    belongs_to :priceable, polymorphic: true
+end
+
 # == Schema Information
 #
 # Table name: prices
@@ -18,7 +22,3 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
-
-class Price < ApplicationRecord
-    belongs_to :priceable, polymorphic: true
-end

@@ -1,19 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: point_of_interests
-#
-#  id                 :bigint(8)        not null, primary key
-#  external_id        :integer
-#  name               :string(255)
-#  description        :string(255)
-#  mobile_description :string(255)
-#  active             :boolean
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#
-
 require "rails_helper"
 
 RSpec.describe PointOfInterest, type: :model do
@@ -28,3 +14,17 @@ RSpec.describe PointOfInterest, type: :model do
   it { is_expected.to have_many(:certificates) }
   it { is_expected.to have_one(:web_url) }
 end
+
+# == Schema Information
+#
+# Table name: point_of_interests
+#
+#  id                 :bigint(8)        not null, primary key
+#  external_id        :integer
+#  name               :string(255)
+#  description        :string(255)
+#  mobile_description :string(255)
+#  active             :boolean
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#

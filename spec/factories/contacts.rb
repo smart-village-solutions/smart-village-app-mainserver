@@ -1,3 +1,12 @@
+FactoryBot.define do
+  factory :contact do
+    phone { "" }
+    fax { "MyString" }
+    email { "MyString" }
+    url { "MyString" }
+  end
+end
+
 # == Schema Information
 #
 # Table name: contacts
@@ -13,12 +22,3 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-
-FactoryBot.define do
-  factory :contact do
-    phone { "" }
-    fax { "MyString" }
-    email { "MyString" }
-    url { "MyString" }
-  end
-end
