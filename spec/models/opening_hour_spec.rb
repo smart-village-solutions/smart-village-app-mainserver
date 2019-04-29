@@ -1,3 +1,9 @@
+require 'rails_helper'
+
+RSpec.describe OpeningHour, type: :model do
+  it { should belong_to(:openingable) }
+end
+
 # == Schema Information
 #
 # Table name: opening_hours
@@ -16,9 +22,3 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-
-require 'rails_helper'
-
-RSpec.describe OpeningHour, type: :model do
-  it { should belong_to(:openingable) }
-end

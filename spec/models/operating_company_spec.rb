@@ -1,3 +1,11 @@
+require 'rails_helper'
+
+RSpec.describe OperatingCompany, type: :model do
+  it { should belong_to(:companyable) }
+  it { should have_many(:adresses) }
+  it { should have_many(:contacts) }
+end
+
 # == Schema Information
 #
 # Table name: operating_companies
@@ -9,11 +17,3 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-
-require 'rails_helper'
-
-RSpec.describe OperatingCompany, type: :model do
-  it { should belong_to(:companyable) }
-  it { should have_many(:adresses) }
-  it { should have_many(:contacts) }
-end

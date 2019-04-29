@@ -1,3 +1,7 @@
+class WebUrl < ApplicationRecord
+    belongs_to :web_urlable, polymorphic: true
+end
+
 # == Schema Information
 #
 # Table name: web_urls
@@ -10,7 +14,3 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-
-class WebUrl < ApplicationRecord
-    belongs_to :web_urlable, polymorphic: true
-end

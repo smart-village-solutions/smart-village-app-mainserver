@@ -1,3 +1,13 @@
+FactoryBot.define do
+  factory :adress do
+    addition { "MyString" }
+    city { "MyString" }
+    street { "MyString" }
+    zip { "MyString" }
+    geo_location { nil }
+  end
+end
+
 # == Schema Information
 #
 # Table name: adresses
@@ -12,13 +22,3 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
-
-FactoryBot.define do
-  factory :adress do
-    addition { "MyString" }
-    city { "MyString" }
-    street { "MyString" }
-    zip { "MyString" }
-    geo_location { nil }
-  end
-end

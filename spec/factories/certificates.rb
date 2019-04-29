@@ -1,3 +1,9 @@
+FactoryBot.define do
+  factory :certificate do
+    name { "MyString" }
+  end
+end
+
 # == Schema Information
 #
 # Table name: certificates
@@ -8,9 +14,3 @@
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #
-
-FactoryBot.define do
-  factory :certificate do
-    name { "MyString" }
-  end
-end

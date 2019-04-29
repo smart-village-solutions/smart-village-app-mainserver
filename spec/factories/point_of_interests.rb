@@ -1,3 +1,14 @@
+FactoryBot.define do
+  factory :point_of_interest do
+    external_id { 1 }
+    name { "MyString" }
+    description { "MyString" }
+    mobile_description { "MyString" }
+    active { false }
+    thumbnail_url { "MyString" }
+  end
+end
+
 # == Schema Information
 #
 # Table name: point_of_interests
@@ -11,14 +22,3 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
-
-FactoryBot.define do
-  factory :point_of_interest do
-    external_id { 1 }
-    name { "MyString" }
-    description { "MyString" }
-    mobile_description { "MyString" }
-    active { false }
-    thumbnail_url { "MyString" }
-  end
-end

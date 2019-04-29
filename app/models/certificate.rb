@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+class Certificate < ApplicationRecord
+  belongs_to :point_of_interest
+end
+
 # == Schema Information
 #
 # Table name: certificates
@@ -10,8 +14,3 @@
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #
-
-
-class Certificate < ApplicationRecord
-  belongs_to :point_of_interest
-end

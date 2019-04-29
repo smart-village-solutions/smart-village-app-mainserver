@@ -1,3 +1,18 @@
+FactoryBot.define do
+  factory :price do
+    name { "MyString" }
+    price { 1 }
+    group_price { false }
+    age_from { 1 }
+    age_to { 1 }
+    min_adult_count { 1 }
+    max_adult_count { 1 }
+    min_children_count { 1 }
+    max_children_count { 1 }
+    description { "MyString" }
+  end
+end
+
 # == Schema Information
 #
 # Table name: prices
@@ -18,18 +33,3 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
-
-FactoryBot.define do
-  factory :price do
-    name { "MyString" }
-    price { 1 }
-    group_price { false }
-    age_from { 1 }
-    age_to { 1 }
-    min_adult_count { 1 }
-    max_adult_count { 1 }
-    min_children_count { 1 }
-    max_children_count { 1 }
-    description { "MyString" }
-  end
-end

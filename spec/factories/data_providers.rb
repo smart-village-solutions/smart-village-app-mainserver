@@ -1,3 +1,11 @@
+FactoryBot.define do
+  factory :data_provider do
+    name { "MyString" }
+    logo { "MyString" }
+    description { "MyString" }
+  end
+end
+
 # == Schema Information
 #
 # Table name: data_providers
@@ -11,11 +19,3 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-
-FactoryBot.define do
-  factory :data_provider do
-    name { "MyString" }
-    logo { "MyString" }
-    description { "MyString" }
-  end
-end

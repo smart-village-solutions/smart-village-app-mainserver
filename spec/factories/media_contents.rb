@@ -1,3 +1,15 @@
+FactoryBot.define do
+  factory :media_content do
+    caption_text { "MyString" }
+    copyright { "MyString" }
+    height { "MyString" }
+    width { "MyString" }
+    link { "MyString" }
+    type { "" }
+    source_url { "MyString" }
+  end
+end
+
 # == Schema Information
 #
 # Table name: media_contents
@@ -13,15 +25,3 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
-
-FactoryBot.define do
-  factory :media_content do
-    caption_text { "MyString" }
-    copyright { "MyString" }
-    height { "MyString" }
-    width { "MyString" }
-    link { "MyString" }
-    type { "" }
-    source_url { "MyString" }
-  end
-end

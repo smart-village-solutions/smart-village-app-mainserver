@@ -1,3 +1,9 @@
+require 'rails_helper'
+
+RSpec.describe GeoLocation, type: :model do
+  it { should belong_to(:geo_locateable) }
+end
+
 # == Schema Information
 #
 # Table name: geo_locations
@@ -10,9 +16,3 @@
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #
-
-require 'rails_helper'
-
-RSpec.describe GeoLocation, type: :model do
-  it { should belong_to(:geo_locateable) }
-end

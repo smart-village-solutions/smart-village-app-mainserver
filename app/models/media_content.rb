@@ -1,3 +1,8 @@
+class MediaContent < ApplicationRecord
+  belongs_to :mediable, polymorphic: true
+  has_one :web_url, as: :web_urlable
+end
+
 # == Schema Information
 #
 # Table name: media_contents
@@ -13,8 +18,3 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
-
-class MediaContent < ApplicationRecord
-  belongs_to :mediable, polymorphic: true
-  has_one :web_url, as: :web_urlable
-end

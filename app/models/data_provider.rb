@@ -1,3 +1,9 @@
+class DataProvider < ApplicationRecord
+    has_many :adresses, as: :adressable
+    has_many :contacts, as: :contactable
+    belongs_to :provideable, polymorphic: true
+end
+
 # == Schema Information
 #
 # Table name: data_providers
@@ -11,9 +17,3 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-
-class DataProvider < ApplicationRecord
-    has_many :adresses, as: :adressable
-    has_many :contacts, as: :contactable
-    belongs_to :provideable, polymorphic: true
-end

@@ -1,4 +1,11 @@
 # frozen_string_literal: true
+
+class OperatingCompany < ApplicationRecord
+  has_many :adresses, as: :adressable
+  has_many :contacts, as: :contactable
+  belongs_to :companyable, polymorphic: true
+end
+
 # == Schema Information
 #
 # Table name: operating_companies
@@ -10,9 +17,3 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-
-class OperatingCompany < ApplicationRecord
-  has_many :adresses, as: :adressable
-  has_many :contacts, as: :contactable
-  belongs_to :companyable, polymorphic: true
-end

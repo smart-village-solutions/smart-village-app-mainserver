@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+class Category < ApplicationRecord
+end
+
 # == Schema Information
 #
 # Table name: categories
@@ -10,6 +13,3 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-
-class Category < ApplicationRecord
-end
