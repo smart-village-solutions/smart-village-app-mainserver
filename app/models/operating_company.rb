@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class OperatingCompany < ApplicationRecord
+  belongs_to :companyable, polymorphic: true
   has_many :adresses, as: :adressable
   has_many :contacts, as: :contactable
-  belongs_to :companyable, polymorphic: true
 end
 
 # == Schema Information
