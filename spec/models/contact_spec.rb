@@ -1,8 +1,20 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe Contact, type: :model do
-  it { should belong_to(:contactable) }
-  it { should have_one(:web_url) }
+  it { is_expected.to belong_to(:contactable) }
+  it { is_expected.to have_one(:web_url) }
+
+  describe "#email" do
+    let(:valid_contact) { create :contact }
+
+    context "with valid emails" do
+      it "marks the record as valid" do
+        expect(valid_contact).to be_valid
+      end
+    end
+  end
 end
 
 # == Schema Information
