@@ -1,9 +1,11 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe DataProvider, type: :model do
-  it { should have_many(:adresses) }
-  it { should have_many(:contacts) }
-  it { should belong_to(:provideable) }
+  it { is_expected.to have_many(:adresses) }
+  it { is_expected.to have_many(:contacts) }
+  it { is_expected.to belong_to(:provideable) }
 end
 
 # == Schema Information
