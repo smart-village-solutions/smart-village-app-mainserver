@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+# This model organizes different categories as a category tree with the help of the ancestry
+# gem.
 class Category < ApplicationRecord
+  has_ancestry
 end
 
 # == Schema Information
