@@ -3,8 +3,9 @@ FactoryBot.define do
     phone { "01234567" }
     fax { "MyString" }
     email { "my.string@test.de" }
-    contactable_id { 23 }
-    contactable_type { "data_provider" }
+    trait :for_operating_company do
+      association(:contactable, factory: [:operating_company, :for_poi])
+    end
   end
 end
 
