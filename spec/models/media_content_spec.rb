@@ -1,8 +1,11 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe MediaContent, type: :model do
-  it { should belong_to(:mediaable) }
-  it { should have_one(:web_url) }
+  it { is_expected.to belong_to(:mediaable) }
+  it { is_expected.to have_one(:web_url) }
+  it { is_expected.to validate_presence_of(:type) }
 end
 
 # == Schema Information

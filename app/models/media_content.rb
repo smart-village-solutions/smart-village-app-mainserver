@@ -1,6 +1,8 @@
 class MediaContent < ApplicationRecord
   belongs_to :mediaable, polymorphic: true
   has_one :web_url, as: :web_urlable
+
+  validates_presence_of :type
 end
 
 # == Schema Information

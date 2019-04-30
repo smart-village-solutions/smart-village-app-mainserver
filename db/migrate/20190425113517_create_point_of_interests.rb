@@ -5,7 +5,7 @@ class CreatePointOfInterests < ActiveRecord::Migration[5.2]
       t.string :name
       t.string :description
       t.string :mobile_description
-      t.boolean :active
+      t.boolean :active, default: true
 
       t.timestamps
     end

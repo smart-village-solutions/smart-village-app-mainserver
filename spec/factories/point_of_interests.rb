@@ -5,7 +5,6 @@ FactoryBot.define do
     description { "MyString" }
     mobile_description { "MyString" }
     active { false }
-    thumbnail_url { "MyString" }
   end
 end
 

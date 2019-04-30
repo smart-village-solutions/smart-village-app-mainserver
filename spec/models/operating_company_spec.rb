@@ -1,9 +1,12 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe OperatingCompany, type: :model do
-  it { should belong_to(:companyable) }
-  it { should have_many(:adresses) }
-  it { should have_many(:contacts) }
+  it { is_expected.to belong_to(:companyable) }
+  it { is_expected.to have_many(:adresses) }
+  it { is_expected.to have_many(:contacts) }
+  it { is_expected.to validate_presence_of(:name) }
 end
 
 # == Schema Information
