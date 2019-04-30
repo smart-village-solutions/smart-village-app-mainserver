@@ -4,6 +4,7 @@ RSpec.describe OperatingCompany, type: :model do
   it { should belong_to(:companyable) }
   it { should have_many(:adresses) }
   it { should have_many(:contacts) }
+  it { should validate_presence_of(:name) }
 end
 
 # == Schema Information
