@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe MediaContent, type: :model do
   it { should belong_to(:mediaable) }
   it { should have_one(:web_url) }
+  it { should validate_presence_of(:type) } 
 end
 
 # == Schema Information
