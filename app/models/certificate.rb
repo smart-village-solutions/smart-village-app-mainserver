@@ -2,6 +2,8 @@
 
 class Certificate < ApplicationRecord
   belongs_to :point_of_interest
+
+  validates_presence_of :name
 end
 
 # == Schema Information
