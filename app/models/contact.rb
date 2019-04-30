@@ -7,7 +7,8 @@ class Contact < ApplicationRecord
   validates :email, format: {
     with: URI::MailTo::EMAIL_REGEXP,
     message: "Only valid emails allowed"
-  }
+  },
+                    unless: proc { |a| a.email.blank? }
 end
 
 # == Schema Information
