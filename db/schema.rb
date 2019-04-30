@@ -142,7 +142,7 @@ ActiveRecord::Schema.define(version: 2019_04_29_142017) do
     t.string "name"
     t.string "description"
     t.string "mobile_description"
-    t.boolean "active"
+    t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
