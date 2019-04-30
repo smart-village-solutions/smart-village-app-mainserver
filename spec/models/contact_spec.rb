@@ -28,7 +28,6 @@ RSpec.describe Contact, type: :model do
         expect(blank_email_contact).to be_valid
       end
     end
-
   end
 end
 
