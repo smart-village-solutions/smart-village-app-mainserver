@@ -13,6 +13,7 @@ RSpec.describe PointOfInterest, type: :model do
   it { is_expected.to have_many(:accessibilty_informations) }
   it { is_expected.to have_many(:certificates) }
   it { is_expected.to have_one(:web_url) }
+  it { is_expected.to validate_presence_of(:name) }
 end
 
 # == Schema Information

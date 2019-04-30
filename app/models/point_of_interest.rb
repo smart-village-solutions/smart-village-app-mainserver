@@ -13,6 +13,8 @@ class PointOfInterest < ApplicationRecord
   has_one :operating_company, as: :companyable
   has_one :data_provider, as: :provideable
   has_one :web_url, as: :web_urlable
+
+  validates_presence_of :name, :active
 end
 
 # == Schema Information
