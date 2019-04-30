@@ -1,6 +1,14 @@
+# frozen_string_literal: true
+
 class Contact < ApplicationRecord
-    belongs_to :contactable, polymorphic: true
-    has_one :web_url, as: :web_urlable
+  belongs_to :contactable, polymorphic: true
+  has_one :web_url, as: :web_urlable
+
+  validates :email, format: {
+    with: URI::MailTo::EMAIL_REGEXP,
+    message: "Only valid emails allowed"
+  },
+                    unless: proc { |record| record.email.blank? }
 end
 
 # == Schema Information
