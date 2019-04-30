@@ -7,11 +7,18 @@ RSpec.describe Contact, type: :model do
   it { is_expected.to have_one(:web_url) }
 
   describe "#email" do
-    let(:valid_contact) { create :contact }
+    let(:valid_contact) { create(:contact, :for_operating_company) }
+    let(:invalid_contact) { build(:contact, :for_operating_company, email: "Test") }
 
-    context "with valid emails" do
+    context "with a valid email" do
       it "marks the record as valid" do
         expect(valid_contact).to be_valid
+      end
+    end
+
+    context "with an invalid email" do
+      it "marks the record as invalid" do
+        expect(invalid_contact).to be_invalid
       end
     end
   end
