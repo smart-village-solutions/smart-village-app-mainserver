@@ -1,9 +1,11 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe GeoLocation, type: :model do
-  it { should belong_to(:geo_locateable) }
-  it { should validate_numericality_of(:latitude) } 
-  it { should validate_numericality_of(:longitude) } 
+  it { is_expected.to belong_to(:geo_locateable) }
+  it { is_expected.to validate_numericality_of(:latitude) }
+  it { is_expected.to validate_numericality_of(:longitude) }
 end
 
 # == Schema Information

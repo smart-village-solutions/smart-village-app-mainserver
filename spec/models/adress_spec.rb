@@ -1,14 +1,16 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe Adress, type: :model do
-  it { should belong_to(:adressable) }
-  it { should have_one(:geo_location) }
-  it { should allow_value("test").for(:addition) }
-  it { should allow_value("Berlin").for(:city) }
-  it { should allow_value("Musterstraße 123").for(:street) }
-  it { should allow_value("12051").for(:zip) }
-  it { should allow_value("PointOfInterest").for(:adressable_type) }
-  it { should allow_value(2).for(:adressable_id) }
+  it { is_expected.to belong_to(:adressable) }
+  it { is_expected.to have_one(:geo_location) }
+  it { is_expected.to allow_value("test").for(:addition) }
+  it { is_expected.to allow_value("Berlin").for(:city) }
+  it { is_expected.to allow_value("Musterstraße 123").for(:street) }
+  it { is_expected.to allow_value("12051").for(:zip) }
+  it { is_expected.to allow_value("PointOfInterest").for(:adressable_type) }
+  it { is_expected.to allow_value(2).for(:adressable_id) }
 end
 
 # == Schema Information

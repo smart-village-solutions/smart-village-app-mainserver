@@ -1,8 +1,10 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe Location, type: :model do
-  it { should belong_to(:locateable) }
-  it { should have_one(:geo_location) }
+  it { is_expected.to belong_to(:locateable) }
+  it { is_expected.to have_one(:geo_location) }
 end
 
 # == Schema Information
