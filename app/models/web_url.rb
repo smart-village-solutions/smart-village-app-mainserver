@@ -3,6 +3,7 @@
 class WebUrl < ApplicationRecord
   belongs_to :web_urlable, polymorphic: true
   validates :url, format: { with: %r{\A(http|https)://[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?\z}ix }
+  validates_presence_of :url
 end
 
 # == Schema Information
