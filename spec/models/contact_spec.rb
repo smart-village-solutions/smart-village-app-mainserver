@@ -8,7 +8,8 @@ RSpec.describe Contact, type: :model do
 
   describe "#email" do
     let(:valid_contact) { create(:contact, :for_operating_company) }
-    let(:invalid_contact) { build(:contact, :for_operating_company, email: "Test") }
+    let(:invalid_contact) { build(:contact, :for_operating_company, email: "test") }
+    let(:blank_email_contact) { build(:contact, :for_operating_company, email: "") }
 
     context "with a valid email" do
       it "marks the record as valid" do
@@ -21,6 +22,13 @@ RSpec.describe Contact, type: :model do
         expect(invalid_contact).to be_invalid
       end
     end
+
+    context "with an blank email" do
+      it "marks the record as valid" do
+        expect(blank_email_contact).to be_valid
+      end
+    end
+
   end
 end
 
