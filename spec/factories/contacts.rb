@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :contact do
     phone { "01234567" }
     fax { "MyString" }
     email { "my.string@test.de" }
     trait :for_operating_company do
-      association(:contactable, factory: [:operating_company, :for_poi])
+      association(:contactable, factory: %i[operating_company for_poi])
     end
   end
 end
