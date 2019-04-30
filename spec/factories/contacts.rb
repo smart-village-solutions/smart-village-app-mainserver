@@ -1,9 +1,10 @@
 FactoryBot.define do
   factory :contact do
-    phone { "" }
+    phone { "01234567" }
     fax { "MyString" }
-    email { "MyString" }
-    url { "MyString" }
+    email { "my.string@test.de" }
+    contactable_id { 23 }
+    contactable_type { "data_provider" }
   end
 end
 
