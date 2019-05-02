@@ -15,6 +15,8 @@ class PointOfInterest < ApplicationRecord
   has_one :web_url, as: :web_urlable
 
   validates_presence_of :name, :active
+
+  acts_as_taggable
 end
 
 # == Schema Information
