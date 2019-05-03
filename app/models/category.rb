@@ -5,6 +5,7 @@
 class Category < ApplicationRecord
   has_ancestry
   validates_presence_of :name
+  has_one :event_record
 end
 
 # == Schema Information
