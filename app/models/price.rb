@@ -6,7 +6,7 @@ end
 #
 # Table name: prices
 #
-#  id                 :bigint(8)        not null, primary key
+#  id                 :bigint           not null, primary key
 #  name               :string(255)
 #  price              :integer
 #  group_price        :boolean
@@ -18,7 +18,7 @@ end
 #  max_children_count :integer
 #  description        :string(255)
 #  priceable_type     :string(255)
-#  priceable_id       :bigint(8)
+#  priceable_id       :bigint
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #

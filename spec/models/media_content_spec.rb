@@ -4,22 +4,22 @@ require "rails_helper"
 
 RSpec.describe MediaContent, type: :model do
   it { is_expected.to belong_to(:mediaable) }
-  it { is_expected.to have_one(:web_url) }
-  it { is_expected.to validate_presence_of(:type) }
+  it { is_expected.to have_one(:source_url) }
+  it { is_expected.to validate_presence_of(:content_type) }
 end
 
 # == Schema Information
 #
 # Table name: media_contents
 #
-#  id            :bigint(8)        not null, primary key
-#  caption_text  :string(255)
-#  copyright     :string(255)
-#  height        :string(255)
-#  width         :string(255)
-#  type          :string(255)
+#  id             :bigint           not null, primary key
+#  caption_text   :string(255)
+#  copyright      :string(255)
+#  height         :string(255)
+#  width          :string(255)
+#  content_type   :string(255)
 #  mediaable_type :string(255)
-#  mediaable_id   :bigint(8)
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  mediaable_id   :bigint
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #
