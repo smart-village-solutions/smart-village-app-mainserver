@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
+# This model provides an contact object to every other resource which needs one.
 class ContentBlock < ApplicationRecord
-    has_many :media_contents, as: :mediaable
-    belongs_to :content_blockable, polymorphic: true
+  has_many :media_contents, as: :mediaable
+  belongs_to :content_blockable, polymorphic: true
 end
 
 # == Schema Information
