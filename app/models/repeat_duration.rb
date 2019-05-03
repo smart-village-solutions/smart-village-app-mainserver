@@ -1,0 +1,2 @@
+class RepeatDuration < ApplicationRecord
+end
