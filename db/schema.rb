@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_30_150349) do
+ActiveRecord::Schema.define(version: 2019_05_02_105927) do
 
   create_table "accessibilty_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
@@ -64,6 +64,17 @@ ActiveRecord::Schema.define(version: 2019_04_30_150349) do
     t.index ["contactable_type", "contactable_id"], name: "index_contacts_on_contactable_type_and_contactable_id"
   end
 
+  create_table "content_blocks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "title"
+    t.string "intro"
+    t.text "body"
+    t.string "content_blockable_type"
+    t.bigint "content_blockable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_blockable_type", "content_blockable_id"], name: "index_content_blocks_on_content_blockable_type_and_id"
+  end
+
   create_table "data_providers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "logo"
@@ -104,12 +115,25 @@ ActiveRecord::Schema.define(version: 2019_04_30_150349) do
     t.string "copyright"
     t.string "height"
     t.string "width"
-    t.string "type"
+    t.string "content_type"
     t.string "mediaable_type"
     t.bigint "mediaable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["mediaable_type", "mediaable_id"], name: "index_media_contents_on_mediaable_type_and_mediaable_id"
+  end
+
+  create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "author"
+    t.string "type"
+    t.boolean "full_version"
+    t.integer "characters_to_be_shown"
+    t.datetime "publication_date"
+    t.datetime "published_at"
+    t.boolean "show_publish_date"
+    t.string "news_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "opening_hours", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
