@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# News Item is one of the four Main resources for the app. A news Item can be anything
+# from an old school news article to a whole story structured in chapters
 class NewsItem < ApplicationRecord
   has_many :content_blocks, as: :content_blockable
   has_one :data_provider, as: :provideable
