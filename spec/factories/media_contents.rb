@@ -14,14 +14,14 @@ end
 #
 # Table name: media_contents
 #
-#  id            :bigint(8)        not null, primary key
-#  caption_text  :string(255)
-#  copyright     :string(255)
-#  height        :string(255)
-#  width         :string(255)
-#  type          :string(255)
+#  id             :bigint           not null, primary key
+#  caption_text   :string(255)
+#  copyright      :string(255)
+#  height         :string(255)
+#  width          :string(255)
+#  content_type   :string(255)
 #  mediaable_type :string(255)
-#  mediaable_id   :bigint(8)
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  mediaable_id   :bigint
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #

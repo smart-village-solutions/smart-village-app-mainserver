@@ -10,7 +10,7 @@ end
 #
 # Table name: opening_hours
 #
-#  id               :bigint(8)        not null, primary key
+#  id               :bigint           not null, primary key
 #  weekday          :string(255)
 #  date_from        :date
 #  date_to          :date
@@ -20,7 +20,7 @@ end
 #  open             :boolean
 #  description      :string(255)
 #  openingable_type :string(255)
-#  openingable_id   :bigint(8)
+#  openingable_id   :bigint
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

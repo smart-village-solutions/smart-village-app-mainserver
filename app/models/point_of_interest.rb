@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-
-
 class PointOfInterest < ApplicationRecord
   has_many :adresses, as: :adressable
   has_many :contacts, as: :contactable
@@ -21,12 +19,12 @@ end
 #
 # Table name: point_of_interests
 #
-#  id                 :bigint(8)        not null, primary key
+#  id                 :bigint           not null, primary key
 #  external_id        :integer
 #  name               :string(255)
 #  description        :string(255)
 #  mobile_description :string(255)
-#  active             :boolean
+#  active             :boolean          default(TRUE)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #

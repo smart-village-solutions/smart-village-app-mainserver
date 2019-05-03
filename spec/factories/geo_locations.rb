@@ -9,11 +9,11 @@ end
 #
 # Table name: geo_locations
 #
-#  id                  :bigint(8)        not null, primary key
+#  id                  :bigint           not null, primary key
 #  latitude            :float(24)
 #  longitude           :float(24)
 #  geo_locateable_type :string(255)
-#  geo_locateable_id   :bigint(8)
+#  geo_locateable_id   :bigint
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #
