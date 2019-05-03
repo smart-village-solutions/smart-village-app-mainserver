@@ -1,8 +1,8 @@
 class CreateRepeatDurations < ActiveRecord::Migration[5.2]
   def change
     create_table :repeat_durations do |t|
-      t.date :start
-      t.date :end
+      t.date :start_date
+      t.date :end_date
       t.boolean :every_year
       t.datetime :updated_at_tmb
       t.references :event_record, index: true
