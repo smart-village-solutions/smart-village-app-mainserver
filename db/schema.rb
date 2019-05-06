@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_03_151530) do
+ActiveRecord::Schema.define(version: 2019_05_06_101744) do
 
   create_table "accessibilty_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
@@ -97,6 +97,21 @@ ActiveRecord::Schema.define(version: 2019_05_03_151530) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_event_records_on_category_id"
+  end
+
+  create_table "fixed_dates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.date "date_start"
+    t.date "date_end"
+    t.string "weekday"
+    t.time "time_start"
+    t.time "time_end"
+    t.string "time_Description"
+    t.boolean "use_only_time_description"
+    t.string "dateable_type"
+    t.bigint "dateable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dateable_type", "dateable_id"], name: "index_fixed_dates_on_dateable_type_and_dateable_id"
   end
 
   create_table "geo_locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
