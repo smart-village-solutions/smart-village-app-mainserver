@@ -8,6 +8,7 @@ class CreateAttractions < ActiveRecord::Migration[5.2]
       t.boolean :active, default: true
       t.integer :length_km
       t.integer :means_of_transportation
+      t.references :category, index: true
 
       t.timestamps
     end
