@@ -1,11 +1,13 @@
-class CreatePointOfInterests < ActiveRecord::Migration[5.2]
+class CreateAttractions < ActiveRecord::Migration[5.2]
   def change
-    create_table :point_of_interests do |t|
+    create_table :attractions do |t|
       t.integer :external_id
       t.string :name
       t.string :description
       t.string :mobile_description
       t.boolean :active, default: true
+      t.integer :length_km
+      t.integer :means_of_transportation
 
       t.timestamps
     end
