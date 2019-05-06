@@ -14,6 +14,9 @@ class EventRecord < ApplicationRecord
   has_many :media_contents, as: :mediaable
   has_one :repeat_duration
   has_many :dates, as: :dateable, class_name: "FixedDate"
+
+  acts_as_taggable
+
   validates_presence_of :title
 end
 
