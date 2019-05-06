@@ -13,7 +13,6 @@ class EventRecord < ApplicationRecord
   has_many :price_informations, as: :priceable, class_name: "Price"
   has_many :media_contents, as: :mediaable
   has_one :repeat_duration
-  has_one :highlight, as: :highlightable
   has_many :dates, as: :dateable, class_name: "FixedDate"
   validates_presence_of :title
 end

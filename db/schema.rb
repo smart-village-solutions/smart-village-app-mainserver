@@ -124,19 +124,6 @@ ActiveRecord::Schema.define(version: 2019_05_06_101744) do
     t.index ["geo_locateable_type", "geo_locateable_id"], name: "index_geo_locations_on_geo_locateable_type_and_geo_locateable_id"
   end
 
-  create_table "highlights", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.boolean "event"
-    t.boolean "holiday"
-    t.boolean "local"
-    t.boolean "monthly"
-    t.boolean "regional"
-    t.string "highlightable_type"
-    t.bigint "highlightable_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["highlightable_type", "highlightable_id"], name: "index_highlights_on_highlightable_type_and_highlightable_id"
-  end
-
   create_table "locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "department"
