@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# this model describes the data for an event e.g. a concert or a reading.
 class EventRecord < ApplicationRecord
   belongs_to :category
   has_many :urls, as: :web_urlable, class_name: "WebUrl"

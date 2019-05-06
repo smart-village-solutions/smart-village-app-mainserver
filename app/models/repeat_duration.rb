@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
+# provides information for how long an event should be repeated.
 class RepeatDuration < ApplicationRecord
-    belongs_to :event_record
+  belongs_to :event_record
 end
 
 # == Schema Information
