@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_02_105927) do
+ActiveRecord::Schema.define(version: 2019_05_03_151530) do
 
   create_table "accessibilty_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
@@ -86,6 +86,19 @@ ActiveRecord::Schema.define(version: 2019_05_02_105927) do
     t.index ["provideable_type", "provideable_id"], name: "index_data_providers_on_provideable_type_and_provideable_id"
   end
 
+  create_table "event_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "parent_id"
+    t.string "region"
+    t.string "description"
+    t.boolean "repeat"
+    t.string "title"
+    t.bigint "category_id"
+    t.datetime "updated_at_tmb"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_event_records_on_category_id"
+  end
+
   create_table "geo_locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.float "latitude"
     t.float "longitude"
@@ -94,6 +107,19 @@ ActiveRecord::Schema.define(version: 2019_05_02_105927) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["geo_locateable_type", "geo_locateable_id"], name: "index_geo_locations_on_geo_locateable_type_and_geo_locateable_id"
+  end
+
+  create_table "highlights", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.boolean "event"
+    t.boolean "holiday"
+    t.boolean "local"
+    t.boolean "monthly"
+    t.boolean "regional"
+    t.string "highlightable_type"
+    t.bigint "highlightable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["highlightable_type", "highlightable_id"], name: "index_highlights_on_highlightable_type_and_highlightable_id"
   end
 
   create_table "locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -187,6 +213,17 @@ ActiveRecord::Schema.define(version: 2019_05_02_105927) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["priceable_type", "priceable_id"], name: "index_prices_on_priceable_type_and_priceable_id"
+  end
+
+  create_table "repeat_durations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.date "start_date"
+    t.date "end_date"
+    t.boolean "every_year"
+    t.datetime "updated_at_tmb"
+    t.bigint "event_record_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_record_id"], name: "index_repeat_durations_on_event_record_id"
   end
 
   create_table "taggings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
