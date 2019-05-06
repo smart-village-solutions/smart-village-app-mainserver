@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# provides dates to other resources (e.g. Events) who need a fixed dates
 class FixedDate < ApplicationRecord
   belongs_to :dateable, polymorphic: true
 end
