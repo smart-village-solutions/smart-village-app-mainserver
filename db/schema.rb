@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_06_101744) do
+ActiveRecord::Schema.define(version: 2019_05_06_135113) do
 
   create_table "accessibilty_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
@@ -32,6 +32,19 @@ ActiveRecord::Schema.define(version: 2019_05_06_101744) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["adressable_type", "adressable_id"], name: "index_adresses_on_adressable_type_and_adressable_id"
+  end
+
+  create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "external_id"
+    t.string "name"
+    t.string "description"
+    t.string "mobile_description"
+    t.boolean "active", default: true
+    t.integer "length_km"
+    t.integer "means_of_transportation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "type", default: "PointOfInterest", null: false
   end
 
   create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -186,16 +199,6 @@ ActiveRecord::Schema.define(version: 2019_05_06_101744) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["companyable_type", "companyable_id"], name: "index_operating_companies_on_companyable_type_and_companyable_id"
-  end
-
-  create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "external_id"
-    t.string "name"
-    t.string "description"
-    t.string "mobile_description"
-    t.boolean "active", default: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "prices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
