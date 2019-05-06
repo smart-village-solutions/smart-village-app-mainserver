@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 class Attraction < ApplicationRecord
+  belongs_to :category
   has_many :adresses, as: :adressable
   has_many :contacts, as: :contactable
   has_many :media_contents, as: :mediaable
   has_one :operating_company, as: :companyable
   has_one :data_provider, as: :provideable
   has_many :web_url, as: :web_urlable
+
   validates_presence_of :name, :active
   acts_as_taggable
 end
