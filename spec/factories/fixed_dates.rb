@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :fixed_date do
     date_start { "2019-05-06" }
