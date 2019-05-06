@@ -11,6 +11,6 @@ class EventRecord < ApplicationRecord
   has_many :media_contents, as: :mediaable
   has_one :repeat_duration
   has_one :highlight, as: :highlightable
-  # TODO: Dates
+  has_many :dates, as: :dateable, class_name: "FixedDate"
   validates_presence_of :title
 end
