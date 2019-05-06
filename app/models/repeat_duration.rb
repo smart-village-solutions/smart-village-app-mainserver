@@ -1,3 +1,17 @@
 class RepeatDuration < ApplicationRecord
     belongs_to :event_record
 end
+
+# == Schema Information
+#
+# Table name: repeat_durations
+#
+#  id              :bigint           not null, primary key
+#  start_date      :date
+#  end_date        :date
+#  every_year      :boolean
+#  updated_at_tmb  :datetime
+#  event_record_id :bigint
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
