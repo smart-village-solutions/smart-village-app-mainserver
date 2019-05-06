@@ -45,10 +45,10 @@ ActiveRecord::Schema.define(version: 2019_05_06_101744) do
 
   create_table "certificates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
-    t.bigint "point_of_interest_id"
+    t.bigint "attraction_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["point_of_interest_id"], name: "index_certificates_on_point_of_interest_id"
+    t.index ["attraction_id"], name: "index_certificates_on_attraction_id"
   end
 
   create_table "contacts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -188,7 +188,7 @@ ActiveRecord::Schema.define(version: 2019_05_06_101744) do
     t.index ["companyable_type", "companyable_id"], name: "index_operating_companies_on_companyable_type_and_companyable_id"
   end
 
-  create_table "point_of_interests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "external_id"
     t.string "name"
     t.string "description"

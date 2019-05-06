@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :point_of_interest do
+  factory :attraction do
     external_id { 1 }
     name { "MyString" }
     description { "MyString" }
@@ -10,7 +10,7 @@ end
 
 # == Schema Information
 #
-# Table name: point_of_interests
+# Table name: attractions
 #
 #  id                 :bigint           not null, primary key
 #  external_id        :integer

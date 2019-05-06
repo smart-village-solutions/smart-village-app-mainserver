@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :operating_company do
     name { "MyString" }
     trait :for_poi do
-      association(:companyable, factory: :point_of_interest, active: true)
+      association(:companyable, factory: :attraction, active: true)
     end
   end
 end
