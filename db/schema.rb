@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2019_05_06_154029) do
     t.string "city"
     t.string "street"
     t.string "zip"
-    t.integer "kind"
+    t.integer "kind", default: 0
     t.string "adressable_type"
     t.bigint "adressable_id"
     t.datetime "created_at", null: false
@@ -226,11 +226,8 @@ ActiveRecord::Schema.define(version: 2019_05_06_154029) do
 
   create_table "regions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
-    t.string "regionable_type"
-    t.bigint "regionable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["regionable_type", "regionable_id"], name: "index_regions_on_regionable_type_and_regionable_id"
   end
 
   create_table "repeat_durations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
