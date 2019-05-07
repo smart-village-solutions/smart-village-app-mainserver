@@ -14,7 +14,6 @@ end
 #  start_date      :date
 #  end_date        :date
 #  every_year      :boolean
-#  updated_at_tmb  :datetime
 #  event_record_id :bigint
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
