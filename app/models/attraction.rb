@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+#
+# Attraction is the superclass for all (touristic) attractions in the smart village.
+#
 class Attraction < ApplicationRecord
   belongs_to :category
   has_many :adresses, as: :adressable
