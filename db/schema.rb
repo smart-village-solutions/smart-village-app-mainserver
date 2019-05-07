@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_06_101744) do
+ActiveRecord::Schema.define(version: 2019_05_06_154029) do
 
   create_table "accessibilty_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
@@ -27,11 +27,27 @@ ActiveRecord::Schema.define(version: 2019_05_06_101744) do
     t.string "city"
     t.string "street"
     t.string "zip"
+    t.integer "kind"
     t.string "adressable_type"
     t.bigint "adressable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["adressable_type", "adressable_id"], name: "index_adresses_on_adressable_type_and_adressable_id"
+  end
+
+  create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "external_id"
+    t.string "name"
+    t.string "description"
+    t.string "mobile_description"
+    t.boolean "active", default: true
+    t.integer "length_km"
+    t.integer "means_of_transportation"
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "type", default: "PointOfInterest", null: false
+    t.index ["category_id"], name: "index_attractions_on_category_id"
   end
 
   create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -132,9 +148,11 @@ ActiveRecord::Schema.define(version: 2019_05_06_101744) do
     t.string "country"
     t.string "locateable_type"
     t.bigint "locateable_id"
+    t.bigint "region_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["locateable_type", "locateable_id"], name: "index_locations_on_locateable_type_and_locateable_id"
+    t.index ["region_id"], name: "index_locations_on_region_id"
   end
 
   create_table "media_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -188,16 +206,6 @@ ActiveRecord::Schema.define(version: 2019_05_06_101744) do
     t.index ["companyable_type", "companyable_id"], name: "index_operating_companies_on_companyable_type_and_companyable_id"
   end
 
-  create_table "point_of_interests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "external_id"
-    t.string "name"
-    t.string "description"
-    t.string "mobile_description"
-    t.boolean "active", default: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "prices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.integer "price"
@@ -214,6 +222,15 @@ ActiveRecord::Schema.define(version: 2019_05_06_101744) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["priceable_type", "priceable_id"], name: "index_prices_on_priceable_type_and_priceable_id"
+  end
+
+  create_table "regions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.string "regionable_type"
+    t.bigint "regionable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["regionable_type", "regionable_id"], name: "index_regions_on_regionable_type_and_regionable_id"
   end
 
   create_table "repeat_durations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

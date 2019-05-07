@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Certificate < ApplicationRecord
-  belongs_to :point_of_interest
+  belongs_to :attraction
 
   validates_presence_of :name
 end

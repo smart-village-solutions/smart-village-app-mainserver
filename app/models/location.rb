@@ -1,5 +1,6 @@
 class Location < ApplicationRecord
     belongs_to :locateable, polymorphic: true
+    belongs_to :region
     has_one :geo_location, as: :geo_locateable
 end
 
