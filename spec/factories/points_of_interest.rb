@@ -1,16 +1,19 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :point_of_interest do
     external_id { 1 }
+    category
     name { "MyString" }
     description { "MyString" }
     mobile_description { "MyString" }
-    active { false }
+    active { true }
   end
 end
 
 # == Schema Information
 #
-# Table name: point_of_interests
+# Table name: attractions
 #
 #  id                 :bigint           not null, primary key
 #  external_id        :integer

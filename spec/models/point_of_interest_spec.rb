@@ -7,18 +7,18 @@ RSpec.describe PointOfInterest, type: :model do
   it { is_expected.to have_many(:contacts) }
   it { is_expected.to have_one(:operating_company) }
   it { is_expected.to have_one(:data_provider) }
-  it { is_expected.to have_many(:prices) }
   it { is_expected.to have_many(:media_contents) }
+  it { is_expected.to have_many(:web_urls) }
   it { is_expected.to have_many(:opening_hours) }
+  it { is_expected.to have_many(:prices) }
   it { is_expected.to have_many(:accessibilty_informations) }
   it { is_expected.to have_many(:certificates) }
-  it { is_expected.to have_one(:web_url) }
   it { is_expected.to validate_presence_of(:name) }
 end
 
 # == Schema Information
 #
-# Table name: point_of_interests
+# Table name: attractions
 #
 #  id                 :bigint           not null, primary key
 #  external_id        :integer

@@ -9,7 +9,7 @@ RSpec.describe Adress, type: :model do
   it { is_expected.to allow_value("Berlin").for(:city) }
   it { is_expected.to allow_value("Musterstraße 123").for(:street) }
   it { is_expected.to allow_value("12051").for(:zip) }
-  it { is_expected.to allow_value("PointOfInterest").for(:adressable_type) }
+  it { is_expected.to allow_value("Attraction").for(:adressable_type) }
   it { is_expected.to allow_value(2).for(:adressable_id) }
 end
 
