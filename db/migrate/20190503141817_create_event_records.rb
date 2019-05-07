@@ -7,7 +7,6 @@ class CreateEventRecords < ActiveRecord::Migration[5.2]
       t.boolean :repeat
       t.string :title
       t.references :category, index: true
-      t.datetime :updated_at_tmb
       t.timestamps
     end
   end

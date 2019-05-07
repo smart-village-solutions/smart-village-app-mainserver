@@ -93,7 +93,6 @@ ActiveRecord::Schema.define(version: 2019_05_06_101744) do
     t.boolean "repeat"
     t.string "title"
     t.bigint "category_id"
-    t.datetime "updated_at_tmb"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_event_records_on_category_id"
@@ -221,7 +220,6 @@ ActiveRecord::Schema.define(version: 2019_05_06_101744) do
     t.date "start_date"
     t.date "end_date"
     t.boolean "every_year"
-    t.datetime "updated_at_tmb"
     t.bigint "event_record_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
