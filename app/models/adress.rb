@@ -4,7 +4,7 @@
 class Adress < ApplicationRecord
   belongs_to :adressable, polymorphic: true
   has_one :geo_location, as: :geo_locateable
-  enum kind: [default: 0, start: 1, end: 2 ]
+  enum kind: [default: 0, start: 1, end: 2]
 end
 
 # == Schema Information
