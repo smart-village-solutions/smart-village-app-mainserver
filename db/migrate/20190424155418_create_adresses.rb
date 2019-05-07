@@ -5,7 +5,7 @@ class CreateAdresses < ActiveRecord::Migration[5.2]
       t.string :city
       t.string :street
       t.string :zip
-      t.integer :kind
+      t.integer :kind, default: 0
       t.references :adressable, polymorphic: true, index: true
       t.timestamps
     end
