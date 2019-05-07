@@ -4,7 +4,6 @@ class CreateRepeatDurations < ActiveRecord::Migration[5.2]
       t.date :start_date
       t.date :end_date
       t.boolean :every_year
-      t.datetime :updated_at_tmb
       t.references :event_record, index: true
       t.timestamps
     end
