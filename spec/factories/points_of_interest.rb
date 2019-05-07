@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
-require "rails_helper"
-
-RSpec.describe Attraction, type: :model do
-  it { is_expected.to have_many(:adresses) }
-  it { is_expected.to have_many(:contacts) }
-  it { is_expected.to have_one(:operating_company) }
-  it { is_expected.to have_one(:data_provider) }
-  it { is_expected.to have_many(:media_contents) }
-  it { is_expected.to have_one(:web_url) }
-  it { is_expected.to validate_presence_of(:name) }
+FactoryBot.define do
+  factory :point_of_interest do
+    external_id { 1 }
+    category
+    name { "MyString" }
+    description { "MyString" }
+    mobile_description { "MyString" }
+    active { true }
+  end
 end
 
 # == Schema Information
