@@ -24,6 +24,7 @@ end
 #  publication_date       :datetime
 #  published_at           :datetime
 #  show_publish_date      :boolean
+#  news_type              :string(255)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
