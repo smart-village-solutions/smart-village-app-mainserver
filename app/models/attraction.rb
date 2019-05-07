@@ -12,7 +12,7 @@ class Attraction < ApplicationRecord
   has_one :data_provider, as: :provideable
   has_many :web_urls, as: :web_urlable
 
-  validates_presence_of :name, :active
+  validates_presence_of :name
   acts_as_taggable
 end
 
