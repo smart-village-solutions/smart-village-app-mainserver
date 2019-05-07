@@ -10,7 +10,7 @@ class Attraction < ApplicationRecord
   has_many :media_contents, as: :mediaable
   has_one :operating_company, as: :companyable
   has_one :data_provider, as: :provideable
-  has_many :web_url, as: :web_urlable
+  has_many :web_urls, as: :web_urlable
 
   validates_presence_of :name, :active
   acts_as_taggable
