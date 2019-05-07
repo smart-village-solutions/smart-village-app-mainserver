@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
-FactoryBot.define do
-  factory :attraction do
-    external_id { 1 }
-    name { "MyString" }
-    description { "MyString" }
-    mobile_description { "MyString" }
-    active { false }
-  end
+require "rails_helper"
+
+RSpec.describe PointOfInterest, type: :model do
+  it { is_expected.to have_many(:adresses) }
+  it { is_expected.to have_many(:contacts) }
+  it { is_expected.to have_one(:operating_company) }
+  it { is_expected.to have_one(:data_provider) }
+  it { is_expected.to have_many(:media_contents) }
+  it { is_expected.to have_many(:web_urls) }
+  it { is_expected.to validate_presence_of(:name) }
 end
 
 # == Schema Information
