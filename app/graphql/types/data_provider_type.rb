@@ -6,7 +6,7 @@ module Types
     field :name, String, null: true
     field :logo, String, null: true
     field :description, String, null: true
-    field :adresses, [AdressType], null: true
+    field :adress, AdressType, null: true
     field :contact, ContactType, null: true
   end
 end
