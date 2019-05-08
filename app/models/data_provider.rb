@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class DataProvider < ApplicationRecord
-    belongs_to :provideable, polymorphic: true
-    has_many :adresses, as: :adressable
-    has_many :contacts, as: :contactable
+  belongs_to :provideable, polymorphic: true
+  has_many :adresses, as: :adressable
+  has_many :contacts, as: :contactable
 end
 
 # == Schema Information
