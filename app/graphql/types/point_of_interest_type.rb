@@ -9,7 +9,19 @@ module Types
     field :active, Boolean, null: true
     field :adresses, [AdressType], null: false
     field :category_id, Integer, null: false
+    field :location, LocationType, null: true
+    field :data_provider, DataProviderType, null: true
+    field :contact, ContactType, null: true
+    field :media_gallery, MediaContentType, null: true
+    field :operating_company, OperatingCompanyType, null: true
+    field :opening_hours, [OpeningHourType], null: true
+    field :prices, [PriceType], null: true
+    field :certificates, [CertificateType], null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
+  end
+
+  def media_gallery
+    PointOfInterest.media_contents
   end
 end
