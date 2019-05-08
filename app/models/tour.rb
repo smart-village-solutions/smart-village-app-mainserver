@@ -9,3 +9,21 @@ class Tour < Attraction
   has_many :regions, as: :regionable
   enum means_of_transportation: { bike: 0, canoe: 1, foot: 2 }
 end
+
+# == Schema Information
+#
+# Table name: attractions
+#
+#  id                      :bigint           not null, primary key
+#  external_id             :integer
+#  name                    :string(255)
+#  description             :string(255)
+#  mobile_description      :string(255)
+#  active                  :boolean          default(TRUE)
+#  length_km               :integer
+#  means_of_transportation :integer
+#  category_id             :bigint
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  type                    :string(255)      default("PointOfInterest"), not null
+#
