@@ -93,7 +93,6 @@ ActiveRecord::Schema.define(version: 2019_05_06_154029) do
 
   create_table "data_providers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
-    t.string "logo"
     t.string "description"
     t.string "provideable_type"
     t.bigint "provideable_id"
@@ -208,7 +207,7 @@ ActiveRecord::Schema.define(version: 2019_05_06_154029) do
 
   create_table "prices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
-    t.integer "price"
+    t.float "price"
     t.boolean "group_price"
     t.integer "age_from"
     t.integer "age_to"
