@@ -9,7 +9,12 @@ class GraphqlController < ApplicationController
       # Query context goes here, for example:
       # current_user: current_user,
     }
-    result = SmartVillageAppMainserverSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    result = SmartVillageAppMainserverSchema.execute(
+      query,
+      variables: variables,
+      context: context,
+      operation_name: operation_name
+    )
     render json: result
   rescue StandardError => error
     raise error unless Rails.env.development?
@@ -41,6 +46,9 @@ class GraphqlController < ApplicationController
       logger.error err.message
       logger.error err.backtrace.join("\n")
 
-      render json: { error: { message: err.message, backtrace: err.backtrace }, data: {} }, status: 500
+      render json: { error: {
+        message: err.message,
+        backtrace: err.backtrace
+      }, data: {} }, status: 500
     end
 end
