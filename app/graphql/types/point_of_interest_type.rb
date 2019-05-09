@@ -18,6 +18,7 @@ module Types
     field :opening_hours, [OpeningHourType], null: true
     field :prices, [PriceType], null: true
     field :certificates, [CertificateType], null: true
+    field :accessibilty_information, AccessibiltyInformationType, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
   end
