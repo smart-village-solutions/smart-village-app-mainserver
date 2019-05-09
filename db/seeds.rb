@@ -74,7 +74,7 @@ def create_operating_company
   op
 end
 
-def create_price(name = Faker::Commerce.product_name, x = 1)
+def create_price(name = Faker::Commerce.product_name, _x = 1)
   prices = []
   prices << Price.create(
     name: name,
@@ -91,43 +91,43 @@ def create_price(name = Faker::Commerce.product_name, x = 1)
 end
 
 def create_opening_hour
-    OpeningHour.create(
-      weekday: Faker::Date.between(2000.days.ago, Date.today).strftime("%A"),
-      date_from: Faker::Date.backward.strftime("%d.%m.%y"),
-      date_to: Faker::Date.forward.strftime("%d.%m.%y"),
-      time_from: Faker::Time.backward.strftime("%H:%M"),
-      time_to: Faker::Time.forward.strftime("%H:%M"),
-      sort_number: Faker::Number.within(1..1_000_000),
-      open: Faker::Boolean.boolean,
-      description: Faker::Lorem.sentence
-    )
+  OpeningHour.create(
+    weekday: Faker::Date.between(2000.days.ago, Date.today).strftime("%A"),
+    date_from: Faker::Date.backward.strftime("%d.%m.%y"),
+    date_to: Faker::Date.forward.strftime("%d.%m.%y"),
+    time_from: Faker::Time.backward.strftime("%H:%M"),
+    time_to: Faker::Time.forward.strftime("%H:%M"),
+    sort_number: Faker::Number.within(1..1_000_000),
+    open: Faker::Boolean.boolean,
+    description: Faker::Lorem.sentence
+  )
 end
 
 def create_location
-    loc = Location.create(
-      name: Faker::Address.city,
-      department: Faker::Address.country,
-      district: Faker::Address.country,
-      region: create_region,
-      state: Faker::Address.state,
-      country: Faker::Address.country
-    )
-    loc.geo_location = create_geo_location
-    loc.save
-    loc
+  loc = Location.create(
+    name: Faker::Address.city,
+    department: Faker::Address.country,
+    district: Faker::Address.country,
+    region: create_region,
+    state: Faker::Address.state,
+    country: Faker::Address.country
+  )
+  loc.geo_location = create_geo_location
+  loc.save
+  loc
 end
 
 def create_media_content
-    media_content = MediaContent.create(
-      caption_text: Faker::Lorem.sentence,
-      copyright: Faker::Name.name,
-      height: Faker::Number.number(3),
-      width: Faker::Number.number(3),
-      content_type: "image"
-    )
-    media_content.source_url = create_web_url
-    media_content.save
-    media_content
+  media_content = MediaContent.create(
+    caption_text: Faker::Lorem.sentence,
+    copyright: Faker::Name.name,
+    height: Faker::Number.number(3),
+    width: Faker::Number.number(3),
+    content_type: "image"
+  )
+  media_content.source_url = create_web_url
+  media_content.save
+  media_content
 end
 
 def create_accessibility_information
@@ -138,6 +138,12 @@ def create_accessibility_information
   ai.urls << create_web_url
   ai.save
   ai
+end
+
+def create_certificate
+  Certificate.create(
+    name: "Qualitätszertifikat deutsche Burgen"
+  )
 end
 
 create_categories
@@ -161,6 +167,7 @@ create_categories
     poi.opening_hours << create_opening_hour
     poi.media_contents << create_media_content
   end
+  poi.certificates << create_certificate
   poi.accessibilty_informations << create_accessibility_information
   poi.location = create_location
   poi.save
