@@ -9,6 +9,7 @@ class Attraction < ApplicationRecord
   has_many :adresses, as: :adressable
   has_one :contact, as: :contactable
   has_many :media_contents, as: :mediaable
+  has_one :accessibilty_information, as: :accessable
   has_one :operating_company, as: :companyable
   has_one :data_provider, as: :provideable
   has_many :web_urls, as: :web_urlable
