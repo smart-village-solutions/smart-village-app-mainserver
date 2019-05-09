@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_06_154029) do
+ActiveRecord::Schema.define(version: 2019_05_09_081955) do
 
   create_table "accessibilty_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
@@ -48,6 +48,13 @@ ActiveRecord::Schema.define(version: 2019_05_06_154029) do
     t.datetime "updated_at", null: false
     t.string "type", default: "PointOfInterest", null: false
     t.index ["category_id"], name: "index_attractions_on_category_id"
+  end
+
+  create_table "attractions_certificates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "attraction_id"
+    t.bigint "certificate_id"
+    t.index ["attraction_id"], name: "index_attractions_certificates_on_attraction_id"
+    t.index ["certificate_id"], name: "index_attractions_certificates_on_certificate_id"
   end
 
   create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

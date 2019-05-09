@@ -5,13 +5,13 @@
 #
 class Attraction < ApplicationRecord
   belongs_to :category
+  has_and_belongs_to_many :certificates, optional: true
   has_many :adresses, as: :adressable
   has_one :contact, as: :contactable
   has_many :media_contents, as: :mediaable
   has_one :operating_company, as: :companyable
   has_one :data_provider, as: :provideable
   has_many :web_urls, as: :web_urlable
-
   validates_presence_of :name
   acts_as_taggable
 end
