@@ -8,10 +8,6 @@ module Types
     field :district, String, null: true
     field :region_id, String, null: true
     field :state, String, null: false
-    field :coordinates, GeoLocationType, null: true
-
-    def coordinates
-      Location.geo_location
-    end
+    field :geo_location, GeoLocationType, null: true
   end
 end
