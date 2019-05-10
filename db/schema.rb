@@ -110,7 +110,7 @@ ActiveRecord::Schema.define(version: 2019_05_09_081955) do
 
   create_table "event_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "parent_id"
-    t.string "region"
+    t.bigint "region_id"
     t.string "description"
     t.boolean "repeat"
     t.string "title"
@@ -118,6 +118,7 @@ ActiveRecord::Schema.define(version: 2019_05_09_081955) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_event_records_on_category_id"
+    t.index ["region_id"], name: "index_event_records_on_region_id"
   end
 
   create_table "fixed_dates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -126,7 +127,7 @@ ActiveRecord::Schema.define(version: 2019_05_09_081955) do
     t.string "weekday"
     t.time "time_start"
     t.time "time_end"
-    t.string "time_Description"
+    t.string "time_description"
     t.boolean "use_only_time_description"
     t.string "dateable_type"
     t.bigint "dateable_id"
