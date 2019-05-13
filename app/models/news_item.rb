@@ -5,7 +5,7 @@
 class NewsItem < ApplicationRecord
   has_many :content_blocks, as: :content_blockable
   has_one :data_provider, as: :provideable
-  has_one :adress, as: :adressable
+  has_one :address, as: :addressable
 end
 
 # == Schema Information
