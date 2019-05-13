@@ -4,6 +4,16 @@
 # Table for all regions which are relevant for the smart village app.
 #
 class Region < ApplicationRecord
-  belongs_to :regionable, polymorphic: true
+  has_many :tours
   has_many :locations
 end
+
+# == Schema Information
+#
+# Table name: regions
+#
+#  id         :bigint           not null, primary key
+#  name       :string(255)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#

@@ -17,6 +17,7 @@ end
 #  city            :string(255)
 #  street          :string(255)
 #  zip             :string(255)
+#  kind            :integer          default("default")
 #  adressable_type :string(255)
 #  adressable_id   :bigint
 #  created_at      :datetime         not null

@@ -2,7 +2,7 @@ class CreatePrices < ActiveRecord::Migration[5.2]
   def change
     create_table :prices do |t|
       t.string :name
-      t.integer :price
+      t.float :price
       t.boolean :group_price
       t.integer :age_from
       t.integer :age_to

@@ -17,6 +17,7 @@ end
 #  country         :string(255)
 #  locateable_type :string(255)
 #  locateable_id   :bigint
+#  region_id       :bigint
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

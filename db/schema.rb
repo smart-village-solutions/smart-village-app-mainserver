@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_06_154029) do
+ActiveRecord::Schema.define(version: 2019_05_09_081955) do
 
   create_table "accessibilty_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2019_05_06_154029) do
     t.string "city"
     t.string "street"
     t.string "zip"
-    t.integer "kind"
+    t.integer "kind", default: 0
     t.string "adressable_type"
     t.bigint "adressable_id"
     t.datetime "created_at", null: false
@@ -48,6 +48,13 @@ ActiveRecord::Schema.define(version: 2019_05_06_154029) do
     t.datetime "updated_at", null: false
     t.string "type", default: "PointOfInterest", null: false
     t.index ["category_id"], name: "index_attractions_on_category_id"
+  end
+
+  create_table "attractions_certificates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "attraction_id"
+    t.bigint "certificate_id"
+    t.index ["attraction_id"], name: "index_attractions_certificates_on_attraction_id"
+    t.index ["certificate_id"], name: "index_attractions_certificates_on_certificate_id"
   end
 
   create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -93,7 +100,6 @@ ActiveRecord::Schema.define(version: 2019_05_06_154029) do
 
   create_table "data_providers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
-    t.string "logo"
     t.string "description"
     t.string "provideable_type"
     t.bigint "provideable_id"
@@ -104,7 +110,7 @@ ActiveRecord::Schema.define(version: 2019_05_06_154029) do
 
   create_table "event_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "parent_id"
-    t.string "region"
+    t.bigint "region_id"
     t.string "description"
     t.boolean "repeat"
     t.string "title"
@@ -112,6 +118,7 @@ ActiveRecord::Schema.define(version: 2019_05_06_154029) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_event_records_on_category_id"
+    t.index ["region_id"], name: "index_event_records_on_region_id"
   end
 
   create_table "fixed_dates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -120,7 +127,7 @@ ActiveRecord::Schema.define(version: 2019_05_06_154029) do
     t.string "weekday"
     t.time "time_start"
     t.time "time_end"
-    t.string "time_Description"
+    t.string "time_description"
     t.boolean "use_only_time_description"
     t.string "dateable_type"
     t.bigint "dateable_id"
@@ -208,7 +215,7 @@ ActiveRecord::Schema.define(version: 2019_05_06_154029) do
 
   create_table "prices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
-    t.integer "price"
+    t.float "price"
     t.boolean "group_price"
     t.integer "age_from"
     t.integer "age_to"
@@ -226,11 +233,8 @@ ActiveRecord::Schema.define(version: 2019_05_06_154029) do
 
   create_table "regions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
-    t.string "regionable_type"
-    t.bigint "regionable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["regionable_type", "regionable_id"], name: "index_regions_on_regionable_type_and_regionable_id"
   end
 
   create_table "repeat_durations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
