@@ -40,7 +40,7 @@ def create_contact
 end
 
 def create_address(kind = 0)
-  address = Adress.create(
+  address = address.create(
     addition: Faker::Lorem.word,
     city: Faker::Address.city,
     street: Faker::Address.street_name,
@@ -59,7 +59,7 @@ def create_data_provider
     logo: create_web_url
   )
   data_provider.contact = create_contact
-  data_provider.adress = create_address
+  data_provider.address = create_address
   data_provider.save
   data_provider
 end
@@ -69,7 +69,7 @@ def create_operating_company
     name: Faker::Company.name
   )
   op.contact = create_contact
-  op.adress = create_address
+  op.address = create_address
   op.save
   op
 end
@@ -169,7 +169,7 @@ create_categories
     active: true,
     category: Category.find(Faker::Number.within(1..3))
   )
-  poi.adresses << create_address
+  poi.addresses << create_address
   poi.contact = create_contact
   poi.data_provider = create_data_provider
   poi.operating_company = create_operating_company
@@ -198,7 +198,7 @@ end
     ),
     category: Category.find(Faker::Number.within(1..3))
   )
-  event.adresses << create_address
+  event.addresses << create_address
   event.contacts << create_contact
   event.data_provider = create_data_provider
   event.organizer = create_operating_company

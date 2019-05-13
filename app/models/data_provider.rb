@@ -2,7 +2,7 @@
 
 class DataProvider < ApplicationRecord
   belongs_to :provideable, polymorphic: true
-  has_one :adress, as: :adressable
+  has_one :address, as: :addressable
   has_one :contact, as: :contactable
   has_one :logo, as: :web_urlable, class_name: "WebUrl"
 end
