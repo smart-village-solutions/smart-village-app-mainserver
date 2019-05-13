@@ -6,6 +6,8 @@ class NewsItem < ApplicationRecord
   has_many :content_blocks, as: :content_blockable
   has_one :data_provider, as: :provideable
   has_one :address, as: :addressable
+  has_one :source_url, as: :web_urlable, class_name: "WebUrl"
+  has_one :address, as: :addressable
 end
 
 # == Schema Information
