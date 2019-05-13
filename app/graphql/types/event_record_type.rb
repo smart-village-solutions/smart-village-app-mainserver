@@ -10,7 +10,7 @@ module Types
     field :repeat, Boolean, null: true
     field :repeat_duration, RepeatDurationType, null: true
     field :category_id, Integer, null: false
-    field :adresses, [AdressType], null: false
+    field :addresses, [AddressType], null: false
     field :location, LocationType, null: true
     field :data_provider, DataProviderType, null: true
     field :contacts, [ContactType], null: true
