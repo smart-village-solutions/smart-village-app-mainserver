@@ -3,7 +3,7 @@
 # This model provides a contact object to every other resource which needs one.
 class Contact < ApplicationRecord
   belongs_to :contactable, polymorphic: true
-  has_one :web_url, as: :web_urlable
+  has_many :web_urls, as: :web_urlable
 
   validates :email, format: {
     with: URI::MailTo::EMAIL_REGEXP,
