@@ -10,7 +10,10 @@ module Types
     field :event_record, EventRecordType, null: false do
       argument :id, ID, required: true
     end
-
+    field :all_news_items, [NewsItemType], null: false
+    field :news_item, NewsItemType, null: false do
+      argument :id, ID, required: true
+    end
 
     def all_points_of_interest
       PointOfInterest.all
@@ -26,6 +29,14 @@ module Types
 
     def event_record(id:)
       EventRecord.find(id)
+    end
+
+    def all_news_items
+      NewsItem.all
+    end
+
+    def news_item(id:)
+      NewsItem.find(id)
     end
   end
 end
