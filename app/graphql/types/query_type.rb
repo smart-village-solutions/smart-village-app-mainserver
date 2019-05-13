@@ -16,7 +16,7 @@ module Types
       PointOfInterest.all
     end
 
-    def poi(id:)
+    def point_of_interest(id:)
       PointOfInterest.find(id)
     end
 
