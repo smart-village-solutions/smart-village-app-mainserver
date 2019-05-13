@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :adress do
+  factory :address do
     addition { "MyString" }
     city { "MyString" }
     street { "MyString" }
@@ -10,7 +10,7 @@ end
 
 # == Schema Information
 #
-# Table name: adresses
+# Table name: addresses
 #
 #  id              :bigint           not null, primary key
 #  addition        :string(255)
@@ -18,8 +18,8 @@ end
 #  street          :string(255)
 #  zip             :string(255)
 #  kind            :integer          default("default")
-#  adressable_type :string(255)
-#  adressable_id   :bigint
+#  addressable_type :string(255)
+#  addressable_id   :bigint
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
