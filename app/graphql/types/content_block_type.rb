@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class NewsItemType < Types::BaseObject
+  class ContentBlockType < Types::BaseObject
     field :id, ID, null: false
     field :title, String, null: true
     field :intro, String, null: true
