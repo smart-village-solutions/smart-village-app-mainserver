@@ -146,6 +146,18 @@ def create_certificate
   )
 end
 
+def create_date
+  FixedDate.create(
+    weekday: Faker::Date.between(2000.days.ago, Date.today).strftime("%A"),
+    date_start: Faker::Date.backward.strftime("%d.%m.%y"),
+    date_end: Faker::Date.forward.strftime("%d.%m.%y"),
+    time_start: Faker::Time.backward.strftime("%H:%M"),
+    time_end: Faker::Time.forward.strftime("%H:%M"),
+    time_description: Faker::Lorem.paragraph,
+    use_only_time_description: Faker::Boolean.boolean(0.8)
+  )
+end
+
 create_categories
 
 10.times do |n|
@@ -170,5 +182,34 @@ create_categories
   poi.certificates << create_certificate
   poi.accessibilty_informations << create_accessibility_information
   poi.location = create_location
+  poi.tag_list.add("schöne Landschaft")
   poi.save
+end
+
+10.times do |n|
+  event = EventRecord.create(
+    title: "Konzert #{n}",
+    description: Faker::Lorem.paragraph,
+    repeat: Faker::Boolean.boolean(0.3),
+    repeat_duration: RepeatDuration.create(
+      start_date: Faker::Date.backward.strftime("%d.%m.%y"),
+      end_date: Faker::Date.forward.strftime("%d.%m.%y"),
+      every_year: Faker::Boolean.boolean(0.3)
+    ),
+    category: Category.find(Faker::Number.within(1..3))
+  )
+  event.adresses << create_address
+  event.contacts << create_contact
+  event.data_provider = create_data_provider
+  event.organizer = create_operating_company
+  event.urls << create_web_url
+  6.times do
+    event.price_informations << create_price
+    event.media_contents << create_media_content
+  end
+  event.dates << create_date
+  event.accessibilty_information = create_accessibility_information
+  event.location = create_location
+  event.tag_list.add("Highlight des Jahres")
+  event.save
 end

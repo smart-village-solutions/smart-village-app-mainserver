@@ -8,5 +8,6 @@ module Types
     field :phone, String, null: true
     field :fax, Boolean, null: true
     field :web_url, WebUrlType, null: true
+    field :email, String, null: true
   end
 end
