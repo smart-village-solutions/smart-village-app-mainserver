@@ -36,6 +36,9 @@ gem "acts-as-taggable-on"
 gem "ancestry", "~> 2.1"
 gem "bootsnap", ">= 1.1.0", require: false
 
+gem "graphiql-rails"
+gem "graphql"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
@@ -48,6 +51,7 @@ group :development, :test do
   gem "rspec-rails"
   # Autorun rspec files on changes
   gem "annotate"
+  gem "faker", git: "https://github.com/stympy/faker.git", branch: "master"
   gem "guard"
   gem "guard-rspec"
   gem "shoulda-matchers"

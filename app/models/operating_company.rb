@@ -2,8 +2,8 @@
 
 class OperatingCompany < ApplicationRecord
   belongs_to :companyable, polymorphic: true
-  has_many :adresses, as: :adressable
-  has_many :contacts, as: :contactable
+  has_one :adress, as: :adressable
+  has_one :contact, as: :contactable
 
   validates_presence_of :name
 end
