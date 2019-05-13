@@ -177,7 +177,6 @@ ActiveRecord::Schema.define(version: 2019_05_09_081955) do
 
   create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "author"
-    t.string "type"
     t.boolean "full_version"
     t.integer "characters_to_be_shown"
     t.datetime "publication_date"
