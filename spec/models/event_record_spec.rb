@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe EventRecord, type: :model do
-  it { is_expected.to have_many(:adresses) }
+  it { is_expected.to have_many(:addresses) }
   it { is_expected.to have_many(:contacts) }
   it { is_expected.to have_one(:organizer) }
   it { is_expected.to have_one(:data_provider) }

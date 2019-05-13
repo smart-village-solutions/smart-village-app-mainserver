@@ -4,8 +4,8 @@ require "rails_helper"
 
 RSpec.describe OperatingCompany, type: :model do
   it { is_expected.to belong_to(:companyable) }
-  it { is_expected.to have_many(:adresses) }
-  it { is_expected.to have_many(:contacts) }
+  it { is_expected.to have_one(:address) }
+  it { is_expected.to have_one(:contact) }
   it { is_expected.to validate_presence_of(:name) }
 end
 
