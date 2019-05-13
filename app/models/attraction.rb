@@ -6,7 +6,7 @@
 class Attraction < ApplicationRecord
   belongs_to :category
   has_and_belongs_to_many :certificates, optional: true
-  has_many :adresses, as: :adressable
+  has_many :addresses, as: :addressable
   has_one :contact, as: :contactable
   has_many :media_contents, as: :mediaable
   has_one :accessibilty_information, as: :accessable

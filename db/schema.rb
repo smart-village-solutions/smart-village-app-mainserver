@@ -22,17 +22,17 @@ ActiveRecord::Schema.define(version: 2019_05_09_081955) do
     t.index ["accessable_type", "accessable_id"], name: "index_access_info_on_accessable_type_and_id"
   end
 
-  create_table "adresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "addition"
     t.string "city"
     t.string "street"
     t.string "zip"
     t.integer "kind", default: 0
-    t.string "adressable_type"
-    t.bigint "adressable_id"
+    t.string "addressable_type"
+    t.bigint "addressable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["adressable_type", "adressable_id"], name: "index_adresses_on_adressable_type_and_adressable_id"
+    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
   end
 
   create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

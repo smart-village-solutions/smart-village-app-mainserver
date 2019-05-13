@@ -6,7 +6,7 @@ class EventRecord < ApplicationRecord
   has_many :urls, as: :web_urlable, class_name: "WebUrl"
   has_one :data_provider, as: :provideable
   has_one :organizer, as: :companyable, class_name: "OperatingCompany"
-  has_many :adresses, as: :adressable
+  has_many :addresses, as: :addressable
   has_one :location, as: :locateable
   has_many :contacts, as: :contactable
   has_one :accessibilty_information, as: :accessable
