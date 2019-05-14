@@ -5,7 +5,7 @@
 #
 class Region < ApplicationRecord
   has_one :event_record
-  has_many :tours
+  has_and_belongs_to_many :tours
   has_many :locations
 end
 
