@@ -4,7 +4,6 @@ class CreateLocations < ActiveRecord::Migration[5.2]
       t.string :name
       t.string :department
       t.string :district
-      t.string :region
       t.string :state
       t.string :country
       t.references :locateable, polymorphic: true, index: true
