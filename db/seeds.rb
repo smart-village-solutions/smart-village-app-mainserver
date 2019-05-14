@@ -209,7 +209,8 @@ end
       end_date: Faker::Date.forward.strftime("%d.%m.%y"),
       every_year: Faker::Boolean.boolean(0.3)
     ),
-    category: Category.find(Faker::Number.within(1..3))
+    category: Category.find(Faker::Number.within(1..3)),
+    region: Region.find(Faker::Number.within(1..10))
   )
   event.addresses << create_address
   event.contacts << create_contact
