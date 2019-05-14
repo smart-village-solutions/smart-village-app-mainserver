@@ -57,6 +57,13 @@ ActiveRecord::Schema.define(version: 2019_05_14_110846) do
     t.index ["certificate_id"], name: "index_attractions_certificates_on_certificate_id"
   end
 
+  create_table "attractions_regions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "region_id"
+    t.bigint "attraction_id"
+    t.index ["attraction_id"], name: "index_attractions_regions_on_attraction_id"
+    t.index ["region_id"], name: "index_attractions_regions_on_region_id"
+  end
+
   create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.integer "tmb_id"
@@ -227,13 +234,6 @@ ActiveRecord::Schema.define(version: 2019_05_14_110846) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["priceable_type", "priceable_id"], name: "index_prices_on_priceable_type_and_priceable_id"
-  end
-
-  create_table "region_tours", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "region_id"
-    t.bigint "tour_id"
-    t.index ["region_id"], name: "index_region_tours_on_region_id"
-    t.index ["tour_id"], name: "index_region_tours_on_tour_id"
   end
 
   create_table "regions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
