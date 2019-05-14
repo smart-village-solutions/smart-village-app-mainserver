@@ -150,7 +150,6 @@ ActiveRecord::Schema.define(version: 2019_05_09_081955) do
     t.string "name"
     t.string "department"
     t.string "district"
-    t.string "region"
     t.string "state"
     t.string "country"
     t.string "locateable_type"
