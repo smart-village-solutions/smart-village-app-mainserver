@@ -4,7 +4,7 @@ module Types
   class NewsItemType < Types::BaseObject
     field :id, ID, null: false
     field :author, String, null: true
-    field :show_publish_datefull_version, Boolean, null: false
+    field :full_version, Boolean, null: false
     field :characters_to_be_shown, String, null: true
     field :publication_date, String, null: true
     field :published_at, String, null: false
