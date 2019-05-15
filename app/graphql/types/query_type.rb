@@ -2,10 +2,8 @@
 
 module Types
   class QueryType < Types::BaseObject
-    field :all_points_of_interest, [PointOfInterestType], null: false do
-      argument :limit, Integer, required: false
-      argument :order, String, required: false
-    end
+    field :points_of_interest, function: Resolvers::PointsOfInterestSearch
+
     field :point_of_interest, PointOfInterestType, null: false do
       argument :id, ID, required: true
     end
@@ -29,10 +27,6 @@ module Types
     end
     field :tour, TourType, null: false do
       argument :id, ID, required: true
-    end
-
-    def all_points_of_interest(limit: nil, order: :id)
-      PointOfInterest.all.limit(limit).order(order)
     end
 
     def point_of_interest(id:)
