@@ -14,8 +14,6 @@ class Resolvers::NewsItemsSearch
     value "createdAt_DESC"
     value "updatedAt_ASC"
     value "updatedAt_DESC"
-    value "name_ASC"
-    value "name_DESC"
     value "id_ASC"
     value "id_DESC"
   end

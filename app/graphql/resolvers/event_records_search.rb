@@ -14,8 +14,8 @@ class Resolvers::EventRecordsSearch
     value "createdAt_DESC"
     value "updatedAt_ASC"
     value "updatedAt_DESC"
-    value "name_ASC"
-    value "name_DESC"
+    value "title_ASC"
+    value "title_DESC"
     value "id_ASC"
     value "id_DESC"
   end
@@ -48,11 +48,11 @@ class Resolvers::EventRecordsSearch
     scope.order("updated_at ASC")
   end
 
-  def apply_order_with_name_desc(scope)
+  def apply_order_with_title_desc(scope)
     scope.order("name DESC")
   end
 
-  def apply_order_with_name_asc(scope)
+  def apply_order_with_title_asc(scope)
     scope.order("name ASC")
   end
 
