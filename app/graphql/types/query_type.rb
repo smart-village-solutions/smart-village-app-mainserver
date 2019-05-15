@@ -12,13 +12,11 @@ module Types
       argument :id, ID, required: true
     end
 
-    field :news_items, [NewsItemType], null: false do
-      argument :limit, Integer, required: false
-      argument :order, String, required: false
-    end
+    field :news_items, function: Resolvers::NewsItemsSearch
     field :news_item, NewsItemType, null: false do
       argument :id, ID, required: true
     end
+
     field :tours, [TourType], null: false do
       argument :limit, Integer, required: false
       argument :order, String, required: false
