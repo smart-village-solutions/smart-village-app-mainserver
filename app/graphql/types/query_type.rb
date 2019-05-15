@@ -29,16 +29,8 @@ module Types
       PointOfInterest.find(id)
     end
 
-    def all_event_records(limit: nil, order: :id)
-      EventRecord.all.limit(limit).order(order)
-    end
-
     def event_record(id:)
       EventRecord.find(id)
-    end
-
-    def all_news_items(limit: nil, order: :id)
-      NewsItem.all.limit(limit).order(order)
     end
 
     def news_item(id:)
