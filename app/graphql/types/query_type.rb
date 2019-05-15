@@ -23,6 +23,13 @@ module Types
     field :news_item, NewsItemType, null: false do
       argument :id, ID, required: true
     end
+    field :tours, [TourType], null: false do
+      argument :limit, Integer, required: false
+      argument :order, String, required: false
+    end
+    field :tour, TourType, null: false do
+      argument :id, ID, required: true
+    end
 
     def all_points_of_interest(limit: nil, order: :id)
       PointOfInterest.all.limit(limit).order(order)
@@ -46,6 +53,14 @@ module Types
 
     def news_item(id:)
       NewsItem.find(id)
+    end
+
+    def tours(limit: nil, order: :id)
+      Tour.all.limit(limit).order(order)
+    end
+
+    def tour(id:)
+      Tour.find(id)
     end
   end
 end
