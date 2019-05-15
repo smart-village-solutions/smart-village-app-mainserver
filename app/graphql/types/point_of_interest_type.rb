@@ -22,8 +22,4 @@ module Types
     field :updated_at, String, null: true
     field :created_at, String, null: true
   end
-
-  def media_gallery
-    PointOfInterest.media_contents
-  end
 end
