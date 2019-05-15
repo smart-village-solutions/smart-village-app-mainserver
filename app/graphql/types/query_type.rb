@@ -3,18 +3,16 @@
 module Types
   class QueryType < Types::BaseObject
     field :points_of_interest, function: Resolvers::PointsOfInterestSearch
-
     field :point_of_interest, PointOfInterestType, null: false do
       argument :id, ID, required: true
     end
-    field :all_event_records, [EventRecordType], null: false do
-      argument :limit, Integer, required: false
-      argument :order, String, required: false
-    end
+
+    field :event_records, function: Resolvers::EventRecordsSearch
     field :event_record, EventRecordType, null: false do
       argument :id, ID, required: true
     end
-    field :all_news_items, [NewsItemType], null: false do
+
+    field :news_items, [NewsItemType], null: false do
       argument :limit, Integer, required: false
       argument :order, String, required: false
     end
