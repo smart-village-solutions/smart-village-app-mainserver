@@ -40,7 +40,7 @@ def create_contact
 end
 
 def create_address(kind = 0)
-  address = address.create(
+  address = Address.create(
     addition: Faker::Lorem.word,
     city: Faker::Address.city,
     street: Faker::Address.street_name,
@@ -158,6 +158,19 @@ def create_date
   )
 end
 
+def create_content_block
+  content_block = ContentBlock.create(
+    title: Faker::Lorem.word,
+    intro: Faker::Lorem.sentence,
+    body: Faker::Lorem.paragraph
+  )
+  5.times do
+    content_block.media_contents << create_media_content
+    content_block.save
+  end
+  content_block
+end
+
 create_categories
 
 10.times do |n|
@@ -196,7 +209,8 @@ end
       end_date: Faker::Date.forward.strftime("%d.%m.%y"),
       every_year: Faker::Boolean.boolean(0.3)
     ),
-    category: Category.find(Faker::Number.within(1..3))
+    category: Category.find(Faker::Number.within(1..3)),
+    region: Region.find(Faker::Number.within(1..10))
   )
   event.addresses << create_address
   event.contacts << create_contact
@@ -212,4 +226,23 @@ end
   event.location = create_location
   event.tag_list.add("Highlight des Jahres")
   event.save
+end
+
+10.times do
+  news_item = NewsItem.create(
+    author: Faker::Name.name,
+    full_version: true,
+    characters_to_be_shown: false,
+    publication_date: "",
+    published_at: Faker::Date.backward.strftime("%d.%m.%y"),
+    show_publish_date: Faker::Boolean.boolean,
+    news_type: "News article or story"
+  )
+  news_item.address = create_address
+  news_item.data_provider = create_data_provider
+  news_item.source_url = create_web_url
+  5.times do
+    news_item.content_blocks << create_content_block
+  end
+  news_item.save
 end
