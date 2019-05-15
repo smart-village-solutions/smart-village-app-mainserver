@@ -3,6 +3,7 @@
 # this model describes the data for an event e.g. a concert or a reading.
 class EventRecord < ApplicationRecord
   belongs_to :category
+  belongs_to :region
   has_many :urls, as: :web_urlable, class_name: "WebUrl"
   has_one :data_provider, as: :provideable
   has_one :organizer, as: :companyable, class_name: "OperatingCompany"

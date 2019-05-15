@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_09_081955) do
+ActiveRecord::Schema.define(version: 2019_05_14_110846) do
 
   create_table "accessibilty_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
@@ -55,6 +55,13 @@ ActiveRecord::Schema.define(version: 2019_05_09_081955) do
     t.bigint "certificate_id"
     t.index ["attraction_id"], name: "index_attractions_certificates_on_attraction_id"
     t.index ["certificate_id"], name: "index_attractions_certificates_on_certificate_id"
+  end
+
+  create_table "attractions_regions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "region_id"
+    t.bigint "attraction_id"
+    t.index ["attraction_id"], name: "index_attractions_regions_on_attraction_id"
+    t.index ["region_id"], name: "index_attractions_regions_on_region_id"
   end
 
   create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -150,7 +157,6 @@ ActiveRecord::Schema.define(version: 2019_05_09_081955) do
     t.string "name"
     t.string "department"
     t.string "district"
-    t.string "region"
     t.string "state"
     t.string "country"
     t.string "locateable_type"
@@ -177,7 +183,6 @@ ActiveRecord::Schema.define(version: 2019_05_09_081955) do
 
   create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "author"
-    t.string "type"
     t.boolean "full_version"
     t.integer "characters_to_be_shown"
     t.datetime "publication_date"
