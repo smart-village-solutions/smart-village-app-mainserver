@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "search_object/plugin/graphql"
+require 'graphql/query_resolver'
 
 class Resolvers::NewsItemsSearch
   include SearchObject.module(:graphql)
@@ -66,14 +67,14 @@ class Resolvers::NewsItemsSearch
     scope.order("id ASC")
   end
 
-  # TODO: Install and Implementb GrapQl Query Resolver to minimize N+1 SELECTS issued by ActiveRecord:
   # https://github.com/nettofarah/graphql-query-resolver
-  # def fetch_results
-  #   # NOTE: Don't run QueryResolver during tests
-  #   return super unless context.present?
 
-  #   GraphQL::QueryResolver.run(NewsItem, context, Types::NewsItemType) do
-  #     super
-  #   end
-  # end
+  def fetch_results
+    # NOTE: Don't run QueryResolver during tests
+    return super unless context.present?
+
+    GraphQL::QueryResolver.run(NewsItem, context, Types::NewsItemType) do
+      super
+    end
+  end
 end
