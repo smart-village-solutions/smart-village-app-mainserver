@@ -38,9 +38,10 @@ gem "bootsnap", ">= 1.1.0", require: false
 
 gem "graphiql-rails"
 gem "graphql"
+gem "graphql-query-resolver"
 
-gem 'search_object'
-gem 'search_object_graphql'
+gem "search_object"
+gem "search_object_graphql"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
