@@ -7,7 +7,7 @@ module Types
     field :last_name, String, null: true
     field :phone, String, null: true
     field :fax, Boolean, null: true
-    field :web_url, [WebUrlType], null: true
+    field :web_urls, [WebUrlType], null: true
     field :email, String, null: true
   end
 end

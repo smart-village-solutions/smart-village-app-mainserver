@@ -6,8 +6,8 @@ module Types
     field :name, String, null: false
     field :description, String, null: true
     field :mobile_description, String, null: true
-    field :active, Boolean, null: true
     field :addresses, [AddressType], null: false
+    field :active, Boolean, null: true
     field :category_id, Integer, null: false
     field :location, LocationType, null: true
     field :data_provider, DataProviderType, null: true

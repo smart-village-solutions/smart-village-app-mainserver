@@ -16,6 +16,8 @@ class Attraction < ApplicationRecord
   has_many :web_urls, as: :web_urlable
   validates_presence_of :name
   acts_as_taggable
+
+  accepts_nested_attributes_for :addresses, :contact, :media_contents
 end
 
 # == Schema Information
