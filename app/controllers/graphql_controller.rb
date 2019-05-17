@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class GraphqlController < ApplicationController
+  # TODO: to activate access control by doorkeeper, uncomment next lin
+  # before_action :doorkeeper_authorize!
+
   def execute
     variables = ensure_hash(params[:variables])
     query = params[:query]
