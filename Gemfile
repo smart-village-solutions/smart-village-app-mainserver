@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.6.2"
+ruby "2.6.3"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 5.2.3"
@@ -31,9 +31,13 @@ gem "jbuilder", "~> 2.5"
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# Reduces boot times through caching; required in config/boot.rb
+
 gem "acts-as-taggable-on"
 gem "ancestry", "~> 2.1"
+gem "devise"
+gem "doorkeeper"
+
+# Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.1.0", require: false
 
 gem "graphiql-rails"
@@ -49,6 +53,7 @@ group :development, :test do
   gem "linter", git: "https://github.com/ikuseiGmbH/linters.git", tag: "rubocop-0.63.1"
   gem "rails-controller-testing"
   gem "rspec-rails"
+  gem "rb-readline"
   # Autorun rspec files on changes
   gem "annotate"
   gem "faker", git: "https://github.com/stympy/faker.git", branch: "master"
