@@ -220,7 +220,7 @@ ActiveRecord::Schema.define(version: 2019_05_14_110846) do
 
   create_table "prices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
-    t.float "price"
+    t.float "amount"
     t.boolean "group_price"
     t.integer "age_from"
     t.integer "age_to"
@@ -229,6 +229,7 @@ ActiveRecord::Schema.define(version: 2019_05_14_110846) do
     t.integer "min_children_count"
     t.integer "max_children_count"
     t.string "description"
+    t.string "category"
     t.string "priceable_type"
     t.bigint "priceable_id"
     t.datetime "created_at", null: false

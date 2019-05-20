@@ -2,11 +2,11 @@
 
 module Types
   class ContactInput < BaseInputObject
-    argument :first_name, String, required: true
-    argument :last_name, String, required: true
-    argument :phone, String, required: true
-    argument :fax, String, required: true
-    argument :web_urls, [Types::WebUrlInput], required: true, as: :web_urls_attributes, prepare: ->(web_urls, ctx) { web_urls.map(&:to_h) }
-    argument :email, String, required: true
+    argument :first_name, String, required: false
+    argument :last_name, String, required: false
+    argument :phone, String, required: false
+    argument :fax, String, required: false
+    argument :web_urls, [Types::WebUrlInput], required: false, as: :web_urls_attributes, prepare: ->(web_urls, ctx) { web_urls.map(&:to_h) }
+    argument :email, String, required: false
   end
 end

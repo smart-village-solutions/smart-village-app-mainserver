@@ -78,7 +78,7 @@ def create_price(name = Faker::Commerce.product_name, _x = 1)
   prices = []
   prices << Price.create(
     name: name,
-    price: Faker::Commerce.price(range = 0..20.0),
+    amount: Faker::Commerce.price(range = 0..20.0),
     group_price: Faker::Boolean.boolean(0.2),
     age_from: Faker::Number.within(2..5),
     age_to: Faker::Number.within(10..18),

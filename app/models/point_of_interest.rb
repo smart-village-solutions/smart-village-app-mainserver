@@ -7,8 +7,10 @@
 class PointOfInterest < Attraction
   has_many :opening_hours, as: :openingable
   has_many :prices, as: :priceable
-  has_many :accessibilty_informations, as: :accessable
+
   has_one :location, as: :locateable
+
+  accepts_nested_attributes_for :prices, :opening_hours, :location
 end
 
 # == Schema Information

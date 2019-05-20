@@ -6,7 +6,7 @@ module Types
     field :name, String, null: true
     field :department, String, null: true
     field :district, String, null: true
-    field :region_id, String, null: true
+    field :region_id, Integer, null: true
     field :state, String, null: false
     field :geo_location, GeoLocationType, null: true
   end

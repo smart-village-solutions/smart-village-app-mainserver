@@ -14,10 +14,11 @@ class Attraction < ApplicationRecord
   has_one :operating_company, as: :companyable
   has_one :data_provider, as: :provideable
   has_many :web_urls, as: :web_urlable
+
   validates_presence_of :name
   acts_as_taggable
 
-  accepts_nested_attributes_for :addresses, :contact, :media_contents
+  accepts_nested_attributes_for :addresses, :contact, :media_contents, :accessibilty_information, :operating_company, :data_provider, :web_urls, :certificates, :regions
 end
 
 # == Schema Information
