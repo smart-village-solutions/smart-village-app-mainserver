@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class WebUrlInput < BaseInputObject
     argument :url, String, required: false

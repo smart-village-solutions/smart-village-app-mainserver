@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AccessibilityInformation < ApplicationRecord
   belongs_to :accessable, polymorphic: true
   has_many :urls, as: :web_urlable, class_name: "WebUrl"

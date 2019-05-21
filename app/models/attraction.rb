@@ -18,7 +18,10 @@ class Attraction < ApplicationRecord
   validates_presence_of :name
   acts_as_taggable
 
-  accepts_nested_attributes_for :addresses, :contact, :media_contents, :accessibility_information, :operating_company, :data_provider, :web_urls, :certificates, :regions
+  accepts_nested_attributes_for :addresses, :contact, :media_contents,
+                                :accessibility_information, :operating_company,
+                                :data_provider, :web_urls, :certificates,
+                                :regions
 end
 
 # == Schema Information
