@@ -3,7 +3,6 @@
 require "rails_helper"
 
 RSpec.describe Mutations::CreatePointOfInterest do
-
   def perform(**args)
     Mutations::CreatePointOfInterest.new(object: nil, context: {}).resolve(args)
   end
