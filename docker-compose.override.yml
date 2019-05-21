@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+
+  nginx:
+    # image: communicatio/typo3-httpd
+    labels:
+      - traefik.frontend.rule=Host:localhost
+
+  reverse-proxy:
+    image: traefik
+    command: --api --docker
+    ports:
+      - 3000:80
+      - 8081:8080
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # - ./config/traefik.toml:/traefik.toml
+
+  db:
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d:ro

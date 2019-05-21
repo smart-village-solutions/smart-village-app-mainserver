@@ -73,6 +73,7 @@ GEM
       rake (>= 10.4, < 13.0)
     arel (9.0.0)
     ast (2.4.0)
+    bcrypt (3.1.12)
     bindex (0.7.0)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
@@ -84,8 +85,16 @@ GEM
     concurrent-ruby (1.1.5)
     crass (1.0.4)
     database_cleaner (1.7.0)
+    devise (4.6.2)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0, < 6.0)
+      responders
+      warden (~> 1.2.3)
     diff-lcs (1.3)
     docile (1.3.1)
+    doorkeeper (5.1.0)
+      railties (>= 5)
     equatable (0.5.0)
     erubi (1.8.0)
     execjs (2.7.0)
@@ -150,6 +159,7 @@ GEM
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    orm_adapter (0.5.0)
     parallel (1.17.0)
     parser (2.6.3.0)
       ast (~> 2.4.0)
@@ -197,6 +207,10 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
+    rb-readline (0.5.5)
+    responders (2.4.1)
+      actionpack (>= 4.2.0, < 6.0)
+      railties (>= 4.2.0, < 6.0)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
@@ -287,6 +301,8 @@ GEM
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.4.1)
     unicode_utils (1.4.0)
+    warden (1.2.8)
+      rack (>= 2.0.6)
     web-console (3.7.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -307,6 +323,8 @@ DEPENDENCIES
   byebug
   codeclimate-test-reporter
   database_cleaner
+  devise
+  doorkeeper
   factory_bot
   factory_bot_rails
   faker!
@@ -322,6 +340,7 @@ DEPENDENCIES
   puma (~> 3.11)
   rails (~> 5.2.3)
   rails-controller-testing
+  rb-readline
   rspec-rails
   sass-rails (~> 5.0)
   search_object
@@ -335,7 +354,7 @@ DEPENDENCIES
   web-console (>= 3.3.0)
 
 RUBY VERSION
-   ruby 2.6.2p47
+   ruby 2.6.3p62
 
 BUNDLED WITH
    2.0.1

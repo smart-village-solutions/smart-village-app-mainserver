@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.6.2"
+ruby "2.6.3"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 5.2.3"
@@ -31,9 +31,12 @@ gem "jbuilder", "~> 2.5"
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# Reduces boot times through caching; required in config/boot.rb
 gem "acts-as-taggable-on"
 gem "ancestry", "~> 2.1"
+gem "devise"
+gem "doorkeeper"
+
+# Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.1.0", require: false
 
 gem "graphiql-rails"
@@ -42,16 +45,18 @@ gem "graphql-query-resolver"
 
 gem "search_object"
 gem "search_object_graphql"
+gem "unicorn"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "codeclimate-test-reporter"
   gem "database_cleaner"
-  gem "factory_bot"
   gem "factory_bot_rails"
+  gem "factory_bot"
   gem "linter", git: "https://github.com/ikuseiGmbH/linters.git", tag: "rubocop-0.63.1"
   gem "rails-controller-testing"
+  gem "rb-readline"
   gem "rspec-rails"
   # Autorun rspec files on changes
   gem "annotate"

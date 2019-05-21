@@ -8,6 +8,15 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+user = User.create(
+  email: "admin@smart-village.app",
+  password: "kBzWAvNCWqn2rJxG",
+  password_confirmation: "kBzWAvNCWqn2rJxG"
+)
+doorkeeper_app = Doorkeeper::Application.new :name => 'XML-Importer', :redirect_uri => 'http://localhost:3000/oauth/confirm_access'
+doorkeeper_app.owner = user
+doorkeeper_app.save
+
 def create_web_url
   WebUrl.create(url: Faker::Internet.url, description: Faker::Lorem.sentence)
 end

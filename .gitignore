@@ -39,3 +39,4 @@ db/.DS_Store
 
 #scratch
 active_record_cheat_sheet.md
+/db/githook_dumps
