@@ -49,11 +49,11 @@ class Resolvers::EventRecordsSearch
   end
 
   def apply_order_with_title_desc(scope)
-    scope.order("name DESC")
+    scope.order("title DESC")
   end
 
   def apply_order_with_title_asc(scope)
-    scope.order("name ASC")
+    scope.order("title ASC")
   end
 
   def apply_order_with_id_desc(scope)
