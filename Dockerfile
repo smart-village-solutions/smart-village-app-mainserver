@@ -1,7 +1,6 @@
 FROM ruby:2.6.3-stretch
 
-COPY docker/known_hosts /root/.ssh/
-COPY docker/key /root/.ssh/id_ed25519
+# COPY docker/known_hosts /root/.ssh/
 RUN chmod 600 /root/.ssh/*
 
 # RUN nix-channel --update \
