@@ -1,0 +1,15 @@
+FROM nixos/nix:2.2.1
+
+RUN nix-channel --update \
+ && nix-env -f '<nixpkgs>' -i -A bundix -A nodejs-10_x
+
+WORKDIR /app
+
+COPY Gemfile Gemfile.lock default.nix /app/
+RUN bundix -l
+RUN nix-env -f default.nix -i
+
+RUN nix-collect-garbage -d
+
+RUN rm -rf /app
+WORKDIR /
