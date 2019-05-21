@@ -2,9 +2,10 @@
 
 module Types
   class PriceType < Types::BaseObject
-    field :id, ID, null: false
+    field :id, ID, null: true
     field :name, String, null: true
-    field :price, Integer, null: true
+    field :category, String, null: true
+    field :amount, Float, null: true
     field :group_price, Boolean, null: true
     field :age_from, Integer, null: true
     field :age_to, Integer, null: true

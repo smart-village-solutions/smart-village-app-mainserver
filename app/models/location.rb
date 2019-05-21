@@ -2,6 +2,8 @@ class Location < ApplicationRecord
     belongs_to :locateable, polymorphic: true
     belongs_to :region
     has_one :geo_location, as: :geo_locateable
+
+    accepts_nested_attributes_for :geo_location
 end
 
 # == Schema Information

@@ -41,6 +41,10 @@ gem "bootsnap", ">= 1.1.0", require: false
 
 gem "graphiql-rails"
 gem "graphql"
+gem "graphql-query-resolver"
+
+gem "search_object"
+gem "search_object_graphql"
 gem "unicorn"
 
 group :development, :test do

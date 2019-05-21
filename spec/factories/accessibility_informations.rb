@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
-  factory :accessibilty_information do
+  factory :accessibility_information do
     description { "MyString" }
     types { "MyString" }
     web_url { nil }
@@ -8,7 +10,7 @@ end
 
 # == Schema Information
 #
-# Table name: accessibilty_informations
+# Table name: accessibility_informations
 #
 #  id              :bigint           not null, primary key
 #  description     :string(255)

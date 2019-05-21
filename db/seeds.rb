@@ -87,7 +87,7 @@ def create_price(name = Faker::Commerce.product_name, _x = 1)
   prices = []
   prices << Price.create(
     name: name,
-    price: Faker::Commerce.price(range = 0..20.0),
+    amount: Faker::Commerce.price(range = 0..20.0),
     group_price: Faker::Boolean.boolean(0.2),
     age_from: Faker::Number.within(2..5),
     age_to: Faker::Number.within(10..18),
@@ -140,7 +140,7 @@ def create_media_content
 end
 
 def create_accessibility_information
-  ai = AccessibiltyInformation.create(
+  ai = AccessibilityInformation.create(
     description: Faker::Lorem.sentence,
     types: Faker::Lorem.word
   )
@@ -202,7 +202,7 @@ create_categories
     poi.media_contents << create_media_content
   end
   poi.certificates << create_certificate
-  poi.accessibilty_informations << create_accessibility_information
+  poi.accessibility_information = create_accessibility_information
   poi.location = create_location
   poi.tag_list.add("schöne Landschaft #{n}")
   poi.save
@@ -228,7 +228,7 @@ end
     tour.regions << create_region
   end
   tour.certificates << create_certificate
-  tour.accessibilty_information = create_accessibility_information
+  tour.accessibility_information = create_accessibility_information
   tour.tag_list.add("schöne Wege #{n}")
   tour.save
 end
@@ -256,7 +256,7 @@ end
     event.media_contents << create_media_content
   end
   event.dates << create_date
-  event.accessibilty_information = create_accessibility_information
+  event.accessibility_information = create_accessibility_information
   event.location = create_location
   event.tag_list.add("Highlight des Jahres")
   event.save

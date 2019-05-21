@@ -5,6 +5,7 @@ class OperatingCompany < ApplicationRecord
   has_one :address, as: :addressable
   has_one :contact, as: :contactable
 
+  accepts_nested_attributes_for :contact, :address
   validates_presence_of :name
 end
 

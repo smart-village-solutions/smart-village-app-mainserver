@@ -1,11 +1,15 @@
-class AccessibiltyInformation < ApplicationRecord
+# frozen_string_literal: true
+
+class AccessibilityInformation < ApplicationRecord
   belongs_to :accessable, polymorphic: true
   has_many :urls, as: :web_urlable, class_name: "WebUrl"
+
+  accepts_nested_attributes_for :urls
 end
 
 # == Schema Information
 #
-# Table name: accessibilty_informations
+# Table name: accessibility_informations
 #
 #  id              :bigint           not null, primary key
 #  description     :string(255)
