@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Oauth::ApplicationsController < Doorkeeper::ApplicationsController
   before_action :authenticate_user!
 
@@ -10,7 +12,7 @@ class Oauth::ApplicationsController < Doorkeeper::ApplicationsController
     @application = Doorkeeper::Application.new(application_params)
     @application.owner = current_user if Doorkeeper.configuration.confirm_application_owner?
     if @application.save
-      flash[:notice] = I18n.t(:notice, :scope => [:doorkeeper, :flash, :applications, :create])
+      flash[:notice] = I18n.t(:notice, scope: [:doorkeeper, :flash, :applications, :create])
       redirect_to oauth_application_url(@application)
     else
       render :new
@@ -19,8 +21,8 @@ class Oauth::ApplicationsController < Doorkeeper::ApplicationsController
 
   private
 
-  def set_application
-    @application = current_user.oauth_applications.find(params[:id])
-  end
+    def set_application
+      @application = current_user.oauth_applications.find(params[:id])
+    end
 
 end

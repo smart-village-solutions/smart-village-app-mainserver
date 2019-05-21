@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :trackable, :omniauthable and :rememberable
@@ -18,7 +20,7 @@ class User < ApplicationRecord
            as: :owner
 
   def admin?
-    # TODO Dies muss eine Rechte- und Rollenverwaltung übernehmen
+    # TODO: Dies muss eine Rechte- und Rollenverwaltung übernehmen
     true
   end
 end

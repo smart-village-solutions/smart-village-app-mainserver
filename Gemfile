@@ -31,7 +31,6 @@ gem "jbuilder", "~> 2.5"
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-
 gem "acts-as-taggable-on"
 gem "ancestry", "~> 2.1"
 gem "devise"
@@ -49,12 +48,12 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "codeclimate-test-reporter"
   gem "database_cleaner"
-  gem "factory_bot"
   gem "factory_bot_rails"
+  gem "factory_bot"
   gem "linter", git: "https://github.com/ikuseiGmbH/linters.git", tag: "rubocop-0.63.1"
   gem "rails-controller-testing"
-  gem "rspec-rails"
   gem "rb-readline"
+  gem "rspec-rails"
   # Autorun rspec files on changes
   gem "annotate"
   gem "faker", git: "https://github.com/stympy/faker.git", branch: "master"
