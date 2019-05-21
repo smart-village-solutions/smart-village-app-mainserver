@@ -10,7 +10,7 @@ class Attraction < ApplicationRecord
   has_many :addresses, as: :addressable
   has_one :contact, as: :contactable
   has_many :media_contents, as: :mediaable
-  has_one :accessibilty_information, as: :accessable
+  has_one :accessibility_information, as: :accessable
   has_one :operating_company, as: :companyable
   has_one :data_provider, as: :provideable
   has_many :web_urls, as: :web_urlable
@@ -18,7 +18,7 @@ class Attraction < ApplicationRecord
   validates_presence_of :name
   acts_as_taggable
 
-  accepts_nested_attributes_for :addresses, :contact, :media_contents, :accessibilty_information, :operating_company, :data_provider, :web_urls, :certificates, :regions
+  accepts_nested_attributes_for :addresses, :contact, :media_contents, :accessibility_information, :operating_company, :data_provider, :web_urls, :certificates, :regions
 end
 
 # == Schema Information

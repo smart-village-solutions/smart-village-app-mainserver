@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2019_05_14_110846) do
 
-  create_table "accessibilty_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
     t.string "types"
     t.string "accessable_type"

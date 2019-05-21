@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe AccessibiltyInformation, type: :model do
+RSpec.describe AccessibilityInformation, type: :model do
   it { is_expected.to belong_to(:accessable) }
 end
 
 # == Schema Information
 #
-# Table name: accessibilty_informations
+# Table name: accessibility_informations
 #
 #  id              :bigint           not null, primary key
 #  description     :string(255)

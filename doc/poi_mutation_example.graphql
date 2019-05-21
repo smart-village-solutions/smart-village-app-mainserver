@@ -8,7 +8,7 @@ mutation {
 			{ url: "http://www.hoher-flaeming-naturpark.de", description: "Naturpark Hoher Fläming" }
 			{ url: "http://www.naturwacht.de", description: "Naturwacht Brandenburg" }
 		]
-		accessibiltyInformation: {
+		accessibilityInformation: {
 			description: "bla"
 			types: "Tops"
 			urls: [{ url: "http://www.hoher-flaeming-naturpark.de", description: "eewrgr" }]
@@ -139,7 +139,7 @@ mutation {
 		name
 		description
 		mobileDescription
-		accessibiltyInformation {
+		accessibilityInformation {
 			types
 			urls {
 				url

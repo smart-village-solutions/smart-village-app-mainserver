@@ -17,7 +17,7 @@ module Mutations
     argument :media_contents, [Types::MediaContentInput], required: false, as: :media_contents_attributes, prepare: ->(media_contents, _ctx) { media_contents.map(&:to_h) }
     argument :location, Types::LocationInput, required: false, as: :location_attributes, prepare: ->(location, _ctx) { location.to_h }
     argument :certificates, [Types::CertificateInput], required: false, as: :certificates_attributes, prepare: ->(certificates, _ctx) { certificates.map(&:to_h) }
-    argument :accessibilty_information, Types::AccessibilityInformationInput, required: false, as: :accessibilty_information_attributes, prepare: ->(accessibilty_information, _ctx) { accessibilty_information.to_h }
+    argument :accessibility_information, Types::AccessibilityInformationInput, required: false, as: :accessibility_information_attributes, prepare: ->(accessibility_information, _ctx) { accessibility_information.to_h }
     argument :tags, String, as: :tag_list, required: false
 
     field :point_of_interest, Types::PointOfInterestType, null: false
