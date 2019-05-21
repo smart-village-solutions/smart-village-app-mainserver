@@ -10,7 +10,7 @@ class EventRecord < ApplicationRecord
   has_many :addresses, as: :addressable
   has_one :location, as: :locateable
   has_many :contacts, as: :contactable
-  has_one :accessibilty_information, as: :accessable
+  has_one :accessibility_information, as: :accessable
   has_many :price_informations, as: :priceable, class_name: "Price"
   has_many :media_contents, as: :mediaable
   has_one :repeat_duration

@@ -1,14 +1,12 @@
-FactoryBot.define do
-  factory :accessibilty_information do
-    description { "MyString" }
-    types { "MyString" }
-    web_url { nil }
-  end
+require 'rails_helper'
+
+RSpec.describe AccessibilityInformation, type: :model do
+  it { is_expected.to belong_to(:accessable) }
 end
 
 # == Schema Information
 #
-# Table name: accessibilty_informations
+# Table name: accessibility_informations
 #
 #  id              :bigint           not null, primary key
 #  description     :string(255)

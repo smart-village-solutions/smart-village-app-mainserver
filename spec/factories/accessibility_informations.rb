@@ -1,11 +1,14 @@
-class AccessibiltyInformation < ApplicationRecord
-  belongs_to :accessable, polymorphic: true
-  has_many :urls, as: :web_urlable, class_name: "WebUrl"
+FactoryBot.define do
+  factory :accessibility_information do
+    description { "MyString" }
+    types { "MyString" }
+    web_url { nil }
+  end
 end
 
 # == Schema Information
 #
-# Table name: accessibilty_informations
+# Table name: accessibility_informations
 #
 #  id              :bigint           not null, primary key
 #  description     :string(255)

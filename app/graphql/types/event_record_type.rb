@@ -18,7 +18,7 @@ module Types
     field :media_contents, [MediaContentType], null: true
     field :organizer, OperatingCompanyType, null: true
     field :price_informations, [PriceType], null: true
-    field :accessibilty_information, AccessibiltyInformationType, null: true
+    field :accessibility_information, AccessibilityInformationType, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
   end

@@ -4,7 +4,7 @@
 class Contact < ApplicationRecord
   belongs_to :contactable, polymorphic: true
   has_many :web_urls, as: :web_urlable
-
+  accepts_nested_attributes_for :web_urls
   validates :email, format: {
     with: URI::MailTo::EMAIL_REGEXP,
     message: "Only valid emails allowed"

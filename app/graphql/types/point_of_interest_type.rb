@@ -6,8 +6,8 @@ module Types
     field :name, String, null: false
     field :description, String, null: true
     field :mobile_description, String, null: true
-    field :active, Boolean, null: true
     field :addresses, [AddressType], null: false
+    field :active, Boolean, null: true
     field :category_id, Integer, null: false
     field :location, LocationType, null: true
     field :data_provider, DataProviderType, null: true
@@ -18,7 +18,8 @@ module Types
     field :opening_hours, [OpeningHourType], null: true
     field :prices, [PriceType], null: true
     field :certificates, [CertificateType], null: true
-    field :accessibilty_information, AccessibiltyInformationType, null: true
+    field :accessibility_information, AccessibilityInformationType, null: true
+    field :tag_list, String, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
   end

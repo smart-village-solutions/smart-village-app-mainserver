@@ -4,6 +4,9 @@
 class Address < ApplicationRecord
   belongs_to :addressable, polymorphic: true
   has_one :geo_location, as: :geo_locateable
+
+  accepts_nested_attributes_for :geo_location
+
   enum kind: { default: 0, start: 1, end: 2 }, _prefix: :kind_of?
 end
 

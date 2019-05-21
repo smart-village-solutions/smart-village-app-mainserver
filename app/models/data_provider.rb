@@ -5,6 +5,7 @@ class DataProvider < ApplicationRecord
   has_one :address, as: :addressable
   has_one :contact, as: :contactable
   has_one :logo, as: :web_urlable, class_name: "WebUrl"
+  accepts_nested_attributes_for :address, :contact, :logo
 end
 
 # == Schema Information
@@ -13,7 +14,6 @@ end
 #
 #  id               :bigint           not null, primary key
 #  name             :string(255)
-#  logo             :string(255)
 #  description      :string(255)
 #  provideable_type :string(255)
 #  provideable_id   :bigint
