@@ -51,14 +51,6 @@ class Resolvers::NewsItemsSearch
     scope.order("updated_at ASC")
   end
 
-  def apply_order_with_name_desc(scope)
-    scope.order("name DESC")
-  end
-
-  def apply_order_with_name_asc(scope)
-    scope.order("name ASC")
-  end
-
   def apply_order_with_id_desc(scope)
     scope.order("id DESC")
   end
