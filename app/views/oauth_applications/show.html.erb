@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col">
+    <h2><%= t('.title', name: @application.name) %></h2>
+
+    <h5><%= t('.application_id') %>:</h5>
+    <p><code><%= @application.uid %></code></p>
+
+    <h5><%= t('.secret') %>:</h5>
+    <p><code><%= @application.secret %></code></p>
+
+    <h5><%= t('.scopes') %>:</h5>
+    <p><code><%= @application.scopes %></code></p>
+
+    <h5><%= t('.confidential') %>:</h5>
+    <p><code><%= @application.confidential %></code></p>
+
+    <h5><%= t('.callback_urls') %>:</h5>
+
+    <table class="table table-striped">
+      <tbody>
+        <% @application.redirect_uri.split.each do |uri| %>
+          <tr>
+            <td class="align-middle"><code><%= uri %></code></td>
+            <td class="align-middle" style="width: 70px"><%= link_to t('doorkeeper.applications.buttons.authorize'), oauth_authorization_path(client_id: @application.uid, redirect_uri: uri, response_type: 'code', scope: @application.scopes), class: 'btn btn-sm btn-success', target: '_blank' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-3">
+    <h2><%= t('.actions') %></h2>
+
+    <p>
+      <%= link_to t('doorkeeper.applications.buttons.edit'), edit_oauth_application_path(@application), class: 'btn btn-sm btn-outline-primary' %>
+      <%= render 'delete_form', application: @application %>
+    </p>
+  </div>
+</div>
