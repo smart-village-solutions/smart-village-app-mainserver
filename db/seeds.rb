@@ -193,7 +193,7 @@ create_categories
     poi.media_contents << create_media_content
   end
   poi.certificates << create_certificate
-  poi.accessibility_informations << create_accessibility_information
+  poi.accessibility_information = create_accessibility_information
   poi.location = create_location
   poi.tag_list.add("schöne Landschaft #{n}")
   poi.save
