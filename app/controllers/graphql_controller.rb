@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class GraphqlController < ApplicationController
-  # TODO: to activate access control by doorkeeper, uncomment next lin
+  # To activate access control by doorkeeper, uncomment next line
   # before_action :doorkeeper_authorize!
 
   def execute
