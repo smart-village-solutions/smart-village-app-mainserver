@@ -204,8 +204,33 @@ create_categories
   poi.certificates << create_certificate
   poi.accessibilty_informations << create_accessibility_information
   poi.location = create_location
-  poi.tag_list.add("schöne Landschaft")
+  poi.tag_list.add("schöne Landschaft #{n}")
   poi.save
+end
+10.times do |n|
+  tour = Tour.create(
+    external_id: Faker::Alphanumeric.alphanumeric(4),
+    name: "Tour #{n}",
+    description: Faker::Lorem.paragraph,
+    mobile_description: Faker::Lorem.paragraph,
+    active: true,
+    category: Category.find(Faker::Number.within(1..3)),
+    length_km: Faker::Number.within(50..250),
+    means_of_transportation: Faker::Number.within(0..2)
+  )
+  tour.addresses << create_address
+  tour.contact = create_contact
+  tour.data_provider = create_data_provider
+  tour.operating_company = create_operating_company
+  tour.web_urls << create_web_url
+  6.times do
+    tour.media_contents << create_media_content
+    tour.regions << create_region
+  end
+  tour.certificates << create_certificate
+  tour.accessibilty_information = create_accessibility_information
+  tour.tag_list.add("schöne Wege #{n}")
+  tour.save
 end
 
 10.times do |n|
