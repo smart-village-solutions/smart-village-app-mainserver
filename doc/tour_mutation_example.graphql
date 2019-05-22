@@ -1,0 +1,154 @@
+mutation {
+	createTour(
+		name: "test"
+		categoryId: 6
+		description: "Lorem ipsum dolor sit amet consectetur adipiscing"
+		active: true
+		lengthKm: 234
+		meansOfTransportation: "bike"
+		geometryTourData: [
+			{ latitude: 64.37264, longitude: 45.431234 }
+			{ latitude: 32.37264, longitude: 40.431234 }
+			{ latitude: 36.37264, longitude: 49.431234 }
+			{ latitude: 39.37264, longitude: 41.431234 }
+			{ latitude: 41.37264, longitude: 43.431234 }
+		]
+		webUrls: [
+			{ url: "http://www.hoher-flaeming-naturpark.de", description: "Naturpark Hoher Fläming" }
+			{ url: "http://www.naturwacht.de", description: "Naturwacht Brandenburg" }
+		]
+		mediaContents: [
+			{
+				captionText: "Qui dolore fugit rem."
+				copyright: "Zane Marquardt"
+				contentType: "image"
+				height: 342
+				width: 215
+				sourceUrl: { url: "https://www.image.file", description: "main image" }
+			}
+			{
+				captionText: "Id molestias omnis repellat."
+				copyright: "Dr. Willard Klocko"
+				contentType: "video"
+				height: 315
+				width: 607
+			}
+			{
+				captionText: "Provident quidem sed velit."
+				copyright: "Verona Lowe"
+				contentType: "soundcloud-audio"
+				height: 348
+				width: 766
+			}
+		]
+		addresses: [
+			{
+				street: "Musterstraße"
+				addition: "Bahnhof"
+				zip: "10100"
+				city: "Berlin"
+				kind: "start"
+				geoLocation: { latitude: 64.37264, longitude: 47.9347 }
+			}
+			{ street: "Musterstraße2", addition: "Bahnhof 2", zip: "10100", city: "Berlin2", kind: "end" }
+		]
+		contact: {
+			firstName: "Tim"
+			lastName: "Test"
+			phone: "012345678"
+			email: "test@test.de"
+			fax: "09843729047"
+			webUrls: [
+				{ url: "http://www.test1.de", description: "url 1" }
+				{ url: "http://www.test2.de", description: "url 2" }
+			]
+		}
+		dataProvider: {
+			name: "Bäder Betrieb Brandenburg"
+			address: {
+				street: "Strandstraße"
+				addition: "Schwimmbad 2"
+				zip: "10100"
+				city: "Bad Belzig"
+				geoLocation: { latitude: 8123345.3726, longitude: 8723647.9347 }
+			}
+			contact: {
+				firstName: "Tim"
+				lastName: "Test"
+				phone: "012345678"
+				email: "test@test.de"
+				fax: "09843729047"
+				webUrls: [
+					{ url: "http://www.test1.de", description: "url 1" }
+					{ url: "http://www.test2.de", description: "url 2" }
+				]
+			}
+			logo: { url: "https://www.logo-url.de", description: "url that lkeads to a logo image file" }
+			description: "TMB dind die besten"
+		}
+		operatingCompany: {
+			name: "McClure, Kemmer and Brown"
+			address: {
+				zip: "25083"
+				city: "Mialand"
+				street: "Abbie Manors"
+				kind: "default"
+				geoLocation: { latitude: -7.45018, longitude: -102.279 }
+			}
+			contact: {
+				firstName: "Alonzo"
+				lastName: "Von"
+				phone: "+235 782-754-0007 x80976"
+				webUrls: { url: "http://ebert.biz/teri.beahan", description: "Temporibus autem qui at." }
+			}
+		}
+		tags: "[swim, swam, swum]"
+	) {
+		id
+		name
+		description
+		mobileDescription
+		categoryId
+		active
+		lengthKm
+		meansOfTransportation
+		geometryTourData {
+			latitude
+			longitude
+		}
+		webUrls {
+			url
+			description
+		}
+		mediaContents {
+			contentType
+			copyright
+			captionText
+			height
+			width
+		}
+		addresses {
+			id
+			city
+			geoLocation {
+				latitude
+				longitude
+			}
+		}
+		contact {
+			firstName
+			lastName
+			phone
+			fax
+			email
+			webUrls {
+				url
+				description
+			}
+		}
+		certificates {
+			name
+		}
+		tags
+	}
+}
