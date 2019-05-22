@@ -5,6 +5,6 @@ module Types
     field :id, ID, null: false
     field :start_date, String, null: true
     field :end_date, String, null: true
-    field :every_year, String, null: true
+    field :every_year, Boolean, null: true
   end
 end
