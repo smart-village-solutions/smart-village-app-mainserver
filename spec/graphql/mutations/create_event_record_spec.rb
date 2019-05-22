@@ -14,9 +14,9 @@ RSpec.describe Mutations::CreateEventRecord do
   end
 
   def create_categories
-    cat_1 = Category.create(name: Faker::IndustrySegments.super_sector)
-    cat_2 = Category.create(name: Faker::IndustrySegments.sector, parent: cat_1)
-    Category.create(name: Faker::IndustrySegments.sub_sector, parent: cat_2)
+    category_1 = Category.create(name: Faker::IndustrySegments.super_sector)
+    category_2 = Category.create(name: Faker::IndustrySegments.sector, parent: category_1)
+    Category.create(name: Faker::IndustrySegments.sub_sector, parent: category_2)
   end
 
   it "creates a new and valid Point of interest" do
