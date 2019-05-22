@@ -11,7 +11,9 @@ module Mutations
     argument :repeat, Boolean, required: false
     argument :repeat_duration, Types::RepeatDurationInput, required: false,
                                                            as: :repeat_duration_attributes,
-                                                           prepare: ->(repeat_duration, _ctx) { repeat_duration.to_h }
+                                                           prepare: lambda { |repeat_duration, _ctx|
+                                                                      repeat_duration.to_h
+                                                                    }
     argument :category_id, Integer, required: false
     argument :region_id, Integer, required: false
     argument :addresses, [Types::AddressInput], required: false,
