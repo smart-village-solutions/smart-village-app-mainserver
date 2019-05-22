@@ -2,8 +2,8 @@
 
 # this model describes the data for an event e.g. a concert or a reading.
 class EventRecord < ApplicationRecord
-  belongs_to :category
-  belongs_to :region
+  belongs_to :category, optional: true
+  belongs_to :region, optional: true
   has_many :urls, as: :web_urlable, class_name: "WebUrl"
   has_one :data_provider, as: :provideable
   has_one :organizer, as: :companyable, class_name: "OperatingCompany"
@@ -16,6 +16,10 @@ class EventRecord < ApplicationRecord
   has_one :repeat_duration
   has_many :dates, as: :dateable, class_name: "FixedDate"
 
+  accepts_nested_attributes_for :urls, :data_provider, :organizer,
+                                :addresses, :location, :contacts,
+                                :accessibility_information, :price_informations, :media_contents,
+                                :repeat_duration, :dates
   acts_as_taggable
 
   validates_presence_of :title
