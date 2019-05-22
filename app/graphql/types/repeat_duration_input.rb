@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class RepeatDurationInput < BaseInputObject
     argument :start_date, String, required: false

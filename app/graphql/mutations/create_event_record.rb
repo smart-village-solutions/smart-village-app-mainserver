@@ -5,7 +5,7 @@ module Mutations
     argument :parent_id, Integer, required: false
     argument :description, String, required: false
     argument :title, String, required: false
-    argument :dates, [Types::DateInput], required: false, required: false,
+    argument :dates, [Types::DateInput], required: false,
                                          as: :dates_attributes,
                                          prepare: ->(dates, _ctx) { dates.map(&:to_h) }
     argument :repeat, Boolean, required: false

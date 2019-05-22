@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class DateInput < BaseInputObject
     argument :weekday, String, required: false
