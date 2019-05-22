@@ -7,6 +7,8 @@
 class Tour < Attraction
   has_many :geometry_tour_data, as: :geo_locateable, class_name: "GeoLocation"
   enum means_of_transportation: { bike: 0, canoe: 1, foot: 2 }
+
+  accepts_nested_attributes_for :geometry_tour_data
 end
 
 # == Schema Information

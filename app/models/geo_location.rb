@@ -1,8 +1,10 @@
-class GeoLocation < ApplicationRecord
-    belongs_to :geo_locateable, polymorphic: true
+# frozen_string_literal: true
 
-    validates_presence_of :latitude, :longitude
-    validates :latitude, :longitude, numericality: true
+class GeoLocation < ApplicationRecord
+  belongs_to :geo_locateable, polymorphic: true
+
+  validates_presence_of :latitude, :longitude
+  validates :latitude, :longitude, numericality: true
 end
 
 # == Schema Information

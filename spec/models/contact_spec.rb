@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe Contact, type: :model do
   it { is_expected.to belong_to(:contactable) }
-  it { is_expected.to have_one(:web_url) }
+  it { is_expected.to have_many(:web_urls) }
 
   describe "#email" do
     let(:valid_contact) { create(:contact, :for_operating_company) }
