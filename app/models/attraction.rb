@@ -4,7 +4,7 @@
 # Attraction is the superclass for all (touristic) attractions in the smart village.
 #
 class Attraction < ApplicationRecord
-  attr_accessor :category_name
+  attr_writer :category_name
 
   before_validation :find_or_create_category
 
@@ -29,6 +29,10 @@ class Attraction < ApplicationRecord
 
   def find_or_create_category
     self.category_id = Category.where(name: category_name).first_or_create.id
+  end
+
+  def category_name
+    category.name
   end
 end
 

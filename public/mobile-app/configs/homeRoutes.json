@@ -1,0 +1,62 @@
+[
+  {
+    "id": "-1",
+    "title": "Mitmachen",
+    "routeName": "Html",
+    "params": {
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "mitmachen"
+      },
+      "rootRouteName": "Mitmachen"
+    }
+  },
+  {
+    "id": "-1",
+    "title": "Feedback",
+    "routeName": "Html",
+    "params": {
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "feedback"
+      },
+      "rootRouteName": "Feedback"
+    }
+  },
+  {
+    "id": "-1",
+    "title": "Datenschutz",
+    "routeName": "Html",
+    "params": {
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "datenschutz"
+      },
+      "rootRouteName": "Datenschutz"
+    }
+  },
+  {
+    "id": "-1",
+    "title": "Impressum",
+    "routeName": "Html",
+    "params": {
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "impressum"
+      },
+      "rootRouteName": "Impressum"
+    }
+  },
+  {
+    "title": "Wie gefällt Ihnen die App?",
+    "routeName": "Html",
+    "params": {
+      "headerTitle": "Wie gefällt Ihnen die App?",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "wie-gefaellt"
+      },
+      "rootRouteName": "HomeStack"
+    }
+  }
+]
