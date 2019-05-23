@@ -1,8 +1,5 @@
 FROM ruby:2.6.3-stretch
 
-# COPY docker/known_hosts /root/.ssh/
-RUN chmod 600 /root/.ssh/*
-
 # RUN nix-channel --update \
 #   && nix-env -f '<nixpkgs>' -i -A bundix -A nodejs-10_x -A yarn -A ruby_2_6
 
