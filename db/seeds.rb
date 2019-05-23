@@ -9,7 +9,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 user = User.create(
-  email: "admin@smart-village.app",
+  email: "tim@test.de",
   password: "kBzWAvNCWqn2rJxG",
   password_confirmation: "kBzWAvNCWqn2rJxG"
 )
