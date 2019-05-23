@@ -68,6 +68,13 @@ type ContentBlock {
   updatedAt: String
 }
 
+input ContentBlockInput {
+  body: String
+  intro: String
+  mediaContents: [MediaContentInput!]
+  title: String
+}
+
 type DataProvider {
   address: Address
   contact: Contact
@@ -96,6 +103,16 @@ type Date {
   weekday: String
 }
 
+input DateInput {
+  dateEnd: String
+  dateStart: String
+  timeDescription: String
+  timeEnd: String
+  timeStart: String
+  useOnlyTimeDescription: Boolean
+  weekday: String
+}
+
 type EventRecord {
   accessibilityInformation: AccessibilityInformation
   addresses: [Address!]!
@@ -109,10 +126,12 @@ type EventRecord {
   location: Location
   mediaContents: [MediaContent!]
   organizer: OperatingCompany
-  parentId: String
+  parentId: Int
   priceInformations: [Price!]
+  regionId: String
   repeat: Boolean
   repeatDuration: RepeatDuration
+  tagList: [String!]
   title: String!
   updatedAt: String
   urls: [WebUrl!]
@@ -179,7 +198,10 @@ input MediaContentInput {
 }
 
 type Mutation {
+  createEventRecord(accessibilityInformation: AccessibilityInformationInput, addresses: [AddressInput!], categoryId: Int, contacts: [ContactInput!], dataProvider: DataProviderInput, dates: [DateInput!], description: String, location: LocationInput, mediaContents: [MediaContentInput!], organizer: OperatingCompanyInput, parentId: Int, priceInformations: [PriceInput!], regionId: Int, repeat: Boolean, repeatDuration: RepeatDurationInput, tags: [String!], title: String, urls: [WebUrlInput!]): EventRecord!
+  createNewsItem(address: AddressInput, author: String, charactersToBeShown: Int, contentBlocks: [ContentBlockInput!], dataProvider: DataProviderInput, fullVersion: Boolean, newsType: String, publicationDate: String, publishedAt: String, sourceUrl: WebUrlInput): NewsItem!
   createPointOfInterest(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categoryId: Int, certificates: [CertificateInput!], contact: ContactInput, dataProvider: DataProviderInput, description: String, location: LocationInput, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, openingHours: [OpeningHourInput!], operatingCompany: OperatingCompanyInput, prices: [PriceInput!], tags: String, webUrls: [WebUrlInput!]): PointOfInterest!
+  createTour(active: Boolean, addresses: [AddressInput!], categoryId: Int, contact: ContactInput, dataProvider: DataProviderInput, description: String, geometryTourData: [GeoLocationInput!], lengthKm: Int!, meansOfTransportation: String, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, operatingCompany: OperatingCompanyInput, tags: String, webUrls: [WebUrlInput!]): Tour!
 }
 
 type NewsItem {
@@ -324,8 +346,14 @@ type Region {
 
 type RepeatDuration {
   endDate: String
-  everyYear: String
+  everyYear: Boolean
   id: ID!
+  startDate: String
+}
+
+input RepeatDurationInput {
+  endDate: String
+  everyYear: Boolean
   startDate: String
 }
 
