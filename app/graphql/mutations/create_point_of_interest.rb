@@ -54,7 +54,8 @@ module Mutations
              prepare: lambda { |accessibility_information, _ctx|
                         accessibility_information.to_h
                       }
-    argument :tags, String, as: :tag_list, required: false
+
+    argument :tags, [String], as: :tag_list, required: false
 
     field :point_of_interest, Types::PointOfInterestType, null: false
 
