@@ -40,3 +40,6 @@ db/.DS_Store
 #scratch
 active_record_cheat_sheet.md
 /db/githook_dumps
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
