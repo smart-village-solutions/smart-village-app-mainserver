@@ -7,6 +7,8 @@ class NewsItem < ApplicationRecord
   has_one :data_provider, as: :provideable
   has_one :address, as: :addressable
   has_one :source_url, as: :web_urlable, class_name: "WebUrl"
+
+  accepts_nested_attributes_for :content_blocks, :data_provider, :address, :source_url
 end
 
 # == Schema Information
@@ -15,7 +17,6 @@ end
 #
 #  id                     :bigint           not null, primary key
 #  author                 :string(255)
-#  type                   :string(255)
 #  full_version           :boolean
 #  characters_to_be_shown :integer
 #  publication_date       :datetime

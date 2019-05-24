@@ -4,6 +4,8 @@
 class ContentBlock < ApplicationRecord
   has_many :media_contents, as: :mediaable
   belongs_to :content_blockable, polymorphic: true
+
+  accepts_nested_attributes_for :media_contents
 end
 
 # == Schema Information

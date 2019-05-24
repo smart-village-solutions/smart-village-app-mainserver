@@ -19,7 +19,7 @@ RSpec.describe Mutations::CreatePointOfInterest do
     Category.create(name: Faker::IndustrySegments.sub_sector, parent: cat_2)
   end
 
-  it "creates a new and valid Point of interest" do
+  it "creates a new and valid Point of Interest" do
     create_categories
     create_regions
     poi = perform(
