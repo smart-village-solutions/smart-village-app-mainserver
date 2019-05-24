@@ -1,25 +1,20 @@
-version: '3'
+version: '3.7'
 
 services:
   app:
     build:
       context: .
+    environment:
+      RAILS_ENV: development
+    volumes:
+      - ./docker/database.yml:/app/config/database.yml
+      - ./docker/unicorn.rb:/app/config/unicorn.rb
 
   nginx:
-    # image: communicatio/typo3-httpd
-    labels:
-      - traefik.frontend.rule=Host:localhost
-
-  reverse-proxy:
-    image: traefik
-    command: --api --docker
-    ports:
-      - 3000:80
-      - 8081:8080
-
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      # - ./config/traefik.toml:/traefik.toml
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    labels:
+      - traefik.frontend.rule=Host:server.localhost
 
   db:
     volumes:
