@@ -24,7 +24,10 @@
         </li>
       <% end %>
       <li class="nav-item">
-          <%= link_to "Sign out", destroy_user_session_path, class: 'nav-link', method: :delete %>
+          <%= link_to "Data Provider", data_provider_path, class: 'nav-link' %>
+      </li>
+      <li class="nav-item">
+          <%= link_to "Sign out (#{current_user.email})", destroy_user_session_path, class: 'nav-link', method: :delete %>
       </li>
     </ul>
   </div>
