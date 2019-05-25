@@ -1,30 +1,40 @@
-version: '3'
+version: '3.7'
 
 services:
   app:
-    build:
-      context: .
+    image: registry.communicatio.com/ikusei/smart-village-app-mainserver
     environment:
-      RAILS_ENV: development
+      RAILS_ENV: production
       RAILS_LOG_TO_STDOUT: 1
+    configs:
+      - source: smart-village-app-mainserver-database-yml
+        target: /app/config/database.yml
+      - source: smart-village-app-mainserver-unicorn-rb
+        target: /app/config/unicorn.rb
     volumes:
-      - ./docker/database.yml:/app/config/database.yml
-      - ./docker/unicorn.rb:/app/config/unicorn.rb
+      - /etc/localtime:/etc/localtime:ro
       - unicorn:/unicorn
       - assets:/assets
-    depends_on:
-      - db
+    deploy:
+      restart_policy:
+        condition: on-failure
 
   nginx:
     image: nginx
     depends_on: [app]
+    networks: [default, public]
+    configs:
+      - source: smart-village-app-mainserver-nginx-conf
+        target: /etc/nginx/conf.d/default.conf
     volumes:
-      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./public:/public:ro
+      - /etc/localtime:/etc/localtime:ro
       - unicorn:/unicorn
       - assets:/public
     labels:
-      - traefik.frontend.rule=Host:localhost
+      - traefik.frontend.rule=Host:smartvillage.app
+    deploy:
+      restart_policy:
+        condition: on-failure
 
   db:
     image: mysql:5.7.21
@@ -33,15 +43,29 @@ services:
       - --collation-server=utf8mb4_unicode_ci
     environment:
       MYSQL_ROOT_PASSWORD: smart
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
       MYSQL_DATABASE: smart
       MYSQL_USER: smart
       MYSQL_PASSWORD: smart
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - db:/var/lib/mysql
-
+    deploy:
+      restart_policy:
+        condition: on-failure
 
 volumes:
   db:
   unicorn:
   assets:
+
+configs:
+  smart-village-app-mainserver-nginx-conf:
+    external: true
+  smart-village-app-mainserver-database-yml:
+    external: true
+  smart-village-app-mainserver-unicorn-rb:
+    external: true
+
+networks:
+  public:
+    external: true
