@@ -35,6 +35,7 @@ gem "acts-as-taggable-on"
 gem "ancestry", "~> 2.1"
 gem "devise"
 gem "doorkeeper"
+gem "jquery-rails"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.1.0", require: false
