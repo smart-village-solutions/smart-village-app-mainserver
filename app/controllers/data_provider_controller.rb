@@ -2,8 +2,21 @@ class DataProviderController < ApplicationController
 
   layout "doorkeeper/admin"
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:show]
   before_action :init_data_provider, only: [:edit, :update]
+  before_action :doorkeeper_authorize!, only: [:show]
+
+  def show
+    @data_provider = current_user.try(:data_provider)
+
+    respond_to do |format|
+      if @data_provider.present?
+        format.json { render json: @data_provider, methods: [:address, :logo, :contact] }
+      else
+        format.json { render json: {}.to_json }
+      end
+    end
+  end
 
   def edit
   end
@@ -15,6 +28,11 @@ class DataProviderController < ApplicationController
   end
 
   private
+
+    # Find the user that owns the access token
+    def current_resource_owner
+      User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+    end
 
     def provider_params
       params.require(:data_provider).permit(:name, :description,

@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
-  get 'data_provider/edit', as: :data_provider
-  post 'data_provider/update', as: :update_data_provider
+  get "data_provider", to: "data_provider#show", as: :data_provider
+  get "data_provider/edit", as: :edit_data_provider
+  post "data_provider/update", as: :update_data_provider
 
   use_doorkeeper do
-    controllers :applications => 'oauth/applications'
+    controllers :applications => "oauth/applications"
   end
 
   devise_for :users
