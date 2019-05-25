@@ -7,11 +7,11 @@ class DataProviderController < ApplicationController
   before_action :doorkeeper_authorize!, only: [:show]
 
   def show
-    @data_provider = current_user.try(:data_provider)
+    @data_provider = current_resource_owner.try(:data_provider)
 
     respond_to do |format|
       if @data_provider.present?
-        format.json { render json: @data_provider, methods: [:address, :logo, :contact] }
+        format.json { render json: @data_provider, methods: [:address, :logo, :contact], root: true }
       else
         format.json { render json: {}.to_json }
       end
