@@ -2,7 +2,7 @@
 
 module Types
   class GeoLocationInput < BaseInputObject
-    argument :latitude, Float, required: true
-    argument :longitude, Float, required: true
+    argument :latitude, Float, required: false
+    argument :longitude, Float, required: false
   end
 end

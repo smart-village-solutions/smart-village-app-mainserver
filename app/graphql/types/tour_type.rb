@@ -3,14 +3,14 @@
 module Types
   class TourType < Types::BaseObject
     field :id, ID, null: false
-    field :name, String, null: false
+    field :name, String, null: true
     field :description, String, null: true
     field :mobile_description, String, null: true
     field :active, Boolean, null: true
     field :addresses, [AddressType], null: true
     field :means_of_transportation, String, null: true
     field :length_km, Integer, null: true
-    field :category_id, Integer, null: false
+    field :category_id, Integer, null: true
     field :data_provider, DataProviderType, null: true
     field :tags, String, null: true
     field :contact, ContactType, null: true

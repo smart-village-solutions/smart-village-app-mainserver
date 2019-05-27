@@ -5,12 +5,12 @@ module Types
     field :id, ID, null: false
     field :parent_id, Integer, null: true
     field :description, String, null: true
-    field :title, String, null: false
-    field :dates, [DateType], null: false
+    field :title, String, null: true
+    field :dates, [DateType], null: true
     field :repeat, Boolean, null: true
     field :repeat_duration, RepeatDurationType, null: true
-    field :category_id, Integer, null: false
-    field :addresses, [AddressType], null: false
+    field :category_id, Integer, null: true
+    field :addresses, [AddressType], null: true
     field :location, LocationType, null: true
     field :region_id, String, null: true
     field :data_provider, DataProviderType, null: true
