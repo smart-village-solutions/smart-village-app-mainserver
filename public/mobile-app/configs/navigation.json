@@ -1,0 +1,60 @@
+{
+  "NewsItems": {
+    "title": "Nachrichten",
+    "screen": "Index",
+    "query": "newsItems",
+    "queryVariables": {}
+  },
+  "PointsOfInterest": {
+    "title": "Orte & Routen",
+    "screen": "Index",
+    "query": "pointsOfInterest",
+    "queryVariables": {}
+  },
+  "EventRecords": {
+    "title": "Veranstaltungen",
+    "screen": "Index",
+    "query": "eventRecords",
+    "queryVariables": {}
+  },
+  "Mitmachen": {
+    "title": "Mitmachen",
+    "screen": "Html",
+    "query": "publicHtmlFile",
+    "queryVariables": {
+      "name": "mitmachen"
+    }
+  },
+  "Service": {
+    "title": "Service",
+    "screen": "Html",
+    "query": "publicHtmlFile",
+    "queryVariables": {
+      "name": "service"
+    }
+  },
+  "Feedback": {
+    "title": "Feedback",
+    "screen": "Html",
+    "query": "publicHtmlFile",
+    "queryVariables": {
+      "name": "feedback"
+    }
+  },
+  "Datenschutz": {
+    "title": "Datenschutz",
+    "screen": "Html",
+    "query": "publicHtmlFile",
+    "queryVariables": {
+      "name": "datenschutz"
+    }
+  },
+  "Impressum": {
+    "title": "Impressum",
+    "screen": "Html",
+    "query": "publicHtmlFile",
+    "queryVariables": {
+      "name": "impressum"
+    }
+  }
+}
