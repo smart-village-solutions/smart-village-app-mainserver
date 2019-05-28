@@ -1,9 +1,17 @@
 class Location < ApplicationRecord
-    belongs_to :locateable, polymorphic: true
-    belongs_to :region
-    has_one :geo_location, as: :geo_locateable
+  attr_accessor :region_name
 
-    accepts_nested_attributes_for :geo_location
+  before_validation :find_or_create_region
+
+  belongs_to :locateable, polymorphic: true
+  belongs_to :region
+  has_one :geo_location, as: :geo_locateable
+
+  accepts_nested_attributes_for :geo_location
+
+  def find_or_create_region
+    self.region_id = Region.where(name: region_name).first_or_create.id
+  end
 end
 
 # == Schema Information
