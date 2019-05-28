@@ -4,7 +4,7 @@ class GraphqlController < ApplicationController
   # To activate access control by doorkeeper, uncomment next line
   # before_action :doorkeeper_authorize!
 
-  protect_from_forgery with: :null_session
+  skip_before_action :verify_authenticity_token
 
   def execute
     variables = ensure_hash(params[:variables])

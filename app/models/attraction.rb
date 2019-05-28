@@ -22,9 +22,10 @@ class Attraction < ApplicationRecord
   validates_presence_of :name
   acts_as_taggable
 
+  accepts_nested_attributes_for :web_urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :addresses, :contact, :media_contents,
                                 :accessibility_information, :operating_company,
-                                :data_provider, :web_urls, :certificates,
+                                :data_provider, :certificates,
                                 :regions
 
   def find_or_create_category

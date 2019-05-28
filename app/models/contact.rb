@@ -4,7 +4,8 @@
 class Contact < ApplicationRecord
   belongs_to :contactable, polymorphic: true
   has_many :web_urls, as: :web_urlable
-  accepts_nested_attributes_for :web_urls
+
+  accepts_nested_attributes_for :web_urls, reject_if: ->(attr) { attr[:url].blank? }
 end
 
 # == Schema Information

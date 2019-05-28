@@ -22,7 +22,8 @@ class EventRecord < ApplicationRecord
   has_one :repeat_duration
   has_many :dates, as: :dateable, class_name: "FixedDate"
 
-  accepts_nested_attributes_for :urls, :data_provider, :organizer,
+  accepts_nested_attributes_for :urls, reject_if: ->(attr) { attr[:url].blank? }
+  accepts_nested_attributes_for :data_provider, :organizer,
                                 :addresses, :location, :contacts,
                                 :accessibility_information, :price_informations, :media_contents,
                                 :repeat_duration, :dates
