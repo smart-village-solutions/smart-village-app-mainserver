@@ -23,7 +23,7 @@ class DataProviderController < ApplicationController
 
   def update
     @data_provider.update_attributes(provider_params)
-    flash[:notice] = "Data Provider Updated"
+    flash[:notice] = "Data Provider Updated: #{@data_provider.try(:errors).try(:full_messages)}"
     redirect_to action: :edit
   end
 
