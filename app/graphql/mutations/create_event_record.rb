@@ -14,8 +14,8 @@ module Mutations
                                                            prepare: lambda { |repeat_duration, _ctx|
                                                                       repeat_duration.to_h
                                                                     }
-    argument :category_id, Integer, required: false
-    argument :region_id, Integer, required: false
+    argument :category_name, String, required: false
+    argument :region_name, Integer, required: false
     argument :addresses, [Types::AddressInput], required: false,
                                                 as: :addresses_attributes,
                                                 prepare: lambda { |addresses, _ctx|

@@ -2,6 +2,12 @@
 
 # this model describes the data for an event e.g. a concert or a reading.
 class EventRecord < ApplicationRecord
+  attr_accessor :category_name
+  attr_accessor :region_name
+
+  before_validation :find_or_create_category
+  before_validation :find_or_create_region
+
   belongs_to :category, optional: true
   belongs_to :region, optional: true
   has_many :urls, as: :web_urlable, class_name: "WebUrl"
@@ -23,6 +29,14 @@ class EventRecord < ApplicationRecord
   acts_as_taggable
 
   validates_presence_of :title
+
+  def find_or_create_category
+    self.category_id = Category.where(name: category_name).first_or_create.id
+  end
+
+  def find_or_create_region
+    self.region_id = Region.where(name: region_name).first_or_create.id
+  end
 end
 
 # == Schema Information
