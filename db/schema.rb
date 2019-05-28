@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_16_103538) do
+ActiveRecord::Schema.define(version: 2019_05_28_103541) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "description"
+    t.text "description"
     t.string "types"
     t.string "accessable_type"
     t.bigint "accessable_id"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2019_05_16_103538) do
   create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "external_id"
     t.string "name"
-    t.string "description"
+    t.text "description"
     t.string "mobile_description"
     t.boolean "active", default: true
     t.integer "length_km"
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 2019_05_16_103538) do
 
   create_table "data_providers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
-    t.string "description"
+    t.text "description"
     t.string "provideable_type"
     t.bigint "provideable_id"
     t.datetime "created_at", null: false
@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(version: 2019_05_16_103538) do
   create_table "event_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "parent_id"
     t.bigint "region_id"
-    t.string "description"
+    t.text "description"
     t.boolean "repeat"
     t.string "title"
     t.bigint "category_id"
@@ -273,7 +273,7 @@ ActiveRecord::Schema.define(version: 2019_05_16_103538) do
     t.integer "max_adult_count"
     t.integer "min_children_count"
     t.integer "max_children_count"
-    t.string "description"
+    t.text "description"
     t.string "category"
     t.string "priceable_type"
     t.bigint "priceable_id"
@@ -351,7 +351,7 @@ ActiveRecord::Schema.define(version: 2019_05_16_103538) do
 
   create_table "web_urls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "url"
-    t.string "description"
+    t.text "description"
     t.string "web_urlable_type"
     t.bigint "web_urlable_id"
     t.datetime "created_at", null: false
