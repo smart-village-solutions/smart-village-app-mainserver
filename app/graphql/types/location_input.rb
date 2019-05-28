@@ -5,7 +5,7 @@ module Types
     argument :name, String, required: false
     argument :department, String, required: false
     argument :district, String, required: false
-    argument :region_id, Integer, required: false
+    argument :region_name, String, required: false
     argument :state, String, required: false
     argument :geo_location, Types::GeoLocationInput, required: false,
                                                      as: :geo_location_attributes,
