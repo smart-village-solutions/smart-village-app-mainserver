@@ -32,6 +32,21 @@ module Mutations
                                                           prepare: lambda { |media_contents, _ctx|
                                                                      media_contents.map(&:to_h)
                                                                    }
+    argument :location, Types::LocationInput, required: false,
+                                              as: :location_attributes,
+                                              prepare: ->(location, _ctx) { location.to_h }
+    argument :certificates, [Types::CertificateInput], required: false,
+                                                       as: :certificates_attributes,
+                                                       prepare: lambda { |certificates, _ctx|
+                                                                  certificates.map(&:to_h)
+                                                                }
+    argument :accessibility_information,
+             Types::AccessibilityInformationInput,
+             required: false,
+             as: :accessibility_information_attributes,
+             prepare: lambda { |accessibility_information, _ctx|
+                        accessibility_information.to_h
+                      }
     argument :length_km, Integer, required: true
     argument :means_of_transportation, String, required: false
     argument :geometry_tour_data, [Types::GeoLocationInput], required: false,
@@ -39,7 +54,7 @@ module Mutations
                                                              prepare: lambda { |geometry_tour_data, _ctx|
                                                                         geometry_tour_data.map(&:to_h)
                                                                       }
-    argument :tags, String, as: :tag_list, required: false
+    argument :tags, [String], as: :tag_list, required: false
 
     field :tour, Types::TourType, null: false
 
