@@ -4,7 +4,7 @@ class DataProviderController < ApplicationController
 
   before_action :authenticate_user!, except: [:show]
   before_action :init_data_provider, only: [:edit, :update]
-  # before_action :doorkeeper_authorize!, only: [:show]
+  before_action :doorkeeper_authorize!, only: [:show]
 
   def show
     @data_provider = current_resource_owner.try(:data_provider)
@@ -15,9 +15,11 @@ class DataProviderController < ApplicationController
           {
             logo: { only: [:url, :description] },
             address: { only: [:addition, :street, :city, :zip] },
-            contact: { only: [:first_name, :last_name, :phone, :fax, :email] },
+            contact: { only: [:first_name, :last_name, :phone, :fax, :email] }
           },
-          only: [:name, :description], root: true }
+          only: [:name, :description],
+          root: true
+        }
       else
         format.json { render json: {}.to_json }
       end
