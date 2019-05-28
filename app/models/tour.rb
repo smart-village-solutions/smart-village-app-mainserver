@@ -10,7 +10,7 @@ class Tour < Attraction
 
   has_one :location, as: :locateable
 
-  accepts_nested_attributes_for :geometry_tour_data
+  accepts_nested_attributes_for :geometry_tour_data, :location_attributes
 end
 
 # == Schema Information
