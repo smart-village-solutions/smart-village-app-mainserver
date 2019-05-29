@@ -30,6 +30,8 @@ class EventRecord < ApplicationRecord
   acts_as_taggable
 
   validates_presence_of :title
+  validate :title, uniqueness: true, if: -> { title.present? }
+  validate :external_id, uniqueness: true, if: -> { external_id.present? }
 
   def find_or_create_category
     self.category_id = Category.where(name: category_name).first_or_create.id

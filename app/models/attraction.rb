@@ -19,7 +19,8 @@ class Attraction < ApplicationRecord
   has_one :data_provider, as: :provideable
   has_many :web_urls, as: :web_urlable
 
-  validates_presence_of :name
+  validates_presence_of :name, uniqueness: true
+  validate :external_id, uniqueness: true, if: -> { external_id.present? }
   acts_as_taggable
 
   accepts_nested_attributes_for :web_urls, reject_if: ->(attr) { attr[:url].blank? }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_28_103541) do
+ActiveRecord::Schema.define(version: 2019_05_29_160009) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "description"
@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(version: 2019_05_28_103541) do
     t.bigint "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "external_id"
     t.index ["category_id"], name: "index_event_records_on_category_id"
     t.index ["region_id"], name: "index_event_records_on_region_id"
   end
@@ -191,6 +192,8 @@ ActiveRecord::Schema.define(version: 2019_05_28_103541) do
     t.string "news_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "external_id"
+    t.string "title"
   end
 
   create_table "oauth_access_grants", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

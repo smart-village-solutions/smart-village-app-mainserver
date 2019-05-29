@@ -8,6 +8,10 @@ class NewsItem < ApplicationRecord
   has_one :address, as: :addressable
   has_one :source_url, as: :web_urlable, class_name: "WebUrl"
 
+  validates :title, uniqueness: true
+  validate :external_id, uniqueness: true, if: -> { external_id.present? }
+  validate :published_at, uniqueness: true, if: -> { published_at.present? }
+
   accepts_nested_attributes_for :content_blocks, :data_provider, :address, :source_url
 end
 
