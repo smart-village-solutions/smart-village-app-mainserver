@@ -15,13 +15,15 @@ class Resolvers::NewsItemsSearch
     value "createdAt_DESC"
     value "updatedAt_ASC"
     value "updatedAt_DESC"
+    value "publishedAt_ASC"
+    value "publishedAt_DESC"
     value "id_ASC"
     value "id_DESC"
   end
 
   option :limit, type: types.Int, with: :apply_limit
   option :skip, type: types.Int, with: :apply_skip
-  option :order, type: NewsItemsOrder, default: "createdAt_DESC"
+  option :order, type: NewsItemsOrder, default: "publishedAt_DESC"
 
   def apply_limit(scope, value)
     scope.limit(value)
@@ -44,11 +46,19 @@ class Resolvers::NewsItemsSearch
   end
 
   def apply_order_with_updated_at_desc(scope)
-    scope.order("updated_at ASC")
+    scope.order("updated_at DESC")
   end
 
   def apply_order_with_updated_at_asc(scope)
     scope.order("updated_at ASC")
+  end
+
+  def apply_order_with_published_at_desc(scope)
+    scope.order("published_at DESC")
+  end
+
+  def apply_order_with_published_at_asc(scope)
+    scope.order("published_at ASC")
   end
 
   def apply_order_with_id_desc(scope)
