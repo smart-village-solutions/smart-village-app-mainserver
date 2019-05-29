@@ -4,6 +4,7 @@
     "title": "Mitmachen",
     "routeName": "Html",
     "params": {
+      "title": "Mitmachen",
       "query": "publicHtmlFile",
       "queryVariables": {
         "name": "mitmachen"
@@ -16,6 +17,7 @@
     "title": "Feedback",
     "routeName": "Html",
     "params": {
+      "title": "Feedback",
       "query": "publicHtmlFile",
       "queryVariables": {
         "name": "feedback"
@@ -28,6 +30,7 @@
     "title": "Datenschutz",
     "routeName": "Html",
     "params": {
+      "title": "Datenschutz",
       "query": "publicHtmlFile",
       "queryVariables": {
         "name": "datenschutz"
@@ -40,6 +43,7 @@
     "title": "Impressum",
     "routeName": "Html",
     "params": {
+      "title": "Impressum",
       "query": "publicHtmlFile",
       "queryVariables": {
         "name": "impressum"
@@ -51,7 +55,7 @@
     "title": "Wie gefällt Ihnen die App?",
     "routeName": "Html",
     "params": {
-      "headerTitle": "Wie gefällt Ihnen die App?",
+      "title": "Wie gefällt Ihnen die App?",
       "query": "publicHtmlFile",
       "queryVariables": {
         "name": "wie-gefaellt"
