@@ -2,6 +2,7 @@
 
 module Mutations
   class CreateEventRecord < BaseMutation
+    argument :external_id, Integer, required: false
     argument :parent_id, Integer, required: false
     argument :description, String, required: false
     argument :title, String, required: false

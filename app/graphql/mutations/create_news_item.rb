@@ -2,6 +2,8 @@
 
 module Mutations
   class CreateNewsItem < BaseMutation
+    argument :external_id, Integer, required: false
+    argument :title, String, required: false
     argument :author, String, required: false
     argument :full_version, Boolean, required: false
     argument :characters_to_be_shown, Integer, required: false
