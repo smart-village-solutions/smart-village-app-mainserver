@@ -1,6 +1,20 @@
 [
   {
     "id": "-1",
+    "title": "Fläming bewegt",
+    "routeName": "Html",
+    "params": {
+      "title": "Fläming bewegt",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "flaeming-bewegt"
+      },
+      "rootRouteName": "HomeStack",
+      "webUrl": "https://www.flaeming-bewegt.de/"
+    }
+  },
+  {
+    "id": "-1",
     "title": "Mitmachen",
     "routeName": "Html",
     "params": {
@@ -23,32 +37,6 @@
         "name": "feedback"
       },
       "rootRouteName": "Feedback"
-    }
-  },
-  {
-    "id": "-1",
-    "title": "Datenschutz",
-    "routeName": "Html",
-    "params": {
-      "title": "Datenschutz",
-      "query": "publicHtmlFile",
-      "queryVariables": {
-        "name": "datenschutz"
-      },
-      "rootRouteName": "Datenschutz"
-    }
-  },
-  {
-    "id": "-1",
-    "title": "Impressum",
-    "routeName": "Html",
-    "params": {
-      "title": "Impressum",
-      "query": "publicHtmlFile",
-      "queryVariables": {
-        "name": "impressum"
-      },
-      "rootRouteName": "Impressum"
     }
   },
   {
