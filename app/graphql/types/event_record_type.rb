@@ -9,7 +9,7 @@ module Types
     field :dates, [DateType], null: true
     field :repeat, Boolean, null: true
     field :repeat_duration, RepeatDurationType, null: true
-    field :category_id, Integer, null: true
+    field :category, CategoryType, null: true
     field :addresses, [AddressType], null: true
     field :location, LocationType, null: true
     field :region_id, String, null: true
