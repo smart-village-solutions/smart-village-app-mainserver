@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class GraphqlController < ApplicationController
-  # To activate access control by doorkeeper, uncomment next line
-  # before_action :doorkeeper_authorize!
+  # To activate access control by doorkeeper, uncomment next line - comment to deactivate doorkeeper
+  before_action :doorkeeper_authorize!
 
   skip_before_action :verify_authenticity_token
 
