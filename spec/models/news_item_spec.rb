@@ -14,7 +14,6 @@ end
 #
 #  id                     :bigint           not null, primary key
 #  author                 :string(255)
-#  type                   :string(255)
 #  full_version           :boolean
 #  characters_to_be_shown :integer
 #  publication_date       :datetime

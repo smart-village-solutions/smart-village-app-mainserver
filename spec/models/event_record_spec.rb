@@ -23,8 +23,8 @@ end
 #
 #  id          :bigint           not null, primary key
 #  parent_id   :integer
-#  region      :string(255)
-#  description :string(255)
+#  region_id   :bigint
+#  description :text(65535)
 #  repeat      :boolean
 #  title       :string(255)
 #  category_id :bigint

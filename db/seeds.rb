@@ -102,10 +102,10 @@ end
 def create_opening_hour
   OpeningHour.create(
     weekday: Faker::Date.between(2000.days.ago, Date.today).strftime("%A"),
-    date_from: Faker::Date.backward.strftime("%d.%m.%y"),
-    date_to: Faker::Date.forward.strftime("%d.%m.%y"),
-    time_from: Faker::Time.backward.strftime("%H:%M"),
-    time_to: Faker::Time.forward.strftime("%H:%M"),
+    date_from: Faker::Date.backward,
+    date_to: Faker::Date.forward,
+    time_from: Faker::Time.backward,
+    time_to: Faker::Time.forward,
     sort_number: Faker::Number.within(1..1_000_000),
     open: Faker::Boolean.boolean,
     description: Faker::Lorem.sentence
@@ -244,7 +244,7 @@ end
       every_year: Faker::Boolean.boolean(0.3)
     ),
     category: Category.find(Faker::Number.within(1..3)),
-    region: Region.find(Faker::Number.within(1..10))
+    region: create_region
   )
   event.addresses << create_address
   event.contacts << create_contact

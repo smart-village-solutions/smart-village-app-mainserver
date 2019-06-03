@@ -15,7 +15,6 @@ end
 #  name            :string(255)
 #  department      :string(255)
 #  district        :string(255)
-#  region          :string(255)
 #  state           :string(255)
 #  country         :string(255)
 #  locateable_type :string(255)

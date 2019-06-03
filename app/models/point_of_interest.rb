@@ -20,9 +20,10 @@ end
 #  id                      :bigint           not null, primary key
 #  external_id             :integer
 #  name                    :string(255)
-#  description             :string(255)
+#  description             :text(65535)
 #  mobile_description      :string(255)
 #  active                  :boolean          default(TRUE)
+#  length_km               :integer
 #  means_of_transportation :integer
 #  category_id             :bigint
 #  created_at              :datetime         not null
