@@ -12,7 +12,6 @@ end
 # Table name: attractions
 #
 #  id                      :bigint           not null, primary key
-#  external_id             :integer
 #  name                    :string(255)
 #  description             :text(65535)
 #  mobile_description      :string(255)
