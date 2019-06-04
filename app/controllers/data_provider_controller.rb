@@ -31,6 +31,9 @@ class DataProviderController < ApplicationController
 
   def update
     @data_provider.update_attributes(provider_params)
+    current_user.data_provider = @data_provider
+    current_user.save
+
     flash[:notice] = "Data Provider Updated: #{@data_provider.try(:errors).try(:full_messages)}"
     redirect_to action: :edit
   end
@@ -50,8 +53,6 @@ class DataProviderController < ApplicationController
     end
 
     def init_data_provider
-      @data_provider = DataProvider
-                         .where(provideable_type: "User", provideable_id: current_user.id)
-                         .first_or_create
+      @data_provider = current_user.data_provider || current_user.build_data_provider
     end
 end
