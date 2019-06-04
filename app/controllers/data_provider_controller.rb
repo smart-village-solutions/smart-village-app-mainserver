@@ -39,7 +39,7 @@ class DataProviderController < ApplicationController
 
     # Find the user that owns the access token
     def current_resource_owner
-      User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+      User.find(doorkeeper_token.try(:application).try(:owner_id)) if doorkeeper_token
     end
 
     def provider_params
