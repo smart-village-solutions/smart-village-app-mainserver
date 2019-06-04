@@ -14,11 +14,6 @@ module Mutations
                                                 }
     argument :contact, Types::ContactInput, required: false, as: :contact_attributes,
                                             prepare: ->(contact, _ctx) { contact.to_h }
-    argument :data_provider, Types::DataProviderInput, required: false,
-                                                       as: :data_provider_attributes,
-                                                       prepare: lambda { |data_provider, _ctx|
-                                                                  data_provider.to_h
-                                                                }
     argument :operating_company, Types::OperatingCompanyInput, required: false,
                                                                as: :operating_company_attributes,
                                                                prepare:
@@ -61,7 +56,8 @@ module Mutations
     type Types::TourType
 
     def resolve(**params)
-      Tour.create!(params)
+      DataProviderService.new(data_provider: context[:current_user].try(:data_provider))
+        .create_resource(Tour, params)
     end
   end
 end

@@ -24,11 +24,6 @@ module Mutations
     argument :location, Types::LocationInput, required: false,
                                               as: :location_attributes,
                                               prepare: ->(location, _ctx) { location.to_h }
-    argument :data_provider, Types::DataProviderInput, required: false,
-                                                       as: :data_provider_attributes,
-                                                       prepare: lambda { |data_provider, _ctx|
-                                                                  data_provider.to_h
-                                                                }
     argument :contacts, [Types::ContactInput], required: false, as: :contacts_attributes,
                                                prepare: ->(contacts, _ctx) { contacts.map(&:to_h) }
     argument :urls, [Types::WebUrlInput], required: false, as: :urls_attributes,
@@ -62,7 +57,8 @@ module Mutations
     type Types::EventRecordType
 
     def resolve(**params)
-      EventRecord.create!(params)
+      DataProviderService.new(data_provider: context[:current_user].try(:data_provider))
+        .create_resource(EventRecord, params)
     end
   end
 end
