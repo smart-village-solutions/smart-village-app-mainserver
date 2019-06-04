@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_28_103541) do
+ActiveRecord::Schema.define(version: 2019_06_04_093829) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "description"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 2019_05_28_103541) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "type", default: "PointOfInterest", null: false
+    t.integer "data_provider_id"
     t.index ["category_id"], name: "index_attractions_on_category_id"
   end
 
@@ -108,11 +109,8 @@ ActiveRecord::Schema.define(version: 2019_05_28_103541) do
   create_table "data_providers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.string "provideable_type"
-    t.bigint "provideable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provideable_type", "provideable_id"], name: "index_data_providers_on_provideable_type_and_provideable_id"
   end
 
   create_table "event_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -124,6 +122,7 @@ ActiveRecord::Schema.define(version: 2019_05_28_103541) do
     t.bigint "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "data_provider_id"
     t.index ["category_id"], name: "index_event_records_on_category_id"
     t.index ["region_id"], name: "index_event_records_on_region_id"
   end
@@ -191,6 +190,7 @@ ActiveRecord::Schema.define(version: 2019_05_28_103541) do
     t.string "news_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "data_provider_id"
   end
 
   create_table "oauth_access_grants", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -265,7 +265,7 @@ ActiveRecord::Schema.define(version: 2019_05_28_103541) do
 
   create_table "prices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
-    t.float "price"
+    t.float "amount"
     t.boolean "group_price"
     t.integer "age_from"
     t.integer "age_to"
@@ -274,6 +274,7 @@ ActiveRecord::Schema.define(version: 2019_05_28_103541) do
     t.integer "min_children_count"
     t.integer "max_children_count"
     t.text "description"
+    t.string "category"
     t.string "priceable_type"
     t.bigint "priceable_id"
     t.datetime "created_at", null: false
@@ -342,6 +343,7 @@ ActiveRecord::Schema.define(version: 2019_05_28_103541) do
     t.datetime "locked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "data_provider_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

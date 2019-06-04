@@ -10,8 +10,9 @@ class EventRecord < ApplicationRecord
 
   belongs_to :category, optional: true
   belongs_to :region, optional: true
+  belongs_to :data_provider
+
   has_many :urls, as: :web_urlable, class_name: "WebUrl"
-  has_one :data_provider, as: :provideable
   has_one :organizer, as: :companyable, class_name: "OperatingCompany"
   has_many :addresses, as: :addressable
   has_one :location, as: :locateable
@@ -44,13 +45,14 @@ end
 #
 # Table name: event_records
 #
-#  id          :bigint           not null, primary key
-#  parent_id   :integer
-#  region_id   :bigint
-#  description :text(65535)
-#  repeat      :boolean
-#  title       :string(255)
-#  category_id :bigint
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id               :bigint           not null, primary key
+#  parent_id        :integer
+#  region_id        :bigint
+#  description      :text(65535)
+#  repeat           :boolean
+#  title            :string(255)
+#  category_id      :bigint
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  data_provider_id :integer
 #

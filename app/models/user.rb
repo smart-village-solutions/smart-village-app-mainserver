@@ -4,7 +4,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :trackable, :omniauthable and :rememberable
   devise :database_authenticatable, :recoverable, :validatable, :lockable, :timeoutable
-  has_one :data_provider, as: :provideable
+  belongs_to :data_provider
 
   has_many :access_grants,
            class_name: "Doorkeeper::AccessGrant",
@@ -50,4 +50,5 @@ end
 #  locked_at              :datetime
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  data_provider_id       :integer
 #
