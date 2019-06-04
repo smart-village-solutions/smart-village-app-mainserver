@@ -21,11 +21,6 @@ module Mutations
                                                         prepare: lambda { |opening_hours, _ctx|
                                                                    opening_hours.map(&:to_h)
                                                                  }
-    argument :data_provider, Types::DataProviderInput, required: false,
-                                                       as: :data_provider_attributes,
-                                                       prepare: lambda { |data_provider, _ctx|
-                                                                  data_provider.to_h
-                                                                }
     argument :operating_company, Types::OperatingCompanyInput, required: false,
                                                                as: :operating_company_attributes,
                                                                prepare:
@@ -62,7 +57,8 @@ module Mutations
     type Types::PointOfInterestType
 
     def resolve(**params)
-      PointOfInterest.create!(params)
+      DataProviderService.new(data_provider: context[:current_user].try(:data_provider))
+        .create_resource(PointOfInterest, params)
     end
   end
 end

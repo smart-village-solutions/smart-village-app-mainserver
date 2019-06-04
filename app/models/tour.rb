@@ -29,4 +29,5 @@ end
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  type                    :string(255)      default("PointOfInterest"), not null
+#  data_provider_id        :integer
 #

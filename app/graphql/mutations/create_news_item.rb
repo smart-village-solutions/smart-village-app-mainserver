@@ -16,11 +16,6 @@ module Mutations
                                             prepare: lambda { |address, _ctx|
                                                        address.to_h
                                                      }
-    argument :data_provider, Types::DataProviderInput, required: false,
-                                                       as: :data_provider_attributes,
-                                                       prepare: lambda { |data_provider, _ctx|
-                                                                  data_provider.to_h
-                                                                }
     argument :content_blocks, [Types::ContentBlockInput], required: false,
                                                           as: :content_blocks_attributes,
                                                           prepare: lambda { |content_blocks, _ctx|
@@ -32,7 +27,8 @@ module Mutations
     type Types::NewsItemType
 
     def resolve(**params)
-      NewsItem.create!(params)
+      DataProviderService.new(data_provider: context[:current_user].try(:data_provider))
+        .create_resource(NewsItem, params)
     end
   end
 end

@@ -21,13 +21,14 @@ end
 #
 # Table name: event_records
 #
-#  id          :bigint           not null, primary key
-#  parent_id   :integer
-#  region_id   :bigint
-#  description :text(65535)
-#  repeat      :boolean
-#  title       :string(255)
-#  category_id :bigint
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id               :bigint           not null, primary key
+#  parent_id        :integer
+#  region_id        :bigint
+#  description      :text(65535)
+#  repeat           :boolean
+#  title            :string(255)
+#  category_id      :bigint
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  data_provider_id :integer
 #

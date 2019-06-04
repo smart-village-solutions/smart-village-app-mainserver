@@ -3,8 +3,9 @@
 # News Item is one of the four Main resources for the app. A news Item can be anything
 # from an old school news article to a whole story structured in chapters
 class NewsItem < ApplicationRecord
+  belongs_to :data_provider
+
   has_many :content_blocks, as: :content_blockable
-  has_one :data_provider, as: :provideable
   has_one :address, as: :addressable
   has_one :source_url, as: :web_urlable, class_name: "WebUrl"
 
@@ -25,4 +26,5 @@ end
 #  news_type              :string(255)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  data_provider_id       :integer
 #

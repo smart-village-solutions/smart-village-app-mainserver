@@ -9,6 +9,8 @@ class Attraction < ApplicationRecord
   before_validation :find_or_create_category
 
   belongs_to :category
+  belongs_to :data_provider
+
   has_and_belongs_to_many :certificates, optional: true
   has_and_belongs_to_many :regions, optional: true
   has_many :addresses, as: :addressable
@@ -16,7 +18,6 @@ class Attraction < ApplicationRecord
   has_many :media_contents, as: :mediaable
   has_one :accessibility_information, as: :accessable
   has_one :operating_company, as: :companyable
-  has_one :data_provider, as: :provideable
   has_many :web_urls, as: :web_urlable
 
   validates_presence_of :name
@@ -49,4 +50,5 @@ end
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  type                    :string(255)      default("PointOfInterest"), not null
+#  data_provider_id        :integer
 #
