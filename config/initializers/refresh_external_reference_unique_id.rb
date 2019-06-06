@@ -3,11 +3,9 @@
 if ActiveRecord::Base.connection.table_exists?("external_references")
   ExternalReference.pluck(:external_type).uniq.each do |type|
     ExternalReference.where(external_type: type).find_each do |entry|
-      puts type
       refreshed_unique_id = entry.external.unique_id
       break if entry.unique_id == refreshed_unique_id
 
-      puts "update #{type}"
       entry.update_column(:unique_id, refreshed_unique_id)
     end
   end
