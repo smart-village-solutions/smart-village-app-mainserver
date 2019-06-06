@@ -10,6 +10,13 @@ class NewsItem < ApplicationRecord
   has_one :source_url, as: :web_urlable, class_name: "WebUrl"
 
   accepts_nested_attributes_for :content_blocks, :data_provider, :address, :source_url
+
+  def unique_id
+    title = content_blocks.first.try(:title)
+    fields = [title, published_at]
+
+    generate_checksum(fields)
+  end
 end
 
 # == Schema Information

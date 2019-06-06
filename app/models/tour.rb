@@ -11,6 +11,12 @@ class Tour < Attraction
   has_one :location, as: :locateable
 
   accepts_nested_attributes_for :geometry_tour_data, :location
+
+  def unique_id
+    fields = [name, type]
+
+    generate_checksum(fields)
+  end
 end
 
 # == Schema Information

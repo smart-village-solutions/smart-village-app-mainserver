@@ -56,8 +56,8 @@ module Mutations
     type Types::TourType
 
     def resolve(**params)
-      DataProviderService.new(data_provider: context[:current_user].try(:data_provider))
-        .create_resource(Tour, params)
+      RescourceService.new(data_provider: context[:current_user].try(:data_provider))
+      .create(Tour, params)
     end
   end
 end

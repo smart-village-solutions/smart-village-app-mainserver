@@ -39,6 +39,12 @@ class EventRecord < ApplicationRecord
   def find_or_create_region
     self.region_id = Region.where(name: region_name).first_or_create.id
   end
+
+  def unique_id
+    fields = [title]
+
+    generate_checksum(fields)
+  end
 end
 
 # == Schema Information

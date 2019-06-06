@@ -11,6 +11,12 @@ class PointOfInterest < Attraction
   has_one :location, as: :locateable
 
   accepts_nested_attributes_for :prices, :opening_hours, :location
+
+  def unique_id
+    fields = [name, type]
+
+    generate_checksum(fields)
+  end
 end
 
 # == Schema Information

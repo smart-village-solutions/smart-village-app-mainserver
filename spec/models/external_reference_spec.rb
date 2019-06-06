@@ -9,9 +9,10 @@ end
 # Table name: external_references
 #
 #  id               :bigint           not null, primary key
-#  external_id      :integer
-#  data_provider_id :integer
-#  external_type    :string(255)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  unique_id        :string(255)
+#  data_provider_id :integer
+#  external_id      :integer
+#  external_type    :string(255)
 #

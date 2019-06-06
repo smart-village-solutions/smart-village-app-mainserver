@@ -27,8 +27,8 @@ module Mutations
     type Types::NewsItemType
 
     def resolve(**params)
-      DataProviderService.new(data_provider: context[:current_user].try(:data_provider))
-        .create_resource(NewsItem, params)
+      RescourceService.new(data_provider: context[:current_user].try(:data_provider))
+      .create(NewsItem, params)
     end
   end
 end
