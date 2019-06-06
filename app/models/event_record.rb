@@ -43,7 +43,11 @@ class EventRecord < ApplicationRecord
   def unique_id
     fields = [title]
 
-    generate_checksum(fields)
+    first_address = addresses.first
+    address_keys = %i[street zip city kind]
+    address_fields = address_keys.map { |a| first_address.try(:send, a) }
+
+    generate_checksum(fields + address_fields)
   end
 end
 
