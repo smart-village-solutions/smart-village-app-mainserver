@@ -3,8 +3,6 @@
 class ExternalReference < ApplicationRecord
   belongs_to :external, polymorphic: true, optional: true
   belongs_to :data_provider
-
-  # validates :unique_id, uniqueness: { scope: :data_provider_id }
 end
 
 # == Schema Information
