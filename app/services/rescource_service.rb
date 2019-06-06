@@ -18,7 +18,6 @@ class RescourceService
 
     # create resource
     create_external_resource if resource.save
-    puts resource.errors.messages
     resource
   end
 
