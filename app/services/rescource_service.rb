@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RescourceService
+class ResourceService
   attr_accessor :data_provider
   attr_accessor :resource
   attr_accessor :resource_class

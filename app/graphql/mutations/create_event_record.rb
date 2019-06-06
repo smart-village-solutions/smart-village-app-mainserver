@@ -57,7 +57,7 @@ module Mutations
     type Types::EventRecordType
 
     def resolve(**params)
-      RescourceService.new(data_provider: context[:current_user].try(:data_provider))
+      ResourceService.new(data_provider: context[:current_user].try(:data_provider))
         .create(EventRecord, params)
     end
   end

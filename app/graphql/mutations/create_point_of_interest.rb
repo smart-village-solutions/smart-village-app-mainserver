@@ -57,7 +57,7 @@ module Mutations
     type Types::PointOfInterestType
 
     def resolve(**params)
-      RescourceService.new(data_provider: context[:current_user].try(:data_provider))
+      ResourceService.new(data_provider: context[:current_user].try(:data_provider))
         .create(PointOfInterest, params)
     end
   end
