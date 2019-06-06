@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ExternalReference < ApplicationRecord
   belongs_to :external, polymorphic: true, optional: true, dependent: :destroy
   belongs_to :data_provider

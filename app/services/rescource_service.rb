@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RescourceService
   attr_accessor :data_provider
   attr_accessor :resource
