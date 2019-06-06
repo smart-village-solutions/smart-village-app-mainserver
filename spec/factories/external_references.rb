@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :external_reference do
-    external_id { "MyString" }
+    unique_id { "MyString" }
     data_provider_id { 1 }
     external_id { 1 }
     external_type { "MyString" }
