@@ -47,7 +47,11 @@ class EventRecord < ApplicationRecord
     address_keys = %i[street zip city kind]
     address_fields = address_keys.map { |a| first_address.try(:send, a) }
 
-    generate_checksum(fields + address_fields)
+    date = dates.first
+    date_keys = %i[date_start time_start]
+    date_fields = date_keys.map { |d| date.try(:send, d) }
+
+    generate_checksum(fields + address_fields + date_fields)
   end
 end
 
