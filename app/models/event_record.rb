@@ -39,6 +39,20 @@ class EventRecord < ApplicationRecord
   def find_or_create_region
     self.region_id = Region.where(name: region_name).first_or_create.id
   end
+
+  def unique_id
+    fields = [title]
+
+    first_address = addresses.first
+    address_keys = %i[street zip city kind]
+    address_fields = address_keys.map { |a| first_address.try(:send, a) }
+
+    date = dates.first
+    date_keys = %i[date_start time_start]
+    date_fields = date_keys.map { |d| date.try(:send, d) }
+
+    generate_checksum(fields + address_fields + date_fields)
+  end
 end
 
 # == Schema Information

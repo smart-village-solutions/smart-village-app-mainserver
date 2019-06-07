@@ -11,6 +11,16 @@ class Tour < Attraction
   has_one :location, as: :locateable
 
   accepts_nested_attributes_for :geometry_tour_data, :location
+
+  def unique_id
+    fields = [name, type]
+
+    first_address = addresses.first
+    address_keys = %i[street zip city kind]
+    address_fields = address_keys.map { |a| first_address.try(:send, a) }
+
+    generate_checksum(fields + address_fields)
+  end
 end
 
 # == Schema Information
@@ -18,7 +28,6 @@ end
 # Table name: attractions
 #
 #  id                      :bigint           not null, primary key
-#  external_id             :integer
 #  name                    :string(255)
 #  description             :text(65535)
 #  mobile_description      :string(255)

@@ -53,12 +53,14 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "codeclimate-test-reporter"
   gem "database_cleaner"
-  gem "factory_bot_rails"
+  gem "debase"
   gem "factory_bot"
+  gem "factory_bot_rails"
   gem "linter", git: "https://github.com/ikuseiGmbH/linters.git", tag: "rubocop-0.63.1"
   gem "rails-controller-testing"
   gem "rb-readline"
   gem "rspec-rails"
+  gem "ruby-debug-ide"
   # Autorun rspec files on changes
   gem "annotate"
   gem "faker", git: "https://github.com/stympy/faker.git", branch: "master"

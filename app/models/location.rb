@@ -4,12 +4,14 @@ class Location < ApplicationRecord
   before_validation :find_or_create_region
 
   belongs_to :locateable, polymorphic: true
-  belongs_to :region
+  belongs_to :region, optional: true
   has_one :geo_location, as: :geo_locateable
 
   accepts_nested_attributes_for :geo_location
 
   def find_or_create_region
+    return if region_name.blank?
+
     self.region_id = Region.where(name: region_name).first_or_create.id
   end
 end

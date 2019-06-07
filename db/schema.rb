@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_04_093829) do
+ActiveRecord::Schema.define(version: 2019_06_04_135549) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "description"
@@ -36,7 +36,6 @@ ActiveRecord::Schema.define(version: 2019_06_04_093829) do
   end
 
   create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "external_id"
     t.string "name"
     t.text "description"
     t.string "mobile_description"
@@ -125,6 +124,15 @@ ActiveRecord::Schema.define(version: 2019_06_04_093829) do
     t.integer "data_provider_id"
     t.index ["category_id"], name: "index_event_records_on_category_id"
     t.index ["region_id"], name: "index_event_records_on_region_id"
+  end
+
+  create_table "external_references", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "unique_id"
+    t.integer "data_provider_id"
+    t.integer "external_id"
+    t.string "external_type"
   end
 
   create_table "fixed_dates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
