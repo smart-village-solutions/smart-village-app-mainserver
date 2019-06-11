@@ -29,6 +29,19 @@
   },
   {
     "id": "-1",
+    "title": "Hintergrund",
+    "routeName": "Html",
+    "params": {
+      "title": "Hintergrund",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "hintergrund"
+      },
+      "rootRouteName": "Hintergrund"
+    }
+  },
+  {
+    "id": "-1",
     "title": "Mitmachen",
     "routeName": "Html",
     "params": {

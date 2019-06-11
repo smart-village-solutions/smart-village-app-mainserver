@@ -17,20 +17,28 @@
     "query": "eventRecords",
     "queryVariables": {}
   },
-  "Mitmachen": {
-    "title": "Mitmachen",
-    "screen": "Html",
-    "query": "publicHtmlFile",
-    "queryVariables": {
-      "name": "mitmachen"
-    }
-  },
   "Service": {
     "title": "Service",
     "screen": "Html",
     "query": "publicHtmlFile",
     "queryVariables": {
       "name": "service"
+    }
+  },
+  "Hintergrund": {
+    "title": "Hintergrund",
+    "screen": "Html",
+    "query": "publicHtmlFile",
+    "queryVariables": {
+      "name": "hintergrund"
+    }
+  },
+  "Mitmachen": {
+    "title": "Mitmachen",
+    "screen": "Html",
+    "query": "publicHtmlFile",
+    "queryVariables": {
+      "name": "mitmachen"
     }
   },
   "Feedback": {
