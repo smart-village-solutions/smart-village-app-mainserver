@@ -45,6 +45,7 @@ exclude_paths:
 - script/
 - vendor/
 - public/assets/
+- public/mobile_app/
 - app/assets/javascripts/goldencobra/html_editors/ckeditor/
 - app/assets/javascripts/vendor/
 - app/assets/stylesheets/vendor/
