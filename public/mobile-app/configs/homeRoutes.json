@@ -15,6 +15,20 @@
   },
   {
     "id": "-1",
+    "title": "Maerker Bad Belzig",
+    "routeName": "Html",
+    "params": {
+      "title": "Maerker",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "maerker-bad-belzig"
+      },
+      "rootRouteName": "HomeStack",
+      "webUrl": "https://maerkerapp.brandenburg.de/sixcms/detail.php/214/m_app_ort_d"
+    }
+  },
+  {
+    "id": "-1",
     "title": "Mitmachen",
     "routeName": "Html",
     "params": {
