@@ -52,7 +52,7 @@ module Mutations
                       }
     argument :tags, [String], as: :tag_list, required: false
 
-    field :event, Types::EventRecord, null: false
+    field :event, Types::EventRecordType, null: false
 
     type Types::EventRecordType
 
