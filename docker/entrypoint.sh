@@ -11,5 +11,6 @@ rake db:migrate
 
 rake assets:precompile
 cp -r /app/public/* /assets/
+rm -f /unicorn.pid
 
 exec "$@"
