@@ -1,6 +1,18 @@
 [
   {
-    "id": "-1",
+    "title": "Bürger- und Unternehmensservice",
+    "routeName": "Html",
+    "params": {
+      "title": "Bürger- und Unternehmensservice",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "bb-bus"
+      },
+      "rootRouteName": "BBBUS",
+      "webUrl": "https://service.brandenburg.de/de/BUS-BB?CHARSET=&tsaid_s=01&tsaid_c=00&tsaid_qid=101178015&sw01=Bad+Belzig&tsaid_p010m07=&tsaid_p010201=Bad+Belzig"
+    }
+  },
+  {
     "title": "Fläming bewegt",
     "routeName": "Html",
     "params": {
@@ -9,26 +21,24 @@
       "queryVariables": {
         "name": "flaeming-bewegt"
       },
-      "rootRouteName": "HomeStack",
+      "rootRouteName": "FlaemingBewegt",
       "webUrl": "https://www.flaeming-bewegt.de/"
     }
   },
   {
-    "id": "-1",
-    "title": "Maerker Bad Belzig",
+    "title": "Maerker",
     "routeName": "Html",
     "params": {
       "title": "Maerker",
       "query": "publicHtmlFile",
       "queryVariables": {
-        "name": "maerker-bad-belzig"
+        "name": "maerker"
       },
-      "rootRouteName": "HomeStack",
+      "rootRouteName": "Maerker",
       "webUrl": "https://maerkerapp.brandenburg.de/sixcms/detail.php/214/m_app_ort_d"
     }
   },
   {
-    "id": "-1",
     "title": "Hintergrund",
     "routeName": "Html",
     "params": {
@@ -37,45 +47,34 @@
       "queryVariables": {
         "name": "hintergrund"
       },
-      "rootRouteName": "Hintergrund"
+      "rootRouteName": "Hintergrund",
+      "webUrl": ""
     }
   },
   {
-    "id": "-1",
-    "title": "Mitmachen",
+    "title": "Datenschutz",
     "routeName": "Html",
     "params": {
-      "title": "Mitmachen",
+      "title": "Datenschutz",
       "query": "publicHtmlFile",
       "queryVariables": {
-        "name": "mitmachen"
+        "name": "datenschutz"
       },
-      "rootRouteName": "Mitmachen"
+      "rootRouteName": "Datenschutz",
+      "webUrl": ""
     }
   },
   {
-    "id": "-1",
-    "title": "Feedback",
+    "title": "Impressum",
     "routeName": "Html",
     "params": {
-      "title": "Feedback",
+      "title": "Impressum",
       "query": "publicHtmlFile",
       "queryVariables": {
-        "name": "feedback"
+        "name": "impressum"
       },
-      "rootRouteName": "Feedback"
-    }
-  },
-  {
-    "title": "Wie gefällt Ihnen die App?",
-    "routeName": "Html",
-    "params": {
-      "title": "Wie gefällt Ihnen die App?",
-      "query": "publicHtmlFile",
-      "queryVariables": {
-        "name": "wie-gefaellt"
-      },
-      "rootRouteName": "HomeStack"
+      "rootRouteName": "Impressum",
+      "webUrl": ""
     }
   }
 ]
