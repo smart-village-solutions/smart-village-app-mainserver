@@ -1,0 +1,41 @@
+[
+  {
+    "title": "Hintergrund",
+    "routeName": "Html",
+    "params": {
+      "title": "Hintergrund",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "hintergrund"
+      },
+      "rootRouteName": "Hintergrund",
+      "webUrl": ""
+    }
+  },
+  {
+    "title": "Datenschutz",
+    "routeName": "Html",
+    "params": {
+      "title": "Datenschutz",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "datenschutz"
+      },
+      "rootRouteName": "Datenschutz",
+      "webUrl": ""
+    }
+  },
+  {
+    "title": "Impressum",
+    "routeName": "Html",
+    "params": {
+      "title": "Impressum",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "impressum"
+      },
+      "rootRouteName": "Impressum",
+      "webUrl": ""
+    }
+  }
+]

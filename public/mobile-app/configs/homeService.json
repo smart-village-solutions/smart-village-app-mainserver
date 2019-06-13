@@ -1,0 +1,44 @@
+[
+  {
+    "title": "BB-BUS",
+    "routeName": "Html",
+    "icon": "https://www.iconsdb.com/icons/preview/white/search-3-xxl.png",
+    "params": {
+      "title": "Bürger- und Unternehmensservice",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "bb-bus"
+      },
+      "rootRouteName": "BBBUS",
+      "webUrl": "https://service.brandenburg.de/de/BUS-BB?CHARSET=&tsaid_s=01&tsaid_c=00&tsaid_qid=101178015&sw01=Bad+Belzig&tsaid_p010m07=&tsaid_p010201=Bad+Belzig"
+    }
+  },
+  {
+    "title": "Fläming bewegt",
+    "routeName": "Html",
+    "icon": "https://www.iconsdb.com/icons/preview/white/circle-dashed-4-xxl.png",
+    "params": {
+      "title": "Fläming bewegt",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "flaeming-bewegt"
+      },
+      "rootRouteName": "FlaemingBewegt",
+      "webUrl": "https://www.flaeming-bewegt.de/"
+    }
+  },
+  {
+    "title": "Maerker",
+    "routeName": "Html",
+    "icon": "https://www.iconsdb.com/icons/preview/white/edit-2-xxl.png",
+    "params": {
+      "title": "Maerker",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "maerker"
+      },
+      "rootRouteName": "Maerker",
+      "webUrl": "https://maerkerapp.brandenburg.de/sixcms/detail.php/214/m_app_ort_d"
+    }
+  }
+]
