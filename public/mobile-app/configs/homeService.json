@@ -2,7 +2,7 @@
   {
     "title": "BB-BUS",
     "routeName": "Html",
-    "icon": "https://www.iconsdb.com/icons/preview/white/search-3-xxl.png",
+    "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/BB-BUS.png",
     "params": {
       "title": "Bürger- und Unternehmensservice",
       "query": "publicHtmlFile",
@@ -16,7 +16,7 @@
   {
     "title": "Fläming bewegt",
     "routeName": "Html",
-    "icon": "https://www.iconsdb.com/icons/preview/white/circle-dashed-4-xxl.png",
+    "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/Flaeming.png",
     "params": {
       "title": "Fläming bewegt",
       "query": "publicHtmlFile",
@@ -30,7 +30,7 @@
   {
     "title": "Maerker",
     "routeName": "Html",
-    "icon": "https://www.iconsdb.com/icons/preview/white/edit-2-xxl.png",
+    "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/Maerker.png",
     "params": {
       "title": "Maerker",
       "query": "publicHtmlFile",
