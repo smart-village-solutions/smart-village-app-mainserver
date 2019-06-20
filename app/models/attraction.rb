@@ -30,7 +30,8 @@ class Attraction < ApplicationRecord
                                 :regions
 
   def find_or_create_category
-    return if self.category.present?
+    return if category.present?
+
     self.category_id = Category.where(name: category_name).first_or_create.id
   end
 end
