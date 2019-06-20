@@ -7,7 +7,9 @@ Rails.application.routes.draw do
     controllers :applications => "oauth/applications"
   end
 
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: "users/sessions"
+  }
 
   # if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
