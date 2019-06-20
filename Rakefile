@@ -8,4 +8,6 @@ require "graphql/rake_task"
 
 Rails.application.load_tasks
 
-GraphQL::RakeTask.new(schema_name: "SmartVillageAppMainserverSchema")
+GraphQL::RakeTask.new(schema_name: "SmartVillageAppMainserverSchema",
+                      idl_outfile: "public/schema.graphql",
+                      json_outfile: "public/schema.json")

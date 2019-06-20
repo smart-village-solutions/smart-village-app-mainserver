@@ -3,11 +3,14 @@
 module Mutations
   class CreateNewsItem < BaseMutation
     argument :author, String, required: false
+    argument :title, String, required: false
+    argument :external_id, Integer, required: false
     argument :full_version, Boolean, required: false
     argument :characters_to_be_shown, Integer, required: false
     argument :news_type, String, required: false
     argument :publication_date, String, required: false
     argument :published_at, String, required: false
+    argument :show_publish_date, Boolean, required: false
     argument :source_url, Types::WebUrlInput, required: false,
                                               as: :source_url_attributes,
                                               prepare: ->(source_url, _ctx) { source_url.to_h }
