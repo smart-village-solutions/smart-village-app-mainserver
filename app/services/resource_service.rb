@@ -42,6 +42,5 @@ class ResourceService
       external_type: resource_class,
       unique_id: resource.unique_id
     )
-
   end
 end
