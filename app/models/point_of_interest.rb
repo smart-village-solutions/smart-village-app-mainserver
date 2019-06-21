@@ -10,6 +10,11 @@ class PointOfInterest < Attraction
 
   has_one :location, as: :locateable
 
+  scope :filtered_for_current_user, ->(current_user) do
+    return all if current_user.admin_role?
+    where(data_provider_id: current_user.data_provider_id )
+  end
+
   accepts_nested_attributes_for :prices, :opening_hours, :location
 
   def unique_id
