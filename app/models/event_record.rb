@@ -25,7 +25,8 @@ class EventRecord < ApplicationRecord
 
   scope :filtered_for_current_user, ->(current_user) do
     return all if current_user.admin_role?
-    where(data_provider_id: current_user.data_provider_id )
+
+    where(data_provider_id: current_user.data_provider_id)
   end
 
   accepts_nested_attributes_for :urls, reject_if: ->(attr) { attr[:url].blank? }
