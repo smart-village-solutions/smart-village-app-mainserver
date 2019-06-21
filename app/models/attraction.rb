@@ -6,7 +6,7 @@
 class Attraction < ApplicationRecord
   attr_accessor :category_name
 
-  before_validation :find_or_create_category
+  before_create :find_or_create_category
 
   belongs_to :category
   belongs_to :data_provider
