@@ -6,9 +6,6 @@ module Types
     field :create_tour, mutation: Mutations::CreateTour
     field :create_event_record, mutation: Mutations::CreateEventRecord
     field :create_point_of_interest, mutation: Mutations::CreatePointOfInterest
-    field :destroy_news_item, mutation: Mutations::DestroyNewsItem
-    field :destroy_tour, mutation: Mutations::DestroyTour
-    field :destroy_event_record, mutation: Mutations::DestroyEventRecord
-    field :destroy_point_of_interest, mutation: Mutations::DestroyPointOfInterest
+    field :destroy_record, mutation: Mutations::DestroyRecord
   end
 end
