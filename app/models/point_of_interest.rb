@@ -5,10 +5,10 @@
 # smart village and the surrounding area
 #
 class PointOfInterest < Attraction
-  has_many :opening_hours, as: :openingable
-  has_many :prices, as: :priceable
+  has_many :opening_hours, as: :openingable, dependent: :destroy
+  has_many :prices, as: :priceable, dependent: :destroy
 
-  has_one :location, as: :locateable
+  has_one :location, as: :locateable, dependent: :destroy
 
   accepts_nested_attributes_for :prices, :opening_hours, :location
 

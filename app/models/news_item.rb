@@ -5,9 +5,9 @@
 class NewsItem < ApplicationRecord
   belongs_to :data_provider
 
-  has_many :content_blocks, as: :content_blockable
-  has_one :address, as: :addressable
-  has_one :source_url, as: :web_urlable, class_name: "WebUrl"
+  has_many :content_blocks, as: :content_blockable, dependent: :destroy
+  has_one :address, as: :addressable, dependent: :destroy
+  has_one :source_url, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
 
   accepts_nested_attributes_for :content_blocks, :data_provider, :address, :source_url
 
