@@ -5,10 +5,12 @@
 # smart village and the surrounding area
 #
 class PointOfInterest < Attraction
-  has_many :opening_hours, as: :openingable
-  has_many :prices, as: :priceable
+  attr_accessor :force_create
 
-  has_one :location, as: :locateable
+  has_many :opening_hours, as: :openingable, dependent: :destroy
+  has_many :prices, as: :priceable, dependent: :destroy
+
+  has_one :location, as: :locateable, dependent: :destroy
 
   scope :filtered_for_current_user, ->(current_user) do
     return all if current_user.admin_role?

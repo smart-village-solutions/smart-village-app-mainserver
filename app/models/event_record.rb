@@ -4,6 +4,7 @@
 class EventRecord < ApplicationRecord
   attr_accessor :category_name
   attr_accessor :region_name
+  attr_accessor :force_create
 
   before_validation :find_or_create_category
   before_validation :find_or_create_region
@@ -12,16 +13,16 @@ class EventRecord < ApplicationRecord
   belongs_to :region, optional: true
   belongs_to :data_provider
 
-  has_many :urls, as: :web_urlable, class_name: "WebUrl"
-  has_one :organizer, as: :companyable, class_name: "OperatingCompany"
-  has_many :addresses, as: :addressable
-  has_one :location, as: :locateable
-  has_many :contacts, as: :contactable
-  has_one :accessibility_information, as: :accessable
-  has_many :price_informations, as: :priceable, class_name: "Price"
-  has_many :media_contents, as: :mediaable
-  has_one :repeat_duration
-  has_many :dates, as: :dateable, class_name: "FixedDate"
+  has_many :urls, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
+  has_one :organizer, as: :companyable, class_name: "OperatingCompany", dependent: :destroy
+  has_many :addresses, as: :addressable, dependent: :destroy
+  has_one :location, as: :locateable, dependent: :destroy
+  has_many :contacts, as: :contactable, dependent: :destroy
+  has_one :accessibility_information, as: :accessable, dependent: :destroy
+  has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
+  has_many :media_contents, as: :mediaable, dependent: :destroy
+  has_one :repeat_duration, dependent: :destroy
+  has_many :dates, as: :dateable, class_name: "FixedDate", dependent: :destroy
 
   scope :filtered_for_current_user, ->(current_user) do
     return all if current_user.admin_role?

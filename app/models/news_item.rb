@@ -3,11 +3,13 @@
 # News Item is one of the four Main resources for the app. A news Item can be anything
 # from an old school news article to a whole story structured in chapters
 class NewsItem < ApplicationRecord
+  attr_accessor :force_create
+
   belongs_to :data_provider
 
-  has_many :content_blocks, as: :content_blockable
-  has_one :address, as: :addressable
-  has_one :source_url, as: :web_urlable, class_name: "WebUrl"
+  has_many :content_blocks, as: :content_blockable, dependent: :destroy
+  has_one :address, as: :addressable, dependent: :destroy
+  has_one :source_url, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
 
   scope :filtered_for_current_user, ->(current_user) do
     return all if current_user.admin_role?

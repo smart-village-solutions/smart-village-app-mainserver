@@ -3,7 +3,7 @@
 # This model provides an address to every other resource which needs one.
 class Address < ApplicationRecord
   belongs_to :addressable, polymorphic: true
-  has_one :geo_location, as: :geo_locateable
+  has_one :geo_location, as: :geo_locateable, dependent: :destroy
 
   accepts_nested_attributes_for :geo_location
 
