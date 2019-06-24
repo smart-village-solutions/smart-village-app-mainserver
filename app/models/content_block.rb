@@ -2,7 +2,7 @@
 
 # This model provides an contact object to every other resource which needs one.
 class ContentBlock < ApplicationRecord
-  has_many :media_contents, as: :mediaable
+  has_many :media_contents, as: :mediaable, dependent: :destroy
   belongs_to :content_blockable, polymorphic: true
 
   accepts_nested_attributes_for :media_contents

@@ -4,7 +4,7 @@
 # needs one or more media contents.
 class MediaContent < ApplicationRecord
   belongs_to :mediaable, polymorphic: true
-  has_one :source_url, as: :web_urlable, class_name: "WebUrl"
+  has_one :source_url, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
   validates_presence_of :content_type
 
   accepts_nested_attributes_for :source_url

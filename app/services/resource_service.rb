@@ -10,6 +10,7 @@ class ResourceService
   end
 
   def create(resource_class, params)
+    @params = params
     @resource_class = resource_class
     @resource = resource_class.new(params)
     @resource.data_provider = data_provider
@@ -28,6 +29,8 @@ class ResourceService
   end
 
   def find_external_resource
+    return if @params.fetch(:force_create, false)
+
     ExternalReference.find_by(
       data_provider: data_provider,
       external_type: resource_class,

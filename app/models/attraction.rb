@@ -13,12 +13,12 @@ class Attraction < ApplicationRecord
 
   has_and_belongs_to_many :certificates, optional: true
   has_and_belongs_to_many :regions, optional: true
-  has_many :addresses, as: :addressable
-  has_one :contact, as: :contactable
-  has_many :media_contents, as: :mediaable
-  has_one :accessibility_information, as: :accessable
-  has_one :operating_company, as: :companyable
-  has_many :web_urls, as: :web_urlable
+  has_many :addresses, as: :addressable, dependent: :destroy
+  has_one :contact, as: :contactable, dependent: :destroy
+  has_many :media_contents, as: :mediaable, dependent: :destroy
+  has_one :accessibility_information, as: :accessable, dependent: :destroy
+  has_one :operating_company, as: :companyable, dependent: :destroy
+  has_many :web_urls, as: :web_urlable, dependent: :destroy
 
   validates_presence_of :name
   acts_as_taggable

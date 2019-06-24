@@ -5,7 +5,7 @@ class Location < ApplicationRecord
 
   belongs_to :locateable, polymorphic: true
   belongs_to :region, optional: true
-  has_one :geo_location, as: :geo_locateable
+  has_one :geo_location, as: :geo_locateable, dependent: :destroy
 
   accepts_nested_attributes_for :geo_location
 

@@ -2,6 +2,7 @@
 
 module Mutations
   class CreatePointOfInterest < BaseMutation
+    argument :force_create, Boolean, required: false
     argument :name, String, required: true
     argument :description, String, required: false
     argument :mobile_description, String, required: false
