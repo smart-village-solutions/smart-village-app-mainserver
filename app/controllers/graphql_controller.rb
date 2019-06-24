@@ -2,7 +2,7 @@
 
 class GraphqlController < ApplicationController
   # To activate access control by doorkeeper, uncomment next line - comment to deactivate doorkeeper
-  switch bsbefore_action :doorkeeper_authorize!
+  before_action :doorkeeper_authorize!
 
   skip_before_action :verify_authenticity_token
 
