@@ -6,7 +6,7 @@
 class Attraction < ApplicationRecord
   attr_accessor :category_name
 
-  before_validation :find_or_create_category
+  before_validation :set_category_id
 
   belongs_to :category
   belongs_to :data_provider
@@ -29,8 +29,18 @@ class Attraction < ApplicationRecord
                                 :data_provider, :certificates,
                                 :regions
 
+  #
+  # callback function which enables setting of category by
+  # virtual attribute category name. ATTENTION: With this callback
+  # the setting of category is only possible with category_name
+  # PointOfInterest.create(category: Category.first) doesn't work anymore.
+  #
+  def set_category_id
+    self.category_id = find_or_create_category.id
+  end
+
   def find_or_create_category
-    self.category_id = Category.where(name: category_name).first_or_create.id
+    Category.where(name: category_name).first_or_create
   end
 end
 

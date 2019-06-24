@@ -163,8 +163,8 @@ end
 def create_date
   FixedDate.create(
     weekday: Faker::Date.between(2000.days.ago, Date.today).strftime("%A"),
-    date_start: Faker::Date.backward.strftime("%d.%m.%y"),
-    date_end: Faker::Date.forward.strftime("%d.%m.%y"),
+    date_start: Faker::Date.backward.strftime("%d.%m.%Y"),
+    date_end: Faker::Date.forward.strftime("%d.%m.%Y"),
     time_start: Faker::Time.backward.strftime("%H:%M"),
     time_end: Faker::Time.forward.strftime("%H:%M"),
     time_description: Faker::Lorem.paragraph,
@@ -194,11 +194,11 @@ create_categories
     description: Faker::Lorem.paragraph,
     mobile_description: Faker::Lorem.paragraph,
     active: true,
-    category: Category.find(Faker::Number.within(1..3))
+    category: "Burgen und Schlösser",
+    data_provider: create_data_provider
   )
   poi.addresses << create_address
   poi.contact = create_contact
-  poi.data_provider = create_data_provider
   poi.operating_company = create_operating_company
   poi.web_urls << create_web_url
   6.times do
@@ -212,6 +212,7 @@ create_categories
   poi.tag_list.add("schöne Landschaft #{n}")
   poi.save
 end
+
 10.times do |n|
   tour = Tour.create(
     external_id: Faker::Alphanumeric.alphanumeric(4),
@@ -219,7 +220,7 @@ end
     description: Faker::Lorem.paragraph,
     mobile_description: Faker::Lorem.paragraph,
     active: true,
-    category: Category.find(Faker::Number.within(1..3)),
+    category: "Schöne Fahrradrouten",
     length_km: Faker::Number.within(50..250),
     means_of_transportation: Faker::Number.within(0..2)
   )
