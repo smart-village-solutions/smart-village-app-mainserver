@@ -22,7 +22,7 @@ Doorkeeper.configure do
     # Example implementation:
 
     if current_user
-      head :forbidden unless current_user.admin?
+      head :forbidden unless current_user.admin_role?
     else
       redirect_to new_user_session_path
     end
