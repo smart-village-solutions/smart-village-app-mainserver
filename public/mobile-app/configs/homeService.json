@@ -1,7 +1,8 @@
 [
   {
-    "title": "Bürger- und Unternehmensservice",
+    "title": "BB-BUS",
     "routeName": "Html",
+    "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/BB-BUS.png",
     "params": {
       "title": "Bürger- und Unternehmensservice",
       "query": "publicHtmlFile",
@@ -15,6 +16,7 @@
   {
     "title": "Fläming bewegt",
     "routeName": "Html",
+    "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/Flaeming.png",
     "params": {
       "title": "Fläming bewegt",
       "query": "publicHtmlFile",
@@ -28,6 +30,7 @@
   {
     "title": "Maerker",
     "routeName": "Html",
+    "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/Maerker.png",
     "params": {
       "title": "Maerker",
       "query": "publicHtmlFile",
@@ -36,45 +39,6 @@
       },
       "rootRouteName": "Maerker",
       "webUrl": "https://maerkerapp.brandenburg.de/sixcms/detail.php/214/m_app_ort_d"
-    }
-  },
-  {
-    "title": "Hintergrund",
-    "routeName": "Html",
-    "params": {
-      "title": "Hintergrund",
-      "query": "publicHtmlFile",
-      "queryVariables": {
-        "name": "hintergrund"
-      },
-      "rootRouteName": "Hintergrund",
-      "webUrl": ""
-    }
-  },
-  {
-    "title": "Datenschutz",
-    "routeName": "Html",
-    "params": {
-      "title": "Datenschutz",
-      "query": "publicHtmlFile",
-      "queryVariables": {
-        "name": "datenschutz"
-      },
-      "rootRouteName": "Datenschutz",
-      "webUrl": ""
-    }
-  },
-  {
-    "title": "Impressum",
-    "routeName": "Html",
-    "params": {
-      "title": "Impressum",
-      "query": "publicHtmlFile",
-      "queryVariables": {
-        "name": "impressum"
-      },
-      "rootRouteName": "Impressum",
-      "webUrl": ""
     }
   }
 ]

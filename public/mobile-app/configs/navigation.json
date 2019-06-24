@@ -6,7 +6,7 @@
     "queryVariables": {}
   },
   "PointsOfInterest": {
-    "title": "Orte & Routen",
+    "title": "Orte und Touren",
     "screen": "Index",
     "query": "pointsOfInterest",
     "queryVariables": {}
@@ -17,29 +17,41 @@
     "query": "eventRecords",
     "queryVariables": {}
   },
-  "Mitmachen": {
-    "title": "Mitmachen",
+  "BBBUS": {
+    "title": "Bürger- und Unternehmensservice",
     "screen": "Html",
     "query": "publicHtmlFile",
     "queryVariables": {
-      "name": "mitmachen"
-    }
+      "name": "bb-bus"
+    },
+    "webUrl": "https://service.brandenburg.de/de/BUS-BB?CHARSET=&tsaid_s=01&tsaid_c=00&tsaid_qid=101178015&sw01=Bad+Belzig&tsaid_p010m07=&tsaid_p010201=Bad+Belzig"
   },
-  "Service": {
-    "title": "Service",
+  "FlaemingBewegt": {
+    "title": "Fläming bewegt",
     "screen": "Html",
     "query": "publicHtmlFile",
     "queryVariables": {
-      "name": "service"
-    }
+      "name": "flaeming-bewegt"
+    },
+    "webUrl": "https://www.flaeming-bewegt.de/"
   },
-  "Feedback": {
-    "title": "Feedback",
+  "Maerker": {
+    "title": "Maerker",
     "screen": "Html",
     "query": "publicHtmlFile",
     "queryVariables": {
-      "name": "feedback"
-    }
+      "name": "maerker"
+    },
+    "webUrl": "https://maerkerapp.brandenburg.de/sixcms/detail.php/214/m_app_ort_d"
+  },
+  "Hintergrund": {
+    "title": "Hintergrund",
+    "screen": "Html",
+    "query": "publicHtmlFile",
+    "queryVariables": {
+      "name": "hintergrund"
+    },
+    "webUrl": ""
   },
   "Datenschutz": {
     "title": "Datenschutz",
@@ -47,7 +59,8 @@
     "query": "publicHtmlFile",
     "queryVariables": {
       "name": "datenschutz"
-    }
+    },
+    "webUrl": ""
   },
   "Impressum": {
     "title": "Impressum",
@@ -55,6 +68,7 @@
     "query": "publicHtmlFile",
     "queryVariables": {
       "name": "impressum"
-    }
+    },
+    "webUrl": ""
   }
 }
