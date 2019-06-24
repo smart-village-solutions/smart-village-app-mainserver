@@ -13,7 +13,6 @@ class EventRecord < ApplicationRecord
   belongs_to :region, optional: true
   belongs_to :data_provider
 
-
   has_many :urls, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
   has_one :organizer, as: :companyable, class_name: "OperatingCompany", dependent: :destroy
   has_many :addresses, as: :addressable, dependent: :destroy

@@ -7,15 +7,15 @@ module Mutations
 
     type Types::DestroyType
 
-    RECORD_WHITELIST = ["EventRecord", "NewsItem", "PointOfInterest", "Tour"]
+    RECORD_WHITELIST = ["EventRecord", "NewsItem", "PointOfInterest", "Tour"].freeze
 
     def resolve(id:, record_type:)
       return error_status unless RECORD_WHITELIST.include?(record_type)
 
       record = record_type.constantize
-        .filtered_for_current_user(context[:current_user])
-        .where(id: id)
-        .first
+                 .filtered_for_current_user(context[:current_user])
+                 .where(id: id)
+                 .first
 
       if record.present?
         record.destroy
