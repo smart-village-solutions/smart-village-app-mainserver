@@ -194,7 +194,7 @@ create_categories
     description: Faker::Lorem.paragraph,
     mobile_description: Faker::Lorem.paragraph,
     active: true,
-    category: "Burgen und Schlösser",
+    category_name: "Burgen und Schlösser",
     data_provider: create_data_provider
   )
   poi.addresses << create_address
@@ -220,7 +220,7 @@ end
     description: Faker::Lorem.paragraph,
     mobile_description: Faker::Lorem.paragraph,
     active: true,
-    category: "Schöne Fahrradrouten",
+    category_name: "Schöne Fahrradrouten",
     length_km: Faker::Number.within(50..250),
     means_of_transportation: Faker::Number.within(0..2)
   )
