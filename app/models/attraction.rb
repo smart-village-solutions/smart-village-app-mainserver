@@ -6,7 +6,7 @@
 class Attraction < ApplicationRecord
   attr_accessor :category_name
 
-  before_create :find_or_create_category
+  before_validation :find_or_create_category
 
   belongs_to :category
   belongs_to :data_provider
@@ -30,8 +30,6 @@ class Attraction < ApplicationRecord
                                 :regions
 
   def find_or_create_category
-    return if category.present?
-
     self.category_id = Category.where(name: category_name).first_or_create.id
   end
 end
