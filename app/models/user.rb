@@ -5,6 +5,8 @@ class User < ApplicationRecord
   # :confirmable, :trackable, :omniauthable and :rememberable
   devise :database_authenticatable, :recoverable, :validatable, :lockable, :timeoutable
 
+  enum role: { user: 0, admin: 1 }, _suffix: :role
+
   belongs_to :data_provider, optional: true
 
   has_many :access_grants,
@@ -20,11 +22,6 @@ class User < ApplicationRecord
   has_many :oauth_applications,
            class_name: "Doorkeeper::Application",
            as: :owner
-
-  def admin?
-    # TODO: Dies muss eine Rechte- und Rollenverwaltung übernehmen
-    true
-  end
 end
 
 # == Schema Information

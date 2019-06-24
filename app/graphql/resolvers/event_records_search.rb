@@ -5,7 +5,7 @@ require "graphql/query_resolver"
 class Resolvers::EventRecordsSearch
   include SearchObject.module(:graphql)
 
-  scope { EventRecord.all }
+  scope { EventRecord.filtered_for_current_user(context[:current_user]) }
 
   type types[Types::EventRecordType]
 
