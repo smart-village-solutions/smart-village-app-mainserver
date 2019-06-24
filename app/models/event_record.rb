@@ -4,6 +4,7 @@
 class EventRecord < ApplicationRecord
   attr_accessor :category_name
   attr_accessor :region_name
+  attr_accessor :force_create
 
   before_validation :find_or_create_category
   before_validation :find_or_create_region
@@ -11,6 +12,7 @@ class EventRecord < ApplicationRecord
   belongs_to :category, optional: true
   belongs_to :region, optional: true
   belongs_to :data_provider
+
 
   has_many :urls, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
   has_one :organizer, as: :companyable, class_name: "OperatingCompany", dependent: :destroy
