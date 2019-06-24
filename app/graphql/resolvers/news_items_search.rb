@@ -6,7 +6,7 @@ require "graphql/query_resolver"
 class Resolvers::NewsItemsSearch
   include SearchObject.module(:graphql)
 
-  scope { NewsItem.all }
+  scope { NewsItem.filtered_for_current_user(context[:current_user]) }
 
   type types[Types::NewsItemType]
 

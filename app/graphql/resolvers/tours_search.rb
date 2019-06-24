@@ -6,7 +6,7 @@ require "graphql/query_resolver"
 class Resolvers::ToursSearch
   include SearchObject.module(:graphql)
 
-  scope { Tour.all }
+  scope { Tour.filtered_for_current_user(context[:current_user]) }
 
   type types[Types::TourType]
 
