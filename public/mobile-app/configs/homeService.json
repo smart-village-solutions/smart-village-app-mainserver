@@ -1,16 +1,13 @@
 [
   {
     "title": "BB-BUS",
-    "routeName": "Html",
+    "routeName": "BBBUSIndex",
     "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/BB-BUS.png",
     "params": {
       "title": "Bürger- und Unternehmensservice",
-      "query": "publicHtmlFile",
-      "queryVariables": {
-        "name": "bb-bus"
-      },
-      "rootRouteName": "BBBUS",
-      "webUrl": "https://service.brandenburg.de/de/BUS-BB?CHARSET=&tsaid_s=01&tsaid_c=00&tsaid_qid=101178015&sw01=Bad+Belzig&tsaid_p010m07=&tsaid_p010201=Bad+Belzig"
+      "query": "",
+      "queryVariables": {},
+      "rootRouteName": "BBBUS"
     }
   },
   {

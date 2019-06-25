@@ -19,12 +19,9 @@
   },
   "BBBUS": {
     "title": "Bürger- und Unternehmensservice",
-    "screen": "Html",
-    "query": "publicHtmlFile",
-    "queryVariables": {
-      "name": "bb-bus"
-    },
-    "webUrl": "https://service.brandenburg.de/de/BUS-BB?CHARSET=&tsaid_s=01&tsaid_c=00&tsaid_qid=101178015&sw01=Bad+Belzig&tsaid_p010m07=&tsaid_p010201=Bad+Belzig"
+    "screen": "BBBUSIndex",
+    "query": "",
+    "queryVariables": {}
   },
   "FlaemingBewegt": {
     "title": "Fläming bewegt",
