@@ -74,7 +74,6 @@ class Resolvers::PointsOfInterestSearch
     scope.order("RAND()")
   end
 
-
   # https://github.com/nettofarah/graphql-query-resolver
 
   def fetch_results
