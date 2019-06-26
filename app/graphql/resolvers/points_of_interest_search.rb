@@ -19,6 +19,7 @@ class Resolvers::PointsOfInterestSearch
     value "name_DESC"
     value "id_ASC"
     value "id_DESC"
+    value "RAND"
   end
 
   option :limit, type: types.Int, with: :apply_limit
@@ -68,6 +69,11 @@ class Resolvers::PointsOfInterestSearch
   def apply_order_with_id_asc(scope)
     scope.order("id ASC")
   end
+
+  def apply_order_with_rand(scope)
+    scope.order("RAND()")
+  end
+
 
   # https://github.com/nettofarah/graphql-query-resolver
 
