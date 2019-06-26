@@ -5,6 +5,7 @@ class EventRecord < ApplicationRecord
   attr_accessor :category_name
   attr_accessor :region_name
   attr_accessor :force_create
+  attr_accessor :list_date
 
   before_validation :find_or_create_category
   before_validation :find_or_create_region
@@ -59,6 +60,10 @@ class EventRecord < ApplicationRecord
     date_fields = date_keys.map { |d| date.try(:send, d) }
 
     generate_checksum(fields + address_fields + date_fields)
+  end
+
+  def list_date
+    dates.order(date_start: :asc).first
   end
 end
 
