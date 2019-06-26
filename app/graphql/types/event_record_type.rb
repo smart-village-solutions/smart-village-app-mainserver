@@ -13,6 +13,7 @@ module Types
     field :addresses, [AddressType], null: true
     field :location, LocationType, null: true
     field :region_id, String, null: true
+    field :region, RegionType, null: true
     field :data_provider, DataProviderType, null: true
     field :contacts, [ContactType], null: true
     field :urls, [WebUrlType], null: true
