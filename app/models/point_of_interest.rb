@@ -8,7 +8,7 @@ class PointOfInterest < Attraction
   attr_accessor :force_create
 
   has_many :opening_hours, as: :openingable, dependent: :destroy
-  has_many :prices, as: :priceable, dependent: :destroy
+  has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
 
   has_one :location, as: :locateable, dependent: :destroy
 
