@@ -79,8 +79,6 @@ class Resolvers::EventRecordsSearch
     scope.sort_by(&:list_date).reverse
   end
 
-
-
   # https://github.com/nettofarah/graphql-query-resolver
 
   def fetch_results

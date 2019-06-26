@@ -5,7 +5,6 @@ class EventRecord < ApplicationRecord
   attr_accessor :category_name
   attr_accessor :region_name
   attr_accessor :force_create
-  attr_accessor :list_date
 
   before_validation :find_or_create_category
   before_validation :find_or_create_region
@@ -25,11 +24,11 @@ class EventRecord < ApplicationRecord
   has_one :repeat_duration, dependent: :destroy
   has_many :dates, as: :dateable, class_name: "FixedDate", dependent: :destroy
 
-  scope :filtered_for_current_user, ->(current_user) do
+  scope :filtered_for_current_user, lambda { |current_user|
     return all if current_user.admin_role?
 
     where(data_provider_id: current_user.data_provider_id)
-  end
+  }
 
   accepts_nested_attributes_for :urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :data_provider, :organizer,
