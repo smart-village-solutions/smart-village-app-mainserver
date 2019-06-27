@@ -9,7 +9,6 @@ FactoryBot.define do
     time_end { "2019-05-06 12:17:44" }
     time_Description { "MyString" }
     use_only_time_description { false }
-    dateable { nil }
   end
 end
 

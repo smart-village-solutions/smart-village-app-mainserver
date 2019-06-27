@@ -1,7 +1,11 @@
 FactoryBot.define do
   factory :web_url do
-    url { "MyString" }
+    for_data_provider
+    url { "http://www.test.de" }
     description { "MyString" }
+    trait :for_data_provider do
+      association(:web_urlable, factory: :data_provider)
+    end
   end
 end
 
