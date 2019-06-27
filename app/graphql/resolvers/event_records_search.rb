@@ -72,11 +72,11 @@ class Resolvers::EventRecordsSearch
   end
 
   def apply_order_with_list_date_desc(scope)
-    scope.sort_by(&:list_date)
+    scope.sort_by(&:list_date).reverse
   end
 
   def apply_order_with_list_date_asc(scope)
-    scope.sort_by(&:list_date).reverse
+    scope.sort_by(&:list_date)
   end
 
   # https://github.com/nettofarah/graphql-query-resolver
