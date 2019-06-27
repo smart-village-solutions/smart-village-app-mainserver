@@ -5,7 +5,7 @@ FactoryBot.define do
     description { "A Reading with an Author" }
     repeat { false }
     title { "MyString" }
-    data_provider { create(:data_provider)}
+    data_provider { create(:data_provider) }
 
     factory :event_record_with_dates do
       transient do
