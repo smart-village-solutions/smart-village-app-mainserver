@@ -49,6 +49,7 @@ RSpec.describe EventRecord, type: :model do
         expect(result).to eq(future_date_1)
       end
     end
+
     context "with an event who has two past dates" do
       it "returns the date closest to now" do
         er_1 = event_record_1
@@ -60,6 +61,7 @@ RSpec.describe EventRecord, type: :model do
         expect(result).to eq(past_date_2)
       end
     end
+
     context "with an event who has a past and two future date" do
       it "returns the future date which is closest to now" do
         er_1 = event_record_1
