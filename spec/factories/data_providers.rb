@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :data_provider do
     name { "MyString" }
-    logo { "MyString" }
     description { "MyString" }
   end
 end

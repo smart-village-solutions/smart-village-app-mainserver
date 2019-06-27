@@ -62,7 +62,12 @@ class EventRecord < ApplicationRecord
   end
 
   def list_date
-    dates.order(date_start: :asc).first
+    event_dates = dates.order(date_start: :asc)
+    future_date = event_dates.select { |date| date.date_start > Time.zone.now }.first
+
+    return future_date if future_date.present?
+
+    event_dates.last
   end
 end
 
