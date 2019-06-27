@@ -202,7 +202,7 @@ create_categories
   poi.operating_company = create_operating_company
   poi.web_urls << create_web_url
   6.times do
-    poi.prices << create_price
+    poi.price_informations << create_price
     poi.opening_hours << create_opening_hour
     poi.media_contents << create_media_content
   end
