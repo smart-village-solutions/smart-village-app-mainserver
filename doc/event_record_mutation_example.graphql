@@ -2,8 +2,8 @@ mutation {
 	createEventRecord(
 		title: "Test"
 		parentId: 1
-		categoryId: 5
-		regionId: 3
+		categoryName: "category name"
+		regionName: "Flaeming"
 		description: "Lorem ipsum dolor sit amet consectetur adipiscing"
 		dates: [
 			{
@@ -88,29 +88,6 @@ mutation {
 				]
 			}
 		]
-		dataProvider: {
-			name: "Bäder Betrieb Brandenburg"
-			address: {
-				street: "Strandstraße"
-				addition: "Schwimmbad 2"
-				zip: "10100"
-				city: "Bad Belzig"
-				geoLocation: { latitude: 8123345.3726, longitude: 8723647.9347 }
-			}
-			contact: {
-				firstName: "Tim"
-				lastName: "Test"
-				phone: "012345678"
-				email: "test@test.de"
-				fax: "09843729047"
-				webUrls: [
-					{ url: "http://www.test1.de", description: "url 1" }
-					{ url: "http://www.test2.de", description: "url 2" }
-				]
-			}
-			logo: { url: "https://www.logo-url.de", description: "url that lkeads to a logo image file" }
-			description: "TMB dind die besten"
-		}
 		organizer: {
 			name: "McClure, Kemmer and Brown"
 			address: {
@@ -131,9 +108,11 @@ mutation {
 	) {
 		id
 		title
-		categoryId
+		category {
+			name
+		}
 		parentId
-		regionId
+		createdAt
 		description
 		dates {
 			weekday
@@ -166,34 +145,6 @@ mutation {
 					latitude
 					longitude
 				}
-			}
-		}
-		dataProvider {
-			name
-			contact {
-				firstName
-				lastName
-				phone
-				fax
-				email
-				webUrls {
-					url
-					description
-				}
-			}
-			address {
-				addition
-				street
-				zip
-				city
-				geoLocation {
-					latitude
-					longitude
-				}
-			}
-			logo {
-				url
-				description
 			}
 		}
 		tagList
