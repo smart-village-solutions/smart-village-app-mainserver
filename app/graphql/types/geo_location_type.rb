@@ -2,8 +2,8 @@
 
 module Types
   class GeoLocationType < Types::BaseObject
-    field :id, ID, null: false
-    field :latitude, Float, null: false
-    field :longitude, Float, null: false
+    field :id, ID, null: true
+    field :latitude, Float, null: true
+    field :longitude, Float, null: true
   end
 end

@@ -2,6 +2,6 @@
 
 module Types
   class RegionType < Types::BaseObject
-    field :name, String, null: false
+    field :name, String, null: true
   end
 end

@@ -2,6 +2,7 @@
 
 module Types
   class AddressInput < BaseInputObject
+    argument :id, Integer, required: false
     argument :addition, String, required: false
     argument :street, String, required: false
     argument :zip, String, required: false

@@ -2,7 +2,7 @@
 
 module Types
   class MediaContentType < Types::BaseObject
-    field :id, ID, null: false
+    field :id, ID, null: true
     field :caption_text, String, null: true
     field :copyright, String, null: true
     field :height, Integer, null: true

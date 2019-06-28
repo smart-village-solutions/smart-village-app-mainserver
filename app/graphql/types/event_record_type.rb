@@ -2,7 +2,7 @@
 
 module Types
   class EventRecordType < Types::BaseObject
-    field :id, ID, null: false
+    field :id, ID, null: true
     field :parent_id, Integer, null: true
     field :description, String, null: true
     field :title, String, null: true
