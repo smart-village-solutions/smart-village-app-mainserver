@@ -18,7 +18,7 @@ class PointOfInterest < Attraction
     where(data_provider_id: current_user.data_provider_id)
   end
 
-  accepts_nested_attributes_for :prices, :opening_hours, :location
+  accepts_nested_attributes_for :price_informations, :opening_hours, :location
 
   def unique_id
     fields = [name, type]

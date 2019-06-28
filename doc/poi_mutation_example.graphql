@@ -58,7 +58,7 @@ mutation {
 				{ url: "http://www.test2.de", description: "url 2" }
 			]
 		}
-		prices: [
+		price_informations: [
 			{ name: "Standardkarte", amount: 5.89, groupPrice: false, description: "Tarif gilt nicht in den Ferien" }
 			{
 				name: "Familienkarte"
@@ -187,7 +187,7 @@ mutation {
 			regionId
 			state
 		}
-		prices {
+		price_informations {
 			name
 			amount
 			description
