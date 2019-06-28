@@ -13,8 +13,11 @@ module Mutations
                                                 prepare: lambda { |addresses, _ctx|
                                                   addresses.map(&:to_h)
                                                 }
-    argument :contact, Types::ContactInput, required: false, as: :contact_attributes,
-                                            prepare: ->(contact, _ctx) { contact.to_h }
+
+    argument :contact, Types::ContactInput,
+             required: false, as: :contact_attributes,
+             prepare: ->(contact, _ctx) { contact.to_h }
+
     argument :price_informations, [Types::PriceInput],
              required: false, as: :price_informations_attributes,
              prepare: ->(price_informations, _ctx) { price_informations.map(&:to_h) }
