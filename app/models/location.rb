@@ -10,7 +10,9 @@ class Location < ApplicationRecord
   has_one :geo_location, as: :geo_locateable, dependent: :destroy
 
   accepts_nested_attributes_for :geo_location,
-                                reject_if: ->(attr) { attr[:latitude].blank? || attr[:longitude].blank? }
+                                reject_if: lambda { |attr|
+                                             attr[:latitude].blank? || attr[:longitude].blank?
+                                           }
 
   def find_or_create_region
     return if region_name.blank?
