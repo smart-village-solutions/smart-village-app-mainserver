@@ -8,7 +8,7 @@ class PointOfInterest < Attraction
   attr_accessor :force_create
 
   has_many :opening_hours, as: :openingable, dependent: :destroy
-  has_many :prices, as: :priceable, dependent: :destroy
+  has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
 
   has_one :location, as: :locateable, dependent: :destroy
 
@@ -18,7 +18,7 @@ class PointOfInterest < Attraction
     where(data_provider_id: current_user.data_provider_id)
   end
 
-  accepts_nested_attributes_for :prices, :opening_hours, :location
+  accepts_nested_attributes_for :price_informations, :opening_hours, :location
 
   def unique_id
     fields = [name, type]

@@ -16,7 +16,7 @@ module Types
     field :media_contents, [MediaContentType], null: true
     field :operating_company, OperatingCompanyType, null: true
     field :opening_hours, [OpeningHourType], null: true
-    field :prices, [PriceType], null: true
+    field :price_informations, [PriceType], null: true
     field :certificates, [CertificateType], null: true
     field :accessibility_information, AccessibilityInformationType, null: true
     field :tag_list, [String], null: true
