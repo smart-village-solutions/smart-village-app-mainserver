@@ -1,5 +1,5 @@
 module Types
-  class AnyPrimativeType < Types::BaseScalar
+  class AnyPrimitiveType < Types::BaseScalar
     def self.coerce_input(value, context)
       case value
       when String, TrueClass, FalseClass, Integer, Float then value
