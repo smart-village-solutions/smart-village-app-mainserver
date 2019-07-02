@@ -2,10 +2,20 @@
 
 FactoryBot.define do
   factory :event_record do
-    region { "MyString" }
-    description { "MyString" }
+    description { "A Reading with an Author" }
     repeat { false }
     title { "MyString" }
+    data_provider { create(:data_provider) }
+
+    factory :event_record_with_dates do
+      transient do
+        dates_count { 5 }
+      end
+
+      after(:create) do |event_record, evaluator|
+        create_list(:event_record, evaluator.dates_count, event_record: event_record)
+      end
+    end
   end
 end
 

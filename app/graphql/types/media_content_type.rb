@@ -2,12 +2,12 @@
 
 module Types
   class MediaContentType < Types::BaseObject
-    field :id, ID, null: false
-    field :caption_text, String, null: false
+    field :id, ID, null: true
+    field :caption_text, String, null: true
     field :copyright, String, null: true
     field :height, Integer, null: true
     field :width, Integer, null: true
-    field :content_type, String, null: false
-    field :source_url, WebUrlType, null: false
+    field :content_type, String, null: true
+    field :source_url, WebUrlType, null: true
   end
 end

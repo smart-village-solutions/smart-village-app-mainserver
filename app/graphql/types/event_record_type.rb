@@ -7,12 +7,13 @@ module Types
     field :description, String, null: true
     field :title, String, null: true
     field :dates, [DateType], null: true
+    field :list_date, String, null: true
     field :repeat, Boolean, null: true
     field :repeat_duration, RepeatDurationType, null: true
     field :category, CategoryType, null: true
     field :addresses, [AddressType], null: true
     field :location, LocationType, null: true
-    field :region_id, String, null: true
+    field :region, RegionType, null: true
     field :data_provider, DataProviderType, null: true
     field :contacts, [ContactType], null: true
     field :urls, [WebUrlType], null: true

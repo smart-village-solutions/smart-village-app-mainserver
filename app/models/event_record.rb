@@ -24,11 +24,11 @@ class EventRecord < ApplicationRecord
   has_one :repeat_duration, dependent: :destroy
   has_many :dates, as: :dateable, class_name: "FixedDate", dependent: :destroy
 
-  scope :filtered_for_current_user, ->(current_user) do
+  scope :filtered_for_current_user, lambda { |current_user|
     return all if current_user.admin_role?
 
     where(data_provider_id: current_user.data_provider_id)
-  end
+  }
 
   accepts_nested_attributes_for :urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :data_provider, :organizer,
@@ -59,6 +59,15 @@ class EventRecord < ApplicationRecord
     date_fields = date_keys.map { |d| date.try(:send, d) }
 
     generate_checksum(fields + address_fields + date_fields)
+  end
+
+  def list_date
+    event_dates = dates.order(date_start: :asc)
+    future_date = event_dates.select { |date| date.date_start > Time.zone.now }.first.try(:date_start)
+
+    return future_date if future_date.present?
+
+    event_dates.last.try(:date_start)
   end
 end
 
