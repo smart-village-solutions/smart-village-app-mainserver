@@ -15,7 +15,7 @@
     "title": "Veranstaltungen",
     "screen": "Index",
     "query": "eventRecords",
-    "queryVariables": {}
+    "queryVariables": { "order": "listDate_DESC" }
   },
   "BBBUS": {
     "title": "Bürger- und Unternehmensservice",
