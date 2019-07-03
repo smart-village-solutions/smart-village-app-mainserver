@@ -57,8 +57,13 @@ module Mutations
     type Types::TourType
 
     def resolve(**params)
-      ResourceService.new(data_provider: context[:current_user].try(:data_provider))
-        .create(Tour, params)
+      record = ResourceService.new(data_provider: context[:current_user].try(:data_provider))
+                 .create(Tour, params)
+      if record.valid?
+        record
+      else
+        GraphQL::ExecutionError.new("Invalid input: #{record.errors.full_messages.join(", ")}")
+      end
     end
   end
 end
