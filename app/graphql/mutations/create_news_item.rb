@@ -31,13 +31,8 @@ module Mutations
     type Types::NewsItemType
 
     def resolve(**params)
-      record = ResourceService.new(data_provider: context[:current_user].try(:data_provider))
-                 .create(NewsItem, params)
-      if record.valid?
-        record
-      else
-        GraphQL::ExecutionError.new("Invalid input: #{record.errors.full_messages.join(", ")}")
-      end
+      ResourceService.new(data_provider: context[:current_user].try(:data_provider))
+        .create(NewsItem, params)
     end
   end
 end

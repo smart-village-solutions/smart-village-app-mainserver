@@ -21,7 +21,7 @@ class ResourceService
 
     # create resource
     create_external_resource if resource.save
-    resource
+    resource_or_error_message(resource)
   end
 
   def find_external_resource
@@ -41,5 +41,13 @@ class ResourceService
       external_type: resource_class,
       unique_id: resource.unique_id
     )
+  end
+
+  def resource_or_error_message(record)
+    if record.valid?
+      record
+    else
+      GraphQL::ExecutionError.new("Invalid input: #{record.errors.full_messages.join(", ")}")
+    end
   end
 end
