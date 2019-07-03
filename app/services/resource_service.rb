@@ -24,7 +24,7 @@ class ResourceService
       create_external_resource
       resource
     else
-      resource.errors.messages
+      resource
     end
   end
 
