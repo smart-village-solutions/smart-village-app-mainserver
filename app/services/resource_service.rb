@@ -20,12 +20,8 @@ class ResourceService
     return external_resource.external if external_resource.present?
 
     # create resource
-    if resource.save
-      create_external_resource
-      resource
-    else
-      resource
-    end
+    create_external_resource if resource.save
+    resource
   end
 
   def find_external_resource
