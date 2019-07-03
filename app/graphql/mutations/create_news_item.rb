@@ -32,11 +32,11 @@ module Mutations
 
     def resolve(**params)
       record = ResourceService.new(data_provider: context[:current_user].try(:data_provider))
-        .create(NewsItem, params)
+                 .create(NewsItem, params)
       if record.valid?
         record
       else
-        GraphQL::ExecutionError.new("Invalid input: #{record.errors.full_messages.join(', ')}")
+        GraphQL::ExecutionError.new("Invalid input: #{record.errors.full_messages.join(", ")}")
       end
     end
   end
