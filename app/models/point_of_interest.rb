@@ -9,9 +9,7 @@ class PointOfInterest < Attraction
 
   has_many :opening_hours, as: :openingable, dependent: :destroy
   has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
-
   has_one :location, as: :locateable, dependent: :destroy
-
   scope :filtered_for_current_user, ->(current_user) do
     return all if current_user.admin_role?
 
