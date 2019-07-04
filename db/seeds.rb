@@ -13,14 +13,13 @@ user = User.create(
   password: "kBzWAvNCWqn2rJxG",
   password_confirmation: "kBzWAvNCWqn2rJxG"
 )
-doorkeeper_app = Doorkeeper::Application.new :name => 'XML-Importer', :redirect_uri => 'http://localhost:3000/oauth/confirm_access'
+doorkeeper_app = Doorkeeper::Application.new name: "XML-Importer", redirect_uri: "http://localhost:3000/oauth/confirm_access"
 doorkeeper_app.owner = user
 doorkeeper_app.save
 
-doorkeeper_app = Doorkeeper::Application.new :name => 'MAZ-Converter', :redirect_uri => 'http://localhost:5000/oauth/confirm_access'
+doorkeeper_app = Doorkeeper::Application.new name: "MAZ-Converter", redirect_uri: "http://localhost:5000/oauth/confirm_access"
 doorkeeper_app.owner = user
 doorkeeper_app.save
-
 
 def create_web_url
   WebUrl.create(url: Faker::Internet.url, description: Faker::Lorem.sentence)

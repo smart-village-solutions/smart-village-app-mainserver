@@ -10,12 +10,12 @@ RSpec.describe ResourceService, type: :service do
   let(:poi_1) { ResourceService.new(data_provider: tmb).create(PointOfInterest, params_tmb_poi) }
   let(:poi_1_changed) { ResourceService.new(data_provider: tmb).create(PointOfInterest, params_tmb_poi_changed) }
   let(:poi_2) { ResourceService.new(data_provider: tmb).create(PointOfInterest, params_tmb_poi) }
-  let(:tour_1){ ResourceService.new(data_provider: tmb).create(Tour, params_tmb_tour) }
-  let(:tour_1_changed){ ResourceService.new(data_provider: tmb).create(Tour, params_tmb_tour_changed) }
-  let(:tour_2){ ResourceService.new(data_provider: tmb).create(Tour, params_tmb_tour) }
-  let(:event_1){ ResourceService.new(data_provider: tmb).create(EventRecord, params_tmb_event) }
-  let(:event_1_changed){ ResourceService.new(data_provider: tmb).create(EventRecord, params_tmb_event_changed) }
-  let(:event_2){ ResourceService.new(data_provider: tmb).create(EventRecord, params_tmb_event) }
+  let(:tour_1) { ResourceService.new(data_provider: tmb).create(Tour, params_tmb_tour) }
+  let(:tour_1_changed) { ResourceService.new(data_provider: tmb).create(Tour, params_tmb_tour_changed) }
+  let(:tour_2) { ResourceService.new(data_provider: tmb).create(Tour, params_tmb_tour) }
+  let(:event_1) { ResourceService.new(data_provider: tmb).create(EventRecord, params_tmb_event) }
+  let(:event_1_changed) { ResourceService.new(data_provider: tmb).create(EventRecord, params_tmb_event_changed) }
+  let(:event_2) { ResourceService.new(data_provider: tmb).create(EventRecord, params_tmb_event) }
 
   def params_maz
     { author: "Robert sdf",
@@ -43,7 +43,91 @@ RSpec.describe ResourceService, type: :service do
   end
 
   def params_tmb_poi
-    { name: "test", description: "Lorem ipsum dolor sit amet consectetur adipiscing", active: true, category_name: "Burgen", addresses_attributes: [{ addition: "Bahnhof", street: "Musterstraße", zip: "10100", city: "Berlin", geo_location_attributes: { latitude: 832_764.37264, longitude: 8_723_647.9347 } }, { addition: "Bahnhof 2", street: "Musterstraße2", zip: "10100", city: "Berlin2" }], contact_attributes: { first_name: "Tim", last_name: "Test", phone: "012345678", fax: "09843729047", web_urls_attributes: [{ url: "http://www.test1.de", description: "url 1" }, { url: "http://www.test2.de", description: "url 2" }], email: "test@test.de" }, price_informations_attributes: [{ name: "Standardkarte", amount: 5.89, group_price: false, description: "Tarif gilt nicht in den Ferien" }, { name: "Familienkarte", amount: 18.0, group_price: true, age_from: 2, age_to: 17, min_adult_count: 10, max_adult_count: 17, min_children_count: 3, max_children_count: 9, description: "Tarif gilt nur in den Ferien." }], opening_hours_attributes: [{ weekday: "Friday", date_from: "19-08-18", date_to: "25-03-20", time_from: "08:44:00 UTC", time_to: "00:02:00 UTC", sort_number: 1, open: true, description: "Ut id veritatis nihil." }], operating_company_attributes: { name: "McClure, Kemmer and Brown", address_attributes: { street: "Abbie Manors", zip: "25083", city: "Mialand", kind: "default", geo_location_attributes: { latitude: -7.45018, longitude: -102.279 } }, contact_attributes: { first_name: "Alonzo", last_name: "Von", phone: "+235 782-754-0007 x80976", web_urls_attributes: [{ url: "http://ebert.biz/teri.beahan", description: "Temporibus autem qui at." }] } }, web_urls_attributes: [{ url: "http://www.hoher-flaeming-naturpark.de", description: "Naturpark Hoher Fläming" }, { url: "http://www.naturwacht.de", description: "Naturwacht Brandenburg" }], media_contents_attributes: [{ caption_text: "Qui dolore fugit rem.", copyright: "Zane Marquardt", height: 342, width: 215, content_type: "image", source_url_attributes: { url: "https://www.image.file", description: "main image" } }, { caption_text: "Id molestias omnis repellat.", copyright: "Dr. Willard Klocko", height: 315, width: 607, content_type: "video" }, { caption_text: "Provident quidem sed velit.", copyright: "Verona Lowe", height: 348, width: 766, content_type: "soundcloud-audio" }], location_attributes: { name: "Raben", department: "Niemegk", district: "Potsdam-Mittelmark", region_name: "Flaeming", state: "Brandenburg", geo_location_attributes: { latitude: 52.042051020544, longitude: 12.577602953518 } }, certificates_attributes: [{ name: "Qualitätssiegel Premium Schwimmbäder" }, { name: "Qualitätssiegel besondere Burg" }], accessibility_information_attributes: { description: "bla", types: "Tops", urls_attributes: [{ url: "http://www.hoher-flaeming-naturpark.de", description: "eewrgr" }] }, tag_list: ["[swim, swam, swum]"] }
+    { name: "test",
+      description: "Lorem ipsum dolor sit amet consectetur adipiscing",
+      active: true,
+      category_name: "Burgen",
+      addresses_attributes: [
+        { addition: "Bahnhof",
+          street: "Musterstraße",
+          zip: "10100",
+          city: "Berlin",
+          geo_location_attributes: {
+            latitude: 832_764.37264, longitude: 8_723_647.9347
+          } },
+        { addition: "Bahnhof 2",
+          street: "Musterstraße2",
+          zip: "10100",
+          city: "Berlin2" }
+      ],
+      contact_attributes: {
+        first_name: "Tim",
+        last_name: "Test",
+        phone: "012345678",
+        fax: "09843729047",
+        web_urls_attributes: [
+          { url: "http://www.test1.de", description: "url 1" },
+          { url: "http://www.test2.de", description: "url 2" }
+        ],
+        email: "test@test.de"
+      },
+      price_informations_attributes: [
+        { name: "Standardkarte", amount: 5.89, group_price: false, description: "Tarif gilt nicht in den Ferien" },
+        { name: "Familienkarte", amount: 18.0, group_price: true, age_from: 2, age_to: 17, min_adult_count: 10, max_adult_count: 17, min_children_count: 3, max_children_count: 9, description: "Tarif gilt nur in den Ferien." }
+      ],
+      opening_hours_attributes: [
+        {
+          weekday: "Friday",
+          date_from: "19-08-18",
+          date_to: "25-03-20",
+          time_from: "08:44:00 UTC",
+          time_to: "00:02:00 UTC",
+          sort_number: 1,
+          open: true,
+          description: "Ut id veritatis nihil."
+        }
+      ],
+      operating_company_attributes: {
+        name: "McClure, Kemmer and Brown",
+        address_attributes: {
+          street: "Abbie Manors",
+          zip: "25083",
+          city: "Mialand",
+          kind: "default",
+          geo_location_attributes: { latitude: -7.45018, longitude: -102.279 }
+        },
+        contact_attributes: {
+          first_name: "Alonzo",
+          last_name: "Von",
+          phone: "+235 782-754-0007 x80976",
+          web_urls_attributes: [
+            {
+              url: "http://ebert.biz/teri.beahan",
+              description: "Temporibus autem qui at."
+            }
+          ]
+        }
+      },
+      web_urls_attributes: [
+        { url: "http://www.hoher-flaeming-naturpark.de",
+          description: "Naturpark Hoher Fläming" },
+        { url: "http://www.naturwacht.de", description: "Naturwacht Brandenburg" }
+      ],
+      media_contents_attributes: [
+        {
+          caption_text: "Qui dolore fugit rem.",
+          copyright: "Zane Marquardt",
+          height: 342,
+          width: 215,
+          content_type: "image",
+          source_url_attributes: {
+            url: "https://www.image.file",
+            description: "main image"
+          }
+        }, {
+          caption_text: "Id molestias omnis repellat.", copyright: "Dr. Willard Klocko", height: 315, width: 607, content_type: "video"
+        }, { caption_text: "Provident quidem sed velit.", copyright: "Verona Lowe", height: 348, width: 766, content_type: "soundcloud-audio" }
+      ], location_attributes: { name: "Raben", department: "Niemegk", district: "Potsdam-Mittelmark", region_name: "Flaeming", state: "Brandenburg", geo_location_attributes: { latitude: 52.042051020544, longitude: 12.577602953518 } }, certificates_attributes: [{ name: "Qualitätssiegel Premium Schwimmbäder" }, { name: "Qualitätssiegel besondere Burg" }], accessibility_information_attributes: { description: "bla", types: "Tops", urls_attributes: [{ url: "http://www.hoher-flaeming-naturpark.de", description: "eewrgr" }] }, tag_list: ["[swim, swam, swum]"] }
   end
 
   def params_tmb_poi_changed
@@ -51,19 +135,19 @@ RSpec.describe ResourceService, type: :service do
   end
 
   def params_tmb_tour
-    {:name=>"Wandern durch Berlin", :description=>"description", :active=>true, :category_name=>"Wandertour", :addresses_attributes=>[{:addition=>"Bahnhof", :street=>"Musterstraße", :zip=>"10100", :city=>"Berlin", :kind=>"start", :geo_location_attributes=>{:latitude=>64.37264, :longitude=>47.9347}}, {:addition=>"Bahnhof 2", :street=>"Musterstraße2", :zip=>"10100", :city=>"Berlin2", :kind=>"end"}], :contact_attributes=>{:first_name=>"Tim", :last_name=>"Test", :phone=>"012345678", :fax=>"09843729047", :web_urls_attributes=>[{:url=>"http://www.test1.de", :description=>"url 1"}, {:url=>"http://www.test2.de", :description=>"url 2"}], :email=>"test@test.de"}, :operating_company_attributes=>{:name=>"McClure, Kemmer and Brown", :address_attributes=>{:street=>"Abbie Manors", :zip=>"25083", :city=>"Mialand", :kind=>"default", :geo_location_attributes=>{:latitude=>-7.45018, :longitude=>-102.279}}, :contact_attributes=>{:first_name=>"Alonzo", :last_name=>"Von", :phone=>"+235 782-754-0007 x80976", :web_urls_attributes=>[{:url=>"http://ebert.biz/teri.beahan", :description=>"Temporibus autem qui at."}]}}, :web_urls_attributes=>[{:url=>"http://www.hoher-flaeming-naturpark.de", :description=>"Naturpark Hoher Fläming"}, {:url=>"http://www.naturwacht.de", :description=>"Natuacht Brandenburg"}], :media_contents_attributes=>[{:caption_text=>"Qui dolore fugit rem.", :copyright=>"Zane Marquardt", :height=>342, :width=>215, :content_type=>"image", :source_url_attributes=>{:url=>"https://www.image.file", :description=>"main image"}}, {:caption_text=>"Id molestias omnis repellat.", :copyright=>"Dr. Willard Klocko", :height=>315, :width=>607, :content_type=>"video"}, {:caption_text=>"Provident quidem sed velit.", :copyright=>"Verona Lowe", :height=>348, :width=>766, :content_type=>"soundcloud-audio"}], :length_km=>500, :means_of_transportation=>"bike", :geometry_tour_data_attributes=>[{:latitude=>64.37264, :longitude=>45.431234}, {:latitude=>32.37264, :longitude=>40.431234}, {:latitude=>36.37264, :longitude=>49.431234}, {:latitude=>39.37264, :longitude=>41.431234}, {:latitude=>41.37264, :longitude=>43.431234}], :tag_list=>["[swim, swam, swum]"]}
+    { name: "Wandern durch Berlin", description: "description", active: true, category_name: "Wandertour", addresses_attributes: [{ addition: "Bahnhof", street: "Musterstraße", zip: "10100", city: "Berlin", kind: "start", geo_location_attributes: { latitude: 64.37264, longitude: 47.9347 } }, { addition: "Bahnhof 2", street: "Musterstraße2", zip: "10100", city: "Berlin2", kind: "end" }], contact_attributes: { first_name: "Tim", last_name: "Test", phone: "012345678", fax: "09843729047", web_urls_attributes: [{ url: "http://www.test1.de", description: "url 1" }, { url: "http://www.test2.de", description: "url 2" }], email: "test@test.de" }, operating_company_attributes: { name: "McClure, Kemmer and Brown", address_attributes: { street: "Abbie Manors", zip: "25083", city: "Mialand", kind: "default", geo_location_attributes: { latitude: -7.45018, longitude: -102.279 } }, contact_attributes: { first_name: "Alonzo", last_name: "Von", phone: "+235 782-754-0007 x80976", web_urls_attributes: [{ url: "http://ebert.biz/teri.beahan", description: "Temporibus autem qui at." }] } }, web_urls_attributes: [{ url: "http://www.hoher-flaeming-naturpark.de", description: "Naturpark Hoher Fläming" }, { url: "http://www.naturwacht.de", description: "Natuacht Brandenburg" }], media_contents_attributes: [{ caption_text: "Qui dolore fugit rem.", copyright: "Zane Marquardt", height: 342, width: 215, content_type: "image", source_url_attributes: { url: "https://www.image.file", description: "main image" } }, { caption_text: "Id molestias omnis repellat.", copyright: "Dr. Willard Klocko", height: 315, width: 607, content_type: "video" }, { caption_text: "Provident quidem sed velit.", copyright: "Verona Lowe", height: 348, width: 766, content_type: "soundcloud-audio" }], length_km: 500, means_of_transportation: "bike", geometry_tour_data_attributes: [{ latitude: 64.37264, longitude: 45.431234 }, { latitude: 32.37264, longitude: 40.431234 }, { latitude: 36.37264, longitude: 49.431234 }, { latitude: 39.37264, longitude: 41.431234 }, { latitude: 41.37264, longitude: 43.431234 }], tag_list: ["[swim, swam, swum]"] }
   end
 
   def params_tmb_tour_changed
-    {:name=>"Wandern durch Berlin", :description=>"description changed", :active=>true, :category_name=>"Wandertour", :addresses_attributes=>[{:addition=>"Bahnhof", :street=>"Musterstraße", :zip=>"10100", :city=>"Berlin", :kind=>"start", :geo_location_attributes=>{:latitude=>64.37264, :longitude=>47.9347}}, {:addition=>"Bahnhof 2", :street=>"Musterstraße2", :zip=>"10100", :city=>"Berlin2", :kind=>"end"}], :contact_attributes=>{:first_name=>"Tim", :last_name=>"Test", :phone=>"012345678", :fax=>"09843729047", :web_urls_attributes=>[{:url=>"http://www.test1.de", :description=>"url 1"}, {:url=>"http://www.test2.de", :description=>"url 2"}], :email=>"test@test.de"}, :operating_company_attributes=>{:name=>"McClure, Kemmer and Brown", :address_attributes=>{:street=>"Abbie Manors", :zip=>"25083", :city=>"Mialand", :kind=>"default", :geo_location_attributes=>{:latitude=>-7.45018, :longitude=>-102.279}}, :contact_attributes=>{:first_name=>"Alonzo", :last_name=>"Von", :phone=>"+235 782-754-0007 x80976", :web_urls_attributes=>[{:url=>"http://ebert.biz/teri.beahan", :description=>"Temporibus autem qui at."}]}}, :web_urls_attributes=>[{:url=>"http://www.hoher-flaeming-naturpark.de", :description=>"Naturpark Hoher Fläming"}, {:url=>"http://www.naturwacht.de", :description=>"Natuacht Brandenburg"}], :media_contents_attributes=>[{:caption_text=>"Qui dolore fugit rem.", :copyright=>"Zane Marquardt", :height=>342, :width=>215, :content_type=>"image", :source_url_attributes=>{:url=>"https://www.image.file", :description=>"main image"}}, {:caption_text=>"Id molestias omnis repellat.", :copyright=>"Dr. Willard Klocko", :height=>315, :width=>607, :content_type=>"video"}, {:caption_text=>"Provident quidem sed velit.", :copyright=>"Verona Lowe", :height=>348, :width=>766, :content_type=>"soundcloud-audio"}], :length_km=>500, :means_of_transportation=>"bike", :geometry_tour_data_attributes=>[{:latitude=>64.37264, :longitude=>45.431234}, {:latitude=>32.37264, :longitude=>40.431234}, {:latitude=>36.37264, :longitude=>49.431234}, {:latitude=>39.37264, :longitude=>41.431234}, {:latitude=>41.37264, :longitude=>43.431234}], :tag_list=>["[swim, swam, swum]"]}
+    { name: "Wandern durch Berlin", description: "description changed", active: true, category_name: "Wandertour", addresses_attributes: [{ addition: "Bahnhof", street: "Musterstraße", zip: "10100", city: "Berlin", kind: "start", geo_location_attributes: { latitude: 64.37264, longitude: 47.9347 } }, { addition: "Bahnhof 2", street: "Musterstraße2", zip: "10100", city: "Berlin2", kind: "end" }], contact_attributes: { first_name: "Tim", last_name: "Test", phone: "012345678", fax: "09843729047", web_urls_attributes: [{ url: "http://www.test1.de", description: "url 1" }, { url: "http://www.test2.de", description: "url 2" }], email: "test@test.de" }, operating_company_attributes: { name: "McClure, Kemmer and Brown", address_attributes: { street: "Abbie Manors", zip: "25083", city: "Mialand", kind: "default", geo_location_attributes: { latitude: -7.45018, longitude: -102.279 } }, contact_attributes: { first_name: "Alonzo", last_name: "Von", phone: "+235 782-754-0007 x80976", web_urls_attributes: [{ url: "http://ebert.biz/teri.beahan", description: "Temporibus autem qui at." }] } }, web_urls_attributes: [{ url: "http://www.hoher-flaeming-naturpark.de", description: "Naturpark Hoher Fläming" }, { url: "http://www.naturwacht.de", description: "Natuacht Brandenburg" }], media_contents_attributes: [{ caption_text: "Qui dolore fugit rem.", copyright: "Zane Marquardt", height: 342, width: 215, content_type: "image", source_url_attributes: { url: "https://www.image.file", description: "main image" } }, { caption_text: "Id molestias omnis repellat.", copyright: "Dr. Willard Klocko", height: 315, width: 607, content_type: "video" }, { caption_text: "Provident quidem sed velit.", copyright: "Verona Lowe", height: 348, width: 766, content_type: "soundcloud-audio" }], length_km: 500, means_of_transportation: "bike", geometry_tour_data_attributes: [{ latitude: 64.37264, longitude: 45.431234 }, { latitude: 32.37264, longitude: 40.431234 }, { latitude: 36.37264, longitude: 49.431234 }, { latitude: 39.37264, longitude: 41.431234 }, { latitude: 41.37264, longitude: 43.431234 }], tag_list: ["[swim, swam, swum]"] }
   end
 
   def params_tmb_event
-    {:parent_id=>1, :description=>"Lorem ipsum dolor sit  consectetur adipiscing", :title=>"Test", :dates_attributes=>[{:weekday=>"Monday", :time_start=>"16:00", :time_end=>"18:00", :time_description=>"das Training findet jeden zweiten Montag im Monat statt", :use_only_time_description=>false}], :repeat=>true, :repeat_duration_attributes=>{:start_date=>"0001-12-18", :end_date=>"0021-07-19", :every_year=>true}, :category_name=>"category name", :region_name=>"Flaeming", :addresses_attributes=>[{:addition=>"Bahnhof", :street=>"Musterstraße", :zip=>"10100", :city=>"Berlin", :kind=>"start", :geo_location_attributes=>{:latitude=>64.37264, :longitude=>47.9347}}, {:addition=>"Bahnhof 2", :street=>"Musterstraße2", :zip=>"10100", :city=>"Berlin2", :kind=>"end"}], :contacts_attributes=>[{:first_name=>"Tim", :last_name=>"Test", :phone=>"012345678", :fax=>"09843729047", :web_urls_attributes=>[{:url=>"http://www.test1.de", :description=>"url 1"}, {:url=>"http://www.test2.de", :description=>"url 2"}], :email=>"test@test.de"}], :urls_attributes=>[{:url=>"http://www.hoher-flaeming-naturpark.de", :description=>"Naturpark Hoher Fläming"}, {:url=>"http://www.naturwacht.de", :description=>"Naturwacht Brandenburg"}], :media_contents_attributes=>[{:caption_text=>"Qui dolore fugit rem.", :copyright=>"Zane Marquardt", :height=>342, :width=>215, :content_type=>"image", :source_url_attributes=>{:url=>"https://www.image.file", :description=>"main image"}}, {:caption_text=>"Id molestias omnis repellat.", :copyright=>"Dr. Willard Klocko", :height=>315, :width=>607, :content_type=>"video"}, {:caption_text=>"Provident quidem sed velit.", :copyright=>"Verona Lowe", :height=>348, :width=>766, :content_type=>"soundcloud-audio"}], :organizer_attributes=>{:name=>"McClure, Kemmer and Brown", :address_attributes=>{:street=>"Abbie Manors", :zip=>"25083", :city=>"Mialand", :kind=>"default", :geo_location_attributes=>{:latitude=>7.45018, :longitude=>102.279}}, :contact_attributes=>{:first_name=>"Alonzo", :last_name=>"Von", :phone=>"+235 782-754-0007 x80976", :web_urls_attributes=>[{:url=>"http://ebert.biz/teri.beahan", :description=>"Temporibus autem qui at."}]}}, :price_informations_attributes=>[{:name=>"Standardkarte", :amount=>5.89, :group_price=>false, :description=>"Tarif gilt nicht in den Ferien"}, {:name=>"Familienkarte", :amount=>18.0, :group_price=>true, :age_from=>2, :age_to=>17, :min_adult_count=>10, :max_adult_count=>17, :min_children_count=>3, :max_children_count=>9, :description=>"Tarif gilt nur in den Ferien."}], :accessibility_information_attributes=>{:description=>"bla", :types=>"Tops", :urls_attributes=>[{:url=>"http://www.hoher-flaeming-naturpark.de", :description=>"eewrgr"}]}, :tag_list=>["megaparty", "technoclassix", "underground"]}
+    { parent_id: 1, description: "Lorem ipsum dolor sit  consectetur adipiscing", title: "Test", dates_attributes: [{ weekday: "Monday", time_start: "16:00", time_end: "18:00", time_description: "das Training findet jeden zweiten Montag im Monat statt", use_only_time_description: false }], repeat: true, repeat_duration_attributes: { start_date: "0001-12-18", end_date: "0021-07-19", every_year: true }, category_name: "category name", region_name: "Flaeming", addresses_attributes: [{ addition: "Bahnhof", street: "Musterstraße", zip: "10100", city: "Berlin", kind: "start", geo_location_attributes: { latitude: 64.37264, longitude: 47.9347 } }, { addition: "Bahnhof 2", street: "Musterstraße2", zip: "10100", city: "Berlin2", kind: "end" }], contacts_attributes: [{ first_name: "Tim", last_name: "Test", phone: "012345678", fax: "09843729047", web_urls_attributes: [{ url: "http://www.test1.de", description: "url 1" }, { url: "http://www.test2.de", description: "url 2" }], email: "test@test.de" }], urls_attributes: [{ url: "http://www.hoher-flaeming-naturpark.de", description: "Naturpark Hoher Fläming" }, { url: "http://www.naturwacht.de", description: "Naturwacht Brandenburg" }], media_contents_attributes: [{ caption_text: "Qui dolore fugit rem.", copyright: "Zane Marquardt", height: 342, width: 215, content_type: "image", source_url_attributes: { url: "https://www.image.file", description: "main image" } }, { caption_text: "Id molestias omnis repellat.", copyright: "Dr. Willard Klocko", height: 315, width: 607, content_type: "video" }, { caption_text: "Provident quidem sed velit.", copyright: "Verona Lowe", height: 348, width: 766, content_type: "soundcloud-audio" }], organizer_attributes: { name: "McClure, Kemmer and Brown", address_attributes: { street: "Abbie Manors", zip: "25083", city: "Mialand", kind: "default", geo_location_attributes: { latitude: 7.45018, longitude: 102.279 } }, contact_attributes: { first_name: "Alonzo", last_name: "Von", phone: "+235 782-754-0007 x80976", web_urls_attributes: [{ url: "http://ebert.biz/teri.beahan", description: "Temporibus autem qui at." }] } }, price_informations_attributes: [{ name: "Standardkarte", amount: 5.89, group_price: false, description: "Tarif gilt nicht in den Ferien" }, { name: "Familienkarte", amount: 18.0, group_price: true, age_from: 2, age_to: 17, min_adult_count: 10, max_adult_count: 17, min_children_count: 3, max_children_count: 9, description: "Tarif gilt nur in den Ferien." }], accessibility_information_attributes: { description: "bla", types: "Tops", urls_attributes: [{ url: "http://www.hoher-flaeming-naturpark.de", description: "eewrgr" }] }, tag_list: ["megaparty", "technoclassix", "underground"] }
   end
 
   def params_tmb_event_changed
-    {:parent_id=>1, :description=>"Changed Lorem ipsum dolor sit  consectetur adipiscing", :title=>"Test", :dates_attributes=>[{:weekday=>"Monday", :time_start=>"16:00", :time_end=>"18:00", :time_description=>"das Training findet jeden zweiten Montag im Monat statt", :use_only_time_description=>false}], :repeat=>true, :repeat_duration_attributes=>{:start_date=>"0001-12-18", :end_date=>"0021-07-19", :every_year=>true}, :category_name=>"category name", :region_name=>"Flaeming", :addresses_attributes=>[{:addition=>"Bahnhof", :street=>"Musterstraße", :zip=>"10100", :city=>"Berlin", :kind=>"start", :geo_location_attributes=>{:latitude=>64.37264, :longitude=>47.9347}}, {:addition=>"Bahnhof 2", :street=>"Musterstraße2", :zip=>"10100", :city=>"Berlin2", :kind=>"end"}], :contacts_attributes=>[{:first_name=>"Tim", :last_name=>"Test", :phone=>"012345678", :fax=>"09843729047", :web_urls_attributes=>[{:url=>"http://www.test1.de", :description=>"url 1"}, {:url=>"http://www.test2.de", :description=>"url 2"}], :email=>"test@test.de"}], :urls_attributes=>[{:url=>"http://www.hoher-flaeming-naturpark.de", :description=>"Naturpark Hoher Fläming"}, {:url=>"http://www.naturwacht.de", :description=>"Naturwacht Brandenburg"}], :media_contents_attributes=>[{:caption_text=>"Qui dolore fugit rem.", :copyright=>"Zane Marquardt", :height=>342, :width=>215, :content_type=>"image", :source_url_attributes=>{:url=>"https://www.image.file", :description=>"main image"}}, {:caption_text=>"Id molestias omnis repellat.", :copyright=>"Dr. Willard Klocko", :height=>315, :width=>607, :content_type=>"video"}, {:caption_text=>"Provident quidem sed velit.", :copyright=>"Verona Lowe", :height=>348, :width=>766, :content_type=>"soundcloud-audio"}], :organizer_attributes=>{:name=>"McClure, Kemmer and Brown", :address_attributes=>{:street=>"Abbie Manors", :zip=>"25083", :city=>"Mialand", :kind=>"default", :geo_location_attributes=>{:latitude=>7.45018, :longitude=>102.279}}, :contact_attributes=>{:first_name=>"Alonzo", :last_name=>"Von", :phone=>"+235 782-754-0007 x80976", :web_urls_attributes=>[{:url=>"http://ebert.biz/teri.beahan", :description=>"Temporibus autem qui at."}]}}, :price_informations_attributes=>[{:name=>"Standardkarte", :amount=>5.89, :group_price=>false, :description=>"Tarif gilt nicht in den Ferien"}, {:name=>"Familienkarte", :amount=>18.0, :group_price=>true, :age_from=>2, :age_to=>17, :min_adult_count=>10, :max_adult_count=>17, :min_children_count=>3, :max_children_count=>9, :description=>"Tarif gilt nur in den Ferien."}], :accessibility_information_attributes=>{:description=>"bla", :types=>"Tops", :urls_attributes=>[{:url=>"http://www.hoher-flaeming-naturpark.de", :description=>"eewrgr"}]}, :tag_list=>["megaparty", "technoclassix", "underground"]}
+    { parent_id: 1, description: "Changed Lorem ipsum dolor sit  consectetur adipiscing", title: "Test", dates_attributes: [{ weekday: "Monday", time_start: "16:00", time_end: "18:00", time_description: "das Training findet jeden zweiten Montag im Monat statt", use_only_time_description: false }], repeat: true, repeat_duration_attributes: { start_date: "0001-12-18", end_date: "0021-07-19", every_year: true }, category_name: "category name", region_name: "Flaeming", addresses_attributes: [{ addition: "Bahnhof", street: "Musterstraße", zip: "10100", city: "Berlin", kind: "start", geo_location_attributes: { latitude: 64.37264, longitude: 47.9347 } }, { addition: "Bahnhof 2", street: "Musterstraße2", zip: "10100", city: "Berlin2", kind: "end" }], contacts_attributes: [{ first_name: "Tim", last_name: "Test", phone: "012345678", fax: "09843729047", web_urls_attributes: [{ url: "http://www.test1.de", description: "url 1" }, { url: "http://www.test2.de", description: "url 2" }], email: "test@test.de" }], urls_attributes: [{ url: "http://www.hoher-flaeming-naturpark.de", description: "Naturpark Hoher Fläming" }, { url: "http://www.naturwacht.de", description: "Naturwacht Brandenburg" }], media_contents_attributes: [{ caption_text: "Qui dolore fugit rem.", copyright: "Zane Marquardt", height: 342, width: 215, content_type: "image", source_url_attributes: { url: "https://www.image.file", description: "main image" } }, { caption_text: "Id molestias omnis repellat.", copyright: "Dr. Willard Klocko", height: 315, width: 607, content_type: "video" }, { caption_text: "Provident quidem sed velit.", copyright: "Verona Lowe", height: 348, width: 766, content_type: "soundcloud-audio" }], organizer_attributes: { name: "McClure, Kemmer and Brown", address_attributes: { street: "Abbie Manors", zip: "25083", city: "Mialand", kind: "default", geo_location_attributes: { latitude: 7.45018, longitude: 102.279 } }, contact_attributes: { first_name: "Alonzo", last_name: "Von", phone: "+235 782-754-0007 x80976", web_urls_attributes: [{ url: "http://ebert.biz/teri.beahan", description: "Temporibus autem qui at." }] } }, price_informations_attributes: [{ name: "Standardkarte", amount: 5.89, group_price: false, description: "Tarif gilt nicht in den Ferien" }, { name: "Familienkarte", amount: 18.0, group_price: true, age_from: 2, age_to: 17, min_adult_count: 10, max_adult_count: 17, min_children_count: 3, max_children_count: 9, description: "Tarif gilt nur in den Ferien." }], accessibility_information_attributes: { description: "bla", types: "Tops", urls_attributes: [{ url: "http://www.hoher-flaeming-naturpark.de", description: "eewrgr" }] }, tag_list: ["megaparty", "technoclassix", "underground"] }
   end
 
   describe "#create" do
@@ -95,6 +179,7 @@ RSpec.describe ResourceService, type: :service do
           tour_1
           event_1
         end
+
         it "doesn't create a new record" do
           poi_2
           tour_2
@@ -112,12 +197,14 @@ RSpec.describe ResourceService, type: :service do
           expect(event_2).to eq(event_1)
         end
       end
+
       context "which is changing an exiting one" do
         before do
           poi_1
           tour_1
           event_1
         end
+
         it "creates a new record" do
           poi_1_changed
           tour_1_changed
