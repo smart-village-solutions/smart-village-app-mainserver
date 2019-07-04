@@ -8,6 +8,7 @@ class NewsItem < ApplicationRecord
   belongs_to :data_provider
 
   has_many :content_blocks, as: :content_blockable, dependent: :destroy
+  has_one :external_reference, as: :external, dependent: :destroy
   has_one :address, as: :addressable, dependent: :destroy
   has_one :source_url, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
 
@@ -20,10 +21,15 @@ class NewsItem < ApplicationRecord
   accepts_nested_attributes_for :content_blocks, :data_provider, :address, :source_url
 
   def unique_id
+    return external_id if data_provider_maz? && external_id.present?
     title = content_blocks.first.try(:title)
     fields = [title, published_at]
 
     generate_checksum(fields)
+  end
+
+  def data_provider_maz?
+    return true if data_provider == "MAZ - Märkische Allgemeine"
   end
 end
 
