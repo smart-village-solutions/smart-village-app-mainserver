@@ -22,6 +22,7 @@ class NewsItem < ApplicationRecord
 
   def unique_id
     return external_id if data_provider_maz? && external_id.present?
+
     title = content_blocks.first.try(:title)
     fields = [title, published_at]
 
