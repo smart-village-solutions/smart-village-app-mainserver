@@ -152,22 +152,20 @@ RSpec.describe ResourceService, type: :service do
 
   describe "#create" do
     context "when creating a 'maz-NewsItem'" do
-      context "with an external_id" do
-        context "which already exists in the database" do
-          before do
-            news_item_1
-            news_item_2
-          end
+      context "with an external_id which already exists in the database" do
+        before do
+          news_item_1
+          news_item_2
+        end
 
-          it "deletes the old record" do
-            expect(NewsItem.exists?(news_item_1.id)).to eq(false)
-          end
-          it "creates a new record" do
-            expect(NewsItem.exists?(news_item_2.id)).to eq(true)
-          end
-          it "the new record has the same external_id as the old one" do
-            expect(news_item_1.external_id).to eq(news_item_2.external_id)
-          end
+        it "deletes the old record" do
+          expect(NewsItem.exists?(news_item_1.id)).to eq(false)
+        end
+        it "creates a new record" do
+          expect(NewsItem.exists?(news_item_2.id)).to eq(true)
+        end
+        it "the new record has the same external_id as the old one" do
+          expect(news_item_1.external_id).to eq(news_item_2.external_id)
         end
       end
     end
