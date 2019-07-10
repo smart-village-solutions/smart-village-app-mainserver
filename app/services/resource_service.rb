@@ -18,24 +18,33 @@ class ResourceService
     # record and the record was not provided by maz
     external_resource = find_external_resource
     old_record = external_resource.try(:external)
-    return old_record if external_resource.present? && unchanged_attributes?(old_record) && not_maz?(data_provider)
+    return old_record if external_resource.present? &&
+                         unchanged_attributes?(old_record) &&
+                         not_maz?(data_provider)
 
-    # destroy the old record and its external_reference if its attributes changed or
-    # if the data_provider is MAZ
+    create_or_recreate(old_record, external_resource)
+    resource_or_error_message(resource)
+  end
+
+  def create_or_recreate(old_record, external_resource)
     ActiveRecord::Base.transaction do
       old_record.destroy if old_record.present?
-      # necessary because dependant: :destroy sometimes works for external resource and sometimes doesn't
+      # necessary because dependant: :destroy sometimes works for external resource
+      # and sometimes doesn't
       # TODO: Remove line and make dependant: :destroy work
       external_resource.destroy if external_resource.present?
       create_external_resource if @resource.save
     end
-    resource_or_error_message(resource)
   end
 
   def unchanged_attributes?(record)
     return false if record.blank?
 
-    @resource.attributes.except("id", "created_at", "updated_at", "tag_list", "category_id", "region_id") == record.attributes.except("id", "created_at", "updated_at", "tag_list", "category_id", "region_id")
+    resource_attributes = @resource.attributes.except("id", "created_at", "updated_at", "tag_list",
+                                                      "category_id", "region_id")
+    record_attributes = record.attributes.except("id", "created_at", "updated_at", "tag_list",
+                                                 "category_id", "region_id")
+    resource_attributes == record_attributes
   end
 
   def not_maz?(data_provider)
