@@ -30,7 +30,7 @@ class NewsItem < ApplicationRecord
   end
 
   def data_provider_maz?
-    return true if data_provider == "MAZ - Märkische Allgemeine"
+    return true if data_provider.always_recreate == true
   end
 end
 
