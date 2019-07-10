@@ -14,17 +14,21 @@ class ResourceService
     @resource_class = resource_class
     @resource = resource_class.new(params)
     @resource.data_provider = data_provider
-    # skip create if record already exists and new record has the same attribute values as the new record and the record was not provided by maz
+    # skip create if record already exists and new record has the same attribute values as the new
+    # record and the record was not provided by maz
     external_resource = find_external_resource
     old_record = external_resource.try(:external)
     return old_record if external_resource.present? && unchanged_attributes?(old_record) && not_maz?(data_provider)
 
-    # destroy the old record and its external_reference if its attributes changed or if the data_provider is MAZ
-    old_record.destroy if old_record.present?
-    # necessary because dependant: :destroy sometimes works for external resource and sometimes doesn't
-    # TODO: Remove line and make dependant: :destroy work
-    external_resource.destroy if external_resource.present?
-    create_external_resource if @resource.save
+    # destroy the old record and its external_reference if its attributes changed or
+    # if the data_provider is MAZ
+    ActiveRecord::Base.transaction do
+      old_record.destroy if old_record.present?
+      # necessary because dependant: :destroy sometimes works for external resource and sometimes doesn't
+      # TODO: Remove line and make dependant: :destroy work
+      external_resource.destroy if external_resource.present?
+      create_external_resource if @resource.save
+    end
     resource_or_error_message(resource)
   end
 
@@ -37,7 +41,7 @@ class ResourceService
   def not_maz?(data_provider)
     return false if data_provider.blank?
 
-    data_provider.name != "MAZ - Märkische Allgemeine"
+    data_provider.always_recreate != true
   end
 
   def find_external_resource
