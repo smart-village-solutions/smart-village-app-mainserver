@@ -14,14 +14,41 @@ class ResourceService
     @resource_class = resource_class
     @resource = resource_class.new(params)
     @resource.data_provider = data_provider
-
-    # skip create if already exists
+    # skip create if record already exists and new record has the same attribute values as the new
+    # record and the record was not provided by maz
     external_resource = find_external_resource
-    return external_resource.external if external_resource.present?
+    old_record = external_resource.try(:external)
+    return old_record if external_resource.present? &&
+                         unchanged_attributes?(old_record) &&
+                         !always_recreate?(data_provider, resource_class)
 
-    # create resource
-    create_external_resource if resource.save
+    create_or_recreate(old_record, external_resource)
     resource_or_error_message(resource)
+  end
+
+  def create_or_recreate(old_record, external_resource)
+    ActiveRecord::Base.transaction do
+      old_record.destroy if old_record.present?
+      # necessary because dependant: :destroy sometimes works for external resource
+      # and sometimes doesn't
+      # TODO: Remove line and make dependant: :destroy work
+      external_resource.destroy if external_resource.present?
+      create_external_resource if @resource.save
+    end
+  end
+
+  def unchanged_attributes?(record)
+    return false if record.blank?
+
+    except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id"]
+    @resource.attributes.except(*except_attributes) == record.attributes.except(*except_attributes)
+  end
+
+  def always_recreate?(data_provider, resource_class)
+    return false if data_provider.blank?
+
+    class_name = resource_class.name.underscore
+    data_provider.always_recreate[class_name] == true
   end
 
   def find_external_resource

@@ -9,7 +9,6 @@ class Tour < Attraction
 
   has_many :geometry_tour_data, as: :geo_locateable, class_name: "GeoLocation", dependent: :destroy
   has_one :location, as: :locateable, dependent: :destroy
-
   enum means_of_transportation: { bike: 0, canoe: 1, foot: 2 }
 
   scope :filtered_for_current_user, ->(current_user) do

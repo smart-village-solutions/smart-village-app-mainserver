@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe DataProvider, type: :model do
   it { is_expected.to have_one(:address) }
   it { is_expected.to have_one(:contact) }
-  it { is_expected.to belong_to(:provideable) }
+  it { is_expected.to have_one(:logo) }
 end
 
 # == Schema Information
