@@ -21,16 +21,12 @@ class NewsItem < ApplicationRecord
   accepts_nested_attributes_for :content_blocks, :data_provider, :address, :source_url
 
   def unique_id
-    return external_id if data_provider_maz? && external_id.present?
+    return external_id if external_id.present?
 
     title = content_blocks.first.try(:title)
     fields = [title, published_at]
 
     generate_checksum(fields)
-  end
-
-  def data_provider_maz?
-    return true if data_provider.always_recreate == true
   end
 end
 
