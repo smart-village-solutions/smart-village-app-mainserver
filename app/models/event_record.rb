@@ -23,6 +23,8 @@ class EventRecord < ApplicationRecord
   has_many :media_contents, as: :mediaable, dependent: :destroy
   has_one :repeat_duration, dependent: :destroy
   has_many :dates, as: :dateable, class_name: "FixedDate", dependent: :destroy
+  has_one :external_reference, as: :external, dependent: :destroy
+
 
   scope :filtered_for_current_user, lambda { |current_user|
     return all if current_user.admin_role?

@@ -13,14 +13,13 @@ user = User.create(
   password: "kBzWAvNCWqn2rJxG",
   password_confirmation: "kBzWAvNCWqn2rJxG"
 )
-doorkeeper_app = Doorkeeper::Application.new :name => 'XML-Importer', :redirect_uri => 'http://localhost:3000/oauth/confirm_access'
+doorkeeper_app = Doorkeeper::Application.new name: "XML-Importer", redirect_uri: "http://localhost:3000/oauth/confirm_access"
 doorkeeper_app.owner = user
 doorkeeper_app.save
 
-doorkeeper_app = Doorkeeper::Application.new :name => 'MAZ-Converter', :redirect_uri => 'http://localhost:5000/oauth/confirm_access'
+doorkeeper_app = Doorkeeper::Application.new name: "MAZ-Converter", redirect_uri: "http://localhost:5000/oauth/confirm_access"
 doorkeeper_app.owner = user
 doorkeeper_app.save
-
 
 def create_web_url
   WebUrl.create(url: Faker::Internet.url, description: Faker::Lorem.sentence)
@@ -189,12 +188,11 @@ create_categories
 
 10.times do |n|
   poi = PointOfInterest.create(
-    external_id: Faker::Alphanumeric.alphanumeric(4),
     name: "Burg #{n}",
     description: Faker::Lorem.paragraph,
     mobile_description: Faker::Lorem.paragraph,
     active: true,
-    category: "Burgen und Schlösser",
+    category_name: "Burgen und Schlösser",
     data_provider: create_data_provider
   )
   poi.addresses << create_address
@@ -215,12 +213,11 @@ end
 
 10.times do |n|
   tour = Tour.create(
-    external_id: Faker::Alphanumeric.alphanumeric(4),
     name: "Tour #{n}",
     description: Faker::Lorem.paragraph,
     mobile_description: Faker::Lorem.paragraph,
     active: true,
-    category: "Schöne Fahrradrouten",
+    category_name: "Schöne Fahrradrouten",
     length_km: Faker::Number.within(50..250),
     means_of_transportation: Faker::Number.within(0..2)
   )
@@ -249,7 +246,7 @@ end
       end_date: Faker::Date.forward.strftime("%d.%m.%y"),
       every_year: Faker::Boolean.boolean(0.3)
     ),
-    category: Category.find(Faker::Number.within(1..3)),
+    category_name: "Konzerte",
     region: create_region
   )
   event.addresses << create_address
