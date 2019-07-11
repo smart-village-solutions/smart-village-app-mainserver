@@ -40,11 +40,8 @@ class ResourceService
   def unchanged_attributes?(record)
     return false if record.blank?
 
-    resource_attributes = @resource.attributes.except("id", "created_at", "updated_at", "tag_list",
-                                                      "category_id", "region_id")
-    record_attributes = record.attributes.except("id", "created_at", "updated_at", "tag_list",
-                                                 "category_id", "region_id")
-    resource_attributes == record_attributes
+    except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id"]
+    @resource.attributes.except(*except_attributes) == old_record.attributes.except(*except_attributes)
   end
 
   def not_maz?(data_provider)
