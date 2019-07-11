@@ -3,8 +3,8 @@
 require "rails_helper"
 
 RSpec.describe ResourceService, type: :service do
-  let(:maz) { create(:data_provider, name: "MAZ - Märkische Allgemeine", always_recreate: true) }
-  let(:tmb) { create(:data_provider, name: "TMB", always_recreate: false) }
+  let(:maz) { create(:data_provider, name: "MAZ", news_item: true) }
+  let(:tmb) { create(:data_provider, name: "TMB") }
   let(:news_item_1) { ResourceService.new(data_provider: maz).create(NewsItem, params_maz) }
   let(:news_item_2) { ResourceService.new(data_provider: maz).create(NewsItem, params_maz) }
   let(:poi_1) { ResourceService.new(data_provider: tmb).create(PointOfInterest, params_tmb_poi) }

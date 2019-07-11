@@ -20,7 +20,7 @@ class ResourceService
     old_record = external_resource.try(:external)
     return old_record if external_resource.present? &&
                          unchanged_attributes?(old_record) &&
-                         not_maz?(data_provider)
+                         not_always_recreate?(data_provider, resource_class)
 
     create_or_recreate(old_record, external_resource)
     resource_or_error_message(resource)
@@ -41,13 +41,14 @@ class ResourceService
     return false if record.blank?
 
     except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id"]
-    @resource.attributes.except(*except_attributes) == old_record.attributes.except(*except_attributes)
+    @resource.attributes.except(*except_attributes) == record.attributes.except(*except_attributes)
   end
 
-  def not_maz?(data_provider)
+  def not_always_recreate?(data_provider, resource_class)
     return false if data_provider.blank?
 
-    data_provider.always_recreate != true
+    class_name = resource_class.name.underscore
+    data_provider.always_recreate[class_name] != true
   end
 
   def find_external_resource

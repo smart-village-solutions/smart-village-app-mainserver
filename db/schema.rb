@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 2019_07_10_092939) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "always_recreate", default: false
+    t.text "always_recreate"
   end
 
   create_table "event_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
