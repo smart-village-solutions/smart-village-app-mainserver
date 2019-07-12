@@ -2,21 +2,28 @@
 
 module Mutations
   class DestroyRecord < BaseMutation
-    argument :id, Integer, required: true
+    argument :id, Integer, required: false
     argument :record_type, String, required: true
+    argument :external_id, Integer, required: false
 
     type Types::DestroyType
 
     RECORD_WHITELIST = ["EventRecord", "NewsItem", "PointOfInterest", "Tour"].freeze
 
-    def resolve(id:, record_type:)
+    def resolve(id: nil, record_type:, external_id: nil)
       return error_status unless RECORD_WHITELIST.include?(record_type)
 
-      record = record_type.constantize
-                 .filtered_for_current_user(context[:current_user])
-                 .where(id: id)
-                 .first
-
+      record = if external_id.present?
+                 record_type.constantize
+                   .filtered_for_current_user(context[:current_user])
+                   .where(external_id: external_id)
+                   .first
+               else
+                 record_type.constantize
+                   .filtered_for_current_user(context[:current_user])
+                   .where(id: id)
+                   .first
+               end
       if record.present?
         record.destroy
         status = "Record destroyed"
@@ -25,6 +32,8 @@ module Mutations
         status = "Record not found"
         status_code = 404
       end
+
+      id ||= record.id
 
       OpenStruct.new(id: id, status: status, status_code: status_code)
     end
