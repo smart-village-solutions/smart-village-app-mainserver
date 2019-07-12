@@ -14,15 +14,9 @@ module Mutations
       return error_status unless RECORD_WHITELIST.include?(record_type)
 
       record = if external_id.present?
-                 record_type.constantize
-                   .filtered_for_current_user(context[:current_user])
-                   .where(external_id: external_id)
-                   .first
+                 find_record(record_type, external_id: external_id)
                else
-                 record_type.constantize
-                   .filtered_for_current_user(context[:current_user])
-                   .where(id: id)
-                   .first
+                 find_record(record_type, id: id)
                end
       if record.present?
         record.destroy
@@ -33,13 +27,20 @@ module Mutations
         status_code = 404
       end
 
-      id ||= record.id
+      id ||= record.try(:id)
 
       OpenStruct.new(id: id, status: status, status_code: status_code)
     end
 
     def error_status
       OpenStruct.new(id: nil, status: "Access not permitted", status_code: 403)
+    end
+
+    def find_record(record_type, search_hash)
+      record_type.constantize
+        .filtered_for_current_user(context[:current_user])
+        .where(search_hash)
+        .first
     end
   end
 end
