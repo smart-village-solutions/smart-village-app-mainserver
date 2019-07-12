@@ -18,15 +18,7 @@ module Mutations
                else
                  find_record(record_type, id: id)
                end
-      if record.present?
-        record.destroy
-        status = "Record destroyed"
-        status_code = 200
-      else
-        status = "Record not found"
-        status_code = 404
-      end
-
+      destroy_record(record)
       id ||= record.try(:id)
 
       OpenStruct.new(id: id, status: status, status_code: status_code)
@@ -41,6 +33,17 @@ module Mutations
         .filtered_for_current_user(context[:current_user])
         .where(search_hash)
         .first
+    end
+
+    def destroy_record(record)
+      if record.present?
+        record.destroy
+        status = "Record destroyed"
+        status_code = 200
+      else
+        status = "Record not found"
+        status_code = 404
+      end
     end
   end
 end
