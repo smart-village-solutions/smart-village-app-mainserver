@@ -7,7 +7,7 @@ class MediaContent < ApplicationRecord
   has_one :source_url, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
   validates_presence_of :content_type
 
-  accepts_nested_attributes_for :source_url
+  accepts_nested_attributes_for :source_url, reject_if: ->(attr) { attr[:url].blank? }
 end
 
 # == Schema Information

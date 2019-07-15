@@ -2,7 +2,7 @@
 
 module Types
   class AddressType < Types::BaseObject
-    field :id, ID, null: false
+    field :id, ID, null: true
     field :addition, String, null: true
     field :street, String, null: true
     field :city, String, null: true
