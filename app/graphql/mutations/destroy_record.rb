@@ -24,24 +24,26 @@ module Mutations
       OpenStruct.new(id: id, status: result[:status], status_code: result[:status_code])
     end
 
-    def error_status
-      OpenStruct.new(id: nil, status: "Access not permitted", status_code: 403)
-    end
+    private
 
-    def find_record(record_type, search_hash)
-      record_type.constantize
-        .filtered_for_current_user(context[:current_user])
-        .where(search_hash)
-        .first
-    end
-
-    def destroy_record(record)
-      if record.present?
-        record.destroy
-        { status: "Record destroyed", status_code: 200 }
-      else
-        { status: "Record not found", status_code: 404 }
+      def error_status
+        OpenStruct.new(id: nil, status: "Access not permitted", status_code: 403)
       end
-    end
+
+      def find_record(record_type, search_hash)
+        record_type.constantize
+          .filtered_for_current_user(context[:current_user])
+          .where(search_hash)
+          .first
+      end
+
+      def destroy_record(record)
+        if record.present?
+          record.destroy
+          { status: "Record destroyed", status_code: 200 }
+        else
+          { status: "Record not found", status_code: 404 }
+        end
+      end
   end
 end
