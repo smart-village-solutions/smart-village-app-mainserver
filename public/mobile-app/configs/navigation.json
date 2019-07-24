@@ -5,10 +5,10 @@
     "query": "newsItems",
     "queryVariables": {}
   },
-  "PointsOfInterest": {
+  "PointsOfInterestAndTours": {
     "title": "Orte und Touren",
     "screen": "Index",
-    "query": "pointsOfInterest",
+    "query": "pointsOfInterestAndTours",
     "queryVariables": {}
   },
   "EventRecords": {
