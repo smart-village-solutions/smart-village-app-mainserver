@@ -1,10 +1,10 @@
 [
   {
-    "title": "BB-BUS",
+    "title": "Bürgerservice",
     "routeName": "BBBUSIndex",
     "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/BB-BUS.png",
     "params": {
-      "title": "Bürger- und Unternehmensservice",
+      "title": "Bürgerservice",
       "query": "",
       "queryVariables": {},
       "rootRouteName": "BBBUS"

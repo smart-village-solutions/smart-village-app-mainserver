@@ -1,9 +1,9 @@
 [
   {
-    "title": "Bürger- und Unternehmensservice",
+    "title": "Bürgerservice",
     "routeName": "Html",
     "params": {
-      "title": "Bürger- und Unternehmensservice",
+      "title": "Bürgerservice",
       "query": "publicHtmlFile",
       "queryVariables": {
         "name": "bb-bus"
@@ -48,6 +48,19 @@
         "name": "hintergrund"
       },
       "rootRouteName": "Hintergrund",
+      "webUrl": ""
+    }
+  },
+  {
+    "title": "Mitmachen",
+    "routeName": "Html",
+    "params": {
+      "title": "Mitmachen",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "mitmachen"
+      },
+      "rootRouteName": "Mitmachen",
       "webUrl": ""
     }
   },

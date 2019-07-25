@@ -18,7 +18,7 @@
     "queryVariables": { "order": "listDate_ASC" }
   },
   "BBBUS": {
-    "title": "Bürger- und Unternehmensservice",
+    "title": "Bürgerservice",
     "screen": "BBBUSIndex",
     "query": "",
     "queryVariables": {}
@@ -47,6 +47,15 @@
     "query": "publicHtmlFile",
     "queryVariables": {
       "name": "hintergrund"
+    },
+    "webUrl": ""
+  },
+  "Mitmachen": {
+    "title": "Mitmachen",
+    "screen": "Html",
+    "query": "publicHtmlFile",
+    "queryVariables": {
+      "name": "mitmachen"
     },
     "webUrl": ""
   },
