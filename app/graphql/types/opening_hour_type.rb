@@ -2,7 +2,7 @@
 
 module Types
   class OpeningHourType < Types::BaseObject
-    field :id, ID, null: false
+    field :id, ID, null: true
     field :weekday, String, null: true
     field :date_from, String, null: true
     field :date_to, String, null: true

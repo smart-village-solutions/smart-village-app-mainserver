@@ -17,7 +17,7 @@ end
 #  time_start                :time
 #  time_end                  :time
 #  time_description          :string(255)
-#  use_only_time_description :boolean
+#  use_only_time_description :boolean          default(FALSE)
 #  dateable_type             :string(255)
 #  dateable_id               :bigint
 #  created_at                :datetime         not null

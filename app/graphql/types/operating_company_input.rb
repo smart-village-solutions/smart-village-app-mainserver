@@ -2,7 +2,7 @@
 
 module Types
   class OperatingCompanyInput < BaseInputObject
-    argument :name, String, required: true
+    argument :name, String, required: false
     argument :address, Types::AddressInput, required: false,
                                             as: :address_attributes,
                                             prepare: ->(address, _ctx) { address.to_h }

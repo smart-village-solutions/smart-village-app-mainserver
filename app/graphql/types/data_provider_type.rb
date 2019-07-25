@@ -2,7 +2,7 @@
 
 module Types
   class DataProviderType < Types::BaseObject
-    field :id, ID, null: false
+    field :id, ID, null: true
     field :name, String, null: true
     field :logo, WebUrlType, null: true
     field :description, String, null: true

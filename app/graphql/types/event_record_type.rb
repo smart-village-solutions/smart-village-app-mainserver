@@ -2,7 +2,7 @@
 
 module Types
   class EventRecordType < Types::BaseObject
-    field :id, ID, null: false
+    field :id, ID, null: true
     field :parent_id, Integer, null: true
     field :description, String, null: true
     field :title, String, null: true
@@ -13,6 +13,7 @@ module Types
     field :category, CategoryType, null: true
     field :addresses, [AddressType], null: true
     field :location, LocationType, null: true
+    field :region_id, String, null: true
     field :region, RegionType, null: true
     field :data_provider, DataProviderType, null: true
     field :contacts, [ContactType], null: true

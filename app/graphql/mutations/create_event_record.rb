@@ -17,6 +17,7 @@ module Mutations
                                                                     }
     argument :category_name, String, required: false
     argument :region_name, String, required: false
+    argument :region, Types::RegionInput, required: false
     argument :addresses, [Types::AddressInput], required: false,
                                                 as: :addresses_attributes,
                                                 prepare: lambda { |addresses, _ctx|
@@ -53,7 +54,7 @@ module Mutations
                       }
     argument :tags, [String], as: :tag_list, required: false
 
-    field :event, Types::EventRecordType, null: false
+    field :event, Types::EventRecordType, null: true
 
     type Types::EventRecordType
 

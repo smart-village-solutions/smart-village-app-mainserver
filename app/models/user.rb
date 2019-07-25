@@ -49,4 +49,5 @@ end
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  data_provider_id       :integer
+#  role                   :integer          default("user")
 #
