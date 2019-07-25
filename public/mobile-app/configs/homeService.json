@@ -1,40 +1,41 @@
-[{
-        "title": "Bürgerservice",
-        "routeName": "BBBUSIndex",
-        "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/BB-BUS.png",
-        "params": {
-            "title": "Bürger- und Unternehmensservice",
-            "query": "",
-            "queryVariables": {},
-            "rootRouteName": "BBBUS"
-        }
-    },
-    {
-        "title": "Fläming bewegt",
-        "routeName": "Html",
-        "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/Flaeming.png",
-        "params": {
-            "title": "Fläming bewegt",
-            "query": "publicHtmlFile",
-            "queryVariables": {
-                "name": "flaeming-bewegt"
-            },
-            "rootRouteName": "FlaemingBewegt",
-            "webUrl": "https://www.flaeming-bewegt.de/"
-        }
-    },
-    {
-        "title": "Maerker",
-        "routeName": "Html",
-        "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/Maerker.png",
-        "params": {
-            "title": "Maerker",
-            "query": "publicHtmlFile",
-            "queryVariables": {
-                "name": "maerker"
-            },
-            "rootRouteName": "Maerker",
-            "webUrl": "https://maerkerapp.brandenburg.de/sixcms/detail.php/214/m_app_ort_d"
-        }
+[
+  {
+    "title": "Bürgerservice",
+    "routeName": "BBBUSIndex",
+    "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/BB-BUS.png",
+    "params": {
+      "title": "Bürgerservice",
+      "query": "",
+      "queryVariables": {},
+      "rootRouteName": "BBBUS"
     }
+  },
+  {
+    "title": "Fläming bewegt",
+    "routeName": "Html",
+    "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/Flaeming.png",
+    "params": {
+      "title": "Fläming bewegt",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "flaeming-bewegt"
+      },
+      "rootRouteName": "FlaemingBewegt",
+      "webUrl": "https://www.flaeming-bewegt.de/"
+    }
+  },
+  {
+    "title": "Maerker",
+    "routeName": "Html",
+    "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/Maerker.png",
+    "params": {
+      "title": "Maerker",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "maerker"
+      },
+      "rootRouteName": "Maerker",
+      "webUrl": "https://maerkerapp.brandenburg.de/sixcms/detail.php/214/m_app_ort_d"
+    }
+  }
 ]

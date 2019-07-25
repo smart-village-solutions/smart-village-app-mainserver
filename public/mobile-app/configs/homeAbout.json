@@ -13,6 +13,19 @@
     }
   },
   {
+    "title": "Mitmachen",
+    "routeName": "Html",
+    "params": {
+      "title": "Mitmachen",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "mitmachen"
+      },
+      "rootRouteName": "Mitmachen",
+      "webUrl": ""
+    }
+  },
+  {
     "title": "Datenschutz",
     "routeName": "Html",
     "params": {
