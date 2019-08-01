@@ -30,6 +30,8 @@ module Types
       argument :name, String, required: true
     end
 
+    field :categories, [CategoryType], null: false
+
     def point_of_interest(id:)
       PointOfInterest.find(id)
     end
@@ -44,6 +46,10 @@ module Types
 
     def tour(id:)
       Tour.find(id)
+    end
+
+    def categories
+      Category.all.order(:name)
     end
 
     # Provide contents from html files in `public/mobile-app/contents` through GraphQL query
