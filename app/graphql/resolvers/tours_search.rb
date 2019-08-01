@@ -25,6 +25,7 @@ class Resolvers::ToursSearch
   option :limit, type: types.Int, with: :apply_limit
   option :skip, type: types.Int, with: :apply_skip
   option :order, type: ToursOrder, default: "createdAt_DESC"
+  option :category, type: types.String, with: :apply_category
 
   def apply_limit(scope, value)
     scope.limit(value)
@@ -36,6 +37,10 @@ class Resolvers::ToursSearch
 
   def apply_order(scope, value)
     scope.order(value)
+  end
+
+  def apply_category(scope, value)
+    scope.joins(:category).where(categories: { name: value })
   end
 
   def apply_order_with_created_at_desc(scope)
