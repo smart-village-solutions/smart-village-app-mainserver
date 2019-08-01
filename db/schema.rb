@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_10_092939) do
+ActiveRecord::Schema.define(version: 2019_08_01_102354) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "description"
@@ -96,8 +96,8 @@ ActiveRecord::Schema.define(version: 2019_07_10_092939) do
   end
 
   create_table "content_blocks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "title"
-    t.string "intro"
+    t.text "title"
+    t.text "intro"
     t.text "body"
     t.string "content_blockable_type"
     t.bigint "content_blockable_id"
@@ -178,7 +178,7 @@ ActiveRecord::Schema.define(version: 2019_07_10_092939) do
   end
 
   create_table "media_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "caption_text"
+    t.text "caption_text"
     t.string "copyright"
     t.string "height"
     t.string "width"
@@ -277,7 +277,7 @@ ActiveRecord::Schema.define(version: 2019_07_10_092939) do
 
   create_table "prices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
-    t.float "price"
+    t.float "amount"
     t.boolean "group_price"
     t.integer "age_from"
     t.integer "age_to"
@@ -286,6 +286,7 @@ ActiveRecord::Schema.define(version: 2019_07_10_092939) do
     t.integer "min_children_count"
     t.integer "max_children_count"
     t.text "description"
+    t.string "category"
     t.string "priceable_type"
     t.bigint "priceable_id"
     t.datetime "created_at", null: false
