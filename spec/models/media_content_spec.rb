@@ -13,7 +13,7 @@ end
 # Table name: media_contents
 #
 #  id             :bigint           not null, primary key
-#  caption_text   :string(255)
+#  caption_text   :text(65535)
 #  copyright      :string(255)
 #  height         :string(255)
 #  width          :string(255)
