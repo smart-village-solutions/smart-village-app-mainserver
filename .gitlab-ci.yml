@@ -6,7 +6,7 @@ variables:
   TARGET_HOST: smartvillage.app
 
 services:
-  - docker:dind
+  - docker:19.03.0-dind
 
 stages:
   - build
