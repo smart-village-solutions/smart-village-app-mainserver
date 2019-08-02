@@ -7,7 +7,7 @@ FactoryBot.define do
     weekday { "MyString" }
     time_start { "2019-05-06 12:17:44" }
     time_end { "2019-05-06 12:17:44" }
-    time_Description { "MyString" }
+    time_description { "MyString" }
     use_only_time_description { false }
   end
 end
