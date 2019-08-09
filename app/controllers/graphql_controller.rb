@@ -21,6 +21,7 @@ class GraphqlController < ApplicationController
       operation_name: operation_name
     )
     render json: result
+    log_graphql_execution_error(result, query)
   rescue StandardError => error
     raise error unless Rails.env.development?
 
@@ -32,6 +33,13 @@ class GraphqlController < ApplicationController
     def current_resource_owner
       owner_id = doorkeeper_token.try(:application).try(:owner_id) if doorkeeper_token
       User.find(owner_id) if owner_id
+    end
+
+    def log_graphql_execution_error(result, query)
+      if result.to_h.has_key?("errors")
+        error_hash = { GraphQLServerError:  result.to_h, payload: query }
+        logger.error error_hash
+      end
     end
 
     # Handle form data, JSON body, or a blank value
