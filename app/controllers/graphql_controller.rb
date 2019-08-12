@@ -20,8 +20,8 @@ class GraphqlController < ApplicationController
       context: context,
       operation_name: operation_name
     )
-    render json: result
     log_graphql_execution_error(result, query)
+    render json: result
   rescue StandardError => error
     raise error unless Rails.env.development?
 
@@ -36,9 +36,14 @@ class GraphqlController < ApplicationController
     end
 
     def log_graphql_execution_error(result, query)
-      if result.to_h.has_key?("errors")
-        error_hash = { GraphQLServerError:  result.to_h, payload: query }
-        logger.error error_hash
+      result_hash = result.to_h
+      if result_hash.key?("errors")
+        error_hash = { GraphQLServerError: result_hash, payload: query }
+        logger.error(error_hash)
+        if Rails.env.production?
+          gray_logger = GELF::Notifier.new("graylog", 12_219, "WAN", facility: "Main App Server")
+          gray_logger.notify!(short_message: "GraphQL Execution Error: #{result_hash["errors"].first["message"]}", full_message: error_hash)
+        end
       end
     end
 
