@@ -34,6 +34,7 @@ gem "jbuilder", "~> 2.5"
 gem "acts-as-taggable-on"
 gem "ancestry", "~> 2.1"
 gem "devise"
+gem "devise-token_authenticatable"
 gem "doorkeeper"
 gem "jquery-rails"
 

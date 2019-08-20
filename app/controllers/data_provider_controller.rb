@@ -6,6 +6,8 @@ class DataProviderController < ApplicationController
   before_action :init_data_provider, only: [:edit, :update]
   before_action :doorkeeper_authorize!, only: [:show]
 
+  skip_before_action :verify_authenticity_token, only: [:update]
+
   def show
     @data_provider = current_resource_owner.try(:data_provider)
 
@@ -27,6 +29,10 @@ class DataProviderController < ApplicationController
   end
 
   def edit
+    respond_to do |format|
+      format.json { render json: @data_provider, include: [:logo, :address, :contact]}
+      format.html
+    end
   end
 
   def update
@@ -35,7 +41,10 @@ class DataProviderController < ApplicationController
     current_user.save
 
     flash[:notice] = "Data Provider Updated: #{@data_provider.try(:errors).try(:full_messages)}"
-    redirect_to action: :edit
+    respond_to do |format|
+      format.json { render json: @data_provider, include: [:logo, :address, :contact]}
+      format.html { redirect_to action: :edit }
+    end
   end
 
   private

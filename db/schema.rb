@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_01_102354) do
+ActiveRecord::Schema.define(version: 2019_08_20_125308) do
 
-  create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
     t.string "types"
     t.string "accessable_type"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["accessable_type", "accessable_id"], name: "index_access_info_on_accessable_type_and_id"
   end
 
-  create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "addition"
     t.string "city"
     t.string "street"
@@ -35,8 +35,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
   end
 
-  create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "external_id"
+  create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.string "mobile_description"
@@ -51,21 +50,21 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["category_id"], name: "index_attractions_on_category_id"
   end
 
-  create_table "attractions_certificates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "attractions_certificates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "attraction_id"
     t.bigint "certificate_id"
     t.index ["attraction_id"], name: "index_attractions_certificates_on_attraction_id"
     t.index ["certificate_id"], name: "index_attractions_certificates_on_certificate_id"
   end
 
-  create_table "attractions_regions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "attractions_regions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "region_id"
     t.bigint "attraction_id"
     t.index ["attraction_id"], name: "index_attractions_regions_on_attraction_id"
     t.index ["region_id"], name: "index_attractions_regions_on_region_id"
   end
 
-  create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.integer "tmb_id"
     t.datetime "created_at", null: false
@@ -74,7 +73,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["ancestry"], name: "index_categories_on_ancestry"
   end
 
-  create_table "certificates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "certificates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.bigint "point_of_interest_id"
     t.datetime "created_at", null: false
@@ -82,7 +81,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["point_of_interest_id"], name: "index_certificates_on_point_of_interest_id"
   end
 
-  create_table "contacts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "contacts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "phone"
@@ -95,7 +94,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["contactable_type", "contactable_id"], name: "index_contacts_on_contactable_type_and_contactable_id"
   end
 
-  create_table "content_blocks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "content_blocks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "title"
     t.text "intro"
     t.text "body"
@@ -106,7 +105,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["content_blockable_type", "content_blockable_id"], name: "index_content_blocks_on_content_blockable_type_and_id"
   end
 
-  create_table "data_providers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "data_providers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.datetime "created_at", null: false
@@ -114,7 +113,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.text "always_recreate"
   end
 
-  create_table "event_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "event_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "parent_id"
     t.bigint "region_id"
     t.text "description"
@@ -128,7 +127,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["region_id"], name: "index_event_records_on_region_id"
   end
 
-  create_table "external_references", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "external_references", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "unique_id"
@@ -137,7 +136,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.string "external_type"
   end
 
-  create_table "fixed_dates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "fixed_dates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.date "date_start"
     t.date "date_end"
     t.string "weekday"
@@ -152,7 +151,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["dateable_type", "dateable_id"], name: "index_fixed_dates_on_dateable_type_and_dateable_id"
   end
 
-  create_table "geo_locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "geo_locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.float "latitude"
     t.float "longitude"
     t.string "geo_locateable_type"
@@ -162,7 +161,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["geo_locateable_type", "geo_locateable_id"], name: "index_geo_locations_on_geo_locateable_type_and_geo_locateable_id"
   end
 
-  create_table "locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "department"
     t.string "district"
@@ -177,7 +176,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["region_id"], name: "index_locations_on_region_id"
   end
 
-  create_table "media_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "media_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "caption_text"
     t.string "copyright"
     t.string "height"
@@ -190,7 +189,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["mediaable_type", "mediaable_id"], name: "index_media_contents_on_mediaable_type_and_mediaable_id"
   end
 
-  create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "author"
     t.boolean "full_version"
     t.integer "characters_to_be_shown"
@@ -205,7 +204,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.string "title"
   end
 
-  create_table "oauth_access_grants", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "oauth_access_grants", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "resource_owner_id", null: false
     t.bigint "application_id", null: false
     t.string "token", null: false
@@ -219,7 +218,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["token"], name: "index_oauth_access_grants_on_token", unique: true
   end
 
-  create_table "oauth_access_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "oauth_access_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "resource_owner_id"
     t.bigint "application_id", null: false
     t.string "token", null: false
@@ -235,7 +234,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["token"], name: "index_oauth_access_tokens_on_token", unique: true
   end
 
-  create_table "oauth_applications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "oauth_applications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "uid", null: false
     t.string "secret", null: false
@@ -250,7 +249,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
-  create_table "opening_hours", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "opening_hours", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "weekday"
     t.date "date_from"
     t.date "date_to"
@@ -266,7 +265,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["openingable_type", "openingable_id"], name: "index_opening_hours_on_openingable_type_and_openingable_id"
   end
 
-  create_table "operating_companies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "operating_companies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "companyable_type"
     t.bigint "companyable_id"
@@ -275,9 +274,9 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["companyable_type", "companyable_id"], name: "index_operating_companies_on_companyable_type_and_companyable_id"
   end
 
-  create_table "prices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "prices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
-    t.float "price"
+    t.float "amount"
     t.boolean "group_price"
     t.integer "age_from"
     t.integer "age_to"
@@ -286,6 +285,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.integer "min_children_count"
     t.integer "max_children_count"
     t.text "description"
+    t.string "category"
     t.string "priceable_type"
     t.bigint "priceable_id"
     t.datetime "created_at", null: false
@@ -293,13 +293,13 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["priceable_type", "priceable_id"], name: "index_prices_on_priceable_type_and_priceable_id"
   end
 
-  create_table "regions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "regions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "repeat_durations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "repeat_durations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.date "start_date"
     t.date "end_date"
     t.boolean "every_year"
@@ -309,7 +309,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["event_record_id"], name: "index_repeat_durations_on_event_record_id"
   end
 
-  create_table "taggings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "taggings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
     t.integer "taggable_id"
@@ -328,13 +328,13 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
   end
 
-  create_table "tags", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "tags", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", collation: "utf8_bin"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -356,13 +356,16 @@ ActiveRecord::Schema.define(version: 2019_08_01_102354) do
     t.datetime "updated_at", null: false
     t.integer "data_provider_id"
     t.integer "role", default: 0
+    t.text "authentication_token"
+    t.datetime "authentication_token_created_at"
+    t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true, length: 255
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
-  create_table "web_urls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "web_urls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "url"
     t.text "description"
     t.string "web_urlable_type"
