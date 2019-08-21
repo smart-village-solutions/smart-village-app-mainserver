@@ -2,6 +2,7 @@
 
 class DataProvider < ApplicationRecord
   store :always_recreate, accessors: %i[point_of_interest tour news_item event_record], coder: JSON
+  store :roles, accessors: %i[role_point_of_interest role_tour role_news_item role_event_record], coder: JSON
 
   has_one :address, as: :addressable
   has_one :contact, as: :contactable

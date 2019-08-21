@@ -16,7 +16,8 @@ class Users::SessionsController < Devise::SessionsController
         return render json: {
           success: true,
           user: resource,
-          applications: resource.oauth_applications
+          applications: resource.oauth_applications,
+          roles: resource.try(:data_provider).try(:roles)
         }
       end
     end
