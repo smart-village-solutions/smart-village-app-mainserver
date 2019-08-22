@@ -50,6 +50,7 @@ gem "search_object_graphql"
 gem "unicorn"
 gem "gelf"
 gem "lograge"
+gem "rollbar"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
