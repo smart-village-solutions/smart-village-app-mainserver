@@ -38,7 +38,7 @@ class DataProviderController < ApplicationController
   def update
     @data_provider.update_attributes(provider_params)
     current_user.data_provider = @data_provider
-    current_user.save
+    current_user.data_provider.save
 
     flash[:notice] = "Data Provider Updated: #{@data_provider.try(:errors).try(:full_messages)}"
     respond_to do |format|
