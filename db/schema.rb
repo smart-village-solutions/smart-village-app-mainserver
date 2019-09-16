@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_21_082807) do
+ActiveRecord::Schema.define(version: 2019_09_16_120441) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -367,7 +367,7 @@ ActiveRecord::Schema.define(version: 2019_08_21_082807) do
   end
 
   create_table "web_urls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "url"
+    t.text "url"
     t.text "description"
     t.string "web_urlable_type"
     t.bigint "web_urlable_id"
