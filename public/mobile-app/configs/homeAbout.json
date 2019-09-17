@@ -1,6 +1,5 @@
 [
   {
-    "id": "-1",
     "title": "Mitmachen",
     "routeName": "Html",
     "params": {
@@ -9,11 +8,11 @@
       "queryVariables": {
         "name": "mitmachen"
       },
-      "rootRouteName": "Mitmachen"
+      "rootRouteName": "Mitmachen",
+      "subQuery": "false"
     }
   },
   {
-    "id": "-1",
     "title": "Feedback",
     "routeName": "Html",
     "params": {
@@ -22,19 +21,21 @@
       "queryVariables": {
         "name": "feedback"
       },
-      "rootRouteName": "Feedback"
+      "rootRouteName": "Feedback",
+      "subQuery": "false"
     }
   },
   {
-    "title": "Wie gefällt Ihnen die App?",
+    "title": "Impressum",
     "routeName": "Html",
     "params": {
-      "title": "Wie gefällt Ihnen die App?",
+      "title": "Impressum",
       "query": "publicHtmlFile",
       "queryVariables": {
-        "name": "wie-gefaellt"
+        "name": "impressum"
       },
-      "rootRouteName": "HomeStack"
+      "rootRouteName": "Impressum",
+      "subQuery": "false"
     }
   }
 ]

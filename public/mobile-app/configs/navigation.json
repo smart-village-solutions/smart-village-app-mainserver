@@ -23,7 +23,8 @@
     "query": "publicHtmlFile",
     "queryVariables": {
       "name": "mitmachen"
-    }
+    },
+    "subQuery": "false"
   },
   "Service": {
     "title": "Service",
@@ -31,7 +32,8 @@
     "query": "publicHtmlFile",
     "queryVariables": {
       "name": "service"
-    }
+    },
+    "subQuery": "false"
   },
   "Feedback": {
     "title": "Feedback",
@@ -39,6 +41,12 @@
     "query": "publicHtmlFile",
     "queryVariables": {
       "name": "feedback"
+    },
+    "rootRouteName": "Feedback",
+    "subQuery": {
+      "routeName": "Web",
+      "buttonTitle": "zum Feedback-Formular",
+      "webUrl": "https://smart-village.app/feedback"
     }
   },
   "Datenschutz": {
@@ -47,7 +55,8 @@
     "query": "publicHtmlFile",
     "queryVariables": {
       "name": "datenschutz"
-    }
+    },
+    "subQuery": "false"
   },
   "Impressum": {
     "title": "Impressum",
@@ -55,6 +64,7 @@
     "query": "publicHtmlFile",
     "queryVariables": {
       "name": "impressum"
-    }
+    },
+    "subQuery": "false"
   }
 }

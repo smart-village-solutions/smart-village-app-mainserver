@@ -1,0 +1,52 @@
+[
+  {
+    "title": "Feedback",
+    "routeName": "Html",
+    "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/Feedback.png",
+    "params": {
+      "title": "Feedback",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "feedback"
+      },
+      "rootRouteName": "Feedback",
+      "subQuery": {
+        "routeName": "Web",
+        "buttonTitle": "zum Feedback-Formular",
+        "webUrl": "https://smart-village.app/feedback/"
+      }
+    }
+  },
+  {
+    "title": "Smart Village App",
+    "routeName": "Html",
+    "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/BUS.png",
+    "params": {
+      "title": "Smart Village App",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "smart-village-app"
+      },
+      "rootRouteName": "SmartVillageApp",
+      "subQuery": {
+        "routeName": "Web",
+        "buttonTitle": "Webseite öffnen",
+        "webUrl": "https://smart-village.app"
+      }
+    }
+  },
+  {
+    "title": "Weiteres",
+    "routeName": "Html",
+    "icon": "https://server.bad-belzig.smart-village.app/mobile-app/assets/home-service/Vereine.png",
+    "params": {
+      "title": "Weiteres",
+      "query": "publicHtmlFile",
+      "queryVariables": {
+        "name": "weiteres"
+      },
+      "rootRouteName": "Weiteres",
+      "subQuery": "false"
+    }
+  }
+]
