@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @static_content.name %>
+</p>
+
+<p>
+  <strong>Data type:</strong>
+  <%= @static_content.data_type %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @static_content.content %>
+</p>
+
+<%= link_to 'Edit', edit_static_content_path(@static_content) %> |
+<%= link_to 'Back', static_contents_path %>

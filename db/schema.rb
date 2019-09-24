@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_16_120441) do
+ActiveRecord::Schema.define(version: 2019_09_24_083353) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -308,6 +308,14 @@ ActiveRecord::Schema.define(version: 2019_09_16_120441) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_record_id"], name: "index_repeat_durations_on_event_record_id"
+  end
+
+  create_table "static_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.string "data_type"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "taggings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

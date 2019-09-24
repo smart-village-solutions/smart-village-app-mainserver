@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col">
+    <h1>Static Contents</h1>
+
+    <p id="notice"><%= notice %></p>
+    <p><%= link_to 'New Static Content', new_static_content_path, class: "btn btn-success" %></p>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @static_contents.each do |static_content| %>
+          <tr>
+            <td><%= static_content.id %></td>
+            <td><%= static_content.name %></td>
+            <td><%= static_content.data_type.upcase %></td>
+            <td><%= link_to 'Show', static_content, class: 'btn btn-sm btn-outline-secondary' %></td>
+            <td><%= link_to 'Edit', edit_static_content_path(static_content), class: 'btn btn-sm btn-outline-secondary' %></td>
+            <td><%= link_to 'Destroy', static_content, method: :delete,class: 'btn btn-sm btn-outline-danger', data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
