@@ -1,0 +1,99 @@
+<% if @user.errors.any? %>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <h5>
+      <%= t('doorkeeper.applications.form.error') %>
+    </h5>
+
+    <ul style="margin: 0">
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>
+
+<div class="form-group">
+  <%= f.label :email, "E-Mail" %>
+  <%= f.text_field :email, class: 'form-control' %>
+</div>
+
+<div class="form-group">
+  <%= f.label :role, "Rolle" %>
+  <%= f.select :role, [["Nutzer", :user], ["Admin", :admin]], class: 'form-control' %>
+</div>
+
+<h2>Passwort</h2>
+<div class="form-group">
+  <%= f.label :password, "Passwort eingeben" %>
+  <%= f.password_field :password, class: 'form-control' %>
+
+  <% unless @user.new_record? %>
+    <small class="form-text text-muted">
+      Bitte leer lassen, wenn es nicht verändert werden soll
+    </small>
+  <% end %>
+</div>
+
+<div class="form-group">
+  <%= f.label :password_confirmation, "Passwort bestätigen" %>
+  <%= f.password_field :password_confirmation, class: 'form-control' %>
+
+  <% unless @user.new_record? %>
+    <small class="form-text text-muted">
+      Bitte leer lassen, wenn es nicht verändert werden soll
+    </small>
+  <% end %>
+</div>
+
+
+<%= f.fields_for :data_provider, object: @user.data_provider || @user.build_data_provider do |d|%>
+  <h2>Data Provider</h2>
+  <div class="form-group">
+    <%= d.label :name %>
+    <%= d.text_field :name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= d.label :description %>
+    <%= d.text_area :description, class: 'form-control' %>
+  </div>
+
+
+
+  <h2>Rechte im CMS</h2>
+  <div class="form-group">
+    <div class="form-check">
+      <%= d.check_box :role_point_of_interest, {class: 'form-check-input'}, "true", "false" %>
+      <%= d.label :role_point_of_interest, "Points of Interests", class: 'form-check-label' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-check">
+      <%= d.check_box :role_tour, {class: 'form-check-input'}, "true", "false" %>
+      <%= d.label :role_tour, "Touren", class: 'form-check-label' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-check">
+      <%= d.check_box :role_news_item, {class: 'form-check-input'}, "true", "false" %>
+      <%= d.label :role_news_item, "Nachrichten", class: 'form-check-label' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-check">
+      <%= d.check_box :role_event_record, { class: 'form-check-input'}, "true", "false" %>
+      <%= d.label :role_event_record,"Veranstaltungen", class: 'form-check-label' %>
+    </div>
+  </div>
+<% end %>
+
+<p>
+  <%= f.submit t('doorkeeper.applications.buttons.submit'), class: "btn btn-primary" %>
+</p>

@@ -4,10 +4,10 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :trackable, :omniauthable and :rememberable
   devise :database_authenticatable, :recoverable, :validatable, :lockable, :timeoutable, :token_authenticatable
-
   enum role: { user: 0, admin: 1 }, _suffix: :role
 
   belongs_to :data_provider, optional: true
+  accepts_nested_attributes_for :data_provider
 
   has_many :access_grants,
            class_name: "Doorkeeper::AccessGrant",

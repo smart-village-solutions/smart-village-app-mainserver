@@ -1,0 +1,8 @@
+<div class="row">
+  <div class="col">
+    <h1>Neuen Nutzer anlegen</h1>
+    <%= form_for @user, url: accounts_path, method: :post, html: { class: 'form-horizontal', role: 'form'} do |f| %>
+      <%= render partial: 'form', locals: { f: f } %>
+    <% end %>
+  </div>
+</div>

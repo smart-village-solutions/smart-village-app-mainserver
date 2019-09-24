@@ -4,7 +4,11 @@ class Oauth::ApplicationsController < Doorkeeper::ApplicationsController
   before_action :authenticate_user!
 
   def index
-    @applications = current_user.oauth_applications
+    if current_user.admin_role?
+      @applications = Doorkeeper::Application.all
+    else
+      @applications = current_user.oauth_applications
+    end
   end
 
   # only needed if each application must have some owner

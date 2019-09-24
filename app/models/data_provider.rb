@@ -8,7 +8,15 @@ class DataProvider < ApplicationRecord
   has_one :contact, as: :contactable
   has_one :logo, as: :web_urlable, class_name: "WebUrl"
 
+  before_save :parse_role_values
+
   accepts_nested_attributes_for :address, :contact, :logo
+
+  def parse_role_values
+    roles.each do |key, value|
+      roles[key] = value == "true"
+    end
+  end
 end
 
 # == Schema Information

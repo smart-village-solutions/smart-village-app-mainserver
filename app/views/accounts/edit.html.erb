@@ -1,0 +1,8 @@
+<div class="row">
+  <div class="col">
+    <h1>Nutzer bearbeiten</h1>
+    <%= form_for @user, url: account_path(@user), method: :patch, html: { class: 'form-horizontal', role: 'form'} do |f| %>
+      <%= render partial: 'form', locals: { f: f } %>
+    <% end %>
+  </div>
+</div>
