@@ -1,4 +1,6 @@
 <%= form_with(model: static_content, local: true) do |form| %>
+  <%= form.hidden_field :content %>
+
   <% if static_content.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(static_content.errors.count, "error") %> prohibited this static_content from being saved:</h2>
@@ -22,11 +24,31 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :content %>
-    <%= form.text_area :content, class: 'form-control' %>
+    <div id="code_editor" style="height: 400px;"></div>
   </div>
 
   <p>
-    <%= form.submit class: "btn btn-primary" %>
+    <%= form.submit class: "btn btn-primary", id: "save_static_content" %>
   </p>
 <% end %>
+
+<script>
+  $(function () {
+    const container = document.getElementById("code_editor")
+    const options = {
+      mode: "<%= static_content.data_type == 'html' ? 'code' : 'tree' %>",
+      <% if static_content.data_type == "json" %>
+        modes: ['code', 'tree'],
+      <% end %>
+      onChangeText: function(jsonString) {
+        $("#static_content_content").val(jsonString)
+      }
+    }
+    const editor = new JSONEditor(container, options)
+    <% if static_content.data_type == "html" %>
+      editor.setText("<%= escape_javascript(static_content.content.to_s.html_safe) %>")
+    <% else %>
+      editor.set(<%= static_content.content.to_s.html_safe %>)
+    <% end %>
+  });
+</script>

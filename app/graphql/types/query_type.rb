@@ -58,15 +58,18 @@ module Types
     #
     # @return [String] the contents of the file, if it exists - otherwise ""
     def public_html_file(name:)
+      static_content = StaticContent.where(name: name, data_type: "html").first
+      return { content: static_content.content, name: name } if static_content.present?
+
       public_contents_folder = "#{Rails.root}/public/mobile-app/contents"
       file_type = "html"
       file = File.join(public_contents_folder, "#{name}.#{file_type}")
 
       if query_file?(file, public_contents_folder, file_type)
-        return { content: File.read(file).squish }
+        return { content: File.read(file).squish, name: name }
       end
 
-      { content: "" }
+      { content: "", name: "not found" }
     end
 
     # Provide contents from json files in `public/mobile-app/configs` through GraphQL query
@@ -75,15 +78,18 @@ module Types
     #
     # @return [String] the contents of the file, if it exists - otherwise ""
     def public_json_file(name:)
+      static_content = StaticContent.where(name: name, data_type: "json").first
+      return { content: static_content.content, name: name } if static_content.present?
+
       public_configs_folder = "#{Rails.root}/public/mobile-app/configs"
       file_type = "json"
       file = File.join(public_configs_folder, "#{name}.#{file_type}")
 
       if query_file?(file, public_configs_folder, file_type)
-        return { content: JSON.parse(File.read(file)).to_json }
+        return { content: JSON.parse(File.read(file)).to_json, name: name }
       end
 
-      { content: {} }
+      { content: {}, name: "not found" }
     end
 
     private
