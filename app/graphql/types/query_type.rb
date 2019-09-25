@@ -61,14 +61,6 @@ module Types
       static_content = StaticContent.where(name: name, data_type: "html").first
       return { content: static_content.content, name: name } if static_content.present?
 
-      public_contents_folder = "#{Rails.root}/public/mobile-app/contents"
-      file_type = "html"
-      file = File.join(public_contents_folder, "#{name}.#{file_type}")
-
-      if query_file?(file, public_contents_folder, file_type)
-        return { content: File.read(file).squish, name: name }
-      end
-
       { content: "", name: "not found" }
     end
 
@@ -80,14 +72,6 @@ module Types
     def public_json_file(name:)
       static_content = StaticContent.where(name: name, data_type: "json").first
       return { content: static_content.content, name: name } if static_content.present?
-
-      public_configs_folder = "#{Rails.root}/public/mobile-app/configs"
-      file_type = "json"
-      file = File.join(public_configs_folder, "#{name}.#{file_type}")
-
-      if query_file?(file, public_configs_folder, file_type)
-        return { content: JSON.parse(File.read(file)).to_json, name: name }
-      end
 
       { content: {}, name: "not found" }
     end
