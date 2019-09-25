@@ -54,8 +54,12 @@ class AccountsController < ApplicationController
     values = params.require(:user).permit(
       :email, :password, :password_confirmation, :role,
       data_provider_attributes: [
-        :id, :name, :descrioption,
-        :role_point_of_interest, :role_tour, :role_news_item, :role_event_record]
+        :id, :name, :description,
+        :role_point_of_interest, :role_tour, :role_news_item, :role_event_record,
+        logo_attributes: [:id, :url, :description],
+        address_attributes: [:id, :street, :addition, :zip, :city],
+        contact_attributes: [:id, :first_name, :last_name, :phone, :fax, :email]
+      ]
     )
     values.delete_if { |_key, value| value.blank? }
   end

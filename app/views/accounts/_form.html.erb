@@ -18,7 +18,7 @@
 
 <div class="form-group">
   <%= f.label :email, "E-Mail" %>
-  <%= f.text_field :email, class: 'form-control' %>
+  <%= f.text_field :email, class: 'form-control', required: true %>
 </div>
 
 <div class="form-group">
@@ -27,26 +27,28 @@
 </div>
 
 <h2>Passwort</h2>
-<div class="form-group">
-  <%= f.label :password, "Passwort eingeben" %>
-  <%= f.password_field :password, class: 'form-control' %>
+<div class="row">
+  <div class="form-group col-6">
+    <%= f.label :password, "Passwort eingeben" %>
+    <%= f.password_field :password, class: 'form-control' %>
 
-  <% unless @user.new_record? %>
-    <small class="form-text text-muted">
-      Bitte leer lassen, wenn es nicht verändert werden soll
-    </small>
-  <% end %>
-</div>
+    <% unless @user.new_record? %>
+      <small class="form-text text-muted">
+        Bitte leer lassen, wenn es nicht verändert werden soll
+      </small>
+    <% end %>
+  </div>
 
-<div class="form-group">
-  <%= f.label :password_confirmation, "Passwort bestätigen" %>
-  <%= f.password_field :password_confirmation, class: 'form-control' %>
+  <div class="form-group col-6">
+    <%= f.label :password_confirmation, "Passwort bestätigen" %>
+    <%= f.password_field :password_confirmation, class: 'form-control' %>
 
-  <% unless @user.new_record? %>
-    <small class="form-text text-muted">
-      Bitte leer lassen, wenn es nicht verändert werden soll
-    </small>
-  <% end %>
+    <% unless @user.new_record? %>
+      <small class="form-text text-muted">
+        Bitte leer lassen, wenn es nicht verändert werden soll
+      </small>
+    <% end %>
+  </div>
 </div>
 
 
@@ -55,13 +57,95 @@
   <div class="form-group">
     <%= d.label :name %>
     <%= d.text_field :name, class: 'form-control' %>
+    <small class="form-text text-muted">
+      Dieser Text wird auch in der App angezeigt.
+    </small>
   </div>
 
   <div class="form-group">
     <%= d.label :description %>
     <%= d.text_area :description, class: 'form-control' %>
+    <small class="form-text text-muted">
+      Nur für interne Zwecke
+    </small>
   </div>
 
+  <h3>Logo</h3>
+  <%= d.fields_for :logo, object: @user.data_provider.logo || @user.data_provider.build_logo do |l|%>
+    <div class="form-group">
+      <%= l.label :url, "Link zum Logo" %>
+      <%= l.text_field :url, class: 'form-control', required: true %>
+      <small class="form-text text-muted">
+        Diese Grafik wird über Ihren Beiträgen dargestellt.
+      </small>
+    </div>
+
+    <div class="form-group">
+      <%= l.label :description, "Alternativer Text für das Logo" %>
+      <%= l.text_field :description, class: 'form-control' %>
+    </div>
+  <% end %>
+
+  <h3>Adresse</h3>
+  <p>Diese Daten dienen nur internen Zwecken und werden nicht in der App dargestellt.</p>
+  <%= d.fields_for :address, object: @user.data_provider.address || @user.data_provider.build_address do |a|%>
+    <div class="row">
+      <div class="form-group col-6">
+        <%= a.label :street, "Straße" %>
+        <%= a.text_field :street, class: 'form-control' %>
+      </div>
+
+      <div class="form-group col-6">
+        <%= a.label :addition, "ggf. Adresszusatz" %>
+        <%= a.text_field :addition, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-6">
+        <%= a.label :zip, "PLZ" %>
+        <%= a.text_field :zip, class: 'form-control' %>
+      </div>
+
+      <div class="form-group col-6">
+        <%= a.label :city, "Stadt" %>
+        <%= a.text_field :city, class: 'form-control' %>
+      </div>
+    </div>
+  <% end %>
+
+  <h3>Ansprechpartner</h3>
+  <p>Diese Daten dienen nur internen Zwecken und werden nicht in der App dargestellt.</p>
+  <%= d.fields_for :contact, object: @user.data_provider.contact || @user.data_provider.build_contact do |a|%>
+    <div class="row">
+      <div class="form-group col-6">
+        <%= a.label :first_name, "Vorname" %>
+        <%= a.text_field :first_name, class: 'form-control' %>
+      </div>
+
+      <div class="form-group col-6">
+        <%= a.label :last_name, "Nachname" %>
+        <%= a.text_field :last_name, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-6">
+        <%= a.label :phone, "Telefon" %>
+        <%= a.text_field :phone, class: 'form-control' %>
+      </div>
+
+      <div class="form-group col-6">
+        <%= a.label :fax, "Fax" %>
+        <%= a.text_field :fax, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+        <%= a.label :email, "E-Mail" %>
+        <%= a.text_field :email, class: 'form-control' %>
+      </div>
+  <% end %>
 
 
   <h2>Rechte im CMS</h2>
