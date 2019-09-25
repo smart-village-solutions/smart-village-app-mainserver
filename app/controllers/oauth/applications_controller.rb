@@ -26,7 +26,11 @@ class Oauth::ApplicationsController < Doorkeeper::ApplicationsController
   private
 
     def set_application
-      @application = current_user.oauth_applications.find(params[:id])
+      if current_user.admin_role?
+        @application = Doorkeeper::Application.find(params[:id])
+      else
+        @application = current_user.oauth_applications.find(params[:id])
+      end
     end
 
 end

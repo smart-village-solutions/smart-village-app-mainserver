@@ -14,7 +14,7 @@ class DataProvider < ApplicationRecord
 
   def parse_role_values
     roles.each do |key, value|
-      roles[key] = value == "true"
+      roles[key] = value == "true" || value == true
     end
   end
 end
