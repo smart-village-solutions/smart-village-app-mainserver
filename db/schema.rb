@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_24_083353) do
+ActiveRecord::Schema.define(version: 2019_09_25_094749) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(version: 2019_09_24_083353) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "data_provider_id"
+    t.string "external_id"
     t.index ["category_id"], name: "index_event_records_on_category_id"
     t.index ["region_id"], name: "index_event_records_on_region_id"
   end

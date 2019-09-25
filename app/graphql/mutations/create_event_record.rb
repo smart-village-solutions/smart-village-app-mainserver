@@ -5,6 +5,7 @@ module Mutations
     argument :force_create, Boolean, required: false
     argument :parent_id, Integer, required: false
     argument :description, String, required: false
+    argument :external_id, String, required: false
     argument :title, String, required: false
     argument :dates, [Types::DateInput], required: false,
                                          as: :dates_attributes,

@@ -49,7 +49,10 @@ class EventRecord < ApplicationRecord
     self.region_id = Region.where(name: region_name).first_or_create.id
   end
 
+  # Wenn es eine ExternalId gibt, dann wird dieses als unique_id verwendet
   def unique_id
+    return generate_checksum([external_id]) if external_id.present?
+
     fields = [title]
 
     first_address = addresses.first
@@ -87,4 +90,5 @@ end
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  data_provider_id :integer
+#  external_id      :string(255)
 #
