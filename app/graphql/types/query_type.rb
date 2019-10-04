@@ -56,7 +56,7 @@ module Types
     #
     # @param [String] name the file name
     #
-    # @return [String] the contents of the file, if it exists - otherwise ""
+    # @return [Object] object with the contents of the file, if it exists - otherwise with ""
     def public_html_file(name:)
       static_content = StaticContent.where(name: name, data_type: "html").first
       return { content: static_content.content, name: name } if static_content.present?
@@ -68,7 +68,7 @@ module Types
     #
     # @param [String] name the file name
     #
-    # @return [String] the contents of the file, if it exists - otherwise ""
+    # @return [Object] object with the contents of the file, if it exists - otherwise with {}
     def public_json_file(name:)
       static_content = StaticContent.where(name: name, data_type: "json").first
       return { content: static_content.content, name: name } if static_content.present?
