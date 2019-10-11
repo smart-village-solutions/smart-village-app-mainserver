@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe EventRecord, type: :model do
+RSpec.describe DataResource::EventRecord, type: :model do
   let(:event_record_2) { create(:event_record) }
   let(:event_record_1) { create(:event_record) }
 

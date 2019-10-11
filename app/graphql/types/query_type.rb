@@ -33,19 +33,19 @@ module Types
     field :categories, [CategoryType], null: false
 
     def point_of_interest(id:)
-      PointOfInterest.find(id)
+      DataResource::PointOfInterest.find(id)
     end
 
     def event_record(id:)
-      EventRecord.find(id)
+      DataResource::EventRecord.find(id)
     end
 
     def news_item(id:)
-      NewsItem.find(id)
+      DataResource::NewsItem.find(id)
     end
 
     def tour(id:)
-      Tour.find(id)
+      DataResource::Tour.find(id)
     end
 
     def categories

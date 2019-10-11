@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # this model describes the data for an event e.g. a concert or a reading.
-class EventRecord < ApplicationRecord
+class DataResource::EventRecord < ApplicationRecord
   attr_accessor :category_name
   attr_accessor :region_name
   attr_accessor :force_create

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Mutations::Tour do
+RSpec.describe Mutations::CreateTour do
   def perform(**args)
     Mutations::CreateTour.new(object: nil, context: {}).resolve(args)
   end

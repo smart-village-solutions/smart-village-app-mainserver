@@ -187,7 +187,7 @@ end
 create_categories
 
 10.times do |n|
-  poi = PointOfInterest.create(
+  poi = DataResource::PointOfInterest.create(
     name: "Burg #{n}",
     description: Faker::Lorem.paragraph,
     mobile_description: Faker::Lorem.paragraph,
@@ -212,7 +212,7 @@ create_categories
 end
 
 10.times do |n|
-  tour = Tour.create(
+  tour = DataResource::Tour.create(
     name: "Tour #{n}",
     description: Faker::Lorem.paragraph,
     mobile_description: Faker::Lorem.paragraph,
@@ -237,7 +237,7 @@ end
 end
 
 10.times do |n|
-  event = EventRecord.create(
+  event = DataResource::EventRecord.create(
     title: "Konzert #{n}",
     description: Faker::Lorem.paragraph,
     repeat: Faker::Boolean.boolean(0.3),
@@ -266,7 +266,7 @@ end
 end
 
 10.times do
-  news_item = NewsItem.create(
+  news_item = DataResource::NewsItem.create(
     author: Faker::Name.name,
     full_version: true,
     characters_to_be_shown: false,

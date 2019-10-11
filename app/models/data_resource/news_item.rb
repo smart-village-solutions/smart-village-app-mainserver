@@ -2,7 +2,7 @@
 
 # News Item is one of the four Main resources for the app. A news Item can be anything
 # from an old school news article to a whole story structured in chapters
-class NewsItem < ApplicationRecord
+class DataResource::NewsItem < ApplicationRecord
   attr_accessor :force_create
 
   belongs_to :data_provider

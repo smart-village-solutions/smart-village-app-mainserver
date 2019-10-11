@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe PointOfInterest, type: :model do
+RSpec.describe DataResource::PointOfInterest, type: :model do
   it { is_expected.to have_many(:addresses) }
   it { is_expected.to have_one(:contact) }
   it { is_expected.to have_one(:operating_company) }

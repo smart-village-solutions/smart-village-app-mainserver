@@ -5,17 +5,17 @@ require "rails_helper"
 RSpec.describe ResourceService, type: :service do
   let(:maz) { create(:data_provider, name: "MAZ", news_item: true) }
   let(:tmb) { create(:data_provider, name: "TMB") }
-  let(:news_item_1) { ResourceService.new(data_provider: maz).create(NewsItem, params_maz) }
-  let(:news_item_2) { ResourceService.new(data_provider: maz).create(NewsItem, params_maz) }
-  let(:poi_1) { ResourceService.new(data_provider: tmb).create(PointOfInterest, params_tmb_poi) }
-  let(:poi_1_changed) { ResourceService.new(data_provider: tmb).create(PointOfInterest, params_tmb_poi_changed) }
-  let(:poi_2) { ResourceService.new(data_provider: tmb).create(PointOfInterest, params_tmb_poi) }
-  let(:tour_1) { ResourceService.new(data_provider: tmb).create(Tour, params_tmb_tour) }
-  let(:tour_1_changed) { ResourceService.new(data_provider: tmb).create(Tour, params_tmb_tour_changed) }
-  let(:tour_2) { ResourceService.new(data_provider: tmb).create(Tour, params_tmb_tour) }
-  let(:event_1) { ResourceService.new(data_provider: tmb).create(EventRecord, params_tmb_event) }
-  let(:event_1_changed) { ResourceService.new(data_provider: tmb).create(EventRecord, params_tmb_event_changed) }
-  let(:event_2) { ResourceService.new(data_provider: tmb).create(EventRecord, params_tmb_event) }
+  let(:news_item_1) { ResourceService.new(data_provider: maz).create(DataResource::NewsItem, params_maz) }
+  let(:news_item_2) { ResourceService.new(data_provider: maz).create(DataResource::NewsItem, params_maz) }
+  let(:poi_1) { ResourceService.new(data_provider: tmb).create(DataResource::PointOfInterest, params_tmb_poi) }
+  let(:poi_1_changed) { ResourceService.new(data_provider: tmb).create(DataResource::PointOfInterest, params_tmb_poi_changed) }
+  let(:poi_2) { ResourceService.new(data_provider: tmb).create(DataResource::PointOfInterest, params_tmb_poi) }
+  let(:tour_1) { ResourceService.new(data_provider: tmb).create(DataResource::Tour, params_tmb_tour) }
+  let(:tour_1_changed) { ResourceService.new(data_provider: tmb).create(DataResource::Tour, params_tmb_tour_changed) }
+  let(:tour_2) { ResourceService.new(data_provider: tmb).create(DataResource::Tour, params_tmb_tour) }
+  let(:event_1) { ResourceService.new(data_provider: tmb).create(DataResource::EventRecord, params_tmb_event) }
+  let(:event_1_changed) { ResourceService.new(data_provider: tmb).create(DataResource::EventRecord, params_tmb_event_changed) }
+  let(:event_2) { ResourceService.new(data_provider: tmb).create(DataResource::EventRecord, params_tmb_event) }
 
   def params_maz
     { author: "Robert sdf",
@@ -159,10 +159,10 @@ RSpec.describe ResourceService, type: :service do
         end
 
         it "deletes the old record" do
-          expect(NewsItem.exists?(news_item_1.id)).to eq(false)
+          expect(DataResource::NewsItem.exists?(news_item_1.id)).to eq(false)
         end
         it "creates a new record" do
-          expect(NewsItem.exists?(news_item_2.id)).to eq(true)
+          expect(DataResource::NewsItem.exists?(news_item_2.id)).to eq(true)
         end
         it "the new record has the same external_id as the old one" do
           expect(news_item_1.external_id).to eq(news_item_2.external_id)
@@ -210,17 +210,17 @@ RSpec.describe ResourceService, type: :service do
           expect(poi_1_changed.id).not_to eq(poi_1.id)
           expect(tour_1_changed.id).not_to eq(tour_1.id)
           expect(event_1_changed.id).not_to eq(event_1.id)
-          expect(PointOfInterest.exists?(poi_1_changed.id)).to eq(true)
-          expect(Tour.exists?(tour_1_changed.id)).to eq(true)
-          expect(EventRecord.exists?(event_1_changed.id)).to eq(true)
+          expect(DataResource::PointOfInterest.exists?(poi_1_changed.id)).to eq(true)
+          expect(DataResource::Tour.exists?(tour_1_changed.id)).to eq(true)
+          expect(DataResource::EventRecord.exists?(event_1_changed.id)).to eq(true)
         end
         it "destroys the old record" do
           poi_1_changed
           tour_1_changed
           event_1_changed
-          expect(PointOfInterest.exists?(poi_1.id)).to eq(false)
-          expect(Tour.exists?(tour_1.id)).to eq(false)
-          expect(EventRecord.exists?(event_1.id)).to eq(false)
+          expect(DataResource::PointOfInterest.exists?(poi_1.id)).to eq(false)
+          expect(DataResource::Tour.exists?(tour_1.id)).to eq(false)
+          expect(DataResource::EventRecord.exists?(event_1.id)).to eq(false)
         end
       end
     end

@@ -33,7 +33,7 @@ class Attraction < ApplicationRecord
   # callback function which enables setting of category by
   # virtual attribute category name. ATTENTION: With this callback
   # the setting of category is only possible with category_name
-  # PointOfInterest.create(category: Category.first) doesn't work anymore.
+  # DataResource::PointOfInterest.create(category: Category.first) doesn't work anymore.
   #
   def set_category_id
     self.category_id = find_or_create_category.id
