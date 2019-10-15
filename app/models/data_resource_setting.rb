@@ -2,7 +2,7 @@ class DataResourceSetting < ApplicationRecord
 
   DATA_RESOURCES = [Tour, PointOfInterest, NewsItem, EventRecord].freeze
 
-  store :settings, accessors: %i[display_only_summary always_recreate_on_import], coder: JSON
+  store :settings, accessors: %i[display_only_summary always_recreate_on_import only_summary_link_text], coder: JSON
 
   belongs_to :data_provider
 end
