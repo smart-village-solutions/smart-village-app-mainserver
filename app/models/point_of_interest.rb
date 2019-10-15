@@ -10,6 +10,7 @@ class PointOfInterest < Attraction
   has_many :opening_hours, as: :openingable, dependent: :destroy
   has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
   has_one :location, as: :locateable, dependent: :destroy
+
   scope :filtered_for_current_user, ->(current_user) do
     return all if current_user.admin_role?
 
@@ -26,6 +27,10 @@ class PointOfInterest < Attraction
     address_fields = address_keys.map { |a| first_address.try(:send, a) }
 
     generate_checksum(fields + address_fields)
+  end
+
+  def settings
+    data_provider.data_resource_settings.where(data_resource_type: "PointOfInterest").first.try(:settings)
   end
 end
 

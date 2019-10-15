@@ -176,6 +176,35 @@
       <%= d.label :role_event_record,"Veranstaltungen", class: 'form-check-label' %>
     </div>
   </div>
+
+  <%= d.fields_for :data_resource_settings do |s| %>
+    <h2>Optionen für <%= s.object.data_resource_type.pluralize %></h2>
+      <%= s.hidden_field :id %>
+      <%= s.hidden_field :data_provider_id %>
+      <%= s.hidden_field :data_resource_type %>
+      <div class="row">
+        <div class="form-group col-6">
+          <div class="form-check">
+            <%= s.check_box :display_only_summary, { class: 'form-check-input'}, "true", "false" %>
+            <%= s.label :display_only_summary, "Nur Zusammenfassung anzeigen", class: 'form-check-label' %>
+            <small class="form-text text-muted">
+              Unter der Zusammenfassung wird dann ein Link zur Quelle angezeigt
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group col-6">
+          <div class="form-check">
+            <%= s.check_box :always_recreate_on_import, { class: 'form-check-input'}, "true", "false" %>
+            <%= s.label :always_recreate_on_import, "Datensatz immer neu anlegen", class: 'form-check-label' %>
+            <small class="form-text text-muted">
+              Bei einem Import von Daten werden diese immer neu angelegt. Es erfolgt kein Update bestehender Daten
+            </small>
+          </div>
+        </div>
+      </div>
+  <% end %>
+
 <% end %>
 
 <p>

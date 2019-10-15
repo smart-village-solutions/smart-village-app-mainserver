@@ -28,6 +28,10 @@ class NewsItem < ApplicationRecord
 
     generate_checksum(fields)
   end
+
+  def settings
+    data_provider.data_resource_settings.where(data_resource_type: "NewsItem").first.try(:settings)
+  end
 end
 
 # == Schema Information

@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 class DataProvider < ApplicationRecord
-  store :always_recreate, accessors: %i[point_of_interest tour news_item event_record], coder: JSON
   store :roles, accessors: %i[role_point_of_interest role_tour role_news_item role_event_record], coder: JSON
 
+  has_many :data_resource_settings, class_name: "DataResourceSetting"
   has_one :address, as: :addressable
   has_one :contact, as: :contactable
   has_one :logo, as: :web_urlable, class_name: "WebUrl"
 
   before_save :parse_role_values
 
-  accepts_nested_attributes_for :address, :contact, :logo
+  accepts_nested_attributes_for :address, :contact, :logo, :data_resource_settings
 
   def parse_role_values
     roles.each do |key, value|

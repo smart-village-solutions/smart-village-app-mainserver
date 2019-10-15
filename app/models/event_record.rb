@@ -25,7 +25,6 @@ class EventRecord < ApplicationRecord
   has_many :dates, as: :dateable, class_name: "FixedDate", dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy
 
-
   scope :filtered_for_current_user, lambda { |current_user|
     return all if current_user.admin_role?
 
@@ -73,6 +72,10 @@ class EventRecord < ApplicationRecord
     return future_date if future_date.present?
 
     event_dates.last.try(:date_start)
+  end
+
+  def settings
+    data_provider.data_resource_settings.where(data_resource_type: "EventRecord").first.try(:settings)
   end
 end
 
