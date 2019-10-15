@@ -18,6 +18,7 @@ class AccountsController < ApplicationController
 
   def edit
     @user = User.find(params["id"])
+    @user.build_data_provider if @user.data_provider.blank?
     DataResourceSetting::DATA_RESOURCES.each do |data_resource|
       data_resource_settings = @user.data_provider.data_resource_settings.where(data_resource_type: data_resource.to_s)
       data_resource_settings.build if data_resource_settings.blank?
@@ -63,7 +64,7 @@ class AccountsController < ApplicationController
         logo_attributes: [:id, :url, :description],
         address_attributes: [:id, :street, :addition, :zip, :city],
         contact_attributes: [:id, :first_name, :last_name, :phone, :fax, :email],
-        data_resource_settings_attributes: [:id, :data_resource_type, :display_only_summary, :always_recreate_on_import, :data_provider_id]
+        data_resource_settings_attributes: [:id, :data_resource_type, :display_only_summary, :always_recreate_on_import, :data_provider_id, :only_summary_link_text]
       ]
     )
     values.delete_if { |_key, value| value.blank? }
