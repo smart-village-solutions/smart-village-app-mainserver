@@ -1,85 +1,95 @@
-<h1>Data Provider for <%= current_user.email %></h1>
-<p>This Information is connected to every data you send to the server and will be displayed in the Mobile-App</p>
+<div class="row">
+  <div class="col">
+    <h1>Data Provider for <%= current_user.email %></h1>
+    <p>
+      This Information is connected to every data you send to the server and will be displayed in
+      the Mobile-App
+    </p>
 
-<%= form_for( @data_provider, url: update_data_provider_path, method: :post) do |f| %>
-  <div class="form-group">
-    <%= f.label :name %>
-    <%= f.text_field :name, class: "form-control" %>
+    <%= form_for( @data_provider, url: update_data_provider_path, method: :post, html: { class: 'form-horizontal', role: 'form' }) do |f| %>
+      <div class="form-group">
+        <%= f.label :name %>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :description %>
+        <%= f.text_area :description, class: "form-control" %>
+      </div>
+
+      <h2>Logo</h2>
+      <%= f.fields_for :logo, f.object.logo || f.object.build_logo do |l| %>
+        <div class="form-group">
+          <%= l.label :url %>
+          <%= l.text_field :url, class: "form-control" %>
+          <small class="form-text text-muted">Absolut URL to logo required for download</small>
+        </div>
+
+        <div class="form-group">
+          <%= l.label :description %>
+          <%= l.text_field :description, class: "form-control" %>
+        </div>
+      <% end %>
+
+      <h2>Address</h2>
+
+      <%= f.fields_for :address, f.object.address || f.object.build_address do |a| %>
+        <div class="form-group">
+          <%= a.label :addition %>
+          <%= a.text_field :addition, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= a.label :city %>
+          <%= a.text_field :city, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= a.label :street %>
+          <%= a.text_field :street, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= a.label :zip %>
+          <%= a.text_field :zip, class: "form-control" %>
+        </div>
+      <% end %>
+
+      <h2>Contact</h2>
+
+      <%= f.fields_for :contact, f.object.contact || f.object.build_contact do |c| %>
+        <div class="form-group">
+          <%= c.label :first_name %>
+          <%= c.text_field :first_name, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= c.label :last_name %>
+          <%= c.text_field :last_name, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= c.label :phone %>
+          <%= c.text_field :phone, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= c.label :fax %>
+          <%= c.text_field :fax, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= c.label :email %>
+          <%= c.text_field :email, class: "form-control" %>
+          <small class="form-text text-muted">
+            This email is not used for log in into this account
+          </small>
+        </div>
+      <% end %>
+
+      <p>
+        <%= f.submit class: "btn btn-primary" %>
+      </p>
+    <% end %>
   </div>
-
-  <div class="form-group">
-    <%= f.label :description %>
-    <%= f.text_area :description, class: "form-control" %>
-  </div>
-
-  <h2>Logo</h2>
-  <%= f.fields_for :logo, f.object.logo || f.object.build_logo do |l| %>
-    <div class="form-group">
-      <%= l.label :url %>
-      <%= l.text_field :url, class: "form-control" %>
-      <small class="form-text text-muted">Absolut URL to logo required for download</small>
-    </div>
-
-    <div class="form-group">
-      <%= l.label :description %>
-      <%= l.text_field :description, class: "form-control" %>
-    </div>
-  <% end %>
-
-  <h2>Address</h2>
-
-  <%= f.fields_for :address, f.object.address || f.object.build_address do |a| %>
-    <div class="form-group">
-      <%= a.label :addition %>
-      <%= a.text_field :addition, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= a.label :city %>
-      <%= a.text_field :city, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= a.label :street %>
-      <%= a.text_field :street, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= a.label :zip %>
-      <%= a.text_field :zip, class: "form-control" %>
-    </div>
-  <% end %>
-
-  <h2>Contact</h2>
-
-  <%= f.fields_for :contact, f.object.contact || f.object.build_contact do |c| %>
-    <div class="form-group">
-      <%= c.label :first_name %>
-      <%= c.text_field :first_name, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= c.label :last_name %>
-      <%= c.text_field :last_name, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= c.label :phone %>
-      <%= c.text_field :phone, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= c.label :fax %>
-      <%= c.text_field :fax, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= c.label :email %>
-      <%= c.text_field :email, class: "form-control" %>
-      <small class="form-text text-muted">This email is not used for log in into this account</small>
-    </div>
-  <% end %>
-
-  <%= f.submit class: "btn btn-primary" %>
-<% end %>
-
+</div>
