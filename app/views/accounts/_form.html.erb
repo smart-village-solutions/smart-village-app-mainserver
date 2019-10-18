@@ -1,7 +1,7 @@
 <% if @user.errors.any? %>
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <h5>
-      <%= t('doorkeeper.applications.form.error') %>
+      <%= t("doorkeeper.applications.form.error") %>
     </h5>
 
     <ul style="margin: 0">
@@ -18,19 +18,19 @@
 
 <div class="form-group">
   <%= f.label :email, "E-Mail" %>
-  <%= f.text_field :email, class: 'form-control', required: true %>
+  <%= f.text_field :email, class: "form-control", required: true %>
 </div>
 
 <div class="form-group">
   <%= f.label :role, "Rolle" %>
-  <%= f.select :role, [["Nutzer", :user], ["Admin", :admin]], class: 'form-control' %>
+  <%= f.select :role, [["Nutzer", :user], ["Admin", :admin]], class: "form-control" %>
 </div>
 
 <h2>Passwort</h2>
 <div class="row">
   <div class="form-group col-6">
     <%= f.label :password, "Passwort eingeben" %>
-    <%= f.password_field :password, class: 'form-control' %>
+    <%= f.password_field :password, class: "form-control" %>
 
     <% unless @user.new_record? %>
       <small class="form-text text-muted">
@@ -41,7 +41,7 @@
 
   <div class="form-group col-6">
     <%= f.label :password_confirmation, "Passwort bestätigen" %>
-    <%= f.password_field :password_confirmation, class: 'form-control' %>
+    <%= f.password_field :password_confirmation, class: "form-control" %>
 
     <% unless @user.new_record? %>
       <small class="form-text text-muted">
@@ -51,12 +51,11 @@
   </div>
 </div>
 
-
-<%= f.fields_for :data_provider, object: @user.data_provider || @user.build_data_provider do |d|%>
+<%= f.fields_for :data_provider, object: @user.data_provider || @user.build_data_provider do |d| %>
   <h2>Data Provider</h2>
   <div class="form-group">
     <%= d.label :name %>
-    <%= d.text_field :name, class: 'form-control' %>
+    <%= d.text_field :name, class: "form-control" %>
     <small class="form-text text-muted">
       Dieser Text wird auch in der App angezeigt.
     </small>
@@ -64,17 +63,17 @@
 
   <div class="form-group">
     <%= d.label :description %>
-    <%= d.text_area :description, class: 'form-control' %>
+    <%= d.text_area :description, class: "form-control" %>
     <small class="form-text text-muted">
       Nur für interne Zwecke
     </small>
   </div>
 
   <h3>Logo</h3>
-  <%= d.fields_for :logo, object: @user.data_provider.logo || @user.data_provider.build_logo do |l|%>
+  <%= d.fields_for :logo, object: @user.data_provider.logo || @user.data_provider.build_logo do |l| %>
     <div class="form-group">
       <%= l.label :url, "Link zum Logo" %>
-      <%= l.text_field :url, class: 'form-control', required: true %>
+      <%= l.text_field :url, class: "form-control", required: true %>
       <small class="form-text text-muted">
         Diese Grafik wird über Ihren Beiträgen dargestellt.
       </small>
@@ -82,111 +81,113 @@
 
     <div class="form-group">
       <%= l.label :description, "Alternativer Text für das Logo" %>
-      <%= l.text_field :description, class: 'form-control' %>
+      <%= l.text_field :description, class: "form-control" %>
     </div>
   <% end %>
 
   <h3>Adresse</h3>
   <p>Diese Daten dienen nur internen Zwecken und werden nicht in der App dargestellt.</p>
-  <%= d.fields_for :address, object: @user.data_provider.address || @user.data_provider.build_address do |a|%>
+  <%= d.fields_for :address, object: @user.data_provider.address || @user.data_provider.build_address do |a| %>
     <div class="row">
       <div class="form-group col-6">
         <%= a.label :street, "Straße" %>
-        <%= a.text_field :street, class: 'form-control' %>
+        <%= a.text_field :street, class: "form-control" %>
       </div>
 
       <div class="form-group col-6">
         <%= a.label :addition, "ggf. Adresszusatz" %>
-        <%= a.text_field :addition, class: 'form-control' %>
+        <%= a.text_field :addition, class: "form-control" %>
       </div>
     </div>
 
     <div class="row">
       <div class="form-group col-6">
         <%= a.label :zip, "PLZ" %>
-        <%= a.text_field :zip, class: 'form-control' %>
+        <%= a.text_field :zip, class: "form-control" %>
       </div>
 
       <div class="form-group col-6">
         <%= a.label :city, "Stadt" %>
-        <%= a.text_field :city, class: 'form-control' %>
+        <%= a.text_field :city, class: "form-control" %>
       </div>
     </div>
   <% end %>
 
   <h3>Ansprechpartner</h3>
   <p>Diese Daten dienen nur internen Zwecken und werden nicht in der App dargestellt.</p>
-  <%= d.fields_for :contact, object: @user.data_provider.contact || @user.data_provider.build_contact do |a|%>
+  <%= d.fields_for :contact, object: @user.data_provider.contact || @user.data_provider.build_contact do |a| %>
     <div class="row">
       <div class="form-group col-6">
         <%= a.label :first_name, "Vorname" %>
-        <%= a.text_field :first_name, class: 'form-control' %>
+        <%= a.text_field :first_name, class: "form-control" %>
       </div>
 
       <div class="form-group col-6">
         <%= a.label :last_name, "Nachname" %>
-        <%= a.text_field :last_name, class: 'form-control' %>
+        <%= a.text_field :last_name, class: "form-control" %>
       </div>
     </div>
 
     <div class="row">
       <div class="form-group col-6">
         <%= a.label :phone, "Telefon" %>
-        <%= a.text_field :phone, class: 'form-control' %>
+        <%= a.text_field :phone, class: "form-control" %>
       </div>
 
       <div class="form-group col-6">
         <%= a.label :fax, "Fax" %>
-        <%= a.text_field :fax, class: 'form-control' %>
+        <%= a.text_field :fax, class: "form-control" %>
       </div>
     </div>
 
     <div class="form-group">
-        <%= a.label :email, "E-Mail" %>
-        <%= a.text_field :email, class: 'form-control' %>
-      </div>
+      <%= a.label :email, "E-Mail" %>
+      <%= a.text_field :email, class: "form-control" %>
+    </div>
   <% end %>
 
-
   <h2>Rechte im CMS</h2>
+
   <div class="form-group">
     <div class="form-check">
-      <%= d.check_box :role_point_of_interest, {class: 'form-check-input'}, "true", "false" %>
-      <%= d.label :role_point_of_interest, "Points of Interests", class: 'form-check-label' %>
+      <%= d.check_box :role_tour, { class: "form-check-input" }, "true", "false" %>
+      <%= d.label :role_tour, "Touren", class: "form-check-label" %>
     </div>
   </div>
 
   <div class="form-group">
     <div class="form-check">
-      <%= d.check_box :role_tour, {class: 'form-check-input'}, "true", "false" %>
-      <%= d.label :role_tour, "Touren", class: 'form-check-label' %>
+      <%= d.check_box :role_point_of_interest, { class: "form-check-input" }, "true", "false" %>
+      <%= d.label :role_point_of_interest, "Orte", class: "form-check-label" %>
     </div>
   </div>
 
   <div class="form-group">
     <div class="form-check">
-      <%= d.check_box :role_news_item, {class: 'form-check-input'}, "true", "false" %>
-      <%= d.label :role_news_item, "Nachrichten", class: 'form-check-label' %>
+      <%= d.check_box :role_news_item, { class: "form-check-input" }, "true", "false" %>
+      <%= d.label :role_news_item, "Nachrichten", class: "form-check-label" %>
     </div>
   </div>
 
   <div class="form-group">
     <div class="form-check">
-      <%= d.check_box :role_event_record, { class: 'form-check-input'}, "true", "false" %>
-      <%= d.label :role_event_record,"Veranstaltungen", class: 'form-check-label' %>
+      <%= d.check_box :role_event_record, {  class: "form-check-input" }, "true", "false" %>
+      <%= d.label :role_event_record,"Veranstaltungen", class: "form-check-label" %>
     </div>
   </div>
 
   <%= d.fields_for :data_resource_settings do |s| %>
-    <h2>Optionen für <%= s.object.data_resource_type.pluralize %></h2>
+    <% I18n.with_locale(:de) do %>
+      <h2>Optionen für <%= t(s.object.data_resource_type.pluralize) %></h2>
+    <% end %>
     <%= s.hidden_field :id %>
     <%= s.hidden_field :data_provider_id %>
     <%= s.hidden_field :data_resource_type %>
     <div class="row">
       <div class="form-group col-6">
         <div class="form-check">
-          <%= s.check_box :display_only_summary, { class: 'form-check-input'}, "true", "false" %>
-          <%= s.label :display_only_summary, "Nur Zusammenfassung anzeigen", class: 'form-check-label' %>
+          <%= s.check_box :display_only_summary, { class: "form-check-input"}, "true", "false" %>
+          <%= s.label :display_only_summary, "Nur Zusammenfassung anzeigen", class: "form-check-label" %>
           <small class="form-text text-muted">
             Unter der Zusammenfassung wird dann ein Link zur Quelle angezeigt
           </small>
@@ -195,10 +196,11 @@
 
       <div class="form-group col-6">
         <div class="form-check">
-          <%= s.check_box :always_recreate_on_import, { class: 'form-check-input'}, "true", "false" %>
-          <%= s.label :always_recreate_on_import, "Datensatz immer neu anlegen", class: 'form-check-label' %>
+          <%= s.check_box :always_recreate_on_import, { class: "form-check-input"}, "true", "false" %>
+          <%= s.label :always_recreate_on_import, "Datensatz immer neu anlegen", class: "form-check-label" %>
           <small class="form-text text-muted">
-            Bei einem Import von Daten werden diese immer neu angelegt. Es erfolgt kein Update bestehender Daten
+            Bei einem Import von Daten werden diese immer neu angelegt. Es erfolgt kein Update
+            bestehender Daten
           </small>
         </div>
       </div>
@@ -206,15 +208,14 @@
 
     <div class="form-group col-6">
       <%= s.label :only_summary_link_text, "Linktext" %>
-      <%= s.text_field :only_summary_link_text, class: 'form-control', placeholder: "Weiterlesen" %>
+      <%= s.text_field :only_summary_link_text, class: "form-control", placeholder: "Weiterlesen" %>
       <small class="form-text text-muted">
         Dieser Text wird angezeigt, wenn die Checkbox 'Nur Zusammenfassung anzeigen' aktiviert ist.
       </small>
     </div>
   <% end %>
-
 <% end %>
 
 <p>
-  <%= f.submit t('doorkeeper.applications.buttons.submit'), class: "btn btn-primary" %>
+  <%= f.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primar" %>
 </p>
