@@ -49,7 +49,7 @@ class ResourceService
 
     class_name = resource_class.name
     setting = data_provider.data_resource_settings.where(data_resource_type: class_name).first
-    return false if setting.blank
+    return false if setting.blank?
 
     setting.always_recreate_on_import == "true"
   end
