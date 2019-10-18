@@ -3,6 +3,7 @@
 module Types
   class EventRecordType < Types::BaseObject
     field :id, ID, null: true
+    field :settings, SettingType, null: true
     field :external_id, String, null: true
     field :parent_id, Integer, null: true
     field :description, String, null: true

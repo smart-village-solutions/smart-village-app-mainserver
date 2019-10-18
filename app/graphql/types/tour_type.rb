@@ -3,6 +3,7 @@
 module Types
   class TourType < Types::BaseObject
     field :id, ID, null: true
+    field :settings, SettingType, null: true
     field :name, String, null: true
     field :description, String, null: true
     field :mobile_description, String, null: true

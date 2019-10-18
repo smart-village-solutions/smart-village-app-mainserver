@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Price < ApplicationRecord
-    belongs_to :priceable, polymorphic: true
+  belongs_to :priceable, polymorphic: true
 end
 
 # == Schema Information

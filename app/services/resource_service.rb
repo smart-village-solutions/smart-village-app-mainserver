@@ -47,8 +47,11 @@ class ResourceService
   def always_recreate?(data_provider, resource_class)
     return false if data_provider.blank?
 
-    class_name = resource_class.name.underscore
-    data_provider.always_recreate[class_name] == true
+    class_name = resource_class.name
+    setting = data_provider.data_resource_settings.where(data_resource_type: class_name).first
+    return false if setting.blank
+
+    setting.always_recreate_on_import == "true"
   end
 
   def find_external_resource

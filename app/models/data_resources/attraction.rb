@@ -10,7 +10,6 @@ class Attraction < ApplicationRecord
 
   belongs_to :category
   belongs_to :data_provider
-
   has_and_belongs_to_many :certificates, optional: true
   has_and_belongs_to_many :regions, optional: true
   has_many :addresses, as: :addressable, dependent: :destroy
@@ -20,6 +19,7 @@ class Attraction < ApplicationRecord
   has_one :operating_company, as: :companyable, dependent: :destroy
   has_many :web_urls, as: :web_urlable, dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy
+
   validates_presence_of :name
   acts_as_taggable
 

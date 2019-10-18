@@ -9,8 +9,6 @@
         <tr>
           <th>ID</th>
           <th>E-Mail</th>
-          <th>Data Provider</th>
-          <th>Application</th>
           <th>Rolle</th>
           <th>CMS POI</th>
           <th>CMS Tour</th>
@@ -25,8 +23,6 @@
           <tr id="user_<%= user.id %>">
             <td class="align-middle"><%= user.id %></td>
             <td class="align-middle"><%= link_to user.email, edit_account_path(user) %></td>
-            <td class="align-middle"><%= user.data_provider_id.present? %></td>
-            <td class="align-middle"><%= user.oauth_applications.any? %></td>
             <td class="align-middle"><%= user.role %></td>
             <td class="align-middle">
               <span class="badge <%= user.try(:data_provider).try(:role_point_of_interest) ? 'badge-success' : 'badge-danger' %>">
