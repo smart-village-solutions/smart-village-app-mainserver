@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :data_resource_setting do
     data_provider_id { 1 }
