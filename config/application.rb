@@ -32,5 +32,7 @@ module SmartVillageAppMainserver
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.i18n.available_locales = [:de, :en]
   end
 end
