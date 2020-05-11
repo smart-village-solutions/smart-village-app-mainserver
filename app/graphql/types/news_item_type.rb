@@ -5,7 +5,7 @@ module Types
     field :id, ID, null: true
     field :settings, SettingType, null: true
     field :title, String, null: true
-    field :external_id, Integer, null: true
+    field :external_id, String, null: true
     field :author, String, null: true
     field :full_version, Boolean, null: true
     field :characters_to_be_shown, String, null: true

@@ -5,7 +5,7 @@ module Mutations
     argument :force_create, Boolean, required: false
     argument :author, String, required: false
     argument :title, String, required: false
-    argument :external_id, Integer, required: false
+    argument :external_id, String, required: false
     argument :full_version, Boolean, required: false
     argument :characters_to_be_shown, Integer, required: false
     argument :news_type, String, required: false

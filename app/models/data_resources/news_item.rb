@@ -49,6 +49,6 @@ end
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  data_provider_id       :integer
-#  external_id            :bigint
+#  external_id            :text(65535)
 #  title                  :string(255)
 #
