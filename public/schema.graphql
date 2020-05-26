@@ -33,6 +33,15 @@ input AddressInput {
 
 scalar AnyPrimitive
 
+type AppUserContent {
+  content: String
+  createdAt: String
+  dataSource: String
+  dataType: String
+  id: ID
+  updatedAt: String
+}
+
 type Category {
   id: ID
   name: String
@@ -142,6 +151,7 @@ type EventRecord {
   regionId: String
   repeat: Boolean
   repeatDuration: RepeatDuration
+  settings: Setting
   tagList: [String!]
   title: String
   updatedAt: String
@@ -211,8 +221,9 @@ input MediaContentInput {
 }
 
 type Mutation {
+  createAppUserContent(content: String, dataSource: String, dataType: String): AppUserContent!
   createEventRecord(accessibilityInformation: AccessibilityInformationInput, addresses: [AddressInput!], categoryName: String, contacts: [ContactInput!], dates: [DateInput!], description: String, externalId: String, forceCreate: Boolean, location: LocationInput, mediaContents: [MediaContentInput!], organizer: OperatingCompanyInput, parentId: Int, priceInformations: [PriceInput!], region: RegionInput, regionName: String, repeat: Boolean, repeatDuration: RepeatDurationInput, tags: [String!], title: String, urls: [WebUrlInput!]): EventRecord!
-  createNewsItem(address: AddressInput, author: String, charactersToBeShown: Int, contentBlocks: [ContentBlockInput!], externalId: Int, forceCreate: Boolean, fullVersion: Boolean, newsType: String, publicationDate: String, publishedAt: String, showPublishDate: Boolean, sourceUrl: WebUrlInput, title: String): NewsItem!
+  createNewsItem(address: AddressInput, author: String, charactersToBeShown: Int, contentBlocks: [ContentBlockInput!], externalId: String, forceCreate: Boolean, fullVersion: Boolean, newsType: String, publicationDate: String, publishedAt: String, showPublishDate: Boolean, sourceUrl: WebUrlInput, title: String): NewsItem!
   createPointOfInterest(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categoryName: String, certificates: [CertificateInput!], contact: ContactInput, description: String, forceCreate: Boolean, location: LocationInput, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, openingHours: [OpeningHourInput!], operatingCompany: OperatingCompanyInput, priceInformations: [PriceInput!], tags: [String!], webUrls: [WebUrlInput!]): PointOfInterest!
   createTour(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categoryName: String, certificates: [CertificateInput!], contact: ContactInput, description: String, forceCreate: Boolean, geometryTourData: [GeoLocationInput!], lengthKm: Int!, location: LocationInput, meansOfTransportation: String, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, operatingCompany: OperatingCompanyInput, tags: [String!], webUrls: [WebUrlInput!]): Tour!
   destroyRecord(externalId: Int, id: Int, recordType: String!): Destroy!
@@ -225,12 +236,13 @@ type NewsItem {
   contentBlocks: [ContentBlock!]
   createdAt: String
   dataProvider: DataProvider
-  externalId: Int
+  externalId: String
   fullVersion: Boolean
   id: ID
   newsType: String
   publicationDate: String
   publishedAt: String
+  settings: Setting
   showPublishDate: Boolean
   sourceUrl: WebUrl
   title: String
@@ -302,6 +314,7 @@ type PointOfInterest {
   openingHours: [OpeningHour!]
   operatingCompany: OperatingCompany
   priceInformations: [Price!]
+  settings: Setting
   tagList: [String!]
   updatedAt: String
   webUrls: [WebUrl!]
@@ -394,6 +407,12 @@ input RepeatDurationInput {
   startDate: String
 }
 
+type Setting {
+  alwaysRecreateOnImport: String
+  displayOnlySummary: String
+  onlySummaryLinkText: String
+}
+
 type Tour {
   active: Boolean
   addresses: [Address!]
@@ -412,6 +431,7 @@ type Tour {
   name: String
   operatingCompany: OperatingCompany
   regions: [Region!]
+  settings: Setting
   tags: String
   updatedAt: String
   webUrls: [WebUrl!]
