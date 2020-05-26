@@ -12,7 +12,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
-  <%= link_to "SmartVillage Server", root_path, class: 'navbar-brand' %>
+  <%= link_to "Smart Village App - Main-Server", root_path, class: 'navbar-brand' %>
 
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
@@ -22,7 +22,7 @@
         </li>
 
         <li class="nav-item">
-          <%= link_to "StaticContents", static_contents_path, class: 'nav-link' %>
+          <%= link_to "Static Contents", static_contents_path, class: 'nav-link' %>
         </li>
       <% end %>
       <li class="nav-item <%= 'active' if request.path == oauth_applications_path %>">
@@ -30,11 +30,11 @@
       </li>
       <% unless current_user.admin_role? %>
         <li class="nav-item">
-            <%= link_to "Data Provider", edit_data_provider_path, class: 'nav-link' %>
+          <%= link_to "Data Provider", edit_data_provider_path, class: 'nav-link' %>
         </li>
       <% end %>
       <li class="nav-item">
-          <%= link_to "Sign out (#{current_user.email})", destroy_user_session_path, class: 'nav-link', method: :delete %>
+        <%= link_to "Sign out (#{current_user.email})", destroy_user_session_path, class: 'nav-link', method: :delete %>
       </li>
     </ul>
   </div>

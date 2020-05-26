@@ -23,7 +23,7 @@
 
 <div class="form-group">
   <%= f.label :role, "Rolle" %>
-  <%= f.select :role, [["Nutzer", :user], ["Admin", :admin]], class: "form-control" %>
+  <%= f.select :role, [["Nutzer", :user], ["Admin", :admin]], {}, class: "form-control" %>
 </div>
 
 <h2>Passwort</h2>
@@ -216,6 +216,7 @@
   <% end %>
 <% end %>
 
-<p>
-  <%= f.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primar" %>
-</p>
+<div class="form-group">
+  <%= f.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primary" %>
+  <%= link_to t('doorkeeper.applications.buttons.cancel'), accounts_path, class: "btn btn-default" %>
+</div>

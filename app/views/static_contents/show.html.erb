@@ -1,19 +1,44 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col">
+    <h1><%= @static_content.name %></h1>
 
-<p>
-  <strong>Name:</strong>
-  <%= @static_content.name %>
-</p>
+    <div class="form-group">
+      <label>Data type</label>
+      <div><code><%= @static_content.data_type %></code></div>
+    </div>
 
-<p>
-  <strong>Data type:</strong>
-  <%= @static_content.data_type %>
-</p>
+    <div class="form-group">
+      <label>Content</label>
+      <div id="code_editor" style="height: 400px;"></div>
+    </div>
 
-<p>
-  <strong>Content:</strong>
-  <%= @static_content.content %>
-</p>
+    <div class="form-group">
+      <%= link_to t("doorkeeper.applications.buttons.edit"), edit_static_content_path(@static_content), class: "btn btn-primary" %>
+      <%= link_to t('doorkeeper.applications.buttons.back'), static_contents_path, class: "btn btn-default" %>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'Edit', edit_static_content_path(@static_content) %> |
-<%= link_to 'Back', static_contents_path %>
+<script>
+  $(function () {
+    var container = document.getElementById("code_editor")
+    var options = {
+      mode: 'code',
+      onEditable: function (node) {
+        if (!node.path) {
+          // In modes code and text, node is empty: no path, field, or value
+          // returning false makes the text area read-only
+          return false;
+        }
+      },
+    }
+    var editor = new JSONEditor(container, options)
+
+    <% content = @static_content.content.to_s.html_safe %>
+    <% if @static_content.data_type == "html" %>
+      editor.setText("<%= escape_javascript(content) %>")
+    <% else %>
+      editor.set(<%= content %>)
+    <% end %>
+  });
+</script>

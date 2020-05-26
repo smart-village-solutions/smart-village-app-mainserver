@@ -2,7 +2,7 @@
   <div class="col">
     <h1>Nutzerverwaltung</h1>
 
-    <p><%= link_to "neuen Nutzer erstellen", new_account_path, class: 'btn btn-success' %></p>
+    <p><%= link_to "Neuen Nutzer erstellen", new_account_path, class: 'btn btn-success' %></p>
 
     <table class="table table-striped">
       <thead>
@@ -44,8 +44,12 @@
                 <%= user.try(:data_provider).try(:role_event_record) %>
               </span>
             </td>
-            <td class="align-middle" style="width: 70px"><%= link_to t('doorkeeper.applications.buttons.edit'), edit_account_path(user), class: 'btn btn-sm btn-outline-secondary' %></td>
-            <td class="align-middle" style="width: 70px"><%= link_to "Delete", account_path(user), method: :delete, class: 'btn btn-sm btn-outline-danger', data: { confirm: "Sind sie sicher?" } %></td>
+            <td class="align-middle" style="width: 70px">
+              <%= link_to t('doorkeeper.applications.buttons.edit'), edit_account_path(user), class: 'btn btn-sm btn-outline-secondary' %>
+            </td>
+            <td class="align-middle" style="width: 70px">
+              <%= link_to "Destroy", account_path(user), method: :delete, class: 'btn btn-sm btn-outline-danger', data: { confirm: "Sind sie sicher?" } %>
+            </td>
           </tr>
         <% end %>
       </tbody>
