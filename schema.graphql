@@ -1,6 +1,6 @@
 type AccessibilityInformation {
   description: String
-  id: ID!
+  id: ID
   types: String
   urls: [WebUrl!]
 }
@@ -16,7 +16,7 @@ type Address {
   city: String
   geoLocation: GeoLocation
   id: ID
-  kind: String!
+  kind: String
   street: String
   zip: String
 }
@@ -25,25 +25,44 @@ input AddressInput {
   addition: String
   city: String
   geoLocation: GeoLocationInput
+  id: Int
   kind: String
   street: String
   zip: String
 }
 
+scalar AnyPrimitive
+
+type AppUserContent {
+  content: String
+  createdAt: String
+  dataSource: String
+  dataType: String
+  id: ID
+  updatedAt: String
+}
+
+type Category {
+  id: ID
+  name: String
+  pointsOfInterestCount: Int
+  toursCount: Int
+}
+
 type Certificate {
-  id: ID!
+  id: ID
   name: String
 }
 
 input CertificateInput {
-  name: String!
+  name: String
 }
 
 type Contact {
   email: String
-  fax: Boolean
+  fax: String
   firstName: String
-  id: ID!
+  id: ID
   lastName: String
   phone: String
   webUrls: [WebUrl!]
@@ -61,7 +80,7 @@ input ContactInput {
 type ContentBlock {
   body: String
   createdAt: String
-  id: ID!
+  id: ID
   intro: String
   mediaContents: [MediaContent!]
   title: String
@@ -79,23 +98,15 @@ type DataProvider {
   address: Address
   contact: Contact
   description: String
-  id: ID!
+  id: ID
   logo: WebUrl
-  name: String
-}
-
-input DataProviderInput {
-  address: AddressInput
-  contact: ContactInput
-  description: String
-  logo: WebUrlInput
   name: String
 }
 
 type Date {
   dateEnd: String
   dateStart: String
-  id: ID!
+  id: ID
   timeDescription: String
   timeEnd: String
   timeStart: String
@@ -113,26 +124,36 @@ input DateInput {
   weekday: String
 }
 
+type Destroy {
+  id: Int
+  status: String
+  statusCode: Int
+}
+
 type EventRecord {
   accessibilityInformation: AccessibilityInformation
-  addresses: [Address!]!
-  categoryId: Int!
+  addresses: [Address!]
+  category: Category
   contacts: [Contact!]
   createdAt: String
   dataProvider: DataProvider
-  dates: [Date!]!
+  dates: [Date!]
   description: String
-  id: ID!
+  externalId: String
+  id: ID
+  listDate: String
   location: Location
   mediaContents: [MediaContent!]
   organizer: OperatingCompany
   parentId: Int
   priceInformations: [Price!]
+  region: Region
   regionId: String
   repeat: Boolean
   repeatDuration: RepeatDuration
+  settings: Setting
   tagList: [String!]
-  title: String!
+  title: String
   updatedAt: String
   urls: [WebUrl!]
 }
@@ -142,6 +163,8 @@ enum EventRecordsOrder {
   createdAt_DESC
   id_ASC
   id_DESC
+  listDate_ASC
+  listDate_DESC
   title_ASC
   title_DESC
   updatedAt_ASC
@@ -149,14 +172,14 @@ enum EventRecordsOrder {
 }
 
 type GeoLocation {
-  id: ID!
-  latitude: Float!
-  longitude: Float!
+  id: ID
+  latitude: Float
+  longitude: Float
 }
 
 input GeoLocationInput {
-  latitude: Float!
-  longitude: Float!
+  latitude: AnyPrimitive
+  longitude: AnyPrimitive
 }
 
 type Location {
@@ -165,8 +188,8 @@ type Location {
   geoLocation: GeoLocation
   id: ID
   name: String
-  regionId: Int
-  state: String!
+  regionName: String
+  state: String
 }
 
 input LocationInput {
@@ -174,17 +197,17 @@ input LocationInput {
   district: String
   geoLocation: GeoLocationInput
   name: String
-  regionId: Int
+  regionName: String
   state: String
 }
 
 type MediaContent {
-  captionText: String!
-  contentType: String!
+  captionText: String
+  contentType: String
   copyright: String
   height: Int
-  id: ID!
-  sourceUrl: WebUrl!
+  id: ID
+  sourceUrl: WebUrl
   width: Int
 }
 
@@ -192,16 +215,18 @@ input MediaContentInput {
   captionText: String
   contentType: String
   copyright: String
-  height: Int
+  height: AnyPrimitive
   sourceUrl: WebUrlInput
-  width: Int
+  width: AnyPrimitive
 }
 
 type Mutation {
-  createEventRecord(accessibilityInformation: AccessibilityInformationInput, addresses: [AddressInput!], categoryId: Int, contacts: [ContactInput!], dataProvider: DataProviderInput, dates: [DateInput!], description: String, location: LocationInput, mediaContents: [MediaContentInput!], organizer: OperatingCompanyInput, parentId: Int, priceInformations: [PriceInput!], regionId: Int, repeat: Boolean, repeatDuration: RepeatDurationInput, tags: [String!], title: String, urls: [WebUrlInput!]): EventRecord!
-  createNewsItem(address: AddressInput, author: String, charactersToBeShown: Int, contentBlocks: [ContentBlockInput!], dataProvider: DataProviderInput, fullVersion: Boolean, newsType: String, publicationDate: String, publishedAt: String, sourceUrl: WebUrlInput): NewsItem!
-  createPointOfInterest(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categoryId: Int, certificates: [CertificateInput!], contact: ContactInput, dataProvider: DataProviderInput, description: String, location: LocationInput, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, openingHours: [OpeningHourInput!], operatingCompany: OperatingCompanyInput, prices: [PriceInput!], tags: String, webUrls: [WebUrlInput!]): PointOfInterest!
-  createTour(active: Boolean, addresses: [AddressInput!], categoryId: Int, contact: ContactInput, dataProvider: DataProviderInput, description: String, geometryTourData: [GeoLocationInput!], lengthKm: Int!, meansOfTransportation: String, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, operatingCompany: OperatingCompanyInput, tags: String, webUrls: [WebUrlInput!]): Tour!
+  createAppUserContent(content: String, dataSource: String, dataType: String): AppUserContent!
+  createEventRecord(accessibilityInformation: AccessibilityInformationInput, addresses: [AddressInput!], categoryName: String, contacts: [ContactInput!], dates: [DateInput!], description: String, externalId: String, forceCreate: Boolean, location: LocationInput, mediaContents: [MediaContentInput!], organizer: OperatingCompanyInput, parentId: Int, priceInformations: [PriceInput!], region: RegionInput, regionName: String, repeat: Boolean, repeatDuration: RepeatDurationInput, tags: [String!], title: String, urls: [WebUrlInput!]): EventRecord!
+  createNewsItem(address: AddressInput, author: String, charactersToBeShown: Int, contentBlocks: [ContentBlockInput!], externalId: String, forceCreate: Boolean, fullVersion: Boolean, newsType: String, publicationDate: String, publishedAt: String, showPublishDate: Boolean, sourceUrl: WebUrlInput, title: String): NewsItem!
+  createPointOfInterest(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categoryName: String, certificates: [CertificateInput!], contact: ContactInput, description: String, forceCreate: Boolean, location: LocationInput, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, openingHours: [OpeningHourInput!], operatingCompany: OperatingCompanyInput, priceInformations: [PriceInput!], tags: [String!], webUrls: [WebUrlInput!]): PointOfInterest!
+  createTour(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categoryName: String, certificates: [CertificateInput!], contact: ContactInput, description: String, forceCreate: Boolean, geometryTourData: [GeoLocationInput!], lengthKm: Int!, location: LocationInput, meansOfTransportation: String, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, operatingCompany: OperatingCompanyInput, tags: [String!], webUrls: [WebUrlInput!]): Tour!
+  destroyRecord(externalId: Int, id: Int, recordType: String!): Destroy!
 }
 
 type NewsItem {
@@ -211,13 +236,16 @@ type NewsItem {
   contentBlocks: [ContentBlock!]
   createdAt: String
   dataProvider: DataProvider
-  fullVersion: Boolean!
-  id: ID!
+  externalId: String
+  fullVersion: Boolean
+  id: ID
   newsType: String
   publicationDate: String
-  publishedAt: String!
-  showPublishDate: Boolean!
+  publishedAt: String
+  settings: Setting
+  showPublishDate: Boolean
   sourceUrl: WebUrl
+  title: String
   updatedAt: String
 }
 
@@ -226,6 +254,8 @@ enum NewsItemsOrder {
   createdAt_DESC
   id_ASC
   id_DESC
+  publishedAt_ASC
+  publishedAt_DESC
   updatedAt_ASC
   updatedAt_DESC
 }
@@ -234,7 +264,7 @@ type OpeningHour {
   dateFrom: String
   dateTo: String
   description: String
-  id: ID!
+  id: ID
   open: Boolean
   sortNumber: Int
   timeFrom: String
@@ -256,40 +286,42 @@ input OpeningHourInput {
 type OperatingCompany {
   address: Address
   contact: Contact
-  id: ID!
+  id: ID
   name: String
 }
 
 input OperatingCompanyInput {
   address: AddressInput
   contact: ContactInput
-  name: String!
+  name: String
 }
 
 type PointOfInterest {
   accessibilityInformation: AccessibilityInformation
   active: Boolean
-  addresses: [Address!]!
-  categoryId: Int!
+  addresses: [Address!]
+  category: Category
   certificates: [Certificate!]
   contact: Contact
   createdAt: String
   dataProvider: DataProvider
   description: String
-  id: ID!
+  id: ID
   location: Location
   mediaContents: [MediaContent!]
   mobileDescription: String
-  name: String!
+  name: String
   openingHours: [OpeningHour!]
   operatingCompany: OperatingCompany
-  prices: [Price!]
-  tagList: String
+  priceInformations: [Price!]
+  settings: Setting
+  tagList: [String!]
   updatedAt: String
   webUrls: [WebUrl!]
 }
 
 enum PointsOfInterestOrder {
+  RAND
   createdAt_ASC
   createdAt_DESC
   id_ASC
@@ -318,7 +350,7 @@ type Price {
 input PriceInput {
   ageFrom: Int
   ageTo: Int
-  amount: Float
+  amount: AnyPrimitive
   category: String
   description: String
   groupPrice: Boolean
@@ -329,25 +361,43 @@ input PriceInput {
   name: String
 }
 
+type PublicHtmlFile {
+  content: String
+  name: String
+}
+
+type PublicJsonFile {
+  content: String!
+  name: String!
+}
+
 type Query {
+  categories: [Category!]!
   eventRecord(id: ID!): EventRecord!
-  eventRecords(limit: Int, order: EventRecordsOrder = createdAt_DESC, skip: Int): [EventRecord]
+  eventRecords(limit: Int, order: EventRecordsOrder = createdAt_DESC, skip: Int, take: Int): [EventRecord]
   newsItem(id: ID!): NewsItem!
-  newsItems(limit: Int, order: NewsItemsOrder = createdAt_DESC, skip: Int): [NewsItem]
+  newsItems(limit: Int, order: NewsItemsOrder = publishedAt_DESC, skip: Int): [NewsItem]
   pointOfInterest(id: ID!): PointOfInterest!
-  pointsOfInterest(limit: Int, order: PointsOfInterestOrder = createdAt_DESC, skip: Int): [PointOfInterest]
+  pointsOfInterest(category: String, limit: Int, order: PointsOfInterestOrder = createdAt_DESC, skip: Int): [PointOfInterest]
+  publicHtmlFile(name: String!): PublicHtmlFile!
+  publicJsonFile(name: String!): PublicJsonFile!
   tour(id: ID!): Tour!
-  tours(limit: Int, order: ToursOrder = createdAt_DESC, skip: Int): [Tour!]!
+  tours(category: String, limit: Int, order: ToursOrder = createdAt_DESC, skip: Int): [Tour!]!
 }
 
 type Region {
-  name: String!
+  id: ID
+  name: String
+}
+
+input RegionInput {
+  name: String
 }
 
 type RepeatDuration {
   endDate: String
   everyYear: Boolean
-  id: ID!
+  id: ID
   startDate: String
 }
 
@@ -357,30 +407,38 @@ input RepeatDurationInput {
   startDate: String
 }
 
+type Setting {
+  alwaysRecreateOnImport: String
+  displayOnlySummary: String
+  onlySummaryLinkText: String
+}
+
 type Tour {
   active: Boolean
   addresses: [Address!]
-  categoryId: Int!
+  category: Category
   certificates: [Certificate!]
   contact: Contact
   createdAt: String
   dataProvider: DataProvider
   description: String
   geometryTourData: [GeoLocation!]!
-  id: ID!
+  id: ID
   lengthKm: Int
   meansOfTransportation: String
   mediaContents: [MediaContent!]
   mobileDescription: String
-  name: String!
+  name: String
   operatingCompany: OperatingCompany
   regions: [Region!]
+  settings: Setting
   tags: String
   updatedAt: String
   webUrls: [WebUrl!]
 }
 
 enum ToursOrder {
+  RAND
   createdAt_ASC
   createdAt_DESC
   id_ASC
@@ -393,8 +451,8 @@ enum ToursOrder {
 
 type WebUrl {
   description: String
-  id: ID!
-  url: String!
+  id: ID
+  url: String
 }
 
 input WebUrlInput {
