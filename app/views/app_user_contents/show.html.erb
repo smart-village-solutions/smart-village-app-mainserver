@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col">
+    <h1>App User Content</h1>
+
+    <div class="form-group">
+      <label>Data source</label>
+      <div><code><%= @app_user_content.data_source %></code></div>
+    </div>
+
+    <div class="form-group">
+      <label>Data type</label>
+      <div><code><%= @app_user_content.data_type %></code></div>
+    </div>
+
+    <div class="form-group">
+      <label>Content</label>
+      <div id="code_editor" style="height: 400px;"></div>
+    </div>
+
+    <div class="form-group">
+      <%= link_to t("doorkeeper.applications.buttons.edit"), edit_app_user_content_path(@app_user_content), class: "btn btn-primary" %>
+      <%= link_to t('doorkeeper.applications.buttons.back'), app_user_contents_path, class: "btn btn-default" %>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    var container = document.getElementById("code_editor")
+    var options = {
+      mode: 'code',
+      onEditable: function (node) {
+        if (!node.path) {
+          // In modes code and text, node is empty: no path, field, or value
+          // returning false makes the text area read-only
+          return false;
+        }
+      },
+    }
+    var editor = new JSONEditor(container, options)
+
+    <% content = @app_user_content.content.to_s.html_safe %>
+    <% if @app_user_content.data_type == "html" %>
+      editor.setText("<%= escape_javascript(content) %>")
+    <% else %>
+      editor.set(<%= content %>)
+    <% end %>
+  });
+</script>

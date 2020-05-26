@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
+  resources :app_user_contents
   resources :static_contents
   get "data_provider", to: "data_provider#show", as: :data_provider
   get "data_provider/edit", as: :edit_data_provider
@@ -6,7 +9,7 @@ Rails.application.routes.draw do
   resources :accounts
 
   use_doorkeeper do
-    controllers :applications => "oauth/applications"
+    controllers applications: "oauth/applications"
   end
 
   devise_for :users, controllers: {
@@ -14,7 +17,7 @@ Rails.application.routes.draw do
   }
 
   # if Rails.env.development?
-    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
+  mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
   # end
 
   post "/graphql", to: "graphql#execute"

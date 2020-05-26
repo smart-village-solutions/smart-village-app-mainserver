@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col">
+    <h1>App User Contents</h1>
+
+    <p><%= link_to 'New App User Content', new_app_user_content_path, class: "btn btn-success" %></p>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Source</th>
+          <th>Type</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @app_user_contents.each do |app_user_content| %>
+          <tr>
+            <td class="align-middle"><%= app_user_content.id %></td>
+            <td class="align-middle"><%= link_to app_user_content.data_source, app_user_content_path(app_user_content) %></td>
+            <td class="align-middle"><%= app_user_content.data_type.upcase %></td>
+            <td class="align-middle" style="width: 70px"><%= link_to 'Edit', edit_app_user_content_path(app_user_content), class: 'btn btn-sm btn-outline-secondary' %></td>
+            <td class="align-middle" style="width: 70px"><%= link_to 'Destroy', app_user_content, method: :delete,class: 'btn btn-sm btn-outline-danger', data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
