@@ -39,7 +39,10 @@ class AppUserContentsController < ApplicationController
 
     respond_to do |format|
       if @app_user_content.save
-        format.html { redirect_to @app_user_content, notice: "App User Content was successfully created." }
+        format.html do
+          redirect_to @app_user_content,
+                      notice: "App User Content was successfully created."
+        end
         format.json { render :show, status: :created, location: @app_user_content }
       else
         format.html { render :new }
@@ -53,7 +56,10 @@ class AppUserContentsController < ApplicationController
   def update
     respond_to do |format|
       if @app_user_content.update(app_user_content_params)
-        format.html { redirect_to @app_user_content, notice: "App User Content was successfully updated." }
+        format.html do
+          redirect_to @app_user_content,
+                      notice: "App User Content was successfully updated."
+        end
         format.json { render :show, status: :ok, location: @app_user_content }
       else
         format.html { render :edit }
@@ -67,7 +73,10 @@ class AppUserContentsController < ApplicationController
   def destroy
     @app_user_content.destroy
     respond_to do |format|
-      format.html { redirect_to app_user_contents_url, notice: "App User Content was successfully destroyed." }
+      format.html do
+        redirect_to app_user_contents_url,
+                    notice: "App User Content was successfully destroyed."
+      end
       format.json { head :no_content }
     end
   end
