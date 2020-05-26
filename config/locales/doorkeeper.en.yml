@@ -26,6 +26,7 @@ en:
         destroy: 'Destroy'
         submit: 'Submit'
         cancel: 'Cancel'
+        back: 'Back'
         authorize: 'Authorize'
       form:
         error: 'Whoops! Check your form for possible errors'
