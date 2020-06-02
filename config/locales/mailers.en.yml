@@ -1,0 +1,5 @@
+en:
+  mailers:
+    notification:
+      notify_admin:
+        subject: "[Smart Village App] Form created"
