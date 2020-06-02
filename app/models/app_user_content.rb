@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class AppUserContent < ApplicationRecord
+  validates_presence_of :content, :data_type, :data_source
 end
 
 # == Schema Information
