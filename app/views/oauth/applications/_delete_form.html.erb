@@ -1,3 +1,5 @@
+<% class_name ||= 'btn btn-danger' %>
+
 <%= form_tag oauth_application_path(application), method: :delete do %>
-  <%= submit_tag t('doorkeeper.applications.buttons.destroy'), onclick: "return confirm('#{ t('doorkeeper.applications.confirmations.destroy') }')", class: 'btn btn-danger' %>
+  <%= submit_tag t('doorkeeper.applications.buttons.destroy'), onclick: "return confirm('#{ t('doorkeeper.applications.confirmations.destroy') }')", class: class_name %>
 <% end %>
