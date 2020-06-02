@@ -38,6 +38,7 @@ gem "devise-token_authenticatable"
 gem "doorkeeper"
 gem "jquery-rails"
 gem "jsoneditor-rails"
+gem "mailjet"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.1.0", require: false
