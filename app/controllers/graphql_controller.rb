@@ -13,6 +13,9 @@ class GraphqlController < ApplicationController
     context = {
       # Query context goes here, for example:
       current_user: current_resource_owner
+
+      # NOTE: if we want to have more data, we can add the `request` here, for example:
+      # request: request
     }
     result = SmartVillageAppMainserverSchema.execute(
       query,
