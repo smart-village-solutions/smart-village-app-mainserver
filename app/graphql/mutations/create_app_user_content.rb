@@ -9,6 +9,8 @@ module Mutations
     type Types::AppUserContentType
 
     def resolve(**params)
+      return spam_message if spam?
+
       app_user_content = AppUserContent.create(params)
       resource_or_error_message(app_user_content)
     end
@@ -21,6 +23,15 @@ module Mutations
         else
           GraphQL::ExecutionError.new("Invalid input: #{record.errors.full_messages.join(", ")}")
         end
+      end
+
+      def spam_message
+        GraphQL::ExecutionError.new("Spam input")
+      end
+
+      # TODO: implement spam filter logic
+      def spam?
+        false
       end
   end
 end
