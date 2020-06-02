@@ -14,7 +14,9 @@ services:
     volumes:
       - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     labels:
-      - traefik.frontend.rule=Host:server.localhost
+      - traefik.enable=true
+      - traefik.docker.network=public
+      - traefik.frontend.rule=Host:server.smart-village.docker.localhost
 
   db:
     volumes:
