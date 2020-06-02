@@ -2,6 +2,14 @@
 
 class AppUserContent < ApplicationRecord
   validates_presence_of :content, :data_type, :data_source
+
+  after_create :notify_admin
+
+  private
+
+    def notify_admin
+      NotificationMailer.notify_admin(self).deliver_now
+    end
 end
 
 # == Schema Information
