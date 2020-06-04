@@ -18,8 +18,8 @@
       <tbody>
         <% @app_user_contents.each do |app_user_content| %>
           <tr>
-            <td class="align-middle"><%= app_user_content.id %></td>
-            <td class="align-middle"><%= link_to app_user_content.data_source, app_user_content_path(app_user_content) %></td>
+            <td class="align-middle"><%= link_to app_user_content.id, app_user_content_path(app_user_content) %></td>
+            <td class="align-middle"><%= app_user_content.data_source %></td>
             <td class="align-middle"><%= app_user_content.data_type.upcase %></td>
             <td class="align-middle" style="width: 70px"><%= link_to 'Destroy', app_user_content, method: :delete,class: 'btn btn-sm btn-outline-danger', data: { confirm: 'Are you sure?' } %></td>
           </tr>
