@@ -21,7 +21,6 @@
             <td class="align-middle"><%= app_user_content.id %></td>
             <td class="align-middle"><%= link_to app_user_content.data_source, app_user_content_path(app_user_content) %></td>
             <td class="align-middle"><%= app_user_content.data_type.upcase %></td>
-            <td class="align-middle" style="width: 70px"><%= link_to 'Edit', edit_app_user_content_path(app_user_content), class: 'btn btn-sm btn-outline-secondary' %></td>
             <td class="align-middle" style="width: 70px"><%= link_to 'Destroy', app_user_content, method: :delete,class: 'btn btn-sm btn-outline-danger', data: { confirm: 'Are you sure?' } %></td>
           </tr>
         <% end %>
