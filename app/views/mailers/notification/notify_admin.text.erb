@@ -1,1 +1,7 @@
-<%= @notify_admin_content.inspect %>
+<% JSON.parse(@notify_admin_content.content).to_hash.each do |key, value| %>
+  <%= key.upcase %>:
+
+  <%= value %>
+
+
+<% end %>

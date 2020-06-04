@@ -1,1 +1,4 @@
-<%= @notify_admin_content.inspect %>
+<% JSON.parse(@notify_admin_content.content).to_hash.each do |key, value| %>
+  <p style="margin-bottom: 10px;"><strong><%= key.capitalize %></strong></p>
+  <p style="margin-bottom: 30px; margin-top: 0;"><%= value %></p>
+<% end %>
