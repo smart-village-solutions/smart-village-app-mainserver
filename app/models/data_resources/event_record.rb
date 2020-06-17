@@ -67,9 +67,18 @@ class EventRecord < ApplicationRecord
 
   def list_date
     event_dates = dates.order(date_start: :asc)
-    future_date = event_dates.select { |date| date.date_start > Time.zone.now }.first.try(:date_start)
+    dates_count = event_dates.count
+
+    return if dates_count.zero?
+
+    future_dates = event_dates.select do |date|
+      date.date_start >= Time.zone.now.beginning_of_day
+    end
+    future_date = future_dates.first.try(:date_start)
 
     return future_date if future_date.present?
+
+    return today_in_time_range(event_dates.first) if dates_count == 1
 
     event_dates.last.try(:date_start)
   end
@@ -77,6 +86,27 @@ class EventRecord < ApplicationRecord
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "EventRecord").first.try(:settings)
   end
+
+  private
+
+    # need to check start and end date and return "today" if there is only one date.
+    # per CMS only one date can be saved.
+    # if a start and end date describes a larger time range, "today" needs to be returned until end
+    # is reached.
+    def today_in_time_range(date)
+      start_date = date.date_start
+      end_date = date.date_end
+      today = Time.zone.now.beginning_of_day
+
+      # return start date if there is no end date
+      return start_date if end_date.blank?
+
+      # return start date if the end date is in the past
+      return start_date if end_date < today
+
+      # return "today" if there is a future end date
+      today
+    end
 end
 
 # == Schema Information
