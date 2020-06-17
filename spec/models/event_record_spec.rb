@@ -19,11 +19,11 @@ RSpec.describe EventRecord, type: :model do
   it { is_expected.to have_many(:dates) }
   it { is_expected.to validate_presence_of(:title) }
 
-  def create_date(date_start)
+  def create_date(date_start, date_end)
     FixedDate.create(
       weekday: Faker::Date.between(2000.days.ago, Date.today).strftime("%A"),
       date_start: date_start,
-      date_end: date_start,
+      date_end: date_end,
       time_start: Faker::Time.backward.strftime("%H:%M"),
       time_end: Faker::Time.forward.strftime("%H:%M"),
       time_description: Faker::Lorem.paragraph,
@@ -31,14 +31,14 @@ RSpec.describe EventRecord, type: :model do
     )
   end
 
-  def add_date_to(event_record, date_start = Time.zone.now)
-    event_record.dates << create_date(date_start)
+  def add_date_to(event_record, date_start = Time.zone.now, date_end = Time.zone.now)
+    event_record.dates << create_date(date_start, date_end)
 
     event_record.save
   end
 
   describe "#list_date" do
-    context "with an event who has two future dates" do
+    context "with an event which has two future dates" do
       it "returns the date closest to now" do
         er_1 = event_record_1
         future_date_1 = "21.12.2100"
@@ -62,7 +62,7 @@ RSpec.describe EventRecord, type: :model do
       end
     end
 
-    context "with an event who has a past and two future date" do
+    context "with an event which has a past and two future date" do
       it "returns the future date which is closest to now" do
         er_1 = event_record_1
         future_date_1 = "21.12.2100"
@@ -73,6 +73,45 @@ RSpec.describe EventRecord, type: :model do
         add_date_to(er_1, past_date)
         result = er_1.list_date.strftime("%d.%m.%Y")
         expect(result).to eq(future_date_1)
+      end
+    end
+
+    context "with an event which has a past start date and a future end date" do
+      it "returns todays date" do
+        er_1 = event_record_1
+        past_date = "12.05.2020"
+        future_date = "20.09.2100"
+        add_date_to(er_1, past_date, future_date)
+        result = er_1.list_date.strftime("%d.%m.%Y")
+        expect(result).to eq(Time.zone.now.strftime("%d.%m.%Y"))
+      end
+    end
+
+    context "with an event which has a past start date and a past end date" do
+      it "returns past date" do
+        er_1 = event_record_1
+        past_date = "12.05.2020"
+        add_date_to(er_1, past_date, past_date)
+        result = er_1.list_date.strftime("%d.%m.%Y")
+        expect(result).to eq(past_date)
+      end
+    end
+
+    context "with an event which has a future start date and a future end date" do
+      it "returns start date" do
+        er_1 = event_record_1
+        start_date = "12.05.2100"
+        end_date = "12.07.2100"
+        add_date_to(er_1, start_date, end_date)
+        result = er_1.list_date.strftime("%d.%m.%Y")
+        expect(result).to eq(start_date)
+      end
+    end
+
+    context "without an event" do
+      it "returns nil" do
+        result = event_record_1.list_date
+        expect(result).to be_nil
       end
     end
   end
