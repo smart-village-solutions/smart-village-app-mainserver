@@ -105,7 +105,7 @@ class EventRecord < ApplicationRecord
       return start_date if end_date < today
 
       # return "today" if there is a future end date
-      today
+      today.to_date
     end
 end
 
