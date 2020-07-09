@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class StaticContent < ApplicationRecord
+  validates_presence_of :name, :data_type
+  validates :name, uniqueness: { case_sensitive: false }
+
   scope :filter_by_type, ->(type) { where data_type: type }
 end
 
