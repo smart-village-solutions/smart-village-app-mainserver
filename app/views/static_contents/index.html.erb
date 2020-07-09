@@ -1,8 +1,21 @@
+<%
+  def btn_class(type = nil)
+    return "btn-secondary" if params[:type].blank? && type.blank?
+    return params[:type] == type ? "btn-secondary" : "btn-outline-secondary"
+  end
+%>
+
 <div class="row">
   <div class="col">
     <h1>Static Contents</h1>
 
     <p><%= link_to 'New Static Content', new_static_content_path, class: "btn btn-success" %></p>
+
+    <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Choose data type">
+      <a href="<%= static_contents_path %>" class="btn <%= btn_class("") %>">All</a>
+      <a href="<%= static_contents_path(type: "json") %>" class="btn <%= btn_class("json") %>">JSON</a>
+      <a href="<%= static_contents_path(type: "html") %>" class="btn <%= btn_class("html") %>">HTML</a>
+    </div>
 
     <table class="table table-striped">
       <thead>

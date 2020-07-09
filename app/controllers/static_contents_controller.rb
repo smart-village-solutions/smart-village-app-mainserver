@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StaticContentsController < ApplicationController
   layout "doorkeeper/admin"
 
@@ -14,6 +16,7 @@ class StaticContentsController < ApplicationController
   # GET /static_contents.json
   def index
     @static_contents = StaticContent.all
+    @static_contents = @static_contents.filter_by_type(params[:type]) if params[:type].present?
   end
 
   # GET /static_contents/1
@@ -37,7 +40,7 @@ class StaticContentsController < ApplicationController
 
     respond_to do |format|
       if @static_content.save
-        format.html { redirect_to @static_content, notice: 'Static content was successfully created.' }
+        format.html { redirect_to @static_content, notice: "Static content was successfully created." }
         format.json { render :show, status: :created, location: @static_content }
       else
         format.html { render :new }
@@ -51,7 +54,7 @@ class StaticContentsController < ApplicationController
   def update
     respond_to do |format|
       if @static_content.update(static_content_params)
-        format.html { redirect_to @static_content, notice: 'Static content was successfully updated.' }
+        format.html { redirect_to @static_content, notice: "Static content was successfully updated." }
         format.json { render :show, status: :ok, location: @static_content }
       else
         format.html { render :edit }
@@ -65,12 +68,13 @@ class StaticContentsController < ApplicationController
   def destroy
     @static_content.destroy
     respond_to do |format|
-      format.html { redirect_to static_contents_url, notice: 'Static content was successfully destroyed.' }
+      format.html { redirect_to static_contents_url, notice: "Static content was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_static_content
       @static_content = StaticContent.find(params[:id])

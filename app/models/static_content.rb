@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 class StaticContent < ApplicationRecord
+  scope :filter_by_type, ->(type) { where data_type: type }
 end
 
 # == Schema Information
