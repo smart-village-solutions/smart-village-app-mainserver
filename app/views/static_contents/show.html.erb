@@ -23,7 +23,13 @@
   $(function () {
     var container = document.getElementById("code_editor")
     var options = {
+      statusBar: false,
+      mainMenuBar: false,
       mode: 'code',
+      <% if @static_content.data_type == "json" %>
+        mainMenuBar: true,
+        modes: ['code', 'view'],
+      <% end %>
       onEditable: function (node) {
         if (!node.path) {
           // In modes code and text, node is empty: no path, field, or value
@@ -35,10 +41,18 @@
     var editor = new JSONEditor(container, options)
 
     <% content = @static_content.content.to_s.html_safe %>
-    <% if @static_content.data_type == "html" %>
-      editor.setText("<%= escape_javascript(content) %>")
+    <% if @static_content.data_type == "json" %>
+      <% if content.present? %>
+        editor.set(<%= content %>);
+      <% else %>
+        editor.set({});
+      <% end %>
     <% else %>
-      editor.set(<%= content %>)
+      <% if content.present? %>
+        editor.setText("<%= escape_javascript(content) %>");
+      <% else %>
+        editor.setText("");
+      <% end %>
     <% end %>
   });
 </script>

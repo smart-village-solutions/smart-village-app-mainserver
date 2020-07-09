@@ -40,21 +40,19 @@
   $(function () {
     var container = document.getElementById("code_editor")
     var options = {
-      mode: 'code',
-      <% if app_user_content.data_type == "json" %>
-        modes: ['code', 'tree'],
-      <% end %>
+      statusBar: false,
+      modes: ['code', 'tree'],
       onChangeText: function(jsonString) {
-        $("#app_user_content_content").val(jsonString)
+        $("#app_user_content_content").val(jsonString);
       }
     }
     var editor = new JSONEditor(container, options)
 
     <% content = app_user_content.content.to_s.html_safe %>
-    <% if app_user_content.data_type == "html" %>
-      editor.setText("<%= escape_javascript(content) %>")
+    <% if content.present? %>
+      editor.set(<%= content %>);
     <% else %>
-      editor.set(<%= content %>)
+      editor.set({});
     <% end %>
   });
 </script>

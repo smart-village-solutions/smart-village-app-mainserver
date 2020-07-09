@@ -27,7 +27,8 @@
   $(function () {
     var container = document.getElementById("code_editor")
     var options = {
-      mode: 'code',
+      statusBar: false,
+      modes: ['code', 'view'],
       onEditable: function (node) {
         if (!node.path) {
           // In modes code and text, node is empty: no path, field, or value
@@ -39,10 +40,10 @@
     var editor = new JSONEditor(container, options)
 
     <% content = @app_user_content.content.to_s.html_safe %>
-    <% if @app_user_content.data_type == "html" %>
-      editor.setText("<%= escape_javascript(content) %>")
+    <% if content.present? %>
+      editor.set(<%= content %>);
     <% else %>
-      editor.set(<%= content %>)
+      editor.set({});
     <% end %>
   });
 </script>
