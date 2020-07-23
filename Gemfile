@@ -50,7 +50,6 @@ gem "graphql-query-resolver"
 gem "search_object"
 gem "search_object_graphql"
 gem "unicorn"
-gem "gelf"
 gem "lograge"
 gem "rollbar"
 

@@ -43,10 +43,6 @@ class GraphqlController < ApplicationController
       if result_hash.key?("errors")
         error_hash = { GraphQLServerError: result_hash, payload: query }
         logger.error(error_hash)
-        if Rails.env.production?
-          gray_logger = GELF::Notifier.new("graylog", 12_219, "WAN", facility: "Main App Server")
-          gray_logger.notify!(short_message: "GraphQL Execution Error: #{result_hash["errors"].first["message"]}", full_message: error_hash)
-        end
       end
     end
 

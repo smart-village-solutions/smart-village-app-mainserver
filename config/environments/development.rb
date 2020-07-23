@@ -11,9 +11,6 @@ Rails.application.configure do
 
   config.log_level = :debug
 
-  config.logger = GELF::Logger.new("localhost", 12219, "WAN", { :facility => "Main App Server" })
-
-
   # Show full error reports.
   config.consider_all_requests_local = true
 
