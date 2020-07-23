@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   app:
-    image: registry.communicatio.com/ikusei/smart-village-app-mainserver
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
     environment:
       RAILS_ENV: production
       RAILS_LOG_TO_STDOUT: 1
