@@ -87,7 +87,6 @@ Rails.application.configure do
 
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
-  config.logger = GELF::Logger.new("graylog", 12_219, "WAN", facility: "Main App Server")
 
   # if ENV["RAILS_LOG_TO_STDOUT"].present?
   #   logger           = ActiveSupport::Logger.new(STDOUT)
