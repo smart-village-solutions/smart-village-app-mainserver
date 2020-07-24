@@ -22,6 +22,8 @@ Rails.application.routes.draw do
 
   post "/graphql", to: "graphql#execute"
 
+  get "/generate_204", to: "application#generate_204", status: 204
+
   root to: "oauth/applications#index"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
