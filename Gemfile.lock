@@ -73,6 +73,22 @@ GEM
       rake (>= 10.4, < 13.0)
     arel (9.0.0)
     ast (2.4.0)
+    aws-eventstream (1.0.3)
+    aws-partitions (1.218.0)
+    aws-sdk-core (3.68.0)
+      aws-eventstream (~> 1.0, >= 1.0.2)
+      aws-partitions (~> 1.0)
+      aws-sigv4 (~> 1.1)
+      jmespath (~> 1.0)
+    aws-sdk-kms (1.24.0)
+      aws-sdk-core (~> 3, >= 3.61.1)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-s3 (1.48.0)
+      aws-sdk-core (~> 3, >= 3.61.1)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.1)
+    aws-sigv4 (1.1.0)
+      aws-eventstream (~> 1.0, >= 1.0.2)
     bcrypt (3.1.13)
     bindex (0.7.0)
     bootsnap (1.4.4)
@@ -142,6 +158,7 @@ GEM
     jaro_winkler (1.5.2)
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
+    jmespath (1.4.0)
     jquery-rails (4.3.3)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -366,6 +383,7 @@ DEPENDENCIES
   acts-as-taggable-on
   ancestry (~> 2.1)
   annotate
+  aws-sdk-s3
   bootsnap (>= 1.1.0)
   byebug
   codeclimate-test-reporter

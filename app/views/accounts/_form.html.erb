@@ -206,12 +206,25 @@
       </div>
     </div>
 
-    <div class="form-group col-6">
-      <%= s.label :only_summary_link_text, "Linktext" %>
-      <%= s.text_field :only_summary_link_text, class: "form-control", placeholder: "Weiterlesen" %>
-      <small class="form-text text-muted">
-        Dieser Text wird angezeigt, wenn die Checkbox 'Nur Zusammenfassung anzeigen' aktiviert ist.
-      </small>
+    <div class="row">
+      <div class="form-group col-6">
+        <%= s.label :only_summary_link_text, "Linktext" %>
+        <%= s.text_field :only_summary_link_text, class: "form-control", placeholder: "Weiterlesen" %>
+        <small class="form-text text-muted">
+          Dieser Text wird angezeigt, wenn die Checkbox 'Nur Zusammenfassung anzeigen' aktiviert ist.
+        </small>
+      </div>
+
+      <div class="form-group col-6">
+        <div class="form-check">
+          <%= s.check_box :convert_media_urls_to_external_storage, { class: "form-check-input"}, "true", "false" %>
+          <%= s.label :convert_media_urls_to_external_storage, "Medien importiern und in einem S3/Minio hosten", class: "form-check-label" %>
+          <small class="form-text text-muted">
+            Bei einem Import von BildUrls werden diese geladen und zu einem eigenen S3/Minio gesendet.
+            Die MedienUrl wird dabei ersetzt.
+          </small>
+        </div>
+      </div>
     </div>
   <% end %>
 <% end %>
