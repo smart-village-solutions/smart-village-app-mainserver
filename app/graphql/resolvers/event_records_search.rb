@@ -22,17 +22,21 @@ class Resolvers::EventRecordsSearch
     value "listDate_ASC"
   end
 
+  option :skip, type: types.Int, with: :apply_skip
   option :limit, type: types.Int, with: :apply_limit
   option :take, type: types.Int, with: :apply_take
-  option :skip, type: types.Int, with: :apply_skip
   option :order, type: EventRecordsOrder, default: "createdAt_DESC"
 
   def apply_limit(scope, value)
     scope.limit(value)
+  rescue NoMethodError
+    scope.first(value)
   end
 
   def apply_skip(scope, value)
     scope.offset(value)
+  rescue NoMethodError
+    scope.drop(value)
   end
 
   def apply_take(scope, value)
