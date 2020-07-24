@@ -31,6 +31,20 @@ class EventRecord < ApplicationRecord
     where(data_provider_id: current_user.data_provider_id)
   }
 
+  scope :upcoming, lambda { |current_user|
+    event_records = if current_user.present?
+                      EventRecord.filtered_for_current_user(current_user)
+                    else
+                      EventRecord.all
+                    end
+
+    upcoming_event_record_ids = event_records.select do |event_record|
+      event_record.list_date >= Date.today
+    end.map(&:id)
+
+    where(id: upcoming_event_record_ids)
+  }
+
   accepts_nested_attributes_for :urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :data_provider, :organizer,
                                 :addresses, :location, :contacts,
