@@ -101,6 +101,7 @@ class AccountsController < ApplicationController
           always_recreate_on_import
           data_provider_id
           only_summary_link_text
+          convert_media_urls_to_external_storage
         ]
       ]
     )
