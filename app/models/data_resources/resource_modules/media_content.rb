@@ -26,9 +26,9 @@ class MediaContent < ApplicationRecord
 
     begin
       uri = URI.open(source_url.url)
-      file = open(uri)
+      file = File.open(uri)
       attachment.attach(io: file, filename: File.basename(file))
-    rescue
+    rescue StandardError
       return
     end
 
@@ -42,13 +42,13 @@ class MediaContent < ApplicationRecord
     mediaable_class_name = mediaable.class.to_s
     return false if mediaable_class_name.blank?
 
-    resource_configs = mediaable.data_provider.data_resource_settings.where(data_resource_type: mediaable_class_name).first
-    return false if resource_configs.blank?
-    return false if resource_configs.settings.blank?
+    resource_configs = mediaable.data_provider.data_resource_settings.where(
+      data_resource_type: mediaable_class_name
+    ).first
+    return false if resource_configs.blank? || resource_configs.settings.blank?
 
     resource_configs.settings.fetch("convert_media_urls_to_external_storage", "false") == "true"
   end
-
 end
 
 # == Schema Information
