@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
 class DataResourceSetting < ApplicationRecord
-
   DATA_RESOURCES = [Tour, PointOfInterest, NewsItem, EventRecord].freeze
 
   store :settings,
-        accessors: %i[display_only_summary always_recreate_on_import only_summary_link_text convert_media_urls_to_external_storage],
+        accessors: %i[
+          display_only_summary
+          always_recreate_on_import
+          only_summary_link_text
+          convert_media_urls_to_external_storage
+        ],
         coder: JSON
 
   belongs_to :data_provider
