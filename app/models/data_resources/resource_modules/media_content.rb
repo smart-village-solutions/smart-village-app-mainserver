@@ -41,6 +41,7 @@ class MediaContent < ApplicationRecord
   def converting_activated_for_current_resource?
     mediaable_class_name = mediaable.class.to_s
     return false if mediaable_class_name.blank?
+    return false if mediaable.try(:data_provider).blank?
 
     resource_configs = mediaable.data_provider.data_resource_settings.where(
       data_resource_type: mediaable_class_name
