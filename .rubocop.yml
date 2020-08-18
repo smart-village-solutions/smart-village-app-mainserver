@@ -424,7 +424,7 @@ Layout/ExtraSpacing:
   # When true, forces the alignment of `=` in assignments on consecutive lines.
   ForceEqualSignAlignment: false
 
-Layout/FirstParameterIndentation:
+Layout/IndentFirstArgument:
   EnforcedStyle: special_for_inner_method_call_in_parentheses
   SupportedStyles:
     # The first parameter should always be indented one step more than the
@@ -460,7 +460,7 @@ Layout/IndentationWidth:
   IgnoredPatterns: []
 
 # Checks the indentation of the first element in an array literal.
-Layout/IndentArray:
+Layout/IndentFirstArrayElement:
   # The value `special_inside_parentheses` means that array literals with
   # brackets that have their opening bracket on the same line as a surrounding
   # opening round parenthesis, shall have their first element indented relative
@@ -488,7 +488,7 @@ Layout/IndentAssignment:
   IndentationWidth: ~
 
 # Checks the indentation of the first key in a hash literal.
-Layout/IndentHash:
+Layout/IndentFirstHashElement:
   # The value `special_inside_parentheses` means that hash literals with braces
   # that have their opening brace on the same line as a surrounding opening
   # round parenthesis, shall have their first key indented relative to the
@@ -510,9 +510,8 @@ Layout/IndentHash:
   IndentationWidth: ~
 
 Layout/IndentHeredoc:
-  EnforcedStyle: auto_detection
+  EnforcedStyle: squiggly
   SupportedStyles:
-    - auto_detection
     - squiggly
     - active_support
     - powerpack
@@ -1344,7 +1343,7 @@ Style/FormatStringToken:
     - unannotated
 
 Style/FrozenStringLiteralComment:
-  EnforcedStyle: when_needed
+  EnforcedStyle: always
   SupportedStyles:
     # `when_needed` will add the frozen string literal comment to files
     # only when the `TargetRubyVersion` is set to 2.3+.

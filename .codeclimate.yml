@@ -23,7 +23,7 @@ engines:
     enabled: true
   rubocop:
     enabled: true
-    channel: rubocop-0-63
+    channel: rubocop-0-71
   scss-lint:
     enabled: true
 ratings:
