@@ -24,6 +24,7 @@ class Resolvers::NewsItemsSearch
   option :limit, type: types.Int, with: :apply_limit
   option :skip, type: types.Int, with: :apply_skip
   option :order, type: NewsItemsOrder, default: "publishedAt_DESC"
+  option :dataProvider, type: types.String, with: :apply_data_provider
 
   def apply_limit(scope, value)
     scope.limit(value)
@@ -35,6 +36,10 @@ class Resolvers::NewsItemsSearch
 
   def apply_order(scope, value)
     scope.order(value)
+  end
+
+  def apply_data_provider(scope, value)
+    scope.joins(:data_provider).where(data_providers: { name: value })
   end
 
   def apply_order_with_created_at_desc(scope)
