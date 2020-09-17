@@ -32,6 +32,8 @@ module Types
 
     field :categories, [CategoryType], null: false
 
+    field :news_items_data_providers, [DataProviderType], null: false
+
     def point_of_interest(id:)
       PointOfInterest.find(id)
     end
@@ -50,6 +52,12 @@ module Types
 
     def categories
       Category.all.order(:name)
+    end
+
+    def news_items_data_providers
+      order = "data_providers.name ASC"
+
+      NewsItem.all.includes(:data_provider).order(order).map(&:data_provider).uniq
     end
 
     # Provide contents from html files in `public/mobile-app/contents` through GraphQL query
