@@ -4,6 +4,7 @@ class DataProvider < ApplicationRecord
   store :roles, accessors: %i[role_point_of_interest role_tour role_news_item role_event_record], coder: JSON
 
   has_many :data_resource_settings, class_name: "DataResourceSetting"
+  has_many :news_items
   has_one :user
   has_one :address, as: :addressable
   has_one :contact, as: :contactable
