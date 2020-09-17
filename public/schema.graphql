@@ -376,7 +376,7 @@ type Query {
   eventRecord(id: ID!): EventRecord!
   eventRecords(limit: Int, order: EventRecordsOrder = createdAt_DESC, skip: Int, take: Int): [EventRecord]
   newsItem(id: ID!): NewsItem!
-  newsItems(limit: Int, order: NewsItemsOrder = publishedAt_DESC, skip: Int): [NewsItem]
+  newsItems(dataProvider: String, limit: Int, order: NewsItemsOrder = publishedAt_DESC, skip: Int): [NewsItem]
   pointOfInterest(id: ID!): PointOfInterest!
   pointsOfInterest(category: String, limit: Int, order: PointsOfInterestOrder = createdAt_DESC, skip: Int): [PointOfInterest]
   publicHtmlFile(name: String!): PublicHtmlFile!
