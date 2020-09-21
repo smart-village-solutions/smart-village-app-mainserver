@@ -10,6 +10,7 @@ module Types
     field :addresses, [AddressType], null: true
     field :active, Boolean, null: true
     field :category, CategoryType, null: true
+    field :categories, [CategoryType], null: true
     field :location, LocationType, null: true
     field :data_provider, DataProviderType, null: true
     field :contact, ContactType, null: true

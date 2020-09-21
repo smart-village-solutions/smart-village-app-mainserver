@@ -13,6 +13,7 @@ module Types
     field :repeat, Boolean, null: true
     field :repeat_duration, RepeatDurationType, null: true
     field :category, CategoryType, null: true
+    field :categories, [CategoryType], null: true
     field :addresses, [AddressType], null: true
     field :location, LocationType, null: true
     field :region_id, String, null: true
