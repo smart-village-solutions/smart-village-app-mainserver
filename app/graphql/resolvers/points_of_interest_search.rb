@@ -40,7 +40,7 @@ class Resolvers::PointsOfInterestSearch
   end
 
   def apply_category(scope, value)
-    scope.joins(:category).where(categories: { name: value })
+    scope.joins(:categories).where(categories: { name: value })
   end
 
   def apply_order_with_created_at_desc(scope)
