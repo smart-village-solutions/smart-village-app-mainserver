@@ -8,8 +8,8 @@ class Attraction < ApplicationRecord
 
   before_validation :set_category_id
 
-  belongs_to :category
   belongs_to :data_provider
+
   has_and_belongs_to_many :certificates, optional: true
   has_and_belongs_to_many :regions, optional: true
   has_many :addresses, as: :addressable, dependent: :destroy
@@ -42,6 +42,12 @@ class Attraction < ApplicationRecord
   def find_or_create_category
     Category.where(name: category_name).first_or_create
   end
+
+  # Sicherstellung der Abwärtskompatibilität seit 09/2020
+  def category
+    ActiveSupport::Deprecation.warn(":category is replaced by has_many :categories")
+    categories.first
+  end
 end
 
 # == Schema Information
@@ -55,7 +61,6 @@ end
 #  active                  :boolean          default(TRUE)
 #  length_km               :integer
 #  means_of_transportation :integer
-#  category_id             :bigint
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  type                    :string(255)      default("PointOfInterest"), not null

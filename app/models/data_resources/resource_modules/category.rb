@@ -5,13 +5,11 @@
 class Category < ApplicationRecord
   has_ancestry
   validates_presence_of :name
-  has_one :event_record
-  has_many :points_of_interest,
-           -> { where(attractions: { type: "PointOfInterest" }) },
-           class_name: "Attraction"
-  has_many :tours,
-           -> { where(attractions: { type: "Tour" }) },
-           class_name: "Attraction"
+  has_many :data_resource_categories
+  has_many :event_records, source: :data_resource, source_type: "EventRecord", through: :data_resource_categories
+  has_many :points_of_interest, source: :data_resource, source_type: "PointOfInterest", through: :data_resource_categories
+  has_many :tours, source: :data_resource, source_type: "Tour", through: :data_resource_categories
+  has_many :news_items, source: :data_resource, source_type: "NewsItem", through: :data_resource_categories
 
   def points_of_interest_count
     return 0 if points_of_interest.blank?
@@ -23,6 +21,18 @@ class Category < ApplicationRecord
     return 0 if tours.blank?
 
     tours.count
+  end
+
+  def news_items_count
+    return 0 if news_items.blank?
+
+    news_items.count
+  end
+
+  def event_records_count
+    return 0 if event_records.blank?
+
+    event_records.count
   end
 end
 

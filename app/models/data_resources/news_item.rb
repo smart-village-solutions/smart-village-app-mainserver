@@ -7,6 +7,8 @@ class NewsItem < ApplicationRecord
 
   belongs_to :data_provider
 
+  has_many :data_resource_categories, as: :data_resource
+  has_many :categories, through: :data_resource_categories
   has_many :content_blocks, as: :content_blockable, dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy
   has_one :address, as: :addressable, dependent: :destroy
