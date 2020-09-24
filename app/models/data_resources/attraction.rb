@@ -6,7 +6,7 @@
 class Attraction < ApplicationRecord
   attr_accessor :category_name
 
-  before_validation :set_category_id
+  before_validation :find_or_create_category
 
   belongs_to :data_provider
 
@@ -35,12 +35,11 @@ class Attraction < ApplicationRecord
   # the setting of category is only possible with category_name
   # PointOfInterest.create(category: Category.first) doesn't work anymore.
   #
-  def set_category_id
-    self.category_id = find_or_create_category.id
-  end
-
   def find_or_create_category
-    Category.where(name: category_name).first_or_create
+    return if category_name.blank?
+
+    category_to_add = Category.where(name: category_name).first_or_create
+    categories << category_to_add unless categories.include?(category_to_add)
   end
 
   # Sicherstellung der Abwärtskompatibilität seit 09/2020

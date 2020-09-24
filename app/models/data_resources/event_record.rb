@@ -56,7 +56,10 @@ class EventRecord < ApplicationRecord
   validates_presence_of :title
 
   def find_or_create_category
-    self.category_id = Category.where(name: category_name).first_or_create.id
+    return if category_name.blank?
+
+    category_to_add = Category.where(name: category_name).first_or_create
+    categories << category_to_add unless categories.include?(category_to_add)
   end
 
   def find_or_create_region

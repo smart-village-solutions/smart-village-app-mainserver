@@ -5,6 +5,7 @@
 class Category < ApplicationRecord
   has_ancestry orphan_strategy: :destroy
   validates_presence_of :name
+  validates_uniqueness_of :name
   has_many :data_resource_categories
   has_many :event_records, source: :data_resource, source_type: "EventRecord", through: :data_resource_categories
   has_many :points_of_interest, source: :data_resource, source_type: "PointOfInterest", through: :data_resource_categories

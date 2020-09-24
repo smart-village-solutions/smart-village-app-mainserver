@@ -4,6 +4,9 @@
 # from an old school news article to a whole story structured in chapters
 class NewsItem < ApplicationRecord
   attr_accessor :force_create
+  attr_accessor :category_name
+
+  before_validation :find_or_create_category
 
   belongs_to :data_provider
 
@@ -33,6 +36,19 @@ class NewsItem < ApplicationRecord
 
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "NewsItem").first.try(:settings)
+  end
+
+  def find_or_create_category
+    return if category_name.blank?
+
+    category_to_add = Category.where(name: category_name).first_or_create
+    categories << category_to_add unless categories.include?(category_to_add)
+  end
+
+  # Sicherstellung der Abwärtskompatibilität seit 09/2020
+  def category
+    ActiveSupport::Deprecation.warn(":category is replaced by has_many :categories")
+    categories.first
   end
 end
 

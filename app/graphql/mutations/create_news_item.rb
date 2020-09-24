@@ -12,6 +12,7 @@ module Mutations
     argument :publication_date, String, required: false
     argument :published_at, String, required: false
     argument :show_publish_date, Boolean, required: false
+    argument :category_name, String, required: false
     argument :source_url, Types::WebUrlInput, required: false,
                                               as: :source_url_attributes,
                                               prepare: ->(source_url, _ctx) { source_url.to_h }
