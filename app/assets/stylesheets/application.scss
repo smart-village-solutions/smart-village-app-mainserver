@@ -17,15 +17,17 @@
  @import "jsoneditor";
 
 
- div.category-tree{
-   height: 150px;
-   overflow-y: scroll;
+ .category-tree {
    border: 1px solid #ced4da;
    border-radius: 5px;
+   height: 150px;
+   overflow-y: scroll;
+
    li {
      list-style: none;
+
      input {
-       margin-right: 10px;;
+       margin-right: 10px;
      }
    }
  }

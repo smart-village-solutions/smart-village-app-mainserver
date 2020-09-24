@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DataResourceCategory < ApplicationRecord
 
   belongs_to :category
