@@ -231,7 +231,7 @@
       <div class="form-group col-6">
         <%= s.label :default_category_ids, "Default Kategorien" %>
         <div class="category-tree">
-          <%= render_categories(Category.all.arrange, s) %>
+          <%= render_selectable_categories(Category.all.arrange, s) %>
         </div>
         <small class="form-text text-muted">
           Ausgewählte Kategorien werden beim Import diesen Elementen zusätzlich automatisch zugewiesen.

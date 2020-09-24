@@ -3,7 +3,7 @@
 # This model organizes different categories as a category tree with the help of the ancestry
 # gem.
 class Category < ApplicationRecord
-  has_ancestry
+  has_ancestry orphan_strategy: :destroy
   validates_presence_of :name
   has_many :data_resource_categories
   has_many :event_records, source: :data_resource, source_type: "EventRecord", through: :data_resource_categories
