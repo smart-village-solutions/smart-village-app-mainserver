@@ -178,7 +178,7 @@
 
   <%= d.fields_for :data_resource_settings do |s| %>
     <% I18n.with_locale(:de) do %>
-      <h2>Optionen für <%= t(s.object.data_resource_type.pluralize) %></h2>
+      <h2>Optionen für <%= t(s.object.data_resource_type.pluralize) if s.object.data_resource_type %></h2>
     <% end %>
     <%= s.hidden_field :id %>
     <%= s.hidden_field :data_provider_id %>
@@ -224,6 +224,18 @@
             Die Medien-Url wird dabei ersetzt.
           </small>
         </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-6">
+        <%= s.label :default_category_ids, "Default Kategorien" %>
+        <div class="category-tree">
+          <%= render_categories(Category.all.arrange, s) %>
+        </div>
+        <small class="form-text text-muted">
+          Ausgewählte Kategorien werden beim Import diesen Elementen zusätzlich automatisch zugewiesen.
+        </small>
       </div>
     </div>
   <% end %>

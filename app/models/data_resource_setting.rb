@@ -9,6 +9,7 @@ class DataResourceSetting < ApplicationRecord
           always_recreate_on_import
           only_summary_link_text
           convert_media_urls_to_external_storage
+          default_category_ids
         ],
         coder: JSON
 
