@@ -1,13 +1,14 @@
 <%= form_with(model: category, local: true) do |form| %>
-
   <% if category.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(category.errors.count, "error") %> prohibited this category from being saved:</h2>
+      <h2>
+        <%= pluralize(category.errors.count, "error") %> prohibited this category from being saved:
+      </h2>
 
       <ul>
-      <% category.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% category.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
@@ -26,6 +27,7 @@
   </div>
 
   <div class="form-group">
-    <%= form.submit class: "btn btn-primary" %>
+    <%= form.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primary" %>
+    <%= link_to t("doorkeeper.applications.buttons.cancel"), categories_path, class: "btn btn-default" %>
   </div>
 <% end %>

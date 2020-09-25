@@ -1,14 +1,20 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col">
+    <h1>Category</h1>
 
-<p>
-  <strong>Name:</strong>
-  <%= @category.name %>
-</p>
+    <div class="form-group">
+      <label>Name</label>
+      <div><code><%= @category.name %></code></div>
+    </div>
 
-<p>
-  <strong>Ancestry IDs:</strong>
-  <%= @category.ancestry %>
-</p>
+    <div class="form-group">
+      <label>Ancestry IDs</label>
+      <div><code><%= @category.ancestry %></code></div>
+    </div>
 
-<%= link_to 'Edit', edit_category_path(@category) %> |
-<%= link_to 'Back', categories_path %>
+    <div class="form-group">
+      <%= link_to t("doorkeeper.applications.buttons.edit"), edit_category_path(@category), class: "btn btn-primary" %>
+      <%= link_to t("doorkeeper.applications.buttons.back"), categories_path, class: "btn btn-default" %>
+    </div>
+  </div>
+</div>
