@@ -10,49 +10,9 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree .
  *= require_self
  */
 
- @import "jsoneditor";
-
- .btn-xs {
-   font-size: 11px;
-   padding-top: 0px;
-   padding-bottom: 0px;
-   margin-top: 0px;
-   margin-bottom: 0px;
-   margin-right: 5px;
- }
-
- .category-index-tree{
-   li {
-     list-style-type: disc;
-
-     .action-links {
-       padding-left: 10px;
-       display: none;
-     }
-
-     &:hover {
-      > .action-links {
-        display: inline-block;
-      }
-    }
-   }
- }
-
- .category-tree {
-   border: 1px solid #ced4da;
-   border-radius: 5px;
-   height: 150px;
-   overflow-y: scroll;
-
-   li {
-     list-style: none;
-
-     input {
-       margin-right: 10px;
-     }
-   }
- }
+@import 'jsoneditor';
+@import 'buttons';
+@import 'categories';

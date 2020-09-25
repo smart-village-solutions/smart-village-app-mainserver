@@ -1,0 +1,46 @@
+.category-index-tree {
+  > ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  li {
+    list-style-type: none;
+
+    .action-links {
+      display: none;
+      padding-left: 10px;
+    }
+
+    &:hover {
+      > .action-links {
+        display: inline-block;
+      }
+    }
+  }
+
+  .btn,
+  .badge {
+    margin-bottom: 2px;
+    margin-right: 5px;
+  }
+
+  .badge {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.category-tree {
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  height: 150px;
+  overflow-y: scroll;
+
+  li {
+    list-style: none;
+
+    input {
+      margin-right: 10px;
+    }
+  }
+}
