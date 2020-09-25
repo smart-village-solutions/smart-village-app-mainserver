@@ -16,6 +16,31 @@
 
  @import "jsoneditor";
 
+ .btn-xs {
+   font-size: 11px;
+   padding-top: 0px;
+   padding-bottom: 0px;
+   margin-top: 0px;
+   margin-bottom: 0px;
+   margin-right: 5px;
+ }
+
+ .category-index-tree{
+   li {
+     list-style-type: disc;
+
+     .action-links {
+       padding-left: 10px;
+       display: none;
+     }
+
+     &:hover {
+      > .action-links {
+        display: inline-block;
+      }
+    }
+   }
+ }
 
  .category-tree {
    border: 1px solid #ced4da;

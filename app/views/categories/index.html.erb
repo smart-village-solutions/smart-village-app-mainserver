@@ -1,8 +1,10 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Categories</h1>
-<%= link_to 'New Category', new_category_path %>
+<p><%= link_to 'New Category', new_category_path, class: "btn btn-success" %></p>
 
-<%= render_categories(@categories.arrange) %>
+<div class="category-index-tree">
+  <%= render_categories(@categories.arrange) %>
+</div>
 
 <br>
