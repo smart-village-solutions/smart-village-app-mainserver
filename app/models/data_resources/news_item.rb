@@ -23,6 +23,10 @@ class NewsItem < ApplicationRecord
     where(data_provider_id: current_user.data_provider_id)
   end
 
+  scope :with_category, -> (category_id) do
+    where(categories: {id: category_id}).joins(:categories)
+  end
+
   accepts_nested_attributes_for :content_blocks, :data_provider, :address, :source_url
 
   def unique_id
