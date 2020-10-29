@@ -6,10 +6,10 @@
 class Attraction < ApplicationRecord
   attr_accessor :category_name
 
-  before_validation :set_category_id
+  before_validation :find_or_create_category
 
-  belongs_to :category
   belongs_to :data_provider
+
   has_and_belongs_to_many :certificates, optional: true
   has_and_belongs_to_many :regions, optional: true
   has_many :addresses, as: :addressable, dependent: :destroy
@@ -35,12 +35,17 @@ class Attraction < ApplicationRecord
   # the setting of category is only possible with category_name
   # PointOfInterest.create(category: Category.first) doesn't work anymore.
   #
-  def set_category_id
-    self.category_id = find_or_create_category.id
+  def find_or_create_category
+    return if category_name.blank?
+
+    category_to_add = Category.where(name: category_name).first_or_create
+    categories << category_to_add unless categories.include?(category_to_add)
   end
 
-  def find_or_create_category
-    Category.where(name: category_name).first_or_create
+  # Sicherstellung der Abwärtskompatibilität seit 09/2020
+  def category
+    ActiveSupport::Deprecation.warn(":category is replaced by has_many :categories")
+    categories.first
   end
 end
 
@@ -55,7 +60,6 @@ end
 #  active                  :boolean          default(TRUE)
 #  length_km               :integer
 #  means_of_transportation :integer
-#  category_id             :bigint
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  type                    :string(255)      default("PointOfInterest"), not null

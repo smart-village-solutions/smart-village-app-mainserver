@@ -9,6 +9,7 @@ module Types
     field :author, String, null: true
     field :full_version, Boolean, null: true
     field :characters_to_be_shown, String, null: true
+    field :categories, [CategoryType], null: true
     field :publication_date, String, null: true
     field :published_at, String, null: true
     field :show_publish_date, Boolean, null: true

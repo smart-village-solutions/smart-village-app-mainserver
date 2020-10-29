@@ -7,6 +7,8 @@
 class PointOfInterest < Attraction
   attr_accessor :force_create
 
+  has_many :data_resource_categories, -> { where(data_resource_type: "PointOfInterest") }, foreign_key: :data_resource_id
+  has_many :categories, through: :data_resource_categories
   has_many :opening_hours, as: :openingable, dependent: :destroy
   has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
   has_one :location, as: :locateable, dependent: :destroy
@@ -45,7 +47,6 @@ end
 #  active                  :boolean          default(TRUE)
 #  length_km               :integer
 #  means_of_transportation :integer
-#  category_id             :bigint
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  type                    :string(255)      default("PointOfInterest"), not null

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_24_081308) do
+ActiveRecord::Schema.define(version: 2020_09_21_131941) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -71,12 +71,10 @@ ActiveRecord::Schema.define(version: 2020_07_24_081308) do
     t.boolean "active", default: true
     t.integer "length_km"
     t.integer "means_of_transportation"
-    t.bigint "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "type", default: "PointOfInterest", null: false
     t.integer "data_provider_id"
-    t.index ["category_id"], name: "index_attractions_on_category_id"
   end
 
   create_table "attractions_certificates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -143,6 +141,14 @@ ActiveRecord::Schema.define(version: 2020_07_24_081308) do
     t.text "roles"
   end
 
+  create_table "data_resource_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "data_resource_id"
+    t.string "data_resource_type"
+    t.integer "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "data_resource_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "data_provider_id"
     t.string "data_resource_type"
@@ -157,12 +163,10 @@ ActiveRecord::Schema.define(version: 2020_07_24_081308) do
     t.text "description"
     t.boolean "repeat"
     t.string "title"
-    t.bigint "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "data_provider_id"
     t.string "external_id"
-    t.index ["category_id"], name: "index_event_records_on_category_id"
     t.index ["region_id"], name: "index_event_records_on_region_id"
   end
 

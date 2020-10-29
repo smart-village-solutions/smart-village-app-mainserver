@@ -8,6 +8,8 @@ class Tour < Attraction
   attr_accessor :force_create
   enum means_of_transportation: { bike: 0, canoe: 1, foot: 2 }
 
+  has_many :data_resource_categories, -> { where(data_resource_type: "Tour") }, foreign_key: :data_resource_id
+  has_many :categories, through: :data_resource_categories
   has_many :geometry_tour_data, as: :geo_locateable, class_name: "GeoLocation", dependent: :destroy
   has_one :location, as: :locateable, dependent: :destroy
 
@@ -45,7 +47,6 @@ end
 #  active                  :boolean          default(TRUE)
 #  length_km               :integer
 #  means_of_transportation :integer
-#  category_id             :bigint
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  type                    :string(255)      default("PointOfInterest"), not null

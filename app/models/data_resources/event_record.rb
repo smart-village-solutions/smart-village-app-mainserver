@@ -9,10 +9,11 @@ class EventRecord < ApplicationRecord
   before_validation :find_or_create_category
   before_validation :find_or_create_region
 
-  belongs_to :category, optional: true
   belongs_to :region, optional: true
   belongs_to :data_provider
 
+  has_many :data_resource_categories, as: :data_resource
+  has_many :categories, through: :data_resource_categories
   has_many :urls, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
   has_one :organizer, as: :companyable, class_name: "OperatingCompany", dependent: :destroy
   has_many :addresses, as: :addressable, dependent: :destroy
@@ -55,7 +56,10 @@ class EventRecord < ApplicationRecord
   validates_presence_of :title
 
   def find_or_create_category
-    self.category_id = Category.where(name: category_name).first_or_create.id
+    return if category_name.blank?
+
+    category_to_add = Category.where(name: category_name).first_or_create
+    categories << category_to_add unless categories.include?(category_to_add)
   end
 
   def find_or_create_region
@@ -101,6 +105,12 @@ class EventRecord < ApplicationRecord
     data_provider.data_resource_settings.where(data_resource_type: "EventRecord").first.try(:settings)
   end
 
+  # Sicherstellung der Abwärtskompatibilität seit 09/2020
+  def category
+    ActiveSupport::Deprecation.warn(":category is replaced by has_many :categories")
+    categories.first
+  end
+
   private
 
     # need to check start and end date and return "today" if there is only one date.
@@ -133,7 +143,6 @@ end
 #  description      :text(65535)
 #  repeat           :boolean
 #  title            :string(255)
-#  category_id      :bigint
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  data_provider_id :integer

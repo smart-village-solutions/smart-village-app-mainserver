@@ -94,14 +94,15 @@ class AccountsController < ApplicationController
           fax
           email
         ],
-        data_resource_settings_attributes: %i[
-          id
-          data_resource_type
-          display_only_summary
-          always_recreate_on_import
-          data_provider_id
-          only_summary_link_text
-          convert_media_urls_to_external_storage
+        data_resource_settings_attributes: [
+          :id,
+          :data_resource_type,
+          :display_only_summary,
+          :always_recreate_on_import,
+          :data_provider_id,
+          :only_summary_link_text,
+          :convert_media_urls_to_external_storage,
+          default_category_ids: []
         ]
       ]
     )

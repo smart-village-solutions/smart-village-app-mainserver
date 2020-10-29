@@ -14,6 +14,7 @@ class ResourceService
     @resource_class = resource_class
     @resource = resource_class.new(params)
     @resource.data_provider = data_provider
+
     # skip create if record already exists and new record has the same attribute values as the new
     # record and the record was not provided by maz
     external_resource = find_external_resource
@@ -34,6 +35,7 @@ class ResourceService
       # TODO: Remove line and make dependant: :destroy work
       external_resource.destroy if external_resource.present?
       create_external_resource if @resource.save
+      set_default_categories if @resource.respond_to?(:categories)
     end
   end
 
@@ -78,6 +80,20 @@ class ResourceService
       record
     else
       GraphQL::ExecutionError.new("Invalid input: #{record.errors.full_messages.join(", ")}")
+    end
+  end
+
+  def set_default_categories
+    setting = data_provider.data_resource_settings.where(data_resource_type: @resource_class.name).first
+    return if setting.blank?
+    return if setting.default_category_ids.blank?
+
+    categories_to_add = setting.default_category_ids.compact.uniq.delete_if(&:blank?)
+    return if categories_to_add.blank?
+
+    categories_to_add.each do |cat_id|
+      category = Category.find_by(id: cat_id)
+      @resource.categories << category unless @resource.category_ids.include?(cat_id.to_i)
     end
   end
 end
