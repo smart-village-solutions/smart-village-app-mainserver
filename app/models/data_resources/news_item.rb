@@ -17,15 +17,15 @@ class NewsItem < ApplicationRecord
   has_one :address, as: :addressable, dependent: :destroy
   has_one :source_url, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
 
-  scope :filtered_for_current_user, ->(current_user) do
+  scope :filtered_for_current_user, lambda { |current_user|
     return all if current_user.admin_role?
 
     where(data_provider_id: current_user.data_provider_id)
-  end
+  }
 
-  scope :with_category, -> (category_id) do
-    where(categories: {id: category_id}).joins(:categories)
-  end
+  scope :with_category, lambda { |category_id|
+    where(categories: { id: category_id }).joins(:categories)
+  }
 
   accepts_nested_attributes_for :content_blocks, :data_provider, :address, :source_url
 

@@ -17,7 +17,7 @@ module ApplicationHelper
       tree_element = []
       element_buttons = []
 
-      tree_element << content_tag("span", "ID:#{category.id}", class: "badge badge-info" )
+      tree_element << content_tag("span", "ID:#{category.id}", class: "badge badge-info")
       tree_element << category.name
       element_buttons << link_to("New Child", new_category_path(parent_id: category.id), class: "btn btn-xs btn-outline-success")
       element_buttons << link_to("Edit", edit_category_path(category), class: "btn btn-xs btn-outline-secondary")
