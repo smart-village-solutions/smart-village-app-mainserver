@@ -46,6 +46,10 @@ class EventRecord < ApplicationRecord
     where(id: upcoming_event_record_ids)
   }
 
+  scope :with_category, lambda { |category_id|
+    where(categories: { id: category_id }).joins(:categories)
+  }
+
   accepts_nested_attributes_for :urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :data_provider, :organizer,
                                 :addresses, :location, :contacts,

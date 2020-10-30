@@ -2,6 +2,7 @@
 
 require "search_object/plugin/graphql"
 require "graphql/query_resolver"
+
 class Resolvers::EventRecordsSearch
   include SearchObject.module(:graphql)
 
@@ -26,6 +27,7 @@ class Resolvers::EventRecordsSearch
   option :limit, type: types.Int, with: :apply_limit
   option :take, type: types.Int, with: :apply_take
   option :order, type: EventRecordsOrder, default: "createdAt_DESC"
+  option :categoryId, type: types.String, with: :apply_category_id
 
   def apply_limit(scope, value)
     scope.limit(value)
@@ -41,6 +43,10 @@ class Resolvers::EventRecordsSearch
 
   def apply_take(scope, value)
     scope.take(value)
+  end
+
+  def apply_category_id(scope, value)
+    scope.with_category(value)
   end
 
   def apply_order_with_created_at_desc(scope)
