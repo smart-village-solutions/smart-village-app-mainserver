@@ -134,6 +134,16 @@
                     "ofType": null
                   },
                   "defaultValue": "createdAt_DESC"
+                },
+                {
+                  "name": "categoryId",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
                 }
               ],
               "type": {

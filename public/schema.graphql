@@ -383,7 +383,7 @@ type PublicJsonFile {
 type Query {
   categories: [Category!]!
   eventRecord(id: ID!): EventRecord!
-  eventRecords(limit: Int, order: EventRecordsOrder = createdAt_DESC, skip: Int, take: Int): [EventRecord]
+  eventRecords(categoryId: String, limit: Int, order: EventRecordsOrder = createdAt_DESC, skip: Int, take: Int): [EventRecord]
   newsItem(id: ID!): NewsItem!
   newsItems(dataProvider: String, limit: Int, order: NewsItemsOrder = publishedAt_DESC, skip: Int): [NewsItem]
   newsItemsDataProviders(categoryId: ID): [DataProvider!]!
