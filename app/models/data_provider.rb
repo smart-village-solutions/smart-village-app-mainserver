@@ -19,6 +19,12 @@ class DataProvider < ApplicationRecord
       roles[key] = value == "true" || value == true
     end
   end
+
+  def settings(data_resource)
+    return if data_resource_settings.blank?
+
+    data_resource_settings.where(data_resource_type: data_resource).first
+  end
 end
 
 # == Schema Information

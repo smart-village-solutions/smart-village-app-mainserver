@@ -9,11 +9,12 @@
         <tr>
           <th>ID</th>
           <th>E-Mail</th>
+          <th>Dataprovider</th>
           <th>Rolle</th>
-          <th>CMS POI</th>
-          <th>CMS Tour</th>
-          <th>CMS News Items</th>
-          <th>CMS Event Records</th>
+          <th>CMS POI <span class="badge badge-secondary">Kategorie gesetzt?</span></th>
+          <th>CMS Tour <span class="badge badge-secondary">Kategorie gesetzt?</span></th>
+          <th>CMS News Items <span class="badge badge-secondary">Kategorie gesetzt?</span></th>
+          <th>CMS Event Records <span class="badge badge-secondary">Kategorie gesetzt?</span></th>
           <th></th>
           <th></th>
         </tr>
@@ -23,26 +24,39 @@
           <tr id="user_<%= user.id %>">
             <td class="align-middle"><%= user.id %></td>
             <td class="align-middle"><%= link_to user.email, edit_account_path(user) %></td>
+            <td class="align-middle"><%= user.data_provider.try(:name) %></td>
             <td class="align-middle"><%= user.role %></td>
             <td class="align-middle">
               <span class="badge <%= user.try(:data_provider).try(:role_point_of_interest) ? 'badge-success' : 'badge-danger' %>">
-                <%= user.try(:data_provider).try(:role_point_of_interest) %>
+                <%= user.try(:data_provider).try(:role_point_of_interest) ? 'aktiv' : '' %>
               </span>
+                <% if user.try(:data_provider).try(:settings, "PointOfInterest").try(:default_category_ids).present? %>
+                  <span class="badge badge-secondary">ja</span>
+                <% end %>
             </td>
             <td class="align-middle">
               <span class="badge <%= user.try(:data_provider).try(:role_tour) ? 'badge-success' : 'badge-danger' %>">
-                <%= user.try(:data_provider).try(:role_tour) %>
+                <%= user.try(:data_provider).try(:role_tour) ? 'aktiv' : '' %>
               </span>
+              <% if user.try(:data_provider).try(:settings, "Tour").try(:default_category_ids).present? %>
+                <span class="badge badge-secondary">ja</span>
+              <% end %>
             </td>
             <td class="align-middle">
               <span class="badge <%= user.try(:data_provider).try(:role_news_item) ? 'badge-success' : 'badge-danger' %>">
-                <%= user.try(:data_provider).try(:role_news_item) %>
+                <%= user.try(:data_provider).try(:role_news_item) ? 'aktiv' : '' %>
               </span>
+              <% if user.try(:data_provider).try(:settings, "NewsItem").try(:default_category_ids).present? %>
+                <span class="badge badge-secondary">ja</span>
+              <% end %>
             </td>
             <td class="align-middle">
               <span class="badge <%= user.try(:data_provider).try(:role_event_record) ? 'badge-success' : 'badge-danger' %>">
-                <%= user.try(:data_provider).try(:role_event_record) %>
+                <%= user.try(:data_provider).try(:role_event_record) ? 'aktiv' : '' %>
               </span>
+              <% if user.try(:data_provider).try(:settings, "EventRecord").try(:default_category_ids).present? %>
+                <span class="badge badge-secondary">ja</span>
+              <% end %>
             </td>
             <td class="align-middle" style="width: 70px">
               <%= link_to t('doorkeeper.applications.buttons.edit'), edit_account_path(user), class: 'btn btn-sm btn-outline-secondary' %>
