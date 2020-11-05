@@ -7,7 +7,11 @@ Rails.application.routes.draw do
   get "data_provider", to: "data_provider#show", as: :data_provider
   get "data_provider/edit", as: :edit_data_provider
   post "data_provider/update", as: :update_data_provider
-  resources :accounts
+  resources :accounts do
+    member do
+      get "batch_defaults"
+    end
+  end
 
   use_doorkeeper do
     controllers applications: "oauth/applications"

@@ -60,6 +60,17 @@ class AccountsController < ApplicationController
     end
   end
 
+  # get /accounts/3/batch_defaults?data_resource_type=NewsItem
+  def batch_defaults
+    @user = User.find(params["id"])
+    data_resource_type = params[:data_resource_type]
+    system "rake batch_defaults:create DATAPROVIDER_ID=#{@user.data_provider_id} DATA_RESOURCE_TYPE=#{data_resource_type}"
+    flash[:notice] = "Batch Action wurde gestartet für den Typ #{data_resource_type}"
+    respond_to do |format|
+      format.html { redirect_to action: :edit }
+    end
+  end
+
   def account_params
     values = params.require(:user).permit(
       :email,
