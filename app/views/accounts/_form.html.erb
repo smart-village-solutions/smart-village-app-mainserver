@@ -236,10 +236,14 @@
         <small class="form-text text-muted">
           Ausgewählte Kategorien werden beim Import diesen Elementen zusätzlich automatisch zugewiesen.
         </small>
-
         <small class="form-text text-muted">
-          Bei allen Einträgen dieses Dataproviders vom Typ <%= s.object.data_resource_type %> können die hier definierten Kategorien nachträglich gesetzt werden:
-          <%= link_to t('doorkeeper.applications.buttons.batch_action'), batch_defaults_account_path(@user, data_resource_type: s.object.data_resource_type), "data-confirm": "Wollen sie bei allen Einträgen dieses Dataproviders vom Typ #{s.object.data_resource_type} diese ausgewählten Kategorien hinzufügen? ACHTUNG: Veränderungen müssen zuvor gespeichert werden!" %>
+          Bei allen Einträgen dieses Data Providers vom Typ <%= s.object.data_resource_type %>
+          können die hier definierten Kategorien nachträglich gesetzt werden:
+          <%= link_to(
+                t("doorkeeper.applications.buttons.batch_action"),
+                batch_defaults_account_path(@user, data_resource_type: s.object.data_resource_type),
+                "data-confirm": "Sollen bei allen Einträgen dieses Data Providers vom Typ #{s.object.data_resource_type} die ausgewählten Kategorien hinzugefügt werden? ACHTUNG: Veränderungen müssen zuvor gespeichert werden!"
+              ) %>
         </small>
       </div>
     </div>
