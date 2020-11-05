@@ -7,6 +7,8 @@
 class PointOfInterest < Attraction
   attr_accessor :force_create
 
+  belongs_to :data_provider
+
   has_many :data_resource_categories, -> { where(data_resource_type: "PointOfInterest") }, foreign_key: :data_resource_id
   has_many :categories, through: :data_resource_categories
   has_many :opening_hours, as: :openingable, dependent: :destroy

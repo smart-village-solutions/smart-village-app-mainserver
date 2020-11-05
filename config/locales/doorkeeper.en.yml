@@ -28,6 +28,7 @@ en:
         cancel: 'Cancel'
         back: 'Back'
         authorize: 'Authorize'
+        batch_action: "Batch Action starten"
       form:
         error: 'Whoops! Check your form for possible errors'
       help:
