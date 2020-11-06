@@ -25,7 +25,7 @@ class Resolvers::NewsItemsSearch
   option :skip, type: types.Int, with: :apply_skip
   option :order, type: NewsItemsOrder, default: "publishedAt_DESC"
   option :dataProvider, type: types.String, with: :apply_data_provider
-  option :categoryId, type: types.String, with: :apply_category_id
+  option :categoryId, type: types.ID, with: :apply_category_id
 
   def apply_limit(scope, value)
     scope.limit(value)

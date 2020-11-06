@@ -27,7 +27,7 @@ class Resolvers::EventRecordsSearch
   option :limit, type: types.Int, with: :apply_limit
   option :take, type: types.Int, with: :apply_take
   option :order, type: EventRecordsOrder, default: "createdAt_DESC"
-  option :categoryId, type: types.String, with: :apply_category_id
+  option :categoryId, type: types.ID, with: :apply_category_id
 
   def apply_limit(scope, value)
     scope.limit(value)
