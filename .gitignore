@@ -43,3 +43,6 @@ active_record_cheat_sheet.md
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# DeepCode
+.dccache
