@@ -8,7 +8,9 @@ module Types
     field :tours_count, Integer, null: true
     field :news_items_count, Integer, null: true
     field :event_records_count, Integer, null: true
+    field :upcoming_event_records_count, Integer, null: true
     field :event_records, [EventRecordType], null: true
+    field :upcoming_event_records, [EventRecordType], null: true
     field :points_of_interest, [PointOfInterestType], null: true
     field :tours, [TourType], null: true
     field :news_items, [NewsItemType], null: true
