@@ -53,6 +53,8 @@ type Category {
   pointsOfInterestCount: Int
   tours: [Tour!]
   toursCount: Int
+  upcomingEventRecords: [EventRecord!]
+  upcomingEventRecordsCount: Int
 }
 
 type Certificate {

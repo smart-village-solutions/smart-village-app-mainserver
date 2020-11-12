@@ -38,6 +38,17 @@ class Category < ApplicationRecord
     event_records.count
   end
 
+  def upcoming_event_records
+    event_records.upcoming(nil)
+  end
+
+  def upcoming_event_records_count
+    return 0 if event_records.blank?
+    return 0 if upcoming_event_records.blank?
+
+    upcoming_event_records.count
+  end
+
   # Wenn eine Kategorie gelöscht wird kann es jedoch sein,
   # dass diese ID noch in den ResourceSettings eines DataProviders verwendet wird.
   # Nach dem Löschen der Kategorie müssen also auch die Verweise in DataResourceSetting
