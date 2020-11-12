@@ -23,16 +23,16 @@ class Resolvers::EventRecordsSearch
     value "listDate_ASC"
   end
 
+  option :categoryId, type: types.ID, with: :apply_category_id
   option :skip, type: types.Int, with: :apply_skip
   option :limit, type: types.Int, with: :apply_limit
   option :take, type: types.Int, with: :apply_take
   option :order, type: EventRecordsOrder, default: "createdAt_DESC"
-  option :categoryId, type: types.ID, with: :apply_category_id
 
-  def apply_limit(scope, value)
-    scope.limit(value)
+  def apply_category_id(scope, value)
+    scope.with_category(value)
   rescue NoMethodError
-    scope.first(value)
+    scope.select { |event_record| event_record.category_ids.include?(value.to_i) }
   end
 
   def apply_skip(scope, value)
@@ -41,14 +41,14 @@ class Resolvers::EventRecordsSearch
     scope.drop(value)
   end
 
-  def apply_take(scope, value)
-    scope.take(value)
+  def apply_limit(scope, value)
+    scope.limit(value)
+  rescue NoMethodError
+    scope.first(value)
   end
 
-  def apply_category_id(scope, value)
-    scope.with_category(value)
-  rescue NoMethodError
-    scope.select { |event_record| event_record.category_ids.include?(value.to_i) }
+  def apply_take(scope, value)
+    scope.take(value)
   end
 
   def apply_order_with_created_at_desc(scope)
