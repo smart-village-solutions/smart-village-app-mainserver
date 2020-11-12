@@ -47,6 +47,8 @@ class Resolvers::EventRecordsSearch
 
   def apply_category_id(scope, value)
     scope.with_category(value)
+  rescue NoMethodError
+    scope.select { |event_record| event_record.category_ids.include?(value.to_i) }
   end
 
   def apply_order_with_created_at_desc(scope)
