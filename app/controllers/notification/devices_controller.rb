@@ -1,0 +1,109 @@
+# frozen_string_literal: true
+
+class Notification::DevicesController < ApplicationController
+  layout "doorkeeper/admin"
+
+  skip_before_action :verify_authenticity_token, only: [:create, :destroy]
+
+  before_action :auth_user_or_doorkeeper, only: [:create, :destroy]
+  before_action :authenticate_user!, except: [:create, :destroy]
+  before_action :authenticate_admin, except: [:create, :destroy]
+  before_action :set_notification_device, only: [:show, :edit, :update, :destroy]
+
+  def authenticate_admin
+    render inline: "not allowed", status: 404 unless current_user.admin_role?
+  end
+
+  def auth_user_or_doorkeeper
+    raise "unauthorized" if current_user.present? && !current_user.admin_role?
+
+    doorkeeper_authorize! if current_user.blank?
+  end
+
+  def send_notification
+    options = params[:notification]
+    PushNotification.new(options).send_notifications
+
+    respond_to do |format|
+      format.html { redirect_to notification_devices_url, notice: "Messages sent." }
+    end
+  end
+
+  # GET /notification/devices
+  # GET /notification/devices.json
+  def index
+    @notification_devices = Notification::Device.all
+  end
+
+  # GET /notification/devices/1
+  # GET /notification/devices/1.json
+  def show
+  end
+
+  # GET /notification/devices/new
+  def new
+    @notification_device = Notification::Device.new
+  end
+
+  # GET /notification/devices/1/edit
+  def edit
+  end
+
+  # POST /notification/devices
+  # POST /notification/devices.json
+  def create
+    @notification_device = Notification::Device.new(notification_device_params)
+
+    respond_to do |format|
+      if @notification_device.save
+        format.html { redirect_to @notification_device, notice: "Device was successfully created." }
+        format.json { render :show, status: :created, location: @notification_device }
+      else
+        format.html { render :new }
+        format.json { render json: @notification_device.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /notification/devices/1
+  # PATCH/PUT /notification/devices/1.json
+  def update
+    respond_to do |format|
+      if @notification_device.update(notification_device_params)
+        format.html { redirect_to @notification_device, notice: "Device was successfully updated." }
+        format.json { render :show, status: :ok, location: @notification_device }
+      else
+        format.html { render :edit }
+        format.json { render json: @notification_device.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /notification/devices/1
+  # DELETE /notification/devices/1.json
+  def destroy
+    respond_to do |format|
+      if @notification_device.present?
+        @notification_device.destroy
+        format.html { redirect_to notification_devices_url, notice: "Device was successfully destroyed." }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to notification_devices_url, notice: "Device was successfully destroyed." }
+        format.json { render json: nil, status: 404 }
+      end
+    end
+  end
+
+  private
+
+    # Use callbacks to share common setup or constraints between actions.
+    def set_notification_device
+      @notification_device = Notification::Device.find(params[:id]) if params[:id].present?
+      @notification_device = Notification::Device.find_by(token: params[:token]) if params[:token].present?
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def notification_device_params
+      params.require(:notification_device).permit(:token, :device_type)
+    end
+end

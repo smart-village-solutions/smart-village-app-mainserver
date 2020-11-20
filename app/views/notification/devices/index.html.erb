@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col">
+    <h1>Send Notification</h1>
+
+    <%= render partial: "notification/devices/send_notification" %>
+
+    <br>
+
+    <h1>Notification Devices</h1>
+
+    <p><%= link_to 'New Notification Device', new_notification_device_path, class: 'btn btn-success' %></p>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Device type</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @notification_devices.each do |notification_device| %>
+          <tr>
+            <td><%= notification_device.token %></td>
+            <td><%= notification_device.device_type %></td>
+            <td><%= link_to 'Show', notification_device %></td>
+            <td><%= link_to 'Edit', edit_notification_device_path(notification_device) %></td>
+            <td><%= link_to 'Destroy', notification_device, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

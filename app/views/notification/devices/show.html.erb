@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Token:</strong>
+  <%= @notification_device.token %>
+</p>
+
+<p>
+  <strong>Device type:</strong>
+  <%= @notification_device.device_type %>
+</p>
+
+<%= link_to 'Edit', edit_notification_device_path(@notification_device) %> |
+<%= link_to 'Back', notification_devices_path %>
