@@ -5,8 +5,10 @@
 class NewsItem < ApplicationRecord
   attr_accessor :force_create
   attr_accessor :category_name
+  attr_accessor :push_notification
 
   before_validation :find_or_create_category
+  after_create :send_push_notification
 
   belongs_to :data_provider
 
@@ -53,6 +55,24 @@ class NewsItem < ApplicationRecord
   def category
     ActiveSupport::Deprecation.warn(":category is replaced by has_many :categories")
     categories.first
+  end
+
+  def send_push_notification
+    return unless push_notification.to_s == "true"
+
+    push_title = title.presence || content_blocks.try(:first).try(:title).presence || "Neue Nachricht"
+    push_body = content_blocks.try(:first).try(:intro).presence || push_title
+    push_body = ActionView::Base.full_sanitizer.sanitize(push_body)
+
+    options = {
+      title: push_title,
+      body: push_body,
+      data: {
+        id: id,
+        query_type: self.class.to_s
+      }
+    }
+    PushNotification.new(options).send_notifications
   end
 end
 
