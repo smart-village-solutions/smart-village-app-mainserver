@@ -1,14 +1,20 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col">
+    <h1>Device</h1>
 
-<p>
-  <strong>Token:</strong>
-  <%= @notification_device.token %>
-</p>
+    <div class="form-group">
+      <label>Token</label>
+      <div><code><%= @notification_device.token %></code></div>
+    </div>
 
-<p>
-  <strong>Device type:</strong>
-  <%= @notification_device.device_type %>
-</p>
+    <div class="form-group">
+      <label>Device type</label>
+      <div><code><%= @notification_device.device_type %></code></div>
+    </div>
 
-<%= link_to 'Edit', edit_notification_device_path(@notification_device) %> |
-<%= link_to 'Back', notification_devices_path %>
+    <div class="form-group">
+      <%= link_to t("doorkeeper.applications.buttons.edit"), edit_notification_device_path(@notification_device), class: "btn btn-primary" %>
+      <%= link_to t("doorkeeper.applications.buttons.back"), notification_devices_path, class: "btn btn-default" %>
+    </div>
+  </div>
+</div>

@@ -10,16 +10,24 @@
   </div>
 
   <div class="form-group">
-    <%= label_tag "notification_data_query_type", "DataType" %>
-    <%= select_tag "notification[data][query_type]", options_for_select(DataResourceSetting::DATA_RESOURCES.map(&:to_s)), class: "form-control", include_blank: true %>
+    <%= label_tag "notification_data_query_type", "Data type" %>
+    <%= select_tag "notification[data][query_type]",
+                   options_for_select(DataResourceSetting::DATA_RESOURCES.map(&:to_s).sort),
+                   class: "form-control",
+                   include_blank: true %>
   </div>
 
   <div class="form-group">
     <%= label_tag "notification_data_query_id", "Data ID" %>
     <%= text_field_tag "notification[data][id]", nil, class: "form-control" %>
+    <small class="form-text text-muted">
+      Hier kann die ID eines bestimmten Datensatzes mitgegeben werden
+    </small>
   </div>
 
+  <% device_count = Notification::Device.all.count %>
+
   <div class="form-group">
-    <%= submit_tag "An #{Notification::Device.all.count} Geräte senden",  class: "btn btn-primary" %>
+    <%= submit_tag "An #{pluralize(device_count, "Device")} senden", class: "btn btn-primary" %>
   </div>
 <% end %>
