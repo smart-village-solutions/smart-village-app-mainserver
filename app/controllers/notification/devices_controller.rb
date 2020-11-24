@@ -11,7 +11,7 @@ class Notification::DevicesController < ApplicationController
   before_action :set_notification_device, only: [:show, :edit, :update, :destroy]
 
   def authenticate_admin
-    render inline: "not allowed", status: 404 unless current_user.admin_role?
+    render inline: "not allowed", status: 405 unless current_user.admin_role?
   end
 
   def auth_user_or_doorkeeper
@@ -22,10 +22,10 @@ class Notification::DevicesController < ApplicationController
 
   def send_notification
     options = params[:notification]
-    PushNotification.new(options).send_notifications
+    PushNotification.new(options).send_notifications if options[:title].present?
 
     respond_to do |format|
-      format.html { redirect_to notification_devices_url, notice: "Messages sent." }
+      format.html { redirect_to notification_devices_url, notice: "Push notifications sent." }
     end
   end
 
