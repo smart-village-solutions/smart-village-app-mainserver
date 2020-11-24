@@ -84,7 +84,7 @@ class Notification::DevicesController < ApplicationController
   def destroy
     respond_to do |format|
       if @notification_device.present?
-        @notification_device.destroy
+        Notification::Device.where(token: @notification_device.token).destroy_all
         format.html { redirect_to notification_devices_url, notice: "Device was successfully destroyed." }
         format.json { head :no_content }
       else
