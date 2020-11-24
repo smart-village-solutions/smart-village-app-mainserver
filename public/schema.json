@@ -96,6 +96,16 @@
               "description": null,
               "args": [
                 {
+                  "name": "categoryId",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "skip",
                   "description": null,
                   "type": {
@@ -134,16 +144,6 @@
                     "ofType": null
                   },
                   "defaultValue": "createdAt_DESC"
-                },
-                {
-                  "name": "categoryId",
-                  "description": null,
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
-                  },
-                  "defaultValue": null
                 }
               ],
               "type": {
@@ -4540,6 +4540,16 @@
               "args": [
                 {
                   "name": "forceCreate",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "pushNotification",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",

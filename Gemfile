@@ -31,6 +31,9 @@ gem "jbuilder", "~> 2.5"
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# Push Notifications by expo.io
+gem "exponent-server-sdk"
+
 gem "acts-as-taggable-on"
 gem "ancestry", "~> 2.1"
 gem "devise"

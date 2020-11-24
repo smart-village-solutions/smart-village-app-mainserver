@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  namespace :notification do
+    resources :devices do
+      collection do
+        delete "remove" => "devices#destroy"
+        post "send_notification" => "devices#send_notification"
+      end
+    end
+  end
   resources :categories
   resources :app_user_contents
   resources :static_contents

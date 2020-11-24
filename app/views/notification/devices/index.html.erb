@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col">
+    <h1>Push Notification senden</h1>
+
+    <%= render partial: "notification/devices/send_notification" %>
+
+    <br />
+
+    <h1>Devices</h1>
+
+    <p><%= link_to 'New Device', new_notification_device_path, class: "btn btn-success" %></p>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Operating system</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @notification_devices.each do |notification_device| %>
+          <tr>
+            <td class="align-middle"><%= notification_device.token %></td>
+            <td class="align-middle"><%= notification_device.device_type %></td>
+            <td class="align-middle" style="width: 70px"><%= link_to 'Edit', edit_notification_device_path(notification_device), class: 'btn btn-sm btn-outline-secondary' %></td>
+            <td class="align-middle" style="width: 70px"><%= link_to 'Destroy', notification_device, method: :delete,class: 'btn btn-sm btn-outline-danger', data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
