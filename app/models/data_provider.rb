@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DataProvider < ApplicationRecord
-  store :roles, accessors: %i[role_point_of_interest role_tour role_news_item role_event_record], coder: JSON
+  store :roles, accessors: %i[role_point_of_interest role_tour role_news_item role_event_record role_push_notification], coder: JSON
 
   has_many :data_resource_settings, class_name: "DataResourceSetting"
   has_many :news_items
