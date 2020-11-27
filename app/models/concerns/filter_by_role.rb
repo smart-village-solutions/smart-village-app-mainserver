@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 module FilterByRole
   extend ActiveSupport::Concern
 
@@ -7,7 +9,11 @@ module FilterByRole
     scope :filtered_for_current_user, lambda { |current_user|
       return all if current_user.admin_role?
       return visible if current_user.app_role?
-      return invisible.or(self.where(data_provider_id: current_user.data_provider_id)) if current_user.editor_role?
+
+      if current_user.editor_role?
+        data_provider_ids = [current_user.data_provider_id] + User.restricted_role.map(&:data_provider_id)
+        return where(data_provider_id: data_provider_ids.compact.flatten)
+      end
 
       where(data_provider_id: current_user.data_provider_id)
     }

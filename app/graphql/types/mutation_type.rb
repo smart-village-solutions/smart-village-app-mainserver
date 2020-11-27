@@ -11,5 +11,6 @@ module Types
 
     # destroys
     field :destroy_record, mutation: Mutations::DestroyRecord
+    field :change_visibility, mutation: Mutations::ChangeVisibility
   end
 end
