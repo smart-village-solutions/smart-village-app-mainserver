@@ -40,7 +40,7 @@ class EventRecord < ApplicationRecord
                     end
 
     upcoming_event_record_ids = event_records.select do |event_record|
-      event_record.list_date >= Date.today
+      event_record.list_date.try(:to_time).to_i >= Date.today.to_time.to_i
     end.map(&:id)
 
     where(id: upcoming_event_record_ids)
@@ -94,7 +94,7 @@ class EventRecord < ApplicationRecord
     return if dates_count.zero?
 
     future_dates = event_dates.select do |date|
-      date.date_start >= Time.zone.now.beginning_of_day
+      date.date_start.try(:to_time).to_i >= Time.zone.now.beginning_of_day.to_i
     end
     future_date = future_dates.first.try(:date_start)
 

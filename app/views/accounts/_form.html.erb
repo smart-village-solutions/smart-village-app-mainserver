@@ -171,8 +171,15 @@
 
   <div class="form-group">
     <div class="form-check">
-      <%= d.check_box :role_event_record, {  class: "form-check-input" }, "true", "false" %>
+      <%= d.check_box :role_event_record, { class: "form-check-input" }, "true", "false" %>
       <%= d.label :role_event_record,"Veranstaltungen", class: "form-check-label" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-check">
+      <%= d.check_box :role_push_notification, { class: "form-check-input" }, "true", "false" %>
+      <%= d.label :role_push_notification, "Send Push Notification", class: "form-check-label" %>
     </div>
   </div>
 
