@@ -5,6 +5,8 @@
 # smart village and the surrounding area
 #
 class PointOfInterest < Attraction
+  include FilterByRole
+
   attr_accessor :force_create
 
   belongs_to :data_provider
@@ -14,12 +16,6 @@ class PointOfInterest < Attraction
   has_many :opening_hours, as: :openingable, dependent: :destroy
   has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
   has_one :location, as: :locateable, dependent: :destroy
-
-  scope :filtered_for_current_user, ->(current_user) do
-    return all if current_user.admin_role?
-
-    where(data_provider_id: current_user.data_provider_id)
-  end
 
   accepts_nested_attributes_for :price_informations, :opening_hours, :location
 
