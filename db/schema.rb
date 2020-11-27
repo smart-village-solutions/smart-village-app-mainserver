@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_27_072145) do
+ActiveRecord::Schema.define(version: 2020_11_27_102350) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 2020_11_27_072145) do
     t.datetime "updated_at", null: false
     t.string "type", default: "PointOfInterest", null: false
     t.integer "data_provider_id"
+    t.boolean "visible", default: true
   end
 
   create_table "attractions_certificates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -167,6 +168,7 @@ ActiveRecord::Schema.define(version: 2020_11_27_072145) do
     t.datetime "updated_at", null: false
     t.integer "data_provider_id"
     t.string "external_id"
+    t.boolean "visible", default: true
     t.index ["region_id"], name: "index_event_records_on_region_id"
   end
 
@@ -245,6 +247,7 @@ ActiveRecord::Schema.define(version: 2020_11_27_072145) do
     t.integer "data_provider_id"
     t.text "external_id"
     t.string "title"
+    t.boolean "visible", default: true
   end
 
   create_table "notification_devices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
