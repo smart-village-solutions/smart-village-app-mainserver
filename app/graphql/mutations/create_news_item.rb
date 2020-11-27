@@ -14,7 +14,11 @@ module Mutations
     argument :published_at, String, required: false
     argument :show_publish_date, Boolean, required: false
     argument :category_name, String, required: false
-    argument :categories, [Types::CategoryInput], required: false, as: :category_names, prepare: lambda { |category, _ctx| category.map(&:to_h) }
+    argument :categories, [Types::CategoryInput], required: false,
+                                                  as: :category_names,
+                                                  prepare: lambda { |category, _ctx|
+                                                             category.map(&:to_h)
+                                                           }
     argument :source_url, Types::WebUrlInput, required: false,
                                               as: :source_url_attributes,
                                               prepare: ->(source_url, _ctx) { source_url.to_h }
