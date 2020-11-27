@@ -55,10 +55,15 @@ class Notification::DevicesController < ApplicationController
     @notification_device = Notification::Device.new(notification_device_params)
 
     respond_to do |format|
-      if @notification_device.save
-        format.html { redirect_to @notification_device, notice: "Device was successfully created." }
-        format.json { render :show, status: :created, location: @notification_device }
-      else
+      begin
+        if @notification_device.save
+          format.html { redirect_to @notification_device, notice: "Device was successfully created." }
+          format.json { render :show, status: :created, location: @notification_device }
+        else
+          format.html { render :new }
+          format.json { render json: @notification_device.errors, status: :unprocessable_entity }
+        end
+      rescue ActiveRecord::RecordNotUnique
         format.html { render :new }
         format.json { render json: @notification_device.errors, status: :unprocessable_entity }
       end
