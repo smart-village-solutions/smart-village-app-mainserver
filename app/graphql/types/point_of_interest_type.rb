@@ -3,6 +3,7 @@
 module Types
   class PointOfInterestType < Types::BaseObject
     field :id, ID, null: true
+    field :visible, Boolean, null: true
     field :settings, SettingType, null: true
     field :name, String, null: true
     field :description, String, null: true
