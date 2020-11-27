@@ -1,5 +1,51 @@
 <div class="row">
   <div class="col">
+    <h1>Rollen</h1>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Rolle</th>
+          <th>Kommentar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Admin</td>
+          <td>
+            Ein Administrator kann neue Inhalte erstellen, alle Inhalte lesen, bearbeiten und freigeben. <br />
+            Neu erstellte Inhalte sind sofort freigegeben und damit öffentlich lesbar.
+          </td>
+        </tr>
+        <tr>
+          <td>App</td>
+          <td>Ein mobile App kann alle freigegebene Inhalte lesen.</td>
+        </tr>
+        <tr>
+          <td>User</td>
+          <td>
+            Ein User kann neue Inhalte erstellen und eigene Inhalte lesen und bearbeiten. <br />
+            Neu erstellte Inhalte sind sofort freigegeben und damit öffentlich lesbar.
+          </td>
+        </tr>
+        <tr>
+          <td>Restricted</td>
+          <td>
+            Ein beschränkter Account kann neue Inhalte erstellen und diese lesen und bearbeiten. <br />
+            Neu erstellte Inhalte sind jedoch <strong>nicht</strong> freigegeben und können <strong>nicht</strong> von der Rolle 'App' gelesen werden.
+          </td>
+        </tr>
+        <tr>
+          <td>Editor</td>
+          <td>
+            Ein Editor kann neue Inhalte erstellen und eigene Inhalte lesen und bearbeiten. <br />
+            Neu erstellte Inhalte sind sofort freigegeben und damit öffentlich lesbar. <br />
+            Zudem kann er Inhalte von beschränkten Accounts lesen, bearbeiten und freigeben.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
     <h1>Nutzerverwaltung</h1>
 
     <p><%= link_to "Neuen Nutzer erstellen", new_account_path, class: 'btn btn-success' %></p>
@@ -25,7 +71,7 @@
             <td class="align-middle"><%= user.id %></td>
             <td class="align-middle"><%= link_to user.email, edit_account_path(user) %></td>
             <td class="align-middle"><%= user.data_provider.try(:name) %></td>
-            <td class="align-middle"><%= user.role %></td>
+            <td class="align-middle"><%= user.role.humanize %></td>
             <td class="align-middle">
               <span class="badge <%= user.try(:data_provider).try(:role_point_of_interest) ? 'badge-success' : 'badge-danger' %>">
                 <%= user.try(:data_provider).try(:role_point_of_interest) ? 'aktiv' : '' %>
