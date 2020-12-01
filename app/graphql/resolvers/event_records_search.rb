@@ -28,6 +28,8 @@ class Resolvers::EventRecordsSearch
   option :limit, type: types.Int, with: :apply_limit
   option :take, type: types.Int, with: :apply_take
   option :order, type: EventRecordsOrder, default: "createdAt_DESC"
+  option :dataProvider, type: types.String, with: :apply_data_provider
+  option :dataProviderId, type: types.Int, with: :apply_data_provider_id
 
   def apply_category_id(scope, value)
     scope.with_category(value)
@@ -49,6 +51,14 @@ class Resolvers::EventRecordsSearch
 
   def apply_take(scope, value)
     scope.take(value)
+  end
+
+  def apply_data_provider(scope, value)
+    scope.joins(:data_provider).where(data_providers: { name: value })
+  end
+
+  def apply_data_provider_id(scope, value)
+    scope.joins(:data_provider).where(data_providers: { id: value })
   end
 
   def apply_order_with_created_at_desc(scope)

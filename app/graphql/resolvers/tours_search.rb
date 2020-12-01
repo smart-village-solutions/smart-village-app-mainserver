@@ -25,6 +25,8 @@ class Resolvers::ToursSearch
   option :limit, type: types.Int, with: :apply_limit
   option :skip, type: types.Int, with: :apply_skip
   option :order, type: ToursOrder, default: "createdAt_DESC"
+  option :dataProvider, type: types.String, with: :apply_data_provider
+  option :dataProviderId, type: types.Int, with: :apply_data_provider_id
   option :category, type: types.String, with: :apply_category
 
   def apply_limit(scope, value)
@@ -37,6 +39,14 @@ class Resolvers::ToursSearch
 
   def apply_order(scope, value)
     scope.order(value)
+  end
+
+  def apply_data_provider(scope, value)
+    scope.joins(:data_provider).where(data_providers: { name: value })
+  end
+
+  def apply_data_provider_id(scope, value)
+    scope.joins(:data_provider).where(data_providers: { id: value })
   end
 
   def apply_category(scope, value)

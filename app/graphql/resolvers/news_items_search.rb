@@ -25,6 +25,7 @@ class Resolvers::NewsItemsSearch
   option :skip, type: types.Int, with: :apply_skip
   option :order, type: NewsItemsOrder, default: "publishedAt_DESC"
   option :dataProvider, type: types.String, with: :apply_data_provider
+  option :dataProviderId, type: types.Int, with: :apply_data_provider_id
   option :categoryId, type: types.ID, with: :apply_category_id
 
   def apply_limit(scope, value)
@@ -41,6 +42,10 @@ class Resolvers::NewsItemsSearch
 
   def apply_data_provider(scope, value)
     scope.joins(:data_provider).where(data_providers: { name: value })
+  end
+
+  def apply_data_provider_id(scope, value)
+    scope.joins(:data_provider).where(data_providers: { id: value })
   end
 
   def apply_category_id(scope, value)

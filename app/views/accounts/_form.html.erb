@@ -69,6 +69,15 @@
     </small>
   </div>
 
+  <div class="form-group">
+    <%= d.label :data_type, "Art des Datenlieferanten" %>
+    <%= d.select :data_type, DataProvider.data_types.keys.map { |a| [a.humanize, a] }, {}, class: "form-control" %>
+    <small class="form-text text-muted">
+      Bei einem BusinessAccount werden in der App Nachrichten, Veranstaltungen, Touren und Orte verknüpft dargestellt.
+      D.h. in der Detailansicht eines Standortes werden darunter alle Nachrichten und Events dieses Datenlieferanten angezeigt.
+    </small>
+  </div>
+
   <h3>Logo</h3>
   <%= d.fields_for :logo, object: @user.data_provider.logo || @user.data_provider.build_logo do |l| %>
     <div class="form-group">
