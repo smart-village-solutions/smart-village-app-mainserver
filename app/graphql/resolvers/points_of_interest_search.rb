@@ -26,7 +26,7 @@ class Resolvers::PointsOfInterestSearch
   option :skip, type: types.Int, with: :apply_skip
   option :order, type: PointsOfInterestOrder, default: "createdAt_DESC"
   option :dataProvider, type: types.String, with: :apply_data_provider
-  option :dataProviderId, type: types.Int, with: :apply_data_provider_id
+  option :dataProviderId, type: types.ID, with: :apply_data_provider_id
   option :category, type: types.String, with: :apply_category
 
   def apply_limit(scope, value)

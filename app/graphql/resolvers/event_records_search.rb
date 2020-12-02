@@ -28,7 +28,7 @@ class Resolvers::EventRecordsSearch
   option :limit, type: types.Int, with: :apply_limit
   option :order, type: EventRecordsOrder, default: "createdAt_DESC"
   option :dataProvider, type: types.String, with: :apply_data_provider
-  option :dataProviderId, type: types.Int, with: :apply_data_provider_id
+  option :dataProviderId, type: types.ID, with: :apply_data_provider_id
   option :take, type: types.Int, with: :apply_take
 
   def apply_category_id(scope, value)
