@@ -26,10 +26,10 @@ class Resolvers::EventRecordsSearch
   option :categoryId, type: types.ID, with: :apply_category_id
   option :skip, type: types.Int, with: :apply_skip
   option :limit, type: types.Int, with: :apply_limit
-  option :take, type: types.Int, with: :apply_take
   option :order, type: EventRecordsOrder, default: "createdAt_DESC"
   option :dataProvider, type: types.String, with: :apply_data_provider
   option :dataProviderId, type: types.Int, with: :apply_data_provider_id
+  option :take, type: types.Int, with: :apply_take
 
   def apply_category_id(scope, value)
     scope.with_category(value)
@@ -43,9 +43,12 @@ class Resolvers::EventRecordsSearch
     scope.limit(value)
   end
 
+  # Achtung: Diese Methode liefert ein Array als Ergebnis
+  # und kann nicht weiter verkettet werden
   def apply_take(scope, value)
     scope.take(value)
   end
+  deprecate apply_take: :limit
 
   def apply_data_provider(scope, value)
     scope.joins(:data_provider).where(data_providers: { name: value })
