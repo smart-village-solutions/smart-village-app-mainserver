@@ -26,29 +26,36 @@ class Resolvers::EventRecordsSearch
   option :categoryId, type: types.ID, with: :apply_category_id
   option :skip, type: types.Int, with: :apply_skip
   option :limit, type: types.Int, with: :apply_limit
-  option :take, type: types.Int, with: :apply_take
   option :order, type: EventRecordsOrder, default: "createdAt_DESC"
+  option :dataProvider, type: types.String, with: :apply_data_provider
+  option :dataProviderId, type: types.ID, with: :apply_data_provider_id
+  option :take, type: types.Int, with: :apply_take
 
   def apply_category_id(scope, value)
     scope.with_category(value)
-  rescue NoMethodError
-    scope.select { |event_record| event_record.category_ids.include?(value.to_i) }
   end
 
   def apply_skip(scope, value)
     scope.offset(value)
-  rescue NoMethodError
-    scope.drop(value)
   end
 
   def apply_limit(scope, value)
     scope.limit(value)
-  rescue NoMethodError
-    scope.first(value)
   end
 
+  # Achtung: Diese Methode liefert ein Array als Ergebnis
+  # und kann nicht weiter verkettet werden
   def apply_take(scope, value)
     scope.take(value)
+  end
+  deprecate apply_take: :limit
+
+  def apply_data_provider(scope, value)
+    scope.joins(:data_provider).where(data_providers: { name: value })
+  end
+
+  def apply_data_provider_id(scope, value)
+    scope.joins(:data_provider).where(data_providers: { id: value })
   end
 
   def apply_order_with_created_at_desc(scope)
@@ -84,11 +91,15 @@ class Resolvers::EventRecordsSearch
   end
 
   def apply_order_with_list_date_desc(scope)
-    scope.sort_by(&:list_date).reverse
+    ordered_ids = scope.sort_by(&:list_date).reverse.map(&:id)
+
+    scope.order_as_specified(id: ordered_ids)
   end
 
   def apply_order_with_list_date_asc(scope)
-    scope.sort_by(&:list_date)
+    ordered_ids = scope.sort_by(&:list_date).map(&:id)
+
+    scope.order_as_specified(id: ordered_ids)
   end
 
   # https://github.com/nettofarah/graphql-query-resolver
