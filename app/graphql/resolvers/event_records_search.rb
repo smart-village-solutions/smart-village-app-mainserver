@@ -33,20 +33,14 @@ class Resolvers::EventRecordsSearch
 
   def apply_category_id(scope, value)
     scope.with_category(value)
-  rescue NoMethodError
-    scope.select { |event_record| event_record.category_ids.include?(value.to_i) }
   end
 
   def apply_skip(scope, value)
     scope.offset(value)
-  rescue NoMethodError
-    scope.drop(value)
   end
 
   def apply_limit(scope, value)
     scope.limit(value)
-  rescue NoMethodError
-    scope.first(value)
   end
 
   def apply_take(scope, value)
@@ -94,11 +88,15 @@ class Resolvers::EventRecordsSearch
   end
 
   def apply_order_with_list_date_desc(scope)
-    scope.sort_by(&:list_date).reverse
+    ordered_ids = scope.sort_by(&:list_date).reverse.map(&:id)
+
+    scope.order_as_specified(id: ordered_ids)
   end
 
   def apply_order_with_list_date_asc(scope)
-    scope.sort_by(&:list_date)
+    ordered_ids = scope.sort_by(&:list_date).map(&:id)
+
+    scope.order_as_specified(id: ordered_ids)
   end
 
   # https://github.com/nettofarah/graphql-query-resolver
