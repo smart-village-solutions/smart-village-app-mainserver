@@ -3,6 +3,8 @@
 # News Item is one of the four Main resources for the app. A news Item can be anything
 # from an old school news article to a whole story structured in chapters
 class NewsItem < ApplicationRecord
+  include FilterByRole
+
   attr_accessor :force_create
   attr_accessor :category_name
   attr_accessor :category_names
@@ -19,12 +21,6 @@ class NewsItem < ApplicationRecord
   has_one :external_reference, as: :external, dependent: :destroy
   has_one :address, as: :addressable, dependent: :destroy
   has_one :source_url, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
-
-  scope :filtered_for_current_user, lambda { |current_user|
-    return all if current_user.admin_role?
-
-    where(data_provider_id: current_user.data_provider_id)
-  }
 
   scope :with_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)

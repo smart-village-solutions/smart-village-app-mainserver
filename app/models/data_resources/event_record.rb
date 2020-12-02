@@ -2,6 +2,7 @@
 
 # this model describes the data for an event e.g. a concert or a reading.
 class EventRecord < ApplicationRecord
+  include FilterByRole
   extend OrderAsSpecified
 
   attr_accessor :category_name
@@ -27,12 +28,6 @@ class EventRecord < ApplicationRecord
   has_one :repeat_duration, dependent: :destroy
   has_many :dates, as: :dateable, class_name: "FixedDate", dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy
-
-  scope :filtered_for_current_user, lambda { |current_user|
-    return all if current_user.admin_role?
-
-    where(data_provider_id: current_user.data_provider_id)
-  }
 
   scope :upcoming, lambda { |current_user|
     event_records = if current_user.present?

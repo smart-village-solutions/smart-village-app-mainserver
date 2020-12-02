@@ -23,7 +23,7 @@
 
 <div class="form-group">
   <%= f.label :role, "Rolle" %>
-  <%= f.select :role, [["Nutzer", :user], ["Admin", :admin]], {}, class: "form-control" %>
+  <%= f.select :role, User.roles.keys.map { |role| [role.humanize, role] }, {}, class: "form-control" %>
 </div>
 
 <h2>Passwort</h2>

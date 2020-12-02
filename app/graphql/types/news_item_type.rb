@@ -3,6 +3,7 @@
 module Types
   class NewsItemType < Types::BaseObject
     field :id, ID, null: true
+    field :visible, Boolean, null: true
     field :settings, SettingType, null: true
     field :title, String, null: true
     field :external_id, String, null: true

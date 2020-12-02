@@ -11,6 +11,14 @@ class ResourceService
 
   def create(resource_class, params)
     @params = params
+
+    # Wenn die Rolle Restricted eine Information anlegt,
+    # so ist diese per default nicht sichtbar, es sei denn
+    # das Attribute 'visible' wird in den params mitgegeben und ist 'true'
+    if data_provider.user.restricted_role? && resource_class.respond_to?(:visible)
+      @params = { visible: false }.merge(@params)
+    end
+
     @resource_class = resource_class
     @resource = resource_class.new(params)
     @resource.data_provider = data_provider
