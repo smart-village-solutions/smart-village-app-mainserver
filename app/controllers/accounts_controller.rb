@@ -80,6 +80,7 @@ class AccountsController < ApplicationController
       data_provider_attributes: [
         :id,
         :name,
+        :data_type,
         :description,
         :role_point_of_interest,
         :role_tour,

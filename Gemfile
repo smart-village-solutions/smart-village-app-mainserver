@@ -43,6 +43,8 @@ gem "jquery-rails"
 gem "jsoneditor-rails"
 gem "mailjet"
 
+gem "order_as_specified"
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.1.0", require: false
 
