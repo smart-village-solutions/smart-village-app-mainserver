@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_01_122547) do
+ActiveRecord::Schema.define(version: 2020_12_03_145226) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -198,8 +198,8 @@ ActiveRecord::Schema.define(version: 2020_12_01_122547) do
   end
 
   create_table "geo_locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.float "latitude"
-    t.float "longitude"
+    t.float "latitude", limit: 53
+    t.float "longitude", limit: 53
     t.string "geo_locateable_type"
     t.bigint "geo_locateable_id"
     t.datetime "created_at", null: false
