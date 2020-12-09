@@ -26,6 +26,7 @@ class Resolvers::EventRecordsSearch
   option :categoryId, type: types.ID, with: :apply_category_id
   option :skip, type: types.Int, with: :apply_skip
   option :limit, type: types.Int, with: :apply_limit
+  option :ids, type: types[types.ID], with: :apply_ids
   option :order, type: EventRecordsOrder, default: "createdAt_DESC"
   option :dataProvider, type: types.String, with: :apply_data_provider
   option :dataProviderId, type: types.ID, with: :apply_data_provider_id
@@ -41,6 +42,10 @@ class Resolvers::EventRecordsSearch
 
   def apply_limit(scope, value)
     scope.limit(value)
+  end
+
+  def apply_ids(scope, value)
+    scope.where(id: value)
   end
 
   # Achtung: Diese Methode liefert ein Array als Ergebnis
