@@ -24,6 +24,7 @@ class Resolvers::ToursSearch
 
   option :limit, type: types.Int, with: :apply_limit
   option :skip, type: types.Int, with: :apply_skip
+  option :ids, type: types[types.ID], with: :apply_ids
   option :order, type: ToursOrder, default: "createdAt_DESC"
   option :dataProvider, type: types.String, with: :apply_data_provider
   option :dataProviderId, type: types.ID, with: :apply_data_provider_id
@@ -35,6 +36,10 @@ class Resolvers::ToursSearch
 
   def apply_skip(scope, value)
     scope.offset(value)
+  end
+
+  def apply_ids(scope, value)
+    scope.where(id: value)
   end
 
   def apply_order(scope, value)
