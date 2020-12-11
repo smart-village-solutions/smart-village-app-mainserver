@@ -29,6 +29,29 @@ class EventRecord < ApplicationRecord
   has_many :dates, as: :dateable, class_name: "FixedDate", dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy
 
+  # timespan_to_search und timespan werden Arrays der Eventzeiträume
+  # und deren Schnittemenge > 0 bedeutet eine Überschneidung.
+  #
+  # timespan_to_search = ["2020-01-04", "2020-01-05", "2020-01-06"]
+  # timespan = ["2020-01-03", "2020-01-04"]
+  # timespan_to_search & timespan == ["2020-01-04"]
+  #
+  # statt einer einfachen Überscheidung des Startwertes:
+  # joins(:dates).where("fixed_dates.date_start >= ? AND fixed_dates.date_start <= ?", start_date, end_date)
+  scope :in_date_range, lambda { |start_date, end_date|
+    timespan_to_search = (start_date..end_date).to_a
+
+    list_of_fixed_date_ids = FixedDate.where.not(date_start: nil).to_a.select do |a|
+      timespan = [] if a.date_start.blank?
+      timespan = (a.date_start..a.date_start).to_a if a.date_start.present? && a.date_end.blank?
+      timespan = (a.date_start..a.date_end).to_a if a.date_start.present? && a.date_end.present?
+
+      (timespan_to_search & timespan).count.positive?
+    end
+
+    joins(:dates).where(fixed_dates: { id: list_of_fixed_date_ids.map(&:id) })
+  }
+
   scope :upcoming, lambda { |current_user|
     event_records = if current_user.present?
                       EventRecord.filtered_for_current_user(current_user)
