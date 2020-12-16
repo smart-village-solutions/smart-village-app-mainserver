@@ -10,7 +10,7 @@ class NewsItem < ApplicationRecord
   attr_accessor :category_names
   attr_accessor :push_notification
 
-  before_validation :find_or_create_category
+  after_save :find_or_create_category
   after_create :send_push_notification
 
   belongs_to :data_provider

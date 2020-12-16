@@ -9,7 +9,7 @@ class EventRecord < ApplicationRecord
   attr_accessor :region_name
   attr_accessor :force_create
 
-  before_validation :find_or_create_category
+  after_save :find_or_create_category
   before_validation :find_or_create_region
 
   belongs_to :region, optional: true
