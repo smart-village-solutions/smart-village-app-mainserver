@@ -23,6 +23,7 @@ class Resolvers::EventRecordsSearch
     value "listDate_ASC"
   end
 
+  option :dateRange, type: types[types.String], with: :apply_date_range
   option :categoryId, type: types.ID, with: :apply_category_id
   option :skip, type: types.Int, with: :apply_skip
   option :limit, type: types.Int, with: :apply_limit
@@ -31,6 +32,24 @@ class Resolvers::EventRecordsSearch
   option :dataProvider, type: types.String, with: :apply_data_provider
   option :dataProviderId, type: types.ID, with: :apply_data_provider_id
   option :take, type: types.Int, with: :apply_take
+
+  # :values is array of 2 dates:
+  # - first element is :start_date
+  # - second element is :end_date
+  # Each element is of format "2020-12-31"
+  def apply_date_range(scope, values)
+    error_message = "DateRange invalid! Should be [start_date, end_date] each with format `2020-12-31`"
+    raise error_message unless values.count == 2
+
+    begin
+      start_date = Date.parse(values[0])
+      end_date = Date.parse(values[1])
+    rescue ArgumentError
+      raise error_message
+    end
+
+    scope.in_date_range(start_date, end_date)
+  end
 
   def apply_category_id(scope, value)
     scope.with_category(value)

@@ -8,6 +8,7 @@
       <thead>
         <tr>
           <th><%= t('.name') %></th>
+          <th><%= t('.owner') %></th>
           <th><%= t('.callback_url') %></th>
           <th></th>
           <th></th>
@@ -17,6 +18,7 @@
         <% @applications.each do |application| %>
           <tr id="application_<%= application.id %>">
             <td class="align-middle"><%= link_to application.name, oauth_application_path(application) %></td>
+            <td class="align-middle"><%= application.owner.try(:email) %></td>
             <td class="align-middle"><%= application.redirect_uri %></td>
             <td class="align-middle" style="width: 70px"><%= link_to t('doorkeeper.applications.buttons.edit'), edit_oauth_application_path(application), class: 'btn btn-sm btn-outline-secondary' %></td>
             <td class="align-middle" style="width: 70px"><%= render 'delete_form', application: application, class_name: "btn btn-sm btn-outline-danger" %></td>
