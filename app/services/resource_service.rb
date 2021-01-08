@@ -20,7 +20,7 @@ class ResourceService
     end
 
     @resource_class = resource_class
-    @resource = resource_class.new(params)
+    @resource = resource_class.new(@params)
     @resource.data_provider = data_provider
 
     # skip create if record already exists and new record has the same attribute values as the new
