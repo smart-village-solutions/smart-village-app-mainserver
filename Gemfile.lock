@@ -66,6 +66,8 @@ GEM
       tzinfo (~> 1.1)
     acts-as-taggable-on (6.0.0)
       activerecord (~> 5.0)
+    addressable (2.7.0)
+      public_suffix (>= 2.0.2, < 5.0)
     ancestry (2.2.2)
       activerecord (>= 3.0.0)
     annotate (2.7.5)
@@ -223,6 +225,7 @@ GEM
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
+    public_suffix (4.0.6)
     puma (3.12.6)
     rack (2.2.3)
     rack-test (1.1.0)
@@ -389,6 +392,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on
+  addressable
   ancestry (~> 2.1)
   annotate
   aws-sdk-s3
