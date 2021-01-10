@@ -3,7 +3,7 @@
 class WeatherMapService
   attr_accessor :uri
 
-  def initialize()
+  def initialize
     return if Rails.application.credentials.openweathermap.blank?
 
     lat = Rails.application.credentials.openweathermap[:lat]
