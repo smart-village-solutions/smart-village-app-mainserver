@@ -7,3 +7,14 @@ class Notification::Device < ApplicationRecord
   validates_uniqueness_of :token, on: :create, message: "must be unique"
   validates_presence_of :token, on: :create, message: "can't be blank"
 end
+
+# == Schema Information
+#
+# Table name: notification_devices
+#
+#  id          :bigint           not null, primary key
+#  token       :string(255)
+#  device_type :integer          default("undefined")
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
