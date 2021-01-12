@@ -2,6 +2,11 @@
 
 module Types
   class QueryType < Types::BaseObject
+    field :weather_maps, function: Resolvers::WeatherSearch
+    field :weather_map, OpenWeatherMapType, null: false do
+      argument :id, ID, required: false
+    end
+
     field :points_of_interest, function: Resolvers::PointsOfInterestSearch
     field :point_of_interest, PointOfInterestType, null: false do
       argument :id, ID, required: true
@@ -34,6 +39,15 @@ module Types
 
     field :news_items_data_providers, [DataProviderType], null: false do
       argument :category_id, ID, required: false
+    end
+
+    def weather_map(id: nil)
+      return OpenWeatherMap.find(id) if id.present?
+
+      latest_weather_map = OpenWeatherMap.last
+      return latest_weather_map if latest_weather_map.present? && latest_weather_map.created_at > (Time.now - 1.hour)
+
+      WeatherMapService.new.import
     end
 
     def point_of_interest(id:)

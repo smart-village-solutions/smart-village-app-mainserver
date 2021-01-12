@@ -25,4 +25,5 @@ end
 #  data_provider_id       :integer
 #  external_id            :text(65535)
 #  title                  :string(255)
+#  visible                :boolean          default(TRUE)
 #

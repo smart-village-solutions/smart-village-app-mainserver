@@ -57,6 +57,10 @@ type Category {
   upcomingEventRecordsCount: Int
 }
 
+input CategoryInput {
+  name: String
+}
+
 type Certificate {
   id: ID
   name: String
@@ -64,6 +68,12 @@ type Certificate {
 
 input CertificateInput {
   name: String
+}
+
+type ChangeVisibility {
+  id: ID
+  status: String
+  statusCode: Int
 }
 
 type Contact {
@@ -105,6 +115,7 @@ input ContentBlockInput {
 type DataProvider {
   address: Address
   contact: Contact
+  dataType: String
   description: String
   id: ID
   logo: WebUrl
@@ -165,6 +176,7 @@ type EventRecord {
   title: String
   updatedAt: String
   urls: [WebUrl!]
+  visible: Boolean
 }
 
 enum EventRecordsOrder {
@@ -230,9 +242,10 @@ input MediaContentInput {
 }
 
 type Mutation {
+  changeVisibility(id: ID!, recordType: String!, visible: Boolean!): ChangeVisibility!
   createAppUserContent(content: String, dataSource: String, dataType: String): AppUserContent!
   createEventRecord(accessibilityInformation: AccessibilityInformationInput, addresses: [AddressInput!], categoryName: String, contacts: [ContactInput!], dates: [DateInput!], description: String, externalId: String, forceCreate: Boolean, location: LocationInput, mediaContents: [MediaContentInput!], organizer: OperatingCompanyInput, parentId: Int, priceInformations: [PriceInput!], region: RegionInput, regionName: String, repeat: Boolean, repeatDuration: RepeatDurationInput, tags: [String!], title: String, urls: [WebUrlInput!]): EventRecord!
-  createNewsItem(address: AddressInput, author: String, categoryName: String, charactersToBeShown: Int, contentBlocks: [ContentBlockInput!], externalId: String, forceCreate: Boolean, fullVersion: Boolean, newsType: String, publicationDate: String, publishedAt: String, pushNotification: Boolean, showPublishDate: Boolean, sourceUrl: WebUrlInput, title: String): NewsItem!
+  createNewsItem(address: AddressInput, author: String, categories: [CategoryInput!], categoryName: String, charactersToBeShown: Int, contentBlocks: [ContentBlockInput!], externalId: String, forceCreate: Boolean, fullVersion: Boolean, newsType: String, publicationDate: String, publishedAt: String, pushNotification: Boolean, showPublishDate: Boolean, sourceUrl: WebUrlInput, title: String): NewsItem!
   createPointOfInterest(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categoryName: String, certificates: [CertificateInput!], contact: ContactInput, description: String, forceCreate: Boolean, location: LocationInput, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, openingHours: [OpeningHourInput!], operatingCompany: OperatingCompanyInput, priceInformations: [PriceInput!], tags: [String!], webUrls: [WebUrlInput!]): PointOfInterest!
   createTour(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categoryName: String, certificates: [CertificateInput!], contact: ContactInput, description: String, forceCreate: Boolean, geometryTourData: [GeoLocationInput!], lengthKm: Int!, location: LocationInput, meansOfTransportation: String, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, operatingCompany: OperatingCompanyInput, tags: [String!], webUrls: [WebUrlInput!]): Tour!
   destroyRecord(externalId: Int, id: Int, recordType: String!): Destroy!
@@ -257,6 +270,7 @@ type NewsItem {
   sourceUrl: WebUrl
   title: String
   updatedAt: String
+  visible: Boolean
 }
 
 enum NewsItemsOrder {
@@ -266,6 +280,27 @@ enum NewsItemsOrder {
   id_DESC
   publishedAt_ASC
   publishedAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type OpenWeatherMap {
+  alerts: [String!]
+  createdAt: String
+  current: String
+  daily: [String!]
+  hourly: [String!]
+  id: ID
+  lat: Float
+  lon: Float
+  updatedAt: String
+}
+
+enum OpenWeatherMapsOrder {
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
   updatedAt_ASC
   updatedAt_DESC
 }
@@ -328,6 +363,7 @@ type PointOfInterest {
   settings: Setting
   tagList: [String!]
   updatedAt: String
+  visible: Boolean
   webUrls: [WebUrl!]
 }
 
@@ -385,16 +421,18 @@ type PublicJsonFile {
 type Query {
   categories: [Category!]!
   eventRecord(id: ID!): EventRecord!
-  eventRecords(categoryId: ID, limit: Int, order: EventRecordsOrder = createdAt_DESC, skip: Int, take: Int): [EventRecord]
+  eventRecords(categoryId: ID, dataProvider: String, dataProviderId: ID, dateRange: [String], ids: [ID], limit: Int, order: EventRecordsOrder = createdAt_DESC, skip: Int, take: Int): [EventRecord]
   newsItem(id: ID!): NewsItem!
-  newsItems(categoryId: ID, dataProvider: String, limit: Int, order: NewsItemsOrder = publishedAt_DESC, skip: Int): [NewsItem]
+  newsItems(categoryId: ID, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: NewsItemsOrder = publishedAt_DESC, skip: Int): [NewsItem]
   newsItemsDataProviders(categoryId: ID): [DataProvider!]!
   pointOfInterest(id: ID!): PointOfInterest!
-  pointsOfInterest(category: String, limit: Int, order: PointsOfInterestOrder = createdAt_DESC, skip: Int): [PointOfInterest]
+  pointsOfInterest(category: String, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: PointsOfInterestOrder = createdAt_DESC, skip: Int): [PointOfInterest]
   publicHtmlFile(name: String!): PublicHtmlFile!
   publicJsonFile(name: String!): PublicJsonFile!
   tour(id: ID!): Tour!
-  tours(category: String, limit: Int, order: ToursOrder = createdAt_DESC, skip: Int): [Tour!]!
+  tours(category: String, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: ToursOrder = createdAt_DESC, skip: Int): [Tour!]!
+  weatherMap(id: ID!): OpenWeatherMap!
+  weatherMaps(ids: [ID], limit: Int, order: OpenWeatherMapsOrder = createdAt_DESC, skip: Int): [OpenWeatherMap]
 }
 
 type Region {
@@ -447,6 +485,7 @@ type Tour {
   settings: Setting
   tags: String
   updatedAt: String
+  visible: Boolean
   webUrls: [WebUrl!]
 }
 

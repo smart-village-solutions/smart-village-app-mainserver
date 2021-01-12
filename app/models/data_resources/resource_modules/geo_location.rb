@@ -12,8 +12,8 @@ end
 # Table name: geo_locations
 #
 #  id                  :bigint           not null, primary key
-#  latitude            :float(24)
-#  longitude           :float(24)
+#  latitude            :float(53)
+#  longitude           :float(53)
 #  geo_locateable_type :string(255)
 #  geo_locateable_id   :bigint
 #  created_at          :datetime         not null

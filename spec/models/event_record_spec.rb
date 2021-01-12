@@ -127,9 +127,9 @@ end
 #  description      :text(65535)
 #  repeat           :boolean
 #  title            :string(255)
-#  category_id      :bigint
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  data_provider_id :integer
 #  external_id      :string(255)
+#  visible          :boolean          default(TRUE)
 #
