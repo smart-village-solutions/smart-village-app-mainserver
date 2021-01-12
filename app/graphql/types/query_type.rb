@@ -27,6 +27,8 @@ module Types
       argument :id, ID, required: true
     end
 
+    field :categories, [CategoryType], null: false
+
     field :public_html_file, PublicHtmlFileType, null: false do
       argument :name, String, required: true
     end

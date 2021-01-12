@@ -7,8 +7,15 @@ RUN apt-get update \
   && curl -sL https://deb.nodesource.com/setup_10.x | bash \
   && apt-get install -y nodejs \
   && apt-get install -y yarn \
+  && apt-get install -y wget \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /usr/src/*
+
+RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc
+RUN chmod +x mc
+RUN mv mc /bin
+RUN mc -help
+
 
 ENV DOCKERIZE_VERSION v0.6.1
 RUN curl -L https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
