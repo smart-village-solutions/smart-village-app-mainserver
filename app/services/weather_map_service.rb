@@ -9,7 +9,7 @@ class WeatherMapService
     lat = Rails.application.credentials.openweathermap[:lat]
     lon = Rails.application.credentials.openweathermap[:lon]
     api_key = Rails.application.credentials.openweathermap[:api_key]
-    base_url = "http://api.openweathermap.org"
+    base_url = "https://api.openweathermap.org"
 
     @uri = "#{base_url}/data/2.5/onecall?lat=#{lat}&lon=#{lon}&appid=#{api_key}&units=metric&exclude=minutely&lang=de"
   end

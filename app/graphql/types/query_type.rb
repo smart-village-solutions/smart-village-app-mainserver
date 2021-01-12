@@ -44,8 +44,8 @@ module Types
     def weather_map(id: nil)
       return OpenWeatherMap.find(id) if id.present?
 
-      latest_weather_data = OpenWeatherMap.last
-      return latest_weather_data if latest_weather_data.present? && latest_weather_data.created_at > (Time.now - 1.hour)
+      latest_weather_map = OpenWeatherMap.last
+      return latest_weather_map if latest_weather_map.present? && latest_weather_map.created_at > (Time.now - 1.hour)
 
       WeatherMapService.new.import
     end

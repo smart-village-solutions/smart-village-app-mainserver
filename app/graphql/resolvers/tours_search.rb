@@ -67,7 +67,7 @@ class Resolvers::ToursSearch
   end
 
   def apply_order_with_updated_at_desc(scope)
-    scope.order("updated_at ASC")
+    scope.order("updated_at DESC")
   end
 
   def apply_order_with_updated_at_asc(scope)
