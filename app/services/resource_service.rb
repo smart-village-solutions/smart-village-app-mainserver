@@ -24,7 +24,7 @@ class ResourceService
     @resource.data_provider = data_provider
 
     # skip create if record already exists and new record has the same attribute values as the new
-    # record and the record was not provided by maz
+    # record and the record is not marked as 'always_recreate'
     external_resource = find_external_resource
     old_record = external_resource.try(:external)
     return old_record if external_resource.present? &&
@@ -42,8 +42,12 @@ class ResourceService
       # and sometimes doesn't
       # TODO: Remove line and make dependant: :destroy work
       external_resource.destroy if external_resource.present?
-      create_external_resource if @resource.save
-      set_default_categories if @resource.respond_to?(:categories)
+      if @resource.save
+        create_external_resource
+        set_default_categories if @resource.respond_to?(:categories)
+      else
+        GraphQL::ExecutionError.new("Invalid input: #{@resource.errors.full_messages.join(', ')}")
+      end
     end
   end
 

@@ -203,6 +203,11 @@ input GeoLocationInput {
   longitude: AnyPrimitive
 }
 
+"""
+Represents untyped JSON
+"""
+scalar JSON
+
 type Location {
   department: String
   district: String
@@ -285,11 +290,11 @@ enum NewsItemsOrder {
 }
 
 type OpenWeatherMap {
-  alerts: [String!]
+  alerts: [JSON!]
   createdAt: String
-  current: String
-  daily: [String!]
-  hourly: [String!]
+  current: JSON
+  daily: [JSON!]
+  hourly: [JSON!]
   id: ID
   lat: Float
   lon: Float
@@ -431,7 +436,7 @@ type Query {
   publicJsonFile(name: String!): PublicJsonFile!
   tour(id: ID!): Tour!
   tours(category: String, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: ToursOrder = createdAt_DESC, skip: Int): [Tour!]!
-  weatherMap(id: ID!): OpenWeatherMap!
+  weatherMap(id: ID): OpenWeatherMap!
   weatherMaps(ids: [ID], limit: Int, order: OpenWeatherMapsOrder = createdAt_DESC, skip: Int): [OpenWeatherMap]
 }
 
