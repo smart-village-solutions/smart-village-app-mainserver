@@ -14,6 +14,8 @@ require "graphql/remote_loader"
 # DirectusClient is defined in config/application.rb
 class DirectusLoader < GraphQL::RemoteLoader::Loader
   def query(query_string, context: {})
+    return unless defined?(DirectusClient)
+
     parsed_query = DirectusClient.parse(query_string)
     DirectusClient.query(parsed_query, variables: {}, context: {})
   end
