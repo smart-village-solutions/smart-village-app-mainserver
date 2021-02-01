@@ -15,6 +15,8 @@ require "action_cable/engine"
 require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
+require "graphql/client/http"
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -35,6 +37,31 @@ module SmartVillageAppMainserver
     # Don't generate system test files.
     config.generators.system_tests = nil
 
-    config.i18n.available_locales = [:de, :en]
+    config.i18n.available_locales = %i[de en]
+  end
+
+  # EXAMPLE FROM https://github.com/d12/graphql-remote_loader_example/blob/master/config/application.rb
+  #
+  # Defining the GraphQL::Client HTTP adapter and client that we use in app/graphql/loader/directus_loader.rb
+  # This can be swapped out with any other way of querying a remote GraphQL API.
+  graphql_endpoint = Rails.application.credentials.dig(:directus, :graphql_endpoint)
+
+  if graphql_endpoint
+    DirectusHTTPAdapter = GraphQL::Client::HTTP.new(graphql_endpoint) do
+      def headers(_context)
+        graphql_access_token = Rails.application.credentials.dig(:directus, :graphql_access_token)
+
+        {
+          "Authorization" => "Bearer #{graphql_access_token}"
+        }
+      end
+    end
+
+    ::DirectusClient = GraphQL::Client.new(
+      schema: GraphQL::Client.load_schema(SmartVillageAppMainserver::DirectusHTTPAdapter),
+      execute: SmartVillageAppMainserver::DirectusHTTPAdapter
+    )
+
+    DirectusClient.allow_dynamic_queries = true
   end
 end

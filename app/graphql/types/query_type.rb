@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../loaders/directus_loader"
+
 module Types
   class QueryType < Types::BaseObject
     field :weather_maps, function: Resolvers::WeatherSearch
@@ -36,8 +38,6 @@ module Types
     field :public_json_file, PublicJsonFileType, null: false do
       argument :name, String, required: true
     end
-
-    field :categories, [CategoryType], null: false
 
     field :news_items_data_providers, [DataProviderType], null: false do
       argument :category_id, ID, required: false
@@ -103,6 +103,18 @@ module Types
 
       { content: {}, name: "not found" }
     end
+
+    # PASS THROUGH FOR DIRECTUS ENDPOINT
+    field :directus, GraphQL::Types::JSON, null: false do
+      argument :query, String, required: false
+    end
+
+    def directus(query:)
+      DirectusLoader.load(query).then do |results|
+        results["data"] unless results["errors"]
+      end
+    end
+    ####################################
 
     private
 
