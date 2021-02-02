@@ -86,6 +86,7 @@ class AccountsController < ApplicationController
         :role_tour,
         :role_news_item,
         :role_event_record,
+        :role_waste_calendar,
         :role_push_notification,
         :role_lunch,
         logo_attributes: %i[

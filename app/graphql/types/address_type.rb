@@ -9,5 +9,6 @@ module Types
     field :zip, String, null: true
     field :kind, String, null: true
     field :geo_location, GeoLocationType, null: true
+    field :waste_location_types, [WasteLocationTypeType], null: true
   end
 end

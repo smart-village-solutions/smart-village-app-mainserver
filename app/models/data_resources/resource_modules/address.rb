@@ -2,8 +2,9 @@
 
 # This model provides an address to every other resource which needs one.
 class Address < ApplicationRecord
-  belongs_to :addressable, polymorphic: true
+  belongs_to :addressable, polymorphic: true, optional: true
   has_one :geo_location, as: :geo_locateable, dependent: :destroy
+  has_many :waste_location_types, class_name: "Waste::LocationType"
 
   accepts_nested_attributes_for :geo_location,
                                 reject_if: lambda { |attr|

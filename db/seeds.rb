@@ -21,7 +21,10 @@ doorkeeper_app = Doorkeeper::Application.new name: "MAZ-Converter", redirect_uri
 doorkeeper_app.owner = user
 doorkeeper_app.save
 
-def create_web_url
+# Configs für den Abfallkalender
+StaticContent.create(name: "wasteTypes", data_type: "json", content: File.read("doc/waste_types.json") )
+
+def create_web_url = File.read("doc/waste_types.json")
   WebUrl.create(url: Faker::Internet.url, description: Faker::Lorem.sentence)
 end
 
