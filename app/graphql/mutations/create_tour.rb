@@ -8,6 +8,11 @@ module Mutations
     argument :mobile_description, String, required: false
     argument :active, Boolean, required: false
     argument :category_name, String, required: false
+    argument :categories, [Types::CategoryInput], required: false,
+                                                  as: :category_names,
+                                                  prepare: lambda { |category, _ctx|
+                                                             category.map(&:to_h)
+                                                           }
     argument :addresses, [Types::AddressInput], required: false,
                                                 as: :addresses_attributes,
                                                 prepare: lambda { |addresses, _ctx|

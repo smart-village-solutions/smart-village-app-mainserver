@@ -17,6 +17,11 @@ module Mutations
                                                                       repeat_duration.to_h
                                                                     }
     argument :category_name, String, required: false
+    argument :categories, [Types::CategoryInput], required: false,
+                                                  as: :category_names,
+                                                  prepare: lambda { |category, _ctx|
+                                                             category.map(&:to_h)
+                                                           }
     argument :region_name, String, required: false
     argument :region, Types::RegionInput, required: false
     argument :addresses, [Types::AddressInput], required: false,
