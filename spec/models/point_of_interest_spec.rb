@@ -12,6 +12,7 @@ RSpec.describe PointOfInterest, type: :model do
   it { is_expected.to have_many(:opening_hours) }
   it { is_expected.to have_many(:price_informations) }
   it { is_expected.to have_one(:accessibility_information) }
+  it { is_expected.to have_many(:lunches) }
   it { is_expected.to validate_presence_of(:name) }
 end
 
