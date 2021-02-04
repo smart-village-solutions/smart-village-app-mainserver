@@ -43,6 +43,11 @@ module Types
       argument :category_id, ID, required: false
     end
 
+    field :lunches, [LunchType], function: Resolvers::LunchesSearch
+    field :lunch, LunchType, null: false do
+      argument :id, ID, required: true
+    end
+
     def weather_map(id: nil)
       return OpenWeatherMap.find(id) if id.present?
 
@@ -78,6 +83,10 @@ module Types
       NewsItem.with_category(category_id).map(&:data_provider).sort_by do |data_provider|
         data_provider.name.downcase
       end.uniq
+    end
+
+    def lunch(id:)
+      Lunch.find(id)
     end
 
     # Provide contents from html files in `public/mobile-app/contents` through GraphQL query
