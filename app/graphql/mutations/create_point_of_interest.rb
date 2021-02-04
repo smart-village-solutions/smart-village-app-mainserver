@@ -62,6 +62,12 @@ module Mutations
 
     argument :tags, [String], as: :tag_list, required: false
 
+    argument :lunches,
+             [Types::LunchInput],
+             required: false,
+             as: :lunches_attributes,
+             prepare: ->(lunches, _ctx) { lunches.map(&:to_h) }
+
     field :point_of_interest, Types::PointOfInterestType, null: false
 
     type Types::PointOfInterestType
