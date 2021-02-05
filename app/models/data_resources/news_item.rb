@@ -82,26 +82,31 @@ class NewsItem < ApplicationRecord
           query_type: self.class.to_s
         }
       }
-      PushNotification.new(options).send_notifications
-    end
+    }
+    # TODO: we need to skip this when working with local dev environment
+    PushNotification.new(options).send_notifications
+
+    update_attribute(:push_notifications_sent_at, Time.zone.now)
+  end
 end
 
 # == Schema Information
 #
 # Table name: news_items
 #
-#  id                     :bigint           not null, primary key
-#  author                 :string(255)
-#  full_version           :boolean
-#  characters_to_be_shown :integer
-#  publication_date       :datetime
-#  published_at           :datetime
-#  show_publish_date      :boolean
-#  news_type              :string(255)
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  data_provider_id       :integer
-#  external_id            :text(65535)
-#  title                  :string(255)
-#  visible                :boolean          default(TRUE)
+#  id                         :bigint           not null, primary key
+#  author                     :string(255)
+#  full_version               :boolean
+#  characters_to_be_shown     :integer
+#  publication_date           :datetime
+#  published_at               :datetime
+#  show_publish_date          :boolean
+#  news_type                  :string(255)
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  data_provider_id           :integer
+#  external_id                :text(65535)
+#  title                      :string(255)
+#  visible                    :boolean          default(TRUE)
+#  push_notifications_sent_at :datetime
 #
