@@ -83,8 +83,8 @@ class NewsItem < ApplicationRecord
         }
       }
     }
-    # TODO: we need to skip this when working with local dev environment
-    PushNotification.new(options).send_notifications
+
+    PushNotification.new(options).send_notifications if Rails.env.production?
 
     update_attribute(:push_notifications_sent_at, Time.zone.now)
   end
