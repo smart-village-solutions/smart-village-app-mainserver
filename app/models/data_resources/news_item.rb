@@ -82,12 +82,11 @@ class NewsItem < ApplicationRecord
           query_type: self.class.to_s
         }
       }
-    }
 
-    PushNotification.new(options).send_notifications if Rails.env.production?
+      PushNotification.new(options).send_notifications if Rails.env.production?
 
-    update_attribute(:push_notifications_sent_at, Time.zone.now)
-  end
+      touch(:push_notifications_sent_at)
+    end
 end
 
 # == Schema Information
