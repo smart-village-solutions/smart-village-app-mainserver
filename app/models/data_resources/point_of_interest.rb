@@ -16,8 +16,9 @@ class PointOfInterest < Attraction
   has_many :opening_hours, as: :openingable, dependent: :destroy
   has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
   has_one :location, as: :locateable, dependent: :destroy
+  has_many :lunches, dependent: :destroy
 
-  accepts_nested_attributes_for :price_informations, :opening_hours, :location
+  accepts_nested_attributes_for :price_informations, :opening_hours, :location, :lunches
 
   def unique_id
     fields = [name, type]

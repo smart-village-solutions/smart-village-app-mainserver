@@ -23,6 +23,7 @@ module Types
     field :certificates, [CertificateType], null: true
     field :accessibility_information, AccessibilityInformationType, null: true
     field :tag_list, [String], null: true
+    field :lunches, [LunchType], null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
   end

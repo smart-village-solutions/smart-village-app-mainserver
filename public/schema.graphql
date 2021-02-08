@@ -227,6 +227,35 @@ input LocationInput {
   state: String
 }
 
+type Lunch {
+  createdAt: String
+  dates: [Date!]
+  id: ID
+  listDate: String
+  lunchOffers: [LunchOffer!]
+  pointOfInterest: PointOfInterest!
+  pointOfInterestAttributes: String
+  text: String
+  updatedAt: String
+}
+
+type LunchOffer {
+  createdAt: String
+  id: ID
+  name: String
+  price: String
+  updatedAt: String
+}
+
+enum LunchesOrder {
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
 type MediaContent {
   captionText: String
   contentType: String
@@ -249,10 +278,10 @@ input MediaContentInput {
 type Mutation {
   changeVisibility(id: ID!, recordType: String!, visible: Boolean!): ChangeVisibility!
   createAppUserContent(content: String, dataSource: String, dataType: String): AppUserContent!
-  createEventRecord(accessibilityInformation: AccessibilityInformationInput, addresses: [AddressInput!], categoryName: String, contacts: [ContactInput!], dates: [DateInput!], description: String, externalId: String, forceCreate: Boolean, location: LocationInput, mediaContents: [MediaContentInput!], organizer: OperatingCompanyInput, parentId: Int, priceInformations: [PriceInput!], region: RegionInput, regionName: String, repeat: Boolean, repeatDuration: RepeatDurationInput, tags: [String!], title: String, urls: [WebUrlInput!]): EventRecord!
+  createEventRecord(accessibilityInformation: AccessibilityInformationInput, addresses: [AddressInput!], categories: [CategoryInput!], categoryName: String, contacts: [ContactInput!], dates: [DateInput!], description: String, externalId: String, forceCreate: Boolean, location: LocationInput, mediaContents: [MediaContentInput!], organizer: OperatingCompanyInput, parentId: Int, priceInformations: [PriceInput!], region: RegionInput, regionName: String, repeat: Boolean, repeatDuration: RepeatDurationInput, tags: [String!], title: String, urls: [WebUrlInput!]): EventRecord!
   createNewsItem(address: AddressInput, author: String, categories: [CategoryInput!], categoryName: String, charactersToBeShown: Int, contentBlocks: [ContentBlockInput!], externalId: String, forceCreate: Boolean, fullVersion: Boolean, newsType: String, publicationDate: String, publishedAt: String, pushNotification: Boolean, showPublishDate: Boolean, sourceUrl: WebUrlInput, title: String): NewsItem!
-  createPointOfInterest(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categoryName: String, certificates: [CertificateInput!], contact: ContactInput, description: String, forceCreate: Boolean, location: LocationInput, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, openingHours: [OpeningHourInput!], operatingCompany: OperatingCompanyInput, priceInformations: [PriceInput!], tags: [String!], webUrls: [WebUrlInput!]): PointOfInterest!
-  createTour(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categoryName: String, certificates: [CertificateInput!], contact: ContactInput, description: String, forceCreate: Boolean, geometryTourData: [GeoLocationInput!], lengthKm: Int!, location: LocationInput, meansOfTransportation: String, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, operatingCompany: OperatingCompanyInput, tags: [String!], webUrls: [WebUrlInput!]): Tour!
+  createPointOfInterest(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categories: [CategoryInput!], categoryName: String, certificates: [CertificateInput!], contact: ContactInput, description: String, forceCreate: Boolean, location: LocationInput, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, openingHours: [OpeningHourInput!], operatingCompany: OperatingCompanyInput, priceInformations: [PriceInput!], tags: [String!], webUrls: [WebUrlInput!]): PointOfInterest!
+  createTour(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categories: [CategoryInput!], categoryName: String, certificates: [CertificateInput!], contact: ContactInput, description: String, forceCreate: Boolean, geometryTourData: [GeoLocationInput!], lengthKm: Int!, location: LocationInput, meansOfTransportation: String, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, operatingCompany: OperatingCompanyInput, tags: [String!], webUrls: [WebUrlInput!]): Tour!
   destroyRecord(externalId: Int, id: Int, recordType: String!): Destroy!
 }
 
@@ -359,6 +388,7 @@ type PointOfInterest {
   description: String
   id: ID
   location: Location
+  lunches: [Lunch!]
   mediaContents: [MediaContent!]
   mobileDescription: String
   name: String
@@ -428,6 +458,8 @@ type Query {
   directus(query: String): JSON!
   eventRecord(id: ID!): EventRecord!
   eventRecords(categoryId: ID, dataProvider: String, dataProviderId: ID, dateRange: [String], ids: [ID], limit: Int, order: EventRecordsOrder = createdAt_DESC, skip: Int, take: Int): [EventRecord]
+  lunch(id: ID!): Lunch!
+  lunches(dateRange: [String], ids: [ID], limit: Int, order: LunchesOrder = createdAt_DESC, skip: Int): [Lunch!]!
   newsItem(id: ID!): NewsItem!
   newsItems(categoryId: ID, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: NewsItemsOrder = publishedAt_DESC, skip: Int): [NewsItem]
   newsItemsDataProviders(categoryId: ID): [DataProvider!]!
