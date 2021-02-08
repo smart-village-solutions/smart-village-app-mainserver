@@ -41,47 +41,49 @@ class NewsItem < ApplicationRecord
     data_provider.data_resource_settings.where(data_resource_type: "NewsItem").first.try(:settings)
   end
 
-  def find_or_create_category
-    # für Abwärtskompatibilität, wenn nur ein einiger Kategorienamen angegeben wird
-    # ist der attr_accessor :category_name befüllt
-    if category_name.present?
-      category_to_add = Category.where(name: category_name).first_or_create
-      categories << category_to_add unless categories.include?(category_to_add)
-    end
-
-    # Wenn mehrere Kategorein auf einmal gesetzt werden
-    # ist der attr_accessor :category_names befüllt
-    if category_names.present?
-      category_names.each do |cat|
-        category_to_add = Category.where(name: cat[:name]).first_or_create
-        categories << category_to_add unless categories.include?(category_to_add)
-      end
-    end
-  end
-
   # Sicherstellung der Abwärtskompatibilität seit 09/2020
   def category
     ActiveSupport::Deprecation.warn(":category is replaced by has_many :categories")
     categories.first
   end
 
-  def send_push_notification
-    return unless push_notification.to_s == "true"
+  private
 
-    push_title = title.presence || content_blocks.try(:first).try(:title).presence || "Neue Nachricht"
-    push_body = content_blocks.try(:first).try(:intro).presence || push_title
-    push_body = ActionView::Base.full_sanitizer.sanitize(push_body)
+    def find_or_create_category
+      # für Abwärtskompatibilität, wenn nur ein einiger Kategorienamen angegeben wird
+      # ist der attr_accessor :category_name befüllt
+      if category_name.present?
+        category_to_add = Category.where(name: category_name).first_or_create
+        categories << category_to_add unless categories.include?(category_to_add)
+      end
 
-    options = {
-      title: push_title,
-      body: push_body,
-      data: {
-        id: id,
-        query_type: self.class.to_s
+      # Wenn mehrere Kategorein auf einmal gesetzt werden
+      # ist der attr_accessor :category_names befüllt
+      if category_names.present?
+        category_names.each do |cat|
+          category_to_add = Category.where(name: cat[:name]).first_or_create
+          categories << category_to_add unless categories.include?(category_to_add)
+        end
+      end
+    end
+
+    def send_push_notification
+      return unless push_notification.to_s == "true"
+
+      push_title = title.presence || content_blocks.try(:first).try(:title).presence || "Neue Nachricht"
+      push_body = content_blocks.try(:first).try(:intro).presence || push_title
+      push_body = ActionView::Base.full_sanitizer.sanitize(push_body)
+
+      options = {
+        title: push_title,
+        body: push_body,
+        data: {
+          id: id,
+          query_type: self.class.to_s
+        }
       }
-    }
-    PushNotification.new(options).send_notifications
-  end
+      PushNotification.new(options).send_notifications
+    end
 end
 
 # == Schema Information
