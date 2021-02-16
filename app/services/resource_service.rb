@@ -53,7 +53,9 @@ class ResourceService
 
   def unchanged_attributes?(record)
     return false if record.blank?
+    return @resource.compareable_attributes == record.compareable_attributes if record.respond_to?(:compareable_attributes)
 
+    # Fallback, wenn :compareable_attributes nicht beim Model definiert ist.
     except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id"]
     @resource.attributes.except(*except_attributes) == record.attributes.except(*except_attributes)
   end

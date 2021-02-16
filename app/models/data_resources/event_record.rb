@@ -101,10 +101,19 @@ class EventRecord < ApplicationRecord
     generate_checksum(fields + address_fields + date_fields)
   end
 
+  def compareable_attributes
+    except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id", "dateable_id"]
+
+    list_of_attributes = {}
+    list_of_attributes.merge!(attributes.except(*except_attributes))
+    list_of_attributes.merge!(dates: dates.map { |date| date.attributes.except(*except_attributes) })
+
+    list_of_attributes
+  end
+
   def list_date
     event_dates = dates.order(date_start: :asc)
     dates_count = event_dates.count
-
     return if dates_count.zero?
 
     future_dates = event_dates.select do |date|
@@ -113,7 +122,6 @@ class EventRecord < ApplicationRecord
     future_date = future_dates.first.try(:date_start)
 
     return future_date if future_date.present?
-
     return today_in_time_range(event_dates.first) if dates_count == 1
 
     event_dates.last.try(:date_start)
