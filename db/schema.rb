@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_04_121745) do
+ActiveRecord::Schema.define(version: 2021_02_16_150230) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 2021_02_04_121745) do
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
   end
 
-  create_table "app_user_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "app_user_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "content"
     t.string "data_type"
     t.string "data_source"
@@ -151,7 +151,7 @@ ActiveRecord::Schema.define(version: 2021_02_04_121745) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "data_resource_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "data_resource_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "data_provider_id"
     t.string "data_resource_type"
     t.string "settings"
@@ -195,6 +195,23 @@ ActiveRecord::Schema.define(version: 2021_02_04_121745) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["dateable_type", "dateable_id"], name: "index_fixed_dates_on_dateable_type_and_dateable_id"
+  end
+
+  create_table "generic_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "generic_type"
+    t.text "author"
+    t.datetime "publication_date"
+    t.datetime "published_at"
+    t.text "external_id"
+    t.boolean "visible", default: true
+    t.text "title"
+    t.text "teaser"
+    t.text "description"
+    t.integer "data_provider_id"
+    t.text "payload"
+    t.string "ancestry"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "geo_locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -265,6 +282,7 @@ ActiveRecord::Schema.define(version: 2021_02_04_121745) do
     t.text "external_id"
     t.string "title"
     t.boolean "visible", default: true
+    t.datetime "push_notifications_sent_at"
   end
 
   create_table "notification_devices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -386,7 +404,7 @@ ActiveRecord::Schema.define(version: 2021_02_04_121745) do
     t.index ["event_record_id"], name: "index_repeat_durations_on_event_record_id"
   end
 
-  create_table "static_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "static_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "data_type"
     t.text "content"
@@ -448,6 +466,20 @@ ActiveRecord::Schema.define(version: 2021_02_04_121745) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
+  end
+
+  create_table "waste_location_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "waste_type"
+    t.integer "address_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "waste_pick_up_times", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "waste_location_type_id"
+    t.date "pickup_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "web_urls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DataResourceSetting < ApplicationRecord
-  DATA_RESOURCES = [Tour, PointOfInterest, NewsItem, EventRecord].freeze
+  DATA_RESOURCES = [Tour, PointOfInterest, NewsItem, EventRecord, GenericItem].freeze
 
   store :settings,
         accessors: %i[
