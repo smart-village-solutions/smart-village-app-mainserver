@@ -1,12 +1,11 @@
 image: nixos/nix:2.2.1
 
 variables:
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2375/
   TARGET_HOST: smartvillage.app
 
 services:
-  - docker:19.03.0-dind
+  - docker:dind
 
 stages:
   - build
