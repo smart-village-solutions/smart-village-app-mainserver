@@ -87,6 +87,7 @@ class AccountsController < ApplicationController
         :role_news_item,
         :role_event_record,
         :role_push_notification,
+        :role_lunch,
         logo_attributes: %i[
           id
           url
