@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class LunchOfferType < Types::BaseObject
+  class QueryTypes::LunchOfferType < Types::BaseObject
     field :id, ID, null: true
     field :name, String, null: true
     field :price, String, null: true

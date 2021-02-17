@@ -8,7 +8,7 @@ class Resolvers::ToursSearch
 
   scope { Tour.filtered_for_current_user(context[:current_user]) }
 
-  type types[Types::TourType]
+  type types[Types::QueryTypes::TourType]
 
   class ToursOrder < ::Types::BaseEnum
     value "createdAt_ASC"
@@ -100,7 +100,7 @@ class Resolvers::ToursSearch
     # NOTE: Don't run QueryResolver during tests
     return super unless context.present?
 
-    GraphQL::QueryResolver.run(Tour, context, Types::TourType) do
+    GraphQL::QueryResolver.run(Tour, context, Types::QueryTypes::TourType) do
       super
     end
   end

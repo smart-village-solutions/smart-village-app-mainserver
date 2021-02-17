@@ -8,7 +8,7 @@ class Resolvers::EventRecordsSearch
 
   scope { EventRecord.upcoming(context[:current_user]) }
 
-  type types[Types::EventRecordType]
+  type types[Types::QueryTypes::EventRecordType]
 
   class EventRecordsOrder < ::Types::BaseEnum
     value "createdAt_ASC"
@@ -132,7 +132,7 @@ class Resolvers::EventRecordsSearch
     # NOTE: Don't run QueryResolver during tests
     return super unless context.present?
 
-    GraphQL::QueryResolver.run(EventRecord, context, Types::EventRecordType) do
+    GraphQL::QueryResolver.run(EventRecord, context, Types::QueryTypes::EventRecordType) do
       super
     end
   end

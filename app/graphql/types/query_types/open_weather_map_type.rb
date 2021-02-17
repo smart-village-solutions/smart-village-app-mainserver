@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class OpenWeatherMapType < Types::BaseObject
+  class QueryTypes::OpenWeatherMapType < Types::BaseObject
     field :id, ID, null: true
     field :lat, Float, null: true
     field :lon, Float, null: true

@@ -8,7 +8,7 @@ class Resolvers::LunchesSearch
 
   scope { Lunch.upcoming }
 
-  type types[Types::LunchType]
+  type types[Types::QueryTypes::LunchType]
 
   class LunchesOrder < ::Types::BaseEnum
     value "createdAt_ASC"
@@ -89,7 +89,7 @@ class Resolvers::LunchesSearch
     # NOTE: Don't run QueryResolver during tests
     return super unless context.present?
 
-    GraphQL::QueryResolver.run(Lunch, context, Types::LunchType) do
+    GraphQL::QueryResolver.run(Lunch, context, Types::QueryTypes::LunchType) do
       super
     end
   end

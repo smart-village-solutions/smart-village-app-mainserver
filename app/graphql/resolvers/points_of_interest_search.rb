@@ -8,7 +8,7 @@ class Resolvers::PointsOfInterestSearch
 
   scope { PointOfInterest.filtered_for_current_user(context[:current_user]) }
 
-  type types[Types::PointOfInterestType]
+  type types[Types::QueryTypes::PointOfInterestType]
 
   class PointsOfInterestOrder < ::Types::BaseEnum
     value "createdAt_ASC"
@@ -100,7 +100,7 @@ class Resolvers::PointsOfInterestSearch
     # NOTE: Don't run QueryResolver during tests
     return super unless context.present?
 
-    GraphQL::QueryResolver.run(PointOfInterest, context, Types::PointOfInterestType) do
+    GraphQL::QueryResolver.run(PointOfInterest, context, Types::QueryTypes::PointOfInterestType) do
       super
     end
   end

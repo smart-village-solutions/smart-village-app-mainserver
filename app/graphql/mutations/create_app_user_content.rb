@@ -6,7 +6,7 @@ module Mutations
     argument :data_type, String, required: false
     argument :content, String, required: false
 
-    type Types::AppUserContentType
+    type Types::QueryTypes::AppUserContentType
 
     def resolve(**params)
       return spam_message if spam?

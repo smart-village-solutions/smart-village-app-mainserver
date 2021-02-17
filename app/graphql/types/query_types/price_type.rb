@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class PriceType < Types::BaseObject
+  class QueryTypes::PriceType < Types::BaseObject
     field :id, ID, null: true
     field :name, String, null: true
     field :category, String, null: true

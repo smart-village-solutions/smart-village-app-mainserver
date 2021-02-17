@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class OpeningHourType < Types::BaseObject
+  class QueryTypes::OpeningHourType < Types::BaseObject
     field :id, ID, null: true
     field :weekday, String, null: true
     field :date_from, String, null: true

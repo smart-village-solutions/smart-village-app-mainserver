@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class DateType < Types::BaseObject
+  class QueryTypes::DateType < Types::BaseObject
     field :id, ID, null: true
     field :weekday, String, null: true
     field :date_start, String, null: true

@@ -33,9 +33,9 @@ module Mutations
                                                                      content_blocks.map(&:to_h)
                                                                    }
 
-    field :news_item, Types::NewsItemType, null: true
+    field :news_item, Types::QueryTypes::NewsItemType, null: true
 
-    type Types::NewsItemType
+    type Types::QueryTypes::NewsItemType
 
     def resolve(**params)
       ResourceService.new(data_provider: context[:current_user].try(:data_provider))

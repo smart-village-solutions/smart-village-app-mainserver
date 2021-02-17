@@ -60,9 +60,9 @@ module Mutations
                       }
     argument :tags, [String], as: :tag_list, required: false
 
-    field :event, Types::EventRecordType, null: true
+    field :event, Types::QueryTypes::EventRecordType, null: true
 
-    type Types::EventRecordType
+    type Types::QueryTypes::EventRecordType
 
     def resolve(**params)
       ResourceService.new(data_provider: context[:current_user].try(:data_provider))

@@ -8,7 +8,7 @@ class Resolvers::NewsItemsSearch
 
   scope { NewsItem.filtered_for_current_user(context[:current_user]) }
 
-  type types[Types::NewsItemType]
+  type types[Types::QueryTypes::NewsItemType]
 
   class NewsItemsOrder < ::Types::BaseEnum
     value "createdAt_ASC"
@@ -95,7 +95,7 @@ class Resolvers::NewsItemsSearch
     # NOTE: Don't run QueryResolver during tests
     return super unless context.present?
 
-    GraphQL::QueryResolver.run(NewsItem, context, Types::NewsItemType) do
+    GraphQL::QueryResolver.run(NewsItem, context, Types::QueryTypes::NewsItemType) do
       super
     end
   end

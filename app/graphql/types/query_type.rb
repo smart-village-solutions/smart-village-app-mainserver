@@ -5,46 +5,46 @@ require_relative "../loaders/directus_loader"
 module Types
   class QueryType < Types::BaseObject
     field :weather_maps, function: Resolvers::WeatherSearch
-    field :weather_map, OpenWeatherMapType, null: false do
+    field :weather_map, QueryTypes::OpenWeatherMapType, null: false do
       argument :id, ID, required: false
     end
 
     field :points_of_interest, function: Resolvers::PointsOfInterestSearch
-    field :point_of_interest, PointOfInterestType, null: false do
+    field :point_of_interest, QueryTypes::PointOfInterestType, null: false do
       argument :id, ID, required: true
     end
 
     field :event_records, function: Resolvers::EventRecordsSearch
-    field :event_record, EventRecordType, null: false do
+    field :event_record, QueryTypes::EventRecordType, null: false do
       argument :id, ID, required: true
     end
 
     field :news_items, function: Resolvers::NewsItemsSearch
-    field :news_item, NewsItemType, null: false do
+    field :news_item, QueryTypes::NewsItemType, null: false do
       argument :id, ID, required: true
     end
 
-    field :tours, [TourType], function: Resolvers::ToursSearch
-    field :tour, TourType, null: false do
+    field :tours, [QueryTypes::TourType], function: Resolvers::ToursSearch
+    field :tour, QueryTypes::TourType, null: false do
       argument :id, ID, required: true
     end
 
-    field :categories, [CategoryType], null: false
+    field :categories, [QueryTypes::CategoryType], null: false
 
-    field :public_html_file, PublicHtmlFileType, null: false do
+    field :public_html_file, QueryTypes::PublicHtmlFileType, null: false do
       argument :name, String, required: true
     end
 
-    field :public_json_file, PublicJsonFileType, null: false do
+    field :public_json_file, QueryTypes::PublicJsonFileType, null: false do
       argument :name, String, required: true
     end
 
-    field :news_items_data_providers, [DataProviderType], null: false do
+    field :news_items_data_providers, [QueryTypes::DataProviderType], null: false do
       argument :category_id, ID, required: false
     end
 
-    field :lunches, [LunchType], function: Resolvers::LunchesSearch
-    field :lunch, LunchType, null: false do
+    field :lunches, [QueryTypes::LunchType], function: Resolvers::LunchesSearch
+    field :lunch, QueryTypes::LunchType, null: false do
       argument :id, ID, required: true
     end
 

@@ -68,9 +68,9 @@ module Mutations
              as: :lunches_attributes,
              prepare: ->(lunches, _ctx) { lunches.map(&:to_h) }
 
-    field :point_of_interest, Types::PointOfInterestType, null: false
+    field :point_of_interest, Types::QueryTypes::PointOfInterestType, null: false
 
-    type Types::PointOfInterestType
+    type Types::QueryTypes::PointOfInterestType
 
     def resolve(**params)
       ResourceService.new(data_provider: context[:current_user].try(:data_provider))

@@ -57,9 +57,9 @@ module Mutations
                                                                       }
     argument :tags, [String], as: :tag_list, required: false
 
-    field :tour, Types::TourType, null: false
+    field :tour, Types::QueryTypes::TourType, null: false
 
-    type Types::TourType
+    type Types::QueryTypes::TourType
 
     def resolve(**params)
       ResourceService.new(data_provider: context[:current_user].try(:data_provider))
