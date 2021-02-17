@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class PriceInput < BaseInputObject
+  class InputTypes::PriceInput < BaseInputObject
     argument :name, String, required: false
     argument :amount, AnyPrimitiveType, required: false
     argument :group_price, Boolean, required: false

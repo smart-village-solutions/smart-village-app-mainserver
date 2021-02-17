@@ -14,20 +14,20 @@ module Mutations
     argument :published_at, String, required: false
     argument :show_publish_date, Boolean, required: false
     argument :category_name, String, required: false
-    argument :categories, [Types::CategoryInput], required: false,
+    argument :categories, [Types::InputTypes::CategoryInput], required: false,
                                                   as: :category_names,
                                                   prepare: lambda { |category, _ctx|
                                                              category.map(&:to_h)
                                                            }
-    argument :source_url, Types::WebUrlInput, required: false,
+    argument :source_url, Types::InputTypes::WebUrlInput, required: false,
                                               as: :source_url_attributes,
                                               prepare: ->(source_url, _ctx) { source_url.to_h }
-    argument :address, Types::AddressInput, required: false,
+    argument :address, Types::InputTypes::AddressInput, required: false,
                                             as: :address_attributes,
                                             prepare: lambda { |address, _ctx|
                                                        address.to_h
                                                      }
-    argument :content_blocks, [Types::ContentBlockInput], required: false,
+    argument :content_blocks, [Types::InputTypes::ContentBlockInput], required: false,
                                                           as: :content_blocks_attributes,
                                                           prepare: lambda { |content_blocks, _ctx|
                                                                      content_blocks.map(&:to_h)

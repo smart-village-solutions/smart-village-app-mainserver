@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class OpeningHourInput < BaseInputObject
+  class InputTypes::OpeningHourInput < BaseInputObject
     argument :weekday, String, required: false
     argument :date_from, String, required: false
     argument :date_to, String, required: false
