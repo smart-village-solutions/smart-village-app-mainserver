@@ -28,6 +28,9 @@ class GenericItem < ApplicationRecord
   accepts_nested_attributes_for :content_blocks, :data_provider, :price_informations, :opening_hours,
                                 :media_contents, :accessibility_informations, :addresses, :contacts,
                                 :companies, :locations
+  def generic_items
+    children
+  end
 
   def unique_id
     return external_id if external_id.present?
@@ -41,3 +44,24 @@ class GenericItem < ApplicationRecord
     data_provider.data_resource_settings.where(data_resource_type: "GenericItem").first.try(:settings)
   end
 end
+
+# == Schema Information
+#
+# Table name: generic_items
+#
+#  id               :bigint           not null, primary key
+#  generic_type     :string(255)
+#  author           :text(65535)
+#  publication_date :datetime
+#  published_at     :datetime
+#  external_id      :text(65535)
+#  visible          :boolean          default(TRUE)
+#  title            :text(65535)
+#  teaser           :text(65535)
+#  description      :text(65535)
+#  data_provider_id :integer
+#  payload          :text(65535)
+#  ancestry         :string(255)
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#

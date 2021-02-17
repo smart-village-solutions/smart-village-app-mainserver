@@ -4,6 +4,11 @@ require_relative "../loaders/directus_loader"
 
 module Types
   class QueryType < Types::BaseObject
+    field :generic_items, function: Resolvers::GenericItemSearch
+    field :generic_item, QueryTypes::GenericItemType, null: false do
+      argument :id, ID, required: false
+    end
+
     field :weather_maps, function: Resolvers::WeatherSearch
     field :weather_map, QueryTypes::OpenWeatherMapType, null: false do
       argument :id, ID, required: false
