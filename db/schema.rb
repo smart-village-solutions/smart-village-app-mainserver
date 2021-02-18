@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_04_121745) do
+ActiveRecord::Schema.define(version: 2021_02_05_152344) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -265,6 +265,7 @@ ActiveRecord::Schema.define(version: 2021_02_04_121745) do
     t.text "external_id"
     t.string "title"
     t.boolean "visible", default: true
+    t.datetime "push_notifications_sent_at"
   end
 
   create_table "notification_devices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
