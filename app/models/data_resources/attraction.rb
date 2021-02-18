@@ -17,7 +17,7 @@ class Attraction < ApplicationRecord
   has_one :contact, as: :contactable, dependent: :destroy
   has_many :media_contents, as: :mediaable, dependent: :destroy
   has_one :accessibility_information, as: :accessable, dependent: :destroy
-  has_one :operating_company, as: :companyable, dependent: :destroy
+  has_one :operating_company, as: :companyable, class_name: "OperatingCompany", dependent: :destroy
   has_many :web_urls, as: :web_urlable, dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy
 

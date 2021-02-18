@@ -12,7 +12,7 @@ class GenericItem < ApplicationRecord
   has_many :data_resource_categories, as: :data_resource
   has_many :categories, through: :data_resource_categories
   has_many :contacts, as: :contactable, dependent: :destroy
-  has_many :companies, as: :companyable, dependent: :destroy
+  has_many :companies, as: :companyable, class_name: "OperatingCompany", dependent: :destroy
   has_many :content_blocks, as: :content_blockable, dependent: :destroy
   has_many :web_urls, as: :web_urlable, dependent: :destroy
   has_many :opening_hours, as: :openingable, dependent: :destroy
