@@ -18,6 +18,7 @@ module Types
     field :web_urls, [QueryTypes::WebUrlType], null: true
     field :content_blocks, [QueryTypes::ContentBlockType], null: true
     field :generic_items, [QueryTypes::GenericItemType], null: true
+    field :payload, GraphQL::Types::JSON, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
   end

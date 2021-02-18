@@ -10,6 +10,7 @@ module Mutations
     argument :publication_date, String, required: false
     argument :published_at, String, required: false
     argument :category_name, String, required: false
+    argument :payload, GraphQL::Types::JSON, required: false
     argument :generic_items, [Types::InputTypes::GenericItemInput], required: false,
                                                                     as: :generic_items_attributes,
                                                                     prepare: lambda { |generic_items, _ctx|
