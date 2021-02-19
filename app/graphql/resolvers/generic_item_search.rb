@@ -6,7 +6,7 @@ require "graphql/query_resolver"
 class Resolvers::GenericItemSearch
   include SearchObject.module(:graphql)
 
-  scope { GenericItem.all }
+  scope { GenericItem.filtered_for_current_user(context[:current_user]) }
 
   type types[Types::QueryTypes::GenericItemType]
 

@@ -21,7 +21,6 @@ module Mutations
                                                                      prepare: lambda { |companies, _ctx|
                                                                        companies.map(&:to_h)
                                                                      }
-
     argument :categories, [Types::InputTypes::CategoryInput], required: false,
                                                               as: :category_names,
                                                               prepare: lambda { |category, _ctx|
