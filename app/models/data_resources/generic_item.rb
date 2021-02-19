@@ -2,6 +2,11 @@ class GenericItem < ApplicationRecord
   include FilterByRole
   has_ancestry orphan_strategy: :destroy
 
+  attr_accessor :category_name
+  attr_accessor :category_names
+
+  after_save :find_or_create_category
+
   validates_presence_of :generic_type
   store :payload, coder: JSON
 
@@ -43,6 +48,27 @@ class GenericItem < ApplicationRecord
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "GenericItem").first.try(:settings)
   end
+
+  private
+
+    def find_or_create_category
+      # für Abwärtskompatibilität, wenn nur ein einiger Kategorienamen angegeben wird
+      # ist der attr_accessor :category_name befüllt
+      if category_name.present?
+        category_to_add = Category.where(name: category_name).first_or_create
+        categories << category_to_add unless categories.include?(category_to_add)
+      end
+
+      # Wenn mehrere Kategorein auf einmal gesetzt werden
+      # ist der attr_accessor :category_names befüllt
+      if category_names.present?
+        category_names.each do |cat|
+          category_to_add = Category.where(name: cat[:name]).first_or_create
+          categories << category_to_add unless categories.include?(category_to_add)
+        end
+      end
+    end
+
 end
 
 # == Schema Information
