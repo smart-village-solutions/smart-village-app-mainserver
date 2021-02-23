@@ -8,6 +8,7 @@ module Types
     field :author, String, null: true
     field :categories, [QueryTypes::CategoryType], null: true
     field :companies, [QueryTypes::OperatingCompanyType], null: true
+    field :contacts, [QueryTypes::ContactType], null: true
     field :content_blocks, [QueryTypes::ContentBlockType], null: true
     field :data_provider, QueryTypes::DataProviderType, null: true
     field :dates, [QueryTypes::DateType], null: true

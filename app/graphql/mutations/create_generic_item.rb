@@ -11,6 +11,9 @@ module Mutations
     argument :published_at, String, required: false
     argument :category_name, String, required: false
     argument :payload, GraphQL::Types::JSON, required: false
+    argument :contacts, [Types::InputTypes::ContactInput],
+             required: false, as: :contacts_attributes,
+             prepare: ->(contacts, _ctx) { contacts.map(&:to_h) }
     argument :generic_items, [Types::InputTypes::GenericItemInput], required: false,
                                                                     as: :generic_items_attributes,
                                                                     prepare: lambda { |generic_items, _ctx|
