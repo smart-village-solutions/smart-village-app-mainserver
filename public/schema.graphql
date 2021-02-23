@@ -534,6 +534,7 @@ type PublicJsonFile {
 
 type Query {
   categories: [Category!]!
+  categoryTree: JSON!
   directus(query: String): JSON!
   eventRecord(id: ID!): EventRecord!
   eventRecords(categoryId: ID, dataProvider: String, dataProviderId: ID, dateRange: [String], ids: [ID], limit: Int, order: EventRecordsOrder = createdAt_DESC, skip: Int, take: Int): [EventRecord]

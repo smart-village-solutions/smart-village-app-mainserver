@@ -35,6 +35,7 @@ module Types
     end
 
     field :categories, [QueryTypes::CategoryType], null: false
+    field :category_tree, GraphQL::Types::JSON, null: false
 
     field :public_html_file, QueryTypes::PublicHtmlFileType, null: false do
       argument :name, String, required: true
@@ -84,6 +85,10 @@ module Types
 
     def categories
       Category.all.order(:name)
+    end
+
+    def category_tree
+      Category.order(:name).select(:id, :name, :ancestry).arrange_serializable
     end
 
     def news_items_data_providers(category_id: nil)
