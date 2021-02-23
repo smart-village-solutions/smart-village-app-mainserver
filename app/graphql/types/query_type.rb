@@ -6,7 +6,7 @@ module Types
   class QueryType < Types::BaseObject
     field :generic_items, function: Resolvers::GenericItemSearch
     field :generic_item, QueryTypes::GenericItemType, null: false do
-      argument :id, ID, required: false
+      argument :id, ID, required: true
     end
 
     field :weather_maps, function: Resolvers::WeatherSearch

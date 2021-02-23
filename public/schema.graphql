@@ -193,18 +193,25 @@ enum EventRecordsOrder {
 }
 
 type GenericItem {
+  accessibilityInformations: [AccessibilityInformation!]
   addresses: [Address!]
   author: String
   categories: [Category!]
   companies: [OperatingCompany!]
+  contacts: [Contact!]
   contentBlocks: [ContentBlock!]
   createdAt: String
   dataProvider: DataProvider
+  dates: [Date!]
   externalId: String
   genericItems: [GenericItem!]
   genericType: String
   id: ID
+  locations: [Location!]
+  mediaContents: [MediaContent!]
+  openingHours: [OpeningHour!]
   payload: JSON
+  priceInformations: [Price!]
   publicationDate: String
   publishedAt: String
   settings: Setting
@@ -215,16 +222,23 @@ type GenericItem {
 }
 
 input GenericItemInput {
+  accessibilityInformations: [AccessibilityInformationInput!]
   addresses: [AddressInput!]
   author: String
   categories: [CategoryInput!]
   categoryName: String
   companies: [OperatingCompanyInput!]
+  contacts: [ContactInput!]
   contentBlocks: [ContentBlockInput!]
+  dates: [DateInput!]
   externalId: String
   genericItems: [GenericItemInput!]
   genericType: String
+  locations: [LocationInput!]
+  mediaContents: [MediaContentInput!]
+  openingHours: [OpeningHourInput!]
   payload: JSON
+  priceInformations: [PriceInput!]
   publicationDate: String
   publishedAt: String
   pushNotification: Boolean
@@ -237,6 +251,8 @@ enum GenericItemOrder {
   createdAt_DESC
   id_ASC
   id_DESC
+  publishedAt_ASC
+  publishedAt_DESC
   updatedAt_ASC
   updatedAt_DESC
 }
@@ -341,7 +357,7 @@ type Mutation {
   changeVisibility(id: ID!, recordType: String!, visible: Boolean!): ChangeVisibility!
   createAppUserContent(content: String, dataSource: String, dataType: String): AppUserContent!
   createEventRecord(accessibilityInformation: AccessibilityInformationInput, addresses: [AddressInput!], categories: [CategoryInput!], categoryName: String, contacts: [ContactInput!], dates: [DateInput!], description: String, externalId: String, forceCreate: Boolean, location: LocationInput, mediaContents: [MediaContentInput!], organizer: OperatingCompanyInput, parentId: Int, priceInformations: [PriceInput!], region: RegionInput, regionName: String, repeat: Boolean, repeatDuration: RepeatDurationInput, tags: [String!], title: String, urls: [WebUrlInput!]): EventRecord!
-  createGenericItem(addresses: [AddressInput!], author: String, categories: [CategoryInput!], categoryName: String, companies: [OperatingCompanyInput!], contentBlocks: [ContentBlockInput!], externalId: String, genericItems: [GenericItemInput!], genericType: String, payload: JSON, publicationDate: String, publishedAt: String, pushNotification: Boolean, title: String, webUrls: [WebUrlInput!]): GenericItem!
+  createGenericItem(accessibilityInformations: [AccessibilityInformationInput!], addresses: [AddressInput!], author: String, categories: [CategoryInput!], categoryName: String, companies: [OperatingCompanyInput!], contacts: [ContactInput!], contentBlocks: [ContentBlockInput!], dates: [DateInput!], externalId: String, genericItems: [GenericItemInput!], genericType: String, locations: [LocationInput!], mediaContents: [MediaContentInput!], openingHours: [OpeningHourInput!], payload: JSON, priceInformations: [PriceInput!], publicationDate: String, publishedAt: String, pushNotification: Boolean, title: String, webUrls: [WebUrlInput!]): GenericItem!
   createNewsItem(address: AddressInput, author: String, categories: [CategoryInput!], categoryName: String, charactersToBeShown: Int, contentBlocks: [ContentBlockInput!], externalId: String, forceCreate: Boolean, fullVersion: Boolean, newsType: String, publicationDate: String, publishedAt: String, pushNotification: Boolean, showPublishDate: Boolean, sourceUrl: WebUrlInput, title: String): NewsItem!
   createPointOfInterest(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categories: [CategoryInput!], categoryName: String, certificates: [CertificateInput!], contact: ContactInput, description: String, forceCreate: Boolean, location: LocationInput, lunches: [LunchInput!], mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, openingHours: [OpeningHourInput!], operatingCompany: OperatingCompanyInput, priceInformations: [PriceInput!], tags: [String!], webUrls: [WebUrlInput!]): PointOfInterest!
   createTour(accessibilityInformation: AccessibilityInformationInput, active: Boolean, addresses: [AddressInput!], categories: [CategoryInput!], categoryName: String, certificates: [CertificateInput!], contact: ContactInput, description: String, forceCreate: Boolean, geometryTourData: [GeoLocationInput!], lengthKm: Int!, location: LocationInput, meansOfTransportation: String, mediaContents: [MediaContentInput!], mobileDescription: String, name: String!, operatingCompany: OperatingCompanyInput, tags: [String!], webUrls: [WebUrlInput!]): Tour!
@@ -521,8 +537,8 @@ type Query {
   directus(query: String): JSON!
   eventRecord(id: ID!): EventRecord!
   eventRecords(categoryId: ID, dataProvider: String, dataProviderId: ID, dateRange: [String], ids: [ID], limit: Int, order: EventRecordsOrder = createdAt_DESC, skip: Int, take: Int): [EventRecord]
-  genericItem(id: ID): GenericItem!
-  genericItems(ids: [ID], limit: Int, order: GenericItemOrder = createdAt_DESC, skip: Int): [GenericItem]
+  genericItem(id: ID!): GenericItem!
+  genericItems(categoryId: ID, dataProvider: String, dataProviderId: ID, externalId: ID, genericType: String, ids: [ID], limit: Int, order: GenericItemOrder = createdAt_DESC, skip: Int): [GenericItem]
   lunch(id: ID!): Lunch!
   lunches(dateRange: [String], ids: [ID], limit: Int, order: LunchesOrder = createdAt_DESC, skip: Int): [Lunch!]!
   newsItem(id: ID!): NewsItem!

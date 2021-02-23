@@ -69,8 +69,6 @@ module Mutations
                accessibility_informations.map(&:to_h)
              }
 
-
-
     type Types::QueryTypes::GenericItemType
 
     def resolve(**params)
