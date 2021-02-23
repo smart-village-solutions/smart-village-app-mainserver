@@ -60,7 +60,11 @@ module Mutations
     argument :dates, [Types::InputTypes::DateInput], required: false,
                                                      as: :dates_attributes,
                                                      prepare: ->(dates, _ctx) { dates.map(&:to_h) }
-
+    argument :accessibility_informations, [Types::InputTypes::AccessibilityInformationInput],
+             required: false, as: :accessibility_informations_attributes,
+             prepare: lambda { |accessibility_informations, _ctx|
+               accessibility_informations.map(&:to_h)
+             }
 
 
 

@@ -24,6 +24,7 @@ module Types
     field :media_contents, [QueryTypes::MediaContentType], null: true
     field :locations, [QueryTypes::LocationType], null: true
     field :dates, [QueryTypes::DateType], null: true
+    field :accessibility_informations, [QueryTypes::AccessibilityInformationType], null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
   end
