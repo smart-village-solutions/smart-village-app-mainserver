@@ -58,6 +58,9 @@ module Types
     argument :locations, [Types::InputTypes::LocationInput], required: false,
                                                              as: :locations_attributes,
                                                              prepare: ->(location, _ctx) { location.map(&:to_h) }
+    argument :dates, [Types::InputTypes::DateInput], required: false,
+                                                     as: :dates_attributes,
+                                                     prepare: ->(dates, _ctx) { dates.map(&:to_h) }
 
 
   end

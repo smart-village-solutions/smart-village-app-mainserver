@@ -24,6 +24,7 @@ class GenericItem < ApplicationRecord
   has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
   has_many :media_contents, as: :mediaable, dependent: :destroy
   has_many :locations, as: :locateable, dependent: :destroy
+  has_many :dates, as: :dateable, class_name: "FixedDate", dependent: :destroy
 
   scope :with_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
@@ -32,7 +33,7 @@ class GenericItem < ApplicationRecord
   accepts_nested_attributes_for :web_urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :content_blocks, :data_provider, :price_informations, :opening_hours,
                                 :media_contents, :accessibility_informations, :addresses, :contacts,
-                                :companies, :locations
+                                :companies, :locations, :dates
   def generic_items
     children
   end
