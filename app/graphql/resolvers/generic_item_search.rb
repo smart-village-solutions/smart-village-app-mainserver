@@ -25,6 +25,11 @@ class Resolvers::GenericItemSearch
   option :skip, type: types.Int, with: :apply_skip
   option :ids, type: types[types.ID], with: :apply_ids
   option :order, type: GenericItemOrder, default: "createdAt_DESC"
+  option :dataProvider, type: types.String, with: :apply_data_provider
+  option :dataProviderId, type: types.ID, with: :apply_data_provider_id
+  option :categoryId, type: types.ID, with: :apply_category_id
+  option :genericType, type: types.String, with: :apply_generic_type
+  option :externalId, type: types.ID, with: :apply_external_id
 
   def apply_limit(scope, value)
     scope.limit(value)
@@ -72,6 +77,26 @@ class Resolvers::GenericItemSearch
 
   def apply_order_with_id_asc(scope)
     scope.order("id ASC")
+  end
+
+  def apply_data_provider(scope, value)
+    scope.joins(:data_provider).where(data_providers: { name: value })
+  end
+
+  def apply_data_provider_id(scope, value)
+    scope.joins(:data_provider).where(data_providers: { id: value })
+  end
+
+  def apply_category_id(scope, value)
+    scope.with_category(value)
+  end
+
+  def apply_generic_type(scope, value)
+    scope.where(generic_type: value)
+  end
+
+  def apply_external_id(scope, value)
+    scope.where(external_id: value)
   end
 
   # https://github.com/nettofarah/graphql-query-resolver
