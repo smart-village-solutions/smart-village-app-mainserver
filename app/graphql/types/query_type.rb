@@ -74,6 +74,10 @@ module Types
       NewsItem.find(id)
     end
 
+    def generic_item(id:)
+      GenericItem.find(id)
+    end
+
     def tour(id:)
       Tour.find(id)
     end
