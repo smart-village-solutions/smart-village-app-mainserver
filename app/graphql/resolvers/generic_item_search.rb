@@ -11,25 +11,25 @@ class Resolvers::GenericItemSearch
   type types[Types::QueryTypes::GenericItemType]
 
   class GenericItemOrder < ::Types::BaseEnum
-    value "publishedAt_ASC"
-    value "publishedAt_DESC"
     value "createdAt_ASC"
     value "createdAt_DESC"
-    value "updatedAt_ASC"
-    value "updatedAt_DESC"
     value "id_ASC"
     value "id_DESC"
+    value "publishedAt_ASC"
+    value "publishedAt_DESC"
+    value "updatedAt_ASC"
+    value "updatedAt_DESC"
   end
 
-  option :limit, type: types.Int, with: :apply_limit
-  option :skip, type: types.Int, with: :apply_skip
-  option :ids, type: types[types.ID], with: :apply_ids
-  option :order, type: GenericItemOrder, default: "createdAt_DESC"
+  option :categoryId, type: types.ID, with: :apply_category_id
   option :dataProvider, type: types.String, with: :apply_data_provider
   option :dataProviderId, type: types.ID, with: :apply_data_provider_id
-  option :categoryId, type: types.ID, with: :apply_category_id
-  option :genericType, type: types.String, with: :apply_generic_type
   option :externalId, type: types.ID, with: :apply_external_id
+  option :genericType, type: types.String, with: :apply_generic_type
+  option :ids, type: types[types.ID], with: :apply_ids
+  option :limit, type: types.Int, with: :apply_limit
+  option :order, type: GenericItemOrder, default: "createdAt_DESC"
+  option :skip, type: types.Int, with: :apply_skip
 
   def apply_limit(scope, value)
     scope.limit(value)

@@ -16,15 +16,15 @@ class GenericItem < ApplicationRecord
   has_many :addresses, as: :addressable, dependent: :destroy
   has_many :data_resource_categories, as: :data_resource
   has_many :categories, through: :data_resource_categories
-  has_many :contacts, as: :contactable, dependent: :destroy
   has_many :companies, as: :companyable, class_name: "OperatingCompany", dependent: :destroy
+  has_many :contacts, as: :contactable, dependent: :destroy
   has_many :content_blocks, as: :content_blockable, dependent: :destroy
-  has_many :web_urls, as: :web_urlable, dependent: :destroy
+  has_many :dates, as: :dateable, class_name: "FixedDate", dependent: :destroy
+  has_many :locations, as: :locateable, dependent: :destroy
+  has_many :media_contents, as: :mediaable, dependent: :destroy
   has_many :opening_hours, as: :openingable, dependent: :destroy
   has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
-  has_many :media_contents, as: :mediaable, dependent: :destroy
-  has_many :locations, as: :locateable, dependent: :destroy
-  has_many :dates, as: :dateable, class_name: "FixedDate", dependent: :destroy
+  has_many :web_urls, as: :web_urlable, dependent: :destroy
 
   scope :with_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
