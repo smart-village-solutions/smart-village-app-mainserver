@@ -11,6 +11,8 @@ class Resolvers::GenericItemSearch
   type types[Types::QueryTypes::GenericItemType]
 
   class GenericItemOrder < ::Types::BaseEnum
+    value "publishedAt_ASC"
+    value "publishedAt_DESC"
     value "createdAt_ASC"
     value "createdAt_DESC"
     value "updatedAt_ASC"
@@ -38,6 +40,14 @@ class Resolvers::GenericItemSearch
 
   def apply_order(scope, value)
     scope.order(value)
+  end
+
+  def apply_order_with_published_at_desc(scope)
+    scope.order("published_at DESC")
+  end
+
+  def apply_order_with_published_at_asc(scope)
+    scope.order("published_at ASC")
   end
 
   def apply_order_with_created_at_desc(scope)
