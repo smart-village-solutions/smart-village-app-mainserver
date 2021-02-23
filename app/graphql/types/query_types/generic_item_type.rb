@@ -19,6 +19,10 @@ module Types
     field :content_blocks, [QueryTypes::ContentBlockType], null: true
     field :generic_items, [QueryTypes::GenericItemType], null: true
     field :payload, GraphQL::Types::JSON, null: true
+    field :price_informations, [QueryTypes::PriceType], null: true
+    field :opening_hours, [QueryTypes::OpeningHourType], null: true
+    field :media_contents, [QueryTypes::MediaContentType], null: true
+    field :locations, [QueryTypes::LocationType], null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
   end

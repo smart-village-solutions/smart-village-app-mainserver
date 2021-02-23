@@ -40,6 +40,25 @@ module Types
                                                                       prepare: lambda { |content_blocks, _ctx|
                                                                         content_blocks.map(&:to_h)
                                                                       }
+    argument :opening_hours, [Types::InputTypes::OpeningHourInput], required: false,
+                                                                    as: :opening_hours_attributes,
+                                                                    prepare: lambda { |opening_hours, _ctx|
+                                                                      opening_hours.map(&:to_h)
+                                                                    }
+    argument :price_informations, [Types::InputTypes::PriceInput], required: false,
+                                                                   as: :price_informations_attributes,
+                                                                   prepare: lambda { |price_informations, _ctx|
+                                                                     price_informations.map(&:to_h)
+                                                                   }
+    argument :media_contents, [Types::InputTypes::MediaContentInput], required: false,
+                                                                      as: :media_contents_attributes,
+                                                                      prepare: lambda { |media_contents, _ctx|
+                                                                        media_contents.map(&:to_h)
+                                                                      }
+    argument :locations, [Types::InputTypes::LocationInput], required: false,
+                                                             as: :locations_attributes,
+                                                             prepare: ->(location, _ctx) { location.map(&:to_h) }
+
 
   end
 end
