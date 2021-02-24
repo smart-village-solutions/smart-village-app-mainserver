@@ -2,6 +2,7 @@ class GenericItem < ApplicationRecord
   include FilterByRole
   has_ancestry orphan_strategy: :destroy
 
+  attr_accessor :force_create
   attr_accessor :category_name
   attr_accessor :category_names
 
