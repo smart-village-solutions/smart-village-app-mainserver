@@ -32,6 +32,10 @@
         <li class="nav-item">
           <%= link_to "Categories", categories_path, class: 'nav-link' %>
         </li>
+
+        <li class="nav-item">
+          <%= link_to "BackgroundJobs", "/background", class: 'nav-link' %>
+        </li>
       <% end %>
       <% if current_user && current_user.try(:data_provider).try(:role_push_notification) %>
         <li class="nav-item">
