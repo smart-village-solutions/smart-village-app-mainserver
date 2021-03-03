@@ -67,6 +67,7 @@ gem "aws-sdk-s3", require: false
 
 # Hintergrunddienst delayed job
 gem "better_delayed_job_web"
+gem "daemons"
 gem "delayed_job_active_record"
 
 group :development, :test do
