@@ -16,7 +16,8 @@ class Notification::WastesController < ApplicationController
   # GET /notification/devices.json
   def index
     @notification_device = Notification::Device.find_by(token: params[:token])
-    @waste_device_registrations = Waste::DeviceRegistration.where(notification_device_id: @notification_device.id ) if @notification_device.present?
+    @waste_device_registrations = @notification_device.waste_registrations if @notification_device.present?
+
     respond_to do |format|
       if @waste_device_registrations.present?
         format.json { render json: @waste_device_registrations }
@@ -35,12 +36,18 @@ class Notification::WastesController < ApplicationController
 
     if @notification_device.present?
       @waste_device_registration = Waste::DeviceRegistration
-                                     .where(waste_registration_params.merge(notification_device_id: @notification_device.id))
+                                     .where(waste_registration_params.merge(notification_device_token: @notification_device.token))
                                      .first_or_create
+      @waste_device_registration.update(waste_registration_update_params)
     end
 
     respond_to do |format|
-      format.json { render json: @waste_device_registration.to_json(only: [:id, :created_at, :updated_at]), status: :created }
+      format.json {
+        render json: @waste_device_registration.to_json(
+          only: [:id, :street, :zip, :city, :created_at, :updated_at, :notify_days_before, :notify_for_waste_type],
+          methods: [:notify_at_time]
+          ), status: :created
+      }
     end
   end
 
@@ -48,7 +55,7 @@ class Notification::WastesController < ApplicationController
   # DELETE /notification/devices/1.json
   def destroy
     @notification_device = Notification::Device.find_by(token: params[:token])
-    @waste_device_registration = Waste::DeviceRegistration.where(notification_device_id: @notification_device.id, id: params[:id]).first
+    @waste_device_registration = @notification_device.waste_registrations.where(id: params[:id]).first
 
     respond_to do |format|
       if @waste_device_registration.present?
@@ -68,6 +75,10 @@ class Notification::WastesController < ApplicationController
     end
 
     def waste_registration_params
-      params.require(:waste_registration).permit(:street, :city, :zip, :notify_days_before, :notify_at, :notify_for_waste_type)
+      params.require(:waste_registration).permit(:street, :city, :zip, :notify_for_waste_type)
+    end
+
+    def waste_registration_update_params
+      params.require(:waste_registration).permit(:notify_days_before, :notify_at)
     end
 end

@@ -1,7 +1,7 @@
 class CreateWasteDeviceRegistrations < ActiveRecord::Migration[5.2]
   def change
     create_table :waste_device_registrations do |t|
-      t.integer :notification_device_id
+      t.string :notification_device_token
       t.string :street
       t.string :city
       t.string :zip
