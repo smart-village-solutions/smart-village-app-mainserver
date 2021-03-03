@@ -65,6 +65,10 @@ gem "rollbar"
 # Storage to minio service
 gem "aws-sdk-s3", require: false
 
+# Hintergrunddienst delayed job
+gem "better_delayed_job_web"
+gem "delayed_job_active_record"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
