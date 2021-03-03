@@ -2,6 +2,7 @@
 
 Rails.application.routes.draw do
   namespace :notification do
+    resources :wastes
     resources :devices do
       collection do
         delete "remove" => "devices#destroy"
