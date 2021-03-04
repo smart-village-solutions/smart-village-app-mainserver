@@ -37,10 +37,11 @@ class WasteNotification
         next if registration_to_check.blank?
         next if waste_pickup_time.blank?
 
+        date_time_to_run = DateTime.parse("#{check_date} #{registration_to_check.notify_at_time}")
         p "Registration Found for Waste::LocationType: #{waste_pickup_time.waste_location_type.id}, #{registration_to_check.id} on #{waste_pickup_time.pickup_date}"
+        p "Run at: #{date_time_to_run}"
 
         # Send Notification
-        date_time_to_run = DateTime.parse("#{check_date} #{registration_to_check.notify_at_time}")
         WasteNotificationJob.delay(run_at: date_time_to_run).perform(registration_to_check.id, waste_pickup_time.id)
       end
     end
