@@ -23,7 +23,7 @@ class PushNotification
       feedback = @client.send_messages(messages)
 
       # Log PushNotification
-      RedisAdapter.add_push_log(device.token, message_options.merge(date: DateTime.now, payload: feedback))
+      RedisAdapter.add_push_log(device.token, message_options.merge(date: DateTime.now, payload: feedback.try(:response).try(:body)))
     end
   end
 end
