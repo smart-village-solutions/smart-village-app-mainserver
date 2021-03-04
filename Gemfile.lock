@@ -175,6 +175,7 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    hiredis (0.6.3)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
@@ -289,6 +290,7 @@ GEM
     rb-inotify (0.10.0)
       ffi (~> 1.0)
     rb-readline (0.5.5)
+    redis (4.2.5)
     request_store (1.4.1)
       rack (>= 1.4)
     responders (3.0.0)
@@ -448,6 +450,7 @@ DEPENDENCIES
   graphql-remote_loader
   guard
   guard-rspec
+  hiredis
   jbuilder (~> 2.5)
   jquery-rails
   jsoneditor-rails
@@ -461,6 +464,7 @@ DEPENDENCIES
   rails (~> 5.2.4)
   rails-controller-testing
   rb-readline
+  redis
   rollbar
   rspec-rails
   ruby-debug-ide

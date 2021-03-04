@@ -17,6 +17,9 @@ class WasteNotificationJob < ActiveJob::Base
 
     # sending message
     client = Exponent::Push::Client.new
-    client.send_messages(messages)
+    feedback = client.send_messages(messages)
+
+    # Log PushNotification
+    RedisAdapter.add_push_log(device.token, message_options.merge(date: DateTime.now, payload: feedback))
   end
 end

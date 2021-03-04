@@ -25,11 +25,51 @@
           <tr>
             <td class="align-middle"><%= notification_device.token %></td>
             <td class="align-middle"><%= notification_device.device_type %></td>
+            <td class="align-middle" style="width: 70px"><%= link_to 'Logs', notification_device_path(notification_device), class: 'btn btn-sm btn-outline-secondary' %></td>
             <td class="align-middle" style="width: 70px"><%= link_to 'Edit', edit_notification_device_path(notification_device), class: 'btn btn-sm btn-outline-secondary' %></td>
             <td class="align-middle" style="width: 70px"><%= link_to 'Destroy', notification_device, method: :delete,class: 'btn btn-sm btn-outline-danger', data: { confirm: 'Are you sure?' } %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
+
+    <br />
+
+    <h1>All PushNotification Logs</h1>
+    <p>Daten werden nach 2 Stunden automatisch gelöscht</p>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Device Token</th>
+          <th>Messages Title</th>
+          <th>Messages Body</th>
+          <th>Messages Data</th>
+          <th>Payload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @push_logs.each do |token, messages| %>
+          <% messages.each do |message| %>
+            <% begin
+                 serialized_message = JSON.parse(message)
+               rescue
+                 serialized_message = {}
+               end
+            %>
+            <tr>
+              <td><%= serialized_message["date"] %></td>
+              <td><%= token %></td>
+              <td><%= serialized_message["title"] %></td>
+              <td><%= serialized_message["body"] %></td>
+              <td><%= serialized_message["data"] %></td>
+              <td><%= serialized_message["payload"] %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+
   </div>
 </div>

@@ -34,6 +34,8 @@ class WasteNotification
       waste_pickup_times.each do |waste_pickup_time|
         next unless matching_address_and_type(waste_pickup_time, registration_to_check)
         next unless (check_date + registration_to_check.notify_days_before.days) == waste_pickup_time.pickup_date
+        next if registration_to_check.blank?
+        next if waste_pickup_time.blank?
 
         p "Registration Found for Waste::LocationType: #{waste_pickup_time.waste_location_type.id}, #{registration_to_check.id} on #{waste_pickup_time.pickup_date}"
 
