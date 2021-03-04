@@ -1,7 +1,5 @@
-class WasteNotificationJob < ActiveJob::Base
-  queue_as :default
-
-  def perform(waste_registration_id, waste_pickup_time_id)
+class WasteNotificationJob
+  def self.perform(waste_registration_id, waste_pickup_time_id)
     waste_pickup_time = Waste::PickUpTime.find_by(id: waste_pickup_time_id)
     registration_to_check = Waste::DeviceRegistration.find_by(id: waste_registration_id)
     waste_types = JSON.parse(StaticContent.find_by(name: "wasteTypes").content)

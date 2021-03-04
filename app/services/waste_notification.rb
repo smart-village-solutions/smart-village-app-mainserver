@@ -40,10 +40,8 @@ class WasteNotification
         p "Registration Found for Waste::LocationType: #{waste_pickup_time.waste_location_type.id}, #{registration_to_check.id} on #{waste_pickup_time.pickup_date}"
 
         # Send Notification
-        Delayed::Job.enqueue(
-          WasteNotificationJob.new(registration_to_check.id, waste_pickup_time.id),
-          run_at: DateTime.parse("#{check_date} #{registration_to_check.notify_at_time}")
-        )
+        date_time_to_run = DateTime.parse("#{check_date} #{registration_to_check.notify_at_time}")
+        WasteNotificationJob.delay(run_at: date_time_to_run).perform(registration_to_check.id, waste_pickup_time.id)
       end
     end
 
