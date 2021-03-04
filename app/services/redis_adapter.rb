@@ -3,15 +3,15 @@
 module RedisAdapter
   class << self
 
-    # Stor Logs for a Push notification per device token
+    # Store Logs for a Push notification per device token.
+    # Old logs will be deleted after a defined timespan
     #
     # @param [String] device_token
     # @param [Hash] message {date: DaeTime, title: "", body: "", payload: ""}
     #
-    # @return [<Type>] <description>
     def add_push_log(device_token, message)
       redis.rpush("#{namespace}:push_log:#{device_token}", message.to_json)
-      redis.expire("#{namespace}:push_log:#{device_token}", 7200)
+      redis.expire("#{namespace}:push_log:#{device_token}", 24.hours.to_i)
     rescue
       nil
     end
