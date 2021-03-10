@@ -9,7 +9,6 @@ class WasteNotification
 
   def send_notifications
     all_waste_registrations = Waste::DeviceRegistration.all
-    # Waste::LocationType
 
     # Load all possible addresses for registered push notifications
     possible_addresses = Address.joins(:waste_location_types).where(
@@ -17,7 +16,6 @@ class WasteNotification
       city: all_waste_registrations.pluck(:city),
       zip: all_waste_registrations.pluck(:zip)
     )
-    # possible_addresses
 
     # Load all PickupTimes of next couple days
     number_of_days = all_waste_registrations.pluck(:notify_days_before).uniq
@@ -58,10 +56,16 @@ class WasteNotification
       waste_pickup_time.waste_location_type.waste_type == registration_to_check.notify_for_waste_type
   end
 
+  # Alle Tage, die müssen überprüft werden müssen
+  #
+  # @param [Array of Integers] number_of_days
+  # Die Anzahl der Tage, die eine Benachrichtigung vor einem Abholtag Informiert werden soll
+  #
+  # @return [Array of Date] Liste an Datumseinträgen die für eine Abholung in Frage kommen
   def dates_to_check(number_of_days)
-    all_days = [@check_date]
+    all_days = [check_date]
     number_of_days.sort.each do |days_before|
-      all_days << @check_date + days_before.days
+      all_days << check_date + days_before.days
     end
 
     all_days.uniq
