@@ -13,14 +13,14 @@ class Resolvers::EventRecordsSearch
   class EventRecordsOrder < ::Types::BaseEnum
     value "createdAt_ASC"
     value "createdAt_DESC"
-    value "updatedAt_ASC"
-    value "updatedAt_DESC"
-    value "title_ASC"
-    value "title_DESC"
     value "id_ASC"
     value "id_DESC"
-    value "listDate_DESC"
     value "listDate_ASC"
+    value "listDate_DESC"
+    value "title_ASC"
+    value "title_DESC"
+    value "updatedAt_ASC"
+    value "updatedAt_DESC"
   end
 
   option :dateRange, type: types[types.String], with: :apply_date_range

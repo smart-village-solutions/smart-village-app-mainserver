@@ -13,13 +13,13 @@ class Resolvers::ToursSearch
   class ToursOrder < ::Types::BaseEnum
     value "createdAt_ASC"
     value "createdAt_DESC"
-    value "updatedAt_ASC"
-    value "updatedAt_DESC"
-    value "name_ASC"
-    value "name_DESC"
     value "id_ASC"
     value "id_DESC"
+    value "name_ASC"
+    value "name_DESC"
     value "RAND"
+    value "updatedAt_ASC"
+    value "updatedAt_DESC"
   end
 
   option :limit, type: types.Int, with: :apply_limit
