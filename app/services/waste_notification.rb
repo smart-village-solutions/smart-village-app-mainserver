@@ -20,13 +20,13 @@ class WasteNotification
     # Load all PickupTimes of next couple days
     number_of_days = all_waste_registrations.pluck(:notify_days_before).uniq
     date_span = dates_to_check(number_of_days)
-    pickup_times = Waste::PickUpTime.where(pickup_date: date_span)
+    waste_pickup_time_ids_of_next_days = Waste::PickUpTime.where(pickup_date: date_span).pluck(:id)
 
-    # load all Waste::LocationType in given addreses and timespan
+    # load all Waste::LocationType in given addresses and timespan
     waste_pickup_times = Waste::PickUpTime
-                             .includes(:waste_location_type)
-                             .where(id: pickup_times.map(&:id))
-                             .where(waste_location_types: { address_id: possible_addresses.map(&:id) })
+                           .includes(:waste_location_type)
+                           .where(id: waste_pickup_time_ids_of_next_days)
+                           .where(waste_location_types: { address_id: possible_addresses.map(&:id) })
 
     all_waste_registrations.each do |registration_to_check|
       waste_pickup_times.each do |waste_pickup_time|
