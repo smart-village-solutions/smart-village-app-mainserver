@@ -15,6 +15,8 @@ class Resolvers::GenericItemSearch
     value "createdAt_DESC"
     value "id_ASC"
     value "id_DESC"
+    value "publicationDate_ASC"
+    value "publicationDate_DESC"
     value "publishedAt_ASC"
     value "publishedAt_DESC"
     value "updatedAt_ASC"
@@ -45,6 +47,14 @@ class Resolvers::GenericItemSearch
 
   def apply_order(scope, value)
     scope.order(value)
+  end
+
+  def apply_order_with_publication_date_desc(scope)
+    scope.order("publication_date DESC")
+  end
+
+  def apply_order_with_publication_date_asc(scope)
+    scope.order("publication_date ASC")
   end
 
   def apply_order_with_published_at_desc(scope)
