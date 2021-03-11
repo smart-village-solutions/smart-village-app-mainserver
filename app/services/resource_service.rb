@@ -27,9 +27,10 @@ class ResourceService
     # record and the record is not marked as 'always_recreate'
     external_resource = find_external_resource
     old_record = external_resource.try(:external)
-    return old_record if external_resource.present? &&
-                         unchanged_attributes?(old_record) &&
-                         !always_recreate?(data_provider, resource_class)
+    if external_resource.present? && unchanged_attributes?(old_record) && !always_recreate?(data_provider, resource_class)
+      external_resource.touch
+      return old_record
+    end
 
     create_or_recreate(old_record, external_resource)
     resource_or_error_message(resource)
@@ -38,9 +39,6 @@ class ResourceService
   def create_or_recreate(old_record, external_resource)
     ActiveRecord::Base.transaction do
       old_record.destroy if old_record.present?
-      # necessary because dependant: :destroy sometimes works for external resource
-      # and sometimes doesn't
-      # TODO: Remove line and make dependant: :destroy work
       external_resource.destroy if external_resource.present?
       if @resource.save
         create_external_resource
