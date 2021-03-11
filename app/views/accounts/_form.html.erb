@@ -259,11 +259,13 @@
 
     <div class="row">
       <div class="form-group col-6">
-        <%= s.label :only_summary_link_text, "Linktext" %>
-        <%= s.text_field :only_summary_link_text, class: "form-control", placeholder: "Weiterlesen" %>
-        <small class="form-text text-muted">
-          Dieser Text wird angezeigt, wenn die Checkbox 'Nur Zusammenfassung anzeigen' aktiviert ist.
-        </small>
+        <div class="form-check">
+          <%= s.check_box :cleanup_old_records, { class: "form-check-input"}, "true", "false" %>
+          <%= s.label :cleanup_old_records, "Alte Daten regelmäßig löschen", class: "form-check-label" %>
+          <small class="form-text text-muted">
+            Täglich werden Daten diesen Typs gelöscht, wenn diese mehr als 48 Stunden älter sind als der zuletzt importierte Datensatz.
+          </small>
+        </div>
       </div>
 
       <div class="form-group col-6">
@@ -297,6 +299,15 @@
               ) %>
         </small>
       </div>
+
+      <div class="form-group col-6">
+        <%= s.label :only_summary_link_text, "Linktext" %>
+        <%= s.text_field :only_summary_link_text, class: "form-control", placeholder: "Weiterlesen" %>
+        <small class="form-text text-muted">
+          Dieser Text wird angezeigt, wenn die Checkbox 'Nur Zusammenfassung anzeigen' aktiviert ist.
+        </small>
+      </div>
+
     </div>
   <% end %>
 <% end %>

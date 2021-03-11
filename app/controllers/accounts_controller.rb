@@ -120,6 +120,7 @@ class AccountsController < ApplicationController
           :data_provider_id,
           :only_summary_link_text,
           :convert_media_urls_to_external_storage,
+          :cleanup_old_records,
           default_category_ids: []
         ]
       ]
