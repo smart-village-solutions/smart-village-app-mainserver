@@ -55,7 +55,7 @@ module Types
     end
 
     def weather_map(id: nil)
-      return OpenWeatherMap.find(id) if id.present?
+      return OpenWeatherMap.find_by(id: id) if id.present?
 
       latest_weather_map = OpenWeatherMap.last
       return latest_weather_map if latest_weather_map.present? && latest_weather_map.created_at > (Time.now - 1.hour)
@@ -64,15 +64,15 @@ module Types
     end
 
     def point_of_interest(id:)
-      PointOfInterest.find(id)
+      PointOfInterest.find_by(id: id)
     end
 
     def event_record(id:)
-      EventRecord.find(id)
+      EventRecord.find_by(id: id)
     end
 
     def news_item(id:)
-      NewsItem.find(id)
+      NewsItem.find_by(id: id)
     end
 
     def generic_item(id:)
@@ -80,7 +80,7 @@ module Types
     end
 
     def tour(id:)
-      Tour.find(id)
+      Tour.find_by(id: id)
     end
 
     def categories
@@ -100,7 +100,7 @@ module Types
     end
 
     def lunch(id:)
-      Lunch.find(id)
+      Lunch.find_by(id: id)
     end
 
     # Provide contents from html files in `public/mobile-app/contents` through GraphQL query
