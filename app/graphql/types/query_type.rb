@@ -37,7 +37,7 @@ module Types
     field :categories, [QueryTypes::CategoryType], null: false
     field :category_tree, GraphQL::Types::JSON, null: false
 
-    field :waste_addresses, [AddressType], function: Resolvers::WasteLocationSearch
+    field :waste_addresses, [QueryTypes::AddressType], function: Resolvers::WasteLocationSearch
     field :waste_location_types, [QueryTypes::WasteLocationTypeType], null: false
     field :waste_location_type, QueryTypes::WasteLocationTypeType, null: false do
       argument :id, ID, required: true
