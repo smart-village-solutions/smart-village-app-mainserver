@@ -52,12 +52,7 @@
       <tbody>
         <% @push_logs.each do |token, messages| %>
           <% messages.each do |message| %>
-            <% begin
-                 serialized_message = JSON.parse(message)
-               rescue
-                 serialized_message = {}
-               end
-            %>
+            <% serialized_message = JSON.parse(message) rescue {} %>
             <tr>
               <td><%= serialized_message["date"] %></td>
               <td><%= token %></td>
