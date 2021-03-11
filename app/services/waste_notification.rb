@@ -58,10 +58,10 @@ class WasteNotification
 
   # Alle Tage, die überprüft werden müssen
   #
-  # @param [Array of Integers] number_of_days
+  # @param [Array<Integer>] number_of_days
   # Die Anzahl der Tage, die eine Benachrichtigung vor einem Abholtag vorzeitig versendet werden soll.
   #
-  # @return [Array of Date] Liste an Datumseinträgen die für eine Abholung in Frage kommen
+  # @return [Array<Date>] Liste an Datumseinträgen die für eine Abholung in Frage kommen
   def dates_to_check(number_of_days)
     all_days = [check_date]
     number_of_days.sort.each do |days_before|
