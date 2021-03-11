@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DataProvider < ApplicationRecord
-  store :roles, accessors: %i[role_point_of_interest role_tour role_news_item role_event_record role_push_notification role_lunch], coder: JSON
+  store :roles, accessors: %i[role_point_of_interest role_tour role_news_item role_event_record role_push_notification role_lunch role_waste_calendar], coder: JSON
   enum data_type: { general_importer: 0, business_account: 1 }, _suffix: :role
 
   has_many :data_resource_settings, class_name: "DataResourceSetting"

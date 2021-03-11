@@ -37,6 +37,12 @@ module Types
     field :categories, [QueryTypes::CategoryType], null: false
     field :category_tree, GraphQL::Types::JSON, null: false
 
+    field :waste_addresses, [AddressType], function: Resolvers::WasteLocationSearch
+    field :waste_location_types, [QueryTypes::WasteLocationTypeType], null: false
+    field :waste_location_type, QueryTypes::WasteLocationTypeType, null: false do
+      argument :id, ID, required: true
+    end
+
     field :public_html_file, QueryTypes::PublicHtmlFileType, null: false do
       argument :name, String, required: true
     end
@@ -89,6 +95,14 @@ module Types
 
     def category_tree
       Category.order(:name).select(:id, :name, :ancestry).arrange_serializable
+    end
+
+    def waste_location_types
+      Waste::LocationType.all
+    end
+
+    def waste_location_type(id:)
+      Waste::LocationType.find(id)
     end
 
     def news_items_data_providers(category_id: nil)

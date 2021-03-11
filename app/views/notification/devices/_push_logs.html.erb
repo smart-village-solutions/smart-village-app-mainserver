@@ -1,0 +1,26 @@
+<h1>PushNotification Logs</h1>
+<p>Alte Daten werden automatisch gelöscht</p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Messages Title</th>
+      <th>Messages Body</th>
+      <th>Messages Data</th>
+      <th>Payload</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @push_logs.each do |message| %>
+      <% serialized_message = JSON.parse(message) rescue {} %>
+      <tr>
+        <td><%= serialized_message["date"] %></td>
+        <td><%= serialized_message["title"] %></td>
+        <td><%= serialized_message["body"] %></td>
+        <td><%= serialized_message["data"] %></td>
+        <td><%= serialized_message["payload"] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

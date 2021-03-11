@@ -1,6 +1,46 @@
 version: '3.7'
 
 services:
+  delayed_jobs:
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
+    command: bin/delayed_job start
+    environment:
+      RAILS_ENV: production
+      RAILS_LOG_TO_STDOUT: 1
+    configs:
+      - source: smart-village-app-mainserver-database-yml
+        target: /app/config/database.yml
+      - source: smart-village-app-mainserver-unicorn-rb
+        target: /app/config/unicorn.rb
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - unicorn:/unicorn
+      - assets:/assets
+    depends_on: [db]
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  cronjob:
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
+    command: bin/start-cron.sh
+    environment:
+      RAILS_ENV: production
+      RAILS_LOG_TO_STDOUT: 1
+    configs:
+      - source: smart-village-app-mainserver-database-yml
+        target: /app/config/database.yml
+      - source: smart-village-app-mainserver-unicorn-rb
+        target: /app/config/unicorn.rb
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - unicorn:/unicorn
+      - assets:/assets
+    depends_on: [db]
+    deploy:
+      restart_policy:
+        condition: on-failure
+
   app:
     image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
     environment:

@@ -2,6 +2,7 @@
 
 Rails.application.routes.draw do
   namespace :notification do
+    resources :wastes
     resources :devices do
       collection do
         delete "remove" => "devices#destroy"
@@ -30,8 +31,12 @@ Rails.application.routes.draw do
   }
 
   # if Rails.env.development?
-  mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
   # end
+
+  authenticate :user do
+    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
+    match "/background" => BetterDelayedJobWeb, anchor: false, via: [:get, :post]
+  end
 
   post "/graphql", to: "graphql#execute"
 

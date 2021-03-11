@@ -2,6 +2,7 @@
 
 class Notification::Device < ApplicationRecord
   enum device_type: { undefined: 0, ios: 1, android: 2 }
+  has_many :waste_registrations, class_name: "Waste::DeviceRegistration", primary_key: "token", foreign_key: "notification_device_token"
 
   # Zusätzlich zu der Validierung hier existiert auch ein unique Index auf das Feld 'token'
   validates_uniqueness_of :token, on: :create, message: "must be unique"

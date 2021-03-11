@@ -27,6 +27,9 @@ RUN gem install bundler
 RUN bundle install
 
 COPY . /app
+RUN chmod +x bin/start-cron.sh
+# TODO: wie kann assets building ohne DB passieren?
+# RUN bundle exec rake assets:precompile
 
 ENTRYPOINT ["/app/docker/entrypoint.sh"]
 

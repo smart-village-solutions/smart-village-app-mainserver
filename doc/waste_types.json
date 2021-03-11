@@ -1,0 +1,38 @@
+{
+  "paper": {
+    "label": "Papier",
+    "color": "#ffffff",
+    "selected_color": "#ff1122",
+    "icon": "https://fileserver.smart-village.app/foobar.png"
+  },
+  "recyclable": {
+    "label": "Gelbe Tonne",
+    "color": "#ffffaa",
+    "selected_color": "#ff1144",
+    "icon": "https://fileserver.smart-village.app/foobar.png"
+  },
+  "residual": {
+    "label": "Restmüll",
+    "color": "#ffbbaa",
+    "selected_color": "#ffbb44",
+    "icon": "https://fileserver.smart-village.app/foobar.png"
+  },
+  "bio": {
+    "label": "Biotonne",
+    "color": "#ffbbaa",
+    "selected_color": "#ffbb44",
+    "icon": "https://fileserver.smart-village.app/foobar.png"
+  },
+  "glas_white": {
+    "label": "Weißglas",
+    "color": "#ffbbaa",
+    "selected_color": "#ffbb44",
+    "icon": "https://fileserver.smart-village.app/foobar.png"
+  },
+  "glas_color": {
+    "label": "Buntglas",
+    "color": "#ffbbaa",
+    "selected_color": "#ffbb44",
+    "icon": "https://fileserver.smart-village.app/foobar.png"
+  }
+}

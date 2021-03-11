@@ -33,11 +33,13 @@ class Notification::DevicesController < ApplicationController
   # GET /notification/devices.json
   def index
     @notification_devices = Notification::Device.all
+    @push_logs = RedisAdapter.get_push_logs
   end
 
   # GET /notification/devices/1
   # GET /notification/devices/1.json
   def show
+    @push_logs = RedisAdapter.get_push_log_for_device(@notification_device.token)
   end
 
   # GET /notification/devices/new
@@ -47,6 +49,7 @@ class Notification::DevicesController < ApplicationController
 
   # GET /notification/devices/1/edit
   def edit
+    @push_logs = RedisAdapter.get_push_log_for_device(@notification_device.token)
   end
 
   # POST /notification/devices
