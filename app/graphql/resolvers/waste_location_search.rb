@@ -8,7 +8,7 @@ class Resolvers::WasteLocationSearch
 
   scope { Address.where(id: Waste::LocationType.all.pluck(:address_id)) }
 
-  type types[Types::AddressType]
+  type types[Types::QueryTypes::AddressType]
 
   class WasteLocationOrder < ::Types::BaseEnum
     value "createdAt_ASC"
@@ -70,7 +70,7 @@ class Resolvers::WasteLocationSearch
     # NOTE: Don't run QueryResolver during tests
     return super unless context.present?
 
-    GraphQL::QueryResolver.run(Address, context, Types::AddressType) do
+    GraphQL::QueryResolver.run(Address, context, Types::QueryTypes::AddressType) do
       super
     end
   end
