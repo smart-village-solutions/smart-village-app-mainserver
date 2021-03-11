@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  delayed_jobs:
+  delayed_job:
     image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
     command: bin/delayed_job start
     environment:
@@ -21,7 +21,7 @@ services:
       restart_policy:
         condition: on-failure
 
-  cronjob:
+  cron_job:
     image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
     command: bin/start-cron.sh
     environment:
