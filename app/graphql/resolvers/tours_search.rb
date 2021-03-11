@@ -8,18 +8,18 @@ class Resolvers::ToursSearch
 
   scope { Tour.filtered_for_current_user(context[:current_user]) }
 
-  type types[Types::TourType]
+  type types[Types::QueryTypes::TourType]
 
   class ToursOrder < ::Types::BaseEnum
     value "createdAt_ASC"
     value "createdAt_DESC"
-    value "updatedAt_ASC"
-    value "updatedAt_DESC"
-    value "name_ASC"
-    value "name_DESC"
     value "id_ASC"
     value "id_DESC"
+    value "name_ASC"
+    value "name_DESC"
     value "RAND"
+    value "updatedAt_ASC"
+    value "updatedAt_DESC"
   end
 
   option :limit, type: types.Int, with: :apply_limit
@@ -100,7 +100,7 @@ class Resolvers::ToursSearch
     # NOTE: Don't run QueryResolver during tests
     return super unless context.present?
 
-    GraphQL::QueryResolver.run(Tour, context, Types::TourType) do
+    GraphQL::QueryResolver.run(Tour, context, Types::QueryTypes::TourType) do
       super
     end
   end

@@ -8,19 +8,19 @@ class Resolvers::EventRecordsSearch
 
   scope { EventRecord.upcoming(context[:current_user]) }
 
-  type types[Types::EventRecordType]
+  type types[Types::QueryTypes::EventRecordType]
 
   class EventRecordsOrder < ::Types::BaseEnum
     value "createdAt_ASC"
     value "createdAt_DESC"
-    value "updatedAt_ASC"
-    value "updatedAt_DESC"
-    value "title_ASC"
-    value "title_DESC"
     value "id_ASC"
     value "id_DESC"
-    value "listDate_DESC"
     value "listDate_ASC"
+    value "listDate_DESC"
+    value "title_ASC"
+    value "title_DESC"
+    value "updatedAt_ASC"
+    value "updatedAt_DESC"
   end
 
   option :dateRange, type: types[types.String], with: :apply_date_range
@@ -132,7 +132,7 @@ class Resolvers::EventRecordsSearch
     # NOTE: Don't run QueryResolver during tests
     return super unless context.present?
 
-    GraphQL::QueryResolver.run(EventRecord, context, Types::EventRecordType) do
+    GraphQL::QueryResolver.run(EventRecord, context, Types::QueryTypes::EventRecordType) do
       super
     end
   end

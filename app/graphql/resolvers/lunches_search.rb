@@ -8,15 +8,15 @@ class Resolvers::LunchesSearch
 
   scope { Lunch.upcoming }
 
-  type types[Types::LunchType]
+  type types[Types::QueryTypes::LunchType]
 
   class LunchesOrder < ::Types::BaseEnum
     value "createdAt_ASC"
     value "createdAt_DESC"
-    value "updatedAt_ASC"
-    value "updatedAt_DESC"
     value "id_ASC"
     value "id_DESC"
+    value "updatedAt_ASC"
+    value "updatedAt_DESC"
   end
 
   option :dateRange, type: types[types.String], with: :apply_date_range
@@ -89,7 +89,7 @@ class Resolvers::LunchesSearch
     # NOTE: Don't run QueryResolver during tests
     return super unless context.present?
 
-    GraphQL::QueryResolver.run(Lunch, context, Types::LunchType) do
+    GraphQL::QueryResolver.run(Lunch, context, Types::QueryTypes::LunchType) do
       super
     end
   end

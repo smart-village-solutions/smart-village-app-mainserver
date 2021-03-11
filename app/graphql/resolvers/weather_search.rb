@@ -8,15 +8,15 @@ class Resolvers::WeatherSearch
 
   scope { OpenWeatherMap.all }
 
-  type types[Types::OpenWeatherMapType]
+  type types[Types::QueryTypes::OpenWeatherMapType]
 
   class OpenWeatherMapsOrder < ::Types::BaseEnum
     value "createdAt_ASC"
     value "createdAt_DESC"
-    value "updatedAt_ASC"
-    value "updatedAt_DESC"
     value "id_ASC"
     value "id_DESC"
+    value "updatedAt_ASC"
+    value "updatedAt_DESC"
   end
 
   option :limit, type: types.Int, with: :apply_limit
@@ -70,7 +70,7 @@ class Resolvers::WeatherSearch
     # NOTE: Don't run QueryResolver during tests
     return super unless context.present?
 
-    GraphQL::QueryResolver.run(OpenWeatherMap, context, Types::OpenWeatherMapType) do
+    GraphQL::QueryResolver.run(OpenWeatherMap, context, Types::QueryTypes::OpenWeatherMapType) do
       super
     end
   end
