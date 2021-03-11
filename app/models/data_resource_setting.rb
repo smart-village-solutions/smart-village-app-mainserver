@@ -10,6 +10,7 @@ class DataResourceSetting < ApplicationRecord
           only_summary_link_text
           convert_media_urls_to_external_storage
           default_category_ids
+          cleanup_old_records
         ],
         coder: JSON
 
