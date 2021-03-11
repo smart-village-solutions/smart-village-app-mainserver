@@ -11,11 +11,11 @@ class WasteNotification
     all_waste_registrations = Waste::DeviceRegistration.all
 
     # Load all possible addresses for registered push notifications
-    possible_addresses = Address.joins(:waste_location_types).where(
+    possible_address_ids = Address.joins(:waste_location_types).where(
       street: all_waste_registrations.pluck(:street),
       city: all_waste_registrations.pluck(:city),
       zip: all_waste_registrations.pluck(:zip)
-    )
+    ).pluck(:id)
 
     # Load all PickupTimes of next couple days
     number_of_days = all_waste_registrations.pluck(:notify_days_before).uniq
@@ -26,7 +26,7 @@ class WasteNotification
     waste_pickup_times = Waste::PickUpTime
                            .includes(:waste_location_type)
                            .where(id: waste_pickup_time_ids_of_next_days)
-                           .where(waste_location_types: { address_id: possible_addresses.map(&:id) })
+                           .where(waste_location_types: { address_id: possible_address_ids })
 
     all_waste_registrations.each do |registration_to_check|
       waste_pickup_times.each do |waste_pickup_time|
