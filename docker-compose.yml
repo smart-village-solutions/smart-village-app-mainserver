@@ -109,3 +109,5 @@ configs:
 networks:
   public:
     external: true
+  sva-redis-server:
+    external: true
