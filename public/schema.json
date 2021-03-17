@@ -7056,6 +7056,16 @@
               "description": null,
               "args": [
                 {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "forceCreate",
                   "description": null,
                   "type": {
@@ -7346,6 +7356,16 @@
               "name": "createGenericItem",
               "description": null,
               "args": [
+                {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
                 {
                   "name": "forceCreate",
                   "description": null,
@@ -7698,6 +7718,16 @@
               "description": null,
               "args": [
                 {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "forceCreate",
                   "description": null,
                   "type": {
@@ -8034,6 +8064,16 @@
               "description": null,
               "args": [
                 {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "forceCreate",
                   "description": null,
                   "type": {
@@ -8316,6 +8356,16 @@
               "name": "createTour",
               "description": null,
               "args": [
+                {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
                 {
                   "name": "forceCreate",
                   "description": null,
