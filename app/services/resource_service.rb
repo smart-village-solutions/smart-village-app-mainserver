@@ -18,31 +18,50 @@ class ResourceService
     # Wenn die Rolle Restricted eine Information anlegt,
     # so ist diese per default nicht sichtbar, es sei denn
     # das Attribute 'visible' wird in den params mitgegeben und ist 'true'
-    if data_provider.user.restricted_role? && resource_class.respond_to?(:visible)
+    if @data_provider.user.restricted_role? && resource_class.respond_to?(:visible)
       @params = { visible: false }.merge(@params)
     end
 
     @resource_class = resource_class
     @resource = resource_class.new(@params)
-    @resource.data_provider = data_provider
+    @resource.data_provider = @data_provider
 
     # skip create if record already exists and new record has the same attribute values as the new
     # record and the record is not marked as 'always_recreate'
-    external_resource = find_external_resource
-    old_record = external_resource.try(:external)
-    if external_resource.present? && unchanged_attributes?(old_record) && !always_recreate?(data_provider, resource_class)
-      external_resource.touch
-      return old_record
+    @external_resource = find_external_resource
+    @old_resource = find_old_resource
+    if @external_resource.present? && unchanged_attributes? && !always_recreate?
+      @external_resource.touch
+      return @old_resource
     end
 
-    create_or_recreate(old_record, external_resource)
-    resource_or_error_message(resource)
+    create_or_recreate
+    resource_or_error_message(@resource)
   end
 
-  def create_or_recreate(old_record, external_resource)
+  def find_old_resource
+    @external_resource.try(:external)
+  end
+
+  def create_or_recreate
+    if @old_resource.present?
+      update_resource
+    else
+      create_new_resource
+    end
+  end
+
+  def update_resource
+    # @old_resource.update(@params)
+    @old_resource.destroy if @old_resource.present?
+    create_new_resource
+
+    set_default_categories if @resource.respond_to?(:categories)
+  end
+
+  def create_new_resource
     ActiveRecord::Base.transaction do
-      old_record.destroy if old_record.present?
-      external_resource.destroy if external_resource.present?
+      @external_resource.destroy if @external_resource.present?
       if @resource.save
         create_external_resource
         FacebookService.delay.send_post_to_page(resource_id: @resource.id, resource_type: @resource_class.name)
@@ -53,40 +72,42 @@ class ResourceService
     end
   end
 
-  def unchanged_attributes?(record)
-    return false if record.blank?
-    return @resource.compareable_attributes == record.compareable_attributes if record.respond_to?(:compareable_attributes)
+  def unchanged_attributes?
+    return false if @old_resource.blank?
+    if @old_resource.respond_to?(:compareable_attributes)
+      return @resource.compareable_attributes == @old_resource.compareable_attributes
+    end
 
     # Fallback, wenn :compareable_attributes nicht beim Model definiert ist.
     except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id", "visible"]
-    @resource.attributes.except(*except_attributes) == record.attributes.except(*except_attributes)
+    @resource.attributes.except(*except_attributes) == @old_resource.attributes.except(*except_attributes)
   end
 
-  def always_recreate?(data_provider, resource_class)
-    return false if data_provider.blank?
+  def always_recreate?
+    return false if @data_provider.blank?
 
-    class_name = resource_class.name
-    setting = data_provider.data_resource_settings.where(data_resource_type: class_name).first
+    class_name = @resource_class.name
+    setting = @data_provider.data_resource_settings.where(data_resource_type: class_name).first
     return false if setting.blank?
 
     setting.always_recreate_on_import == "true"
   end
 
   def find_external_resource
-    return if @params.fetch(:force_create, false)
+    return nil if @params.fetch(:force_create, false)
 
     ExternalReference.find_by(
-      data_provider: data_provider,
-      external_type: resource_class,
+      data_provider: @data_provider,
+      external_type: @resource_class,
       unique_id: resource.unique_id
     )
   end
 
   def create_external_resource
     ExternalReference.create(
-      data_provider: data_provider,
+      data_provider: @data_provider,
       external_id: resource.id,
-      external_type: resource_class,
+      external_type: @resource_class,
       unique_id: resource.unique_id
     )
   end
@@ -100,7 +121,7 @@ class ResourceService
   end
 
   def set_default_categories
-    setting = data_provider.data_resource_settings.where(data_resource_type: @resource_class.name).first
+    setting = @data_provider.data_resource_settings.where(data_resource_type: @resource_class.name).first
     return if setting.blank?
     return if setting.default_category_ids.blank?
 
