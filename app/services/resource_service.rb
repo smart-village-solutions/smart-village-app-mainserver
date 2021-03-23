@@ -85,7 +85,7 @@ class ResourceService
         unique_id: @old_resource.unique_id
       )
 
-      set_default_categories if @resource.respond_to?(:categories)
+      set_default_categories if @old_resource.respond_to?(:categories)
 
       @old_resource
     end
