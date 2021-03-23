@@ -71,8 +71,8 @@ class ResourceService
       # delete all nested resources
       association_names_to_delete.each do |association_name|
         associations = @old_resource.send(association_name)
-        associations.destroy_all if !is_singular?(association_name) && associations.any?
-        associations.destroy if is_singular?(association_name) && associations.present?
+        associations.destroy_all if !singular?(association_name) && associations.any?
+        associations.destroy if singular?(association_name) && associations.present?
       end
 
       # update all attributes and recreate nested resources
@@ -165,7 +165,7 @@ class ResourceService
       end
     end
 
-    def is_singular?(some_object)
+    def singular?(some_object)
       some_string = some_object.to_s
 
       some_string.singularize == some_string
