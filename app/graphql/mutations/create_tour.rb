@@ -2,7 +2,7 @@
 
 module Mutations
   class CreateTour < BaseMutation
-    argument :id, Integer, required: false
+    argument :id, ID, required: false
     argument :force_create, Boolean, required: false
     argument :name, String, required: true
     argument :description, String, required: false
