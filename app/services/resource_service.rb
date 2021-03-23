@@ -165,9 +165,9 @@ class ResourceService
       end
     end
 
-    def is_singular?(str)
-      str = str.to_s
+    def is_singular?(some_object)
+      some_string = some_object.to_s
 
-      str.singularize == str
+      some_string.singularize == some_string
     end
 end
