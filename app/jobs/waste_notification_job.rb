@@ -4,6 +4,8 @@ class WasteNotificationJob
     registration_to_check = Waste::DeviceRegistration.find_by(id: waste_registration_id)
     static_content = StaticContent.find_by(name: "wasteTypes")
     return if static_content.blank?
+    return if waste_pickup_time.blank?
+    return if waste_pickup_time.pickup_date.blank?
 
     waste_types = JSON.parse(static_content.content)
     device = registration_to_check.notification_device
