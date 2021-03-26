@@ -28,6 +28,6 @@
   <% device_count = Notification::Device.all.count %>
 
   <div class="form-group">
-    <%= submit_tag "An #{pluralize(device_count, "Device")} senden", class: "btn btn-primary" %>
+    <%= submit_tag "An #{pluralize(device_count, "Device")} senden", {class: "btn btn-primary", data: { disable_with: "Versand ist aktiv ..."} } %>
   </div>
 <% end %>

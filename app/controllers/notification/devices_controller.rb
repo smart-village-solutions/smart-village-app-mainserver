@@ -22,7 +22,20 @@ class Notification::DevicesController < ApplicationController
 
   def send_notification
     options = params[:notification]
+
+    ## TODO:
+    ## prüfung ob es den datensatz gibt bevor push
+    # notification[data][query_type]
+    # notification[data][id]
+    # nur wenn die beiden vorhanden sind weiter prüfen, wenn nicht ist auch ok, dann geht push trotzdem raus wie gehabt
+
     PushNotification.new(options).send_notifications if options[:title].present?
+
+    # if respond_to push_notifications_sent_at
+    # dann .touch(:push_notifications_sent_at) auf den datensatz, falls es einen gibt
+
+    # after_action für push versand, sodass der respond der seite schon passiert und nicht lange seitenladend blockiert wird
+    # dafür müssen die options wohl als globale variable @options gesetzt werden, damit die dann im after_action vorhanden sind
 
     respond_to do |format|
       format.html { redirect_to notification_devices_url, notice: "Push notifications sent." }
