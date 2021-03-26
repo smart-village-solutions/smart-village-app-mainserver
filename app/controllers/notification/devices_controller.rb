@@ -22,7 +22,7 @@ class Notification::DevicesController < ApplicationController
 
   def send_notification
     options = params[:notification]
-    PushNotification.new(options).send_notifications if options[:title].present?
+    PushNotification.delay.send_notifications(options) if options[:title].present?
 
     respond_to do |format|
       format.html { redirect_to notification_devices_url, notice: "Push notifications sent." }
