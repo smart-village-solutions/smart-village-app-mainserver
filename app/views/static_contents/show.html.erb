@@ -9,7 +9,20 @@
 
     <div class="form-group">
       <label>Content</label>
-      <div id="code_editor" style="height: 400px;"></div>
+      <% if @static_content.data_type == "json" %>
+        <% content = @static_content.content.to_s.html_safe %>
+        <% valid_json_content = JSON.parse(content) rescue nil %>
+        <% if valid_json_content %>
+          <div id="code_editor" style="height: 400px;"></div>
+        <% else %>
+          <div>
+            <p class="text-danger"><small><em>JSON format is not valid!</em></small></p>
+            <pre><%= content %></pre>
+          </div>
+        <% end %>
+      <% else %>
+        <div id="code_editor" style="height: 400px;"></div>
+      <% end %>
     </div>
 
     <div class="form-group">
@@ -21,38 +34,42 @@
 
 <script>
   $(function () {
-    var container = document.getElementById("code_editor")
-    var options = {
-      statusBar: false,
-      mainMenuBar: false,
-      mode: 'code',
-      <% if @static_content.data_type == "json" %>
-        mainMenuBar: true,
-        modes: ['code', 'view'],
-      <% end %>
-      onEditable: function (node) {
-        if (!node.path) {
-          // In modes code and text, node is empty: no path, field, or value
-          // returning false makes the text area read-only
-          return false;
-        }
-      },
-    }
-    var editor = new JSONEditor(container, options)
+    var container = document.getElementById("code_editor");
 
-    <% content = @static_content.content.to_s.html_safe %>
-    <% if @static_content.data_type == "json" %>
-      <% if content.present? %>
-        editor.set(<%= content %>);
+    if (container) {
+      var options = {
+        statusBar: false,
+        mainMenuBar: false,
+        mode: 'code',
+        <% if @static_content.data_type == "json" %>
+          mainMenuBar: true,
+          modes: ['code', 'view'],
+        <% end %>
+        onEditable: function (node) {
+          if (!node.path) {
+            // In modes code and text, node is empty: no path, field, or value
+            // returning false makes the text area read-only
+            return false;
+          }
+        },
+      };
+      var editor = new JSONEditor(container, options);
+
+      <% content = @static_content.content.to_s.html_safe %>
+      <% if @static_content.data_type == "json" %>
+        <% valid_json_content = JSON.parse(content) rescue nil %>
+        <% if content.present? && valid_json_content %>
+          editor.set(<%= content %>);
+        <% else %>
+          editor.set({});
+        <% end %>
       <% else %>
-        editor.set({});
+        <% if content.present? %>
+          editor.setText("<%= escape_javascript(content) %>");
+        <% else %>
+          editor.setText("");
+        <% end %>
       <% end %>
-    <% else %>
-      <% if content.present? %>
-        editor.setText("<%= escape_javascript(content) %>");
-      <% else %>
-        editor.setText("");
-      <% end %>
-    <% end %>
+    }
   });
 </script>
