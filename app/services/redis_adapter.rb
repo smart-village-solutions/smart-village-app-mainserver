@@ -19,7 +19,7 @@ module RedisAdapter
     def get_push_log_for_device(device_token)
       redis.lrange("#{namespace}:push_log:#{device_token}", 0, -1)
     rescue
-      nil
+      []
     end
 
     def get_push_logs
