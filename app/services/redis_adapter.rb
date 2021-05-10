@@ -3,6 +3,23 @@
 module RedisAdapter
   class << self
 
+    # create a lock entry for a resource and a given timespan.
+    # Lock entry will be delete automatic after given timespan.
+    #
+    # @param [String] resource_name
+    # @param [Integer] resource_id
+    # @param [Timespan] ttl (e.g. 5.minutes)
+    #
+    def lock_push_notification(resource_name, resource_id, ttl = 5.minutes)
+      redis.set("#{namespace}:lock_push:#{resource_name}:#{resource_id}", "locked")
+      redis.expire("#{namespace}:lock_push:#{resource_name}:#{resource_id}", ttl)
+    end
+
+    # check if there is an lock entry for a given resource name and id
+    def check_push_lock(resource_name, resource_id)
+      redis.get("#{namespace}:lock_push:#{resource_name}:#{resource_id}")
+    end
+
     # Store Logs for a Push notification per device token.
     # Old logs will be deleted after a defined timespan
     #
