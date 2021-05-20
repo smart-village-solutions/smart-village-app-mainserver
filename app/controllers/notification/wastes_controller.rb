@@ -76,6 +76,7 @@ class Notification::WastesController < ApplicationController
     return if waste_types.blank?
 
     @cal = Icalendar::Calendar.new
+    @cal.append_custom_property("NAME", "Abfallkalender")
     address.waste_location_types.each do |waste_location_type|
       waste_label = waste_types.dig(waste_location_type.waste_type, "label")
       waste_location_type.pick_up_times.each do |pick_up_time|
