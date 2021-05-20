@@ -29,8 +29,8 @@ class CleanUpService
                            .last
                            .updated_at
 
-    # Mitternacht, 2 Tage vor dem letzten Import
-    cleanup_records_to_date = (latest_import_date - 2.days).end_of_day
+    # Lösche Einträge bis zum Datum: Mitternacht, 1 Tag vor dem letzten Import
+    cleanup_records_to_date = (latest_import_date - 1.day).end_of_day
     external_references = ExternalReference.where(data_provider_id: data_provider.id, external_type: data_resource_type.to_s)
     resource_ids = external_references.where("updated_at < ?", cleanup_records_to_date).pluck(:external_id)
 
