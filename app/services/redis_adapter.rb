@@ -11,12 +11,13 @@ module RedisAdapter
     #
     def add_push_log(device_token, message)
       redis.rpush("#{namespace}:push_log:#{device_token}", message.to_json)
-      redis.expire("#{namespace}:push_log:#{device_token}", 24.hours.to_i)
+      redis.expire("#{namespace}:push_log:#{device_token}", 96.hours.to_i)
     rescue
       nil
     end
 
-    def get_push_log_for_device(device_token)
+    # Load list of Push Logs for a single device
+    def get_push_logs_for_device(device_token)
       redis.lrange("#{namespace}:push_log:#{device_token}", 0, -1)
     rescue
       []
