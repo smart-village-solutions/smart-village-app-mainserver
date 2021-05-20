@@ -85,7 +85,7 @@ class Notification::WastesController < ApplicationController
         event.dtstart = formated_pickup_date_for_time
         event.dtend = formated_pickup_date_for_time
         event.summary = ["Abfallkalender", waste_label].join(": ")
-        event.description = "Abholung {waste_label} in #{ical_export_params[:street]}"
+        event.description = "Abholung #{waste_label} in #{ical_export_params[:street]}"
         event.location = "#{address.street}, #{address.zip} #{address.city}"
 
         @cal.add_event(event)
