@@ -75,7 +75,7 @@ class Notification::WastesController < ApplicationController
     waste_types = JSON.parse(waste_types) if waste_types.present?
     return if waste_types.blank?
 
-    cal = Icalendar::Calendar.new
+    @cal = Icalendar::Calendar.new
     address.waste_location_types.each do |waste_location_type|
       waste_label = waste_types.dig(waste_location_type.waste_type, "label")
       waste_location_type.pick_up_times.each do |pick_up_time|
@@ -85,15 +85,16 @@ class Notification::WastesController < ApplicationController
         event.dtstart = formated_pickup_date_for_time
         event.dtend = formated_pickup_date_for_time
         event.summary = ["Abfallkalender", waste_label].join(": ")
-        event.description = "Abholung #{waste_label} in #{ical_export_params[:street]}"
+        event.description = "Abholung {waste_label} in #{ical_export_params[:street]}"
         event.location = "#{address.street}, #{address.zip} #{address.city}"
 
-        cal.add_event(event)
+        @cal.add_event(event)
       end
     end
+    @cal.publish
 
     respond_to do |format|
-      format.ics { render inline: cal.to_ical }
+      format.ics
     end
   end
 
