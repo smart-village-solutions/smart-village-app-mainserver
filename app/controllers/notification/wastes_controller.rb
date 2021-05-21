@@ -69,6 +69,7 @@ class Notification::WastesController < ApplicationController
 
   def ical_export
     address = Address.joins(:waste_location_types).where(ical_export_params.slice(:street, :city, :zip)).first
+    full_address = "#{address.street}, #{address.zip} #{address.city}"
     raise "Address not found" if address.blank?
 
     waste_types = StaticContent.find_by(name: "wasteTypes").try(:content)
@@ -77,6 +78,9 @@ class Notification::WastesController < ApplicationController
 
     @cal = Icalendar::Calendar.new
     @cal.append_custom_property("NAME", "Abfallkalender")
+    @cal.append_custom_property("X-WR-CALNAME", "Abfallkalender")
+    @cal.append_custom_property("DESCRIPTION", "Alle Abholtermine der Müllabfuhr für #{full_address}")
+    @cal.append_custom_property("X-WR-CALDESC", "Alle Abholtermine der Müllabfuhr für #{full_address}")
     address.waste_location_types.each do |waste_location_type|
       waste_label = waste_types.dig(waste_location_type.waste_type, "label")
       waste_location_type.pick_up_times.each do |pick_up_time|
@@ -87,7 +91,7 @@ class Notification::WastesController < ApplicationController
         event.dtend = formated_pickup_date_for_time
         event.summary = ["Abfallkalender", waste_label].join(": ")
         event.description = "Abholung #{waste_label} in #{ical_export_params[:street]}"
-        event.location = "#{address.street}, #{address.zip} #{address.city}"
+        event.location = full_address
 
         @cal.add_event(event)
       end
