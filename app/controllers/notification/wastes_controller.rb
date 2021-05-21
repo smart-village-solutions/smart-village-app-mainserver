@@ -84,11 +84,12 @@ class Notification::WastesController < ApplicationController
     address.waste_location_types.each do |waste_location_type|
       waste_label = waste_types.dig(waste_location_type.waste_type, "label")
       waste_location_type.pick_up_times.each do |pick_up_time|
-        formated_pickup_date_for_time = Icalendar::Values::Date.new(pick_up_time.pickup_date.strftime("%Y%m%d"))
+        formated_pickup_start_date_for_time = Icalendar::Values::Date.new(pick_up_time.pickup_date.strftime("%Y%m%d"))
+        formated_pickup_end_date_for_time = Icalendar::Values::Date.new((pick_up_time.pickup_date + 1.day).strftime("%Y%m%d"))
 
         event = Icalendar::Event.new
-        event.dtstart = formated_pickup_date_for_time
-        event.dtend = formated_pickup_date_for_time
+        event.dtstart = formated_pickup_start_date_for_time
+        event.dtend = formated_pickup_end_date_for_time
         event.summary = ["Abfallkalender", waste_label].join(": ")
         event.description = "Abholung #{waste_label} in #{ical_export_params[:street]}"
         event.location = full_address
