@@ -9,6 +9,7 @@ module FilterByRole
     scope :filtered_for_current_user, lambda { |current_user|
       return all if current_user.admin_role?
       return visible if current_user.app_role?
+      return visible if current_user.read_only_role?
 
       if current_user.editor_role?
         data_provider_ids = [current_user.data_provider_id] + User.restricted_role.map(&:data_provider_id)
