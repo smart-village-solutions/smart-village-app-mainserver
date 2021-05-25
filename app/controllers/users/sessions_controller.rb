@@ -15,7 +15,7 @@ class Users::SessionsController < Devise::SessionsController
     graphql_access_token = Doorkeeper::AccessToken.create(
       application: resource.oauth_applications.first,
       resource_owner_id: resource.id,
-      expires_in: 2.hours
+      expires_in: 1.day
     ).token
     cookies["_graphql_token"] = graphql_access_token
 
