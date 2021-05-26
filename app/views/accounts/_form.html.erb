@@ -155,162 +155,186 @@
     </div>
   <% end %>
 
-  <h2>Rechte im CMS</h2>
+  <h2>Optionen für Resourcen</h2>
 
-  <div class="form-group">
-    <div class="form-check">
-      <%= d.check_box :role_tour, { class: "form-check-input" }, "true", "false" %>
-      <%= d.label :role_tour, "Touren", class: "form-check-label" %>
+  <nav>
+    <div class="nav nav-tabs" id="resource-nav-tab" role="tablist">
+      <%= d.fields_for :data_resource_settings do |s| %>
+        <% next unless s.object.data_resource_type %>
+        <a class="nav-item nav-link <%= s.object.data_resource_type == 'Tour' ? 'active' : '' %>" id="nav-contact-tab" data-toggle="tab" href="#nav-<%= s.object.data_resource_type %>" role="tab" aria-controls="nav-contact" aria-selected="false"><%= s.object.data_resource_type.pluralize %></a>
+      <% end %>
     </div>
-  </div>
+  </nav>
 
-  <div class="form-group">
-    <div class="form-check">
-      <%= d.check_box :role_point_of_interest, { class: "form-check-input" }, "true", "false" %>
-      <%= d.label :role_point_of_interest, "Orte", class: "form-check-label" %>
-    </div>
-  </div>
+  <div class="tab-content" id="nav-tabContent">
+    <%= d.fields_for :data_resource_settings do |s| %>
+      <div class="tab-pane fade show <%= s.object.data_resource_type == 'Tour' ? 'active' : '' %>" id="nav-<%= s.object.data_resource_type %>" role="tabpanel" aria-labelledby="nav-home-tab">
+        <% I18n.with_locale(:de) do %>
+        <% end %>
+        <%= s.hidden_field :id %>
+        <%= s.hidden_field :data_provider_id %>
+        <%= s.hidden_field :data_resource_type %>
+        <div class="row">
+          <div class="form-group col-6">
+            <div class="form-check">
+              <%= s.check_box :display_only_summary, { class: "form-check-input"}, "true", "false" %>
+              <%= s.label :display_only_summary, "Nur Zusammenfassung anzeigen", class: "form-check-label" %>
+              <small class="form-text text-muted">
+                Unter der Zusammenfassung wird dann ein Link zur Quelle angezeigt
+              </small>
+            </div>
+          </div>
 
-  <div class="form-group">
-    <div class="form-check">
-      <%= d.check_box :role_news_item, { class: "form-check-input" }, "true", "false" %>
-      <%= d.label :role_news_item, "Nachrichten", class: "form-check-label" %>
-    </div>
-  </div>
+          <div class="form-group col-6">
+            <div class="form-check">
+              <%= s.check_box :always_recreate_on_import, { class: "form-check-input"}, "true", "false" %>
+              <%= s.label :always_recreate_on_import, "Datensatz immer neu anlegen", class: "form-check-label" %>
+              <small class="form-text text-muted">
+                Bei einem Import von Daten werden diese immer neu angelegt. Es erfolgt kein Update
+                bestehender Daten
+              </small>
+            </div>
+          </div>
+        </div>
 
-  <div class="form-group">
-    <div class="form-check">
-      <%= d.check_box :role_event_record, { class: "form-check-input" }, "true", "false" %>
-      <%= d.label :role_event_record,"Veranstaltungen", class: "form-check-label" %>
-    </div>
-  </div>
+        <div class="row">
+          <div class="form-group col-6">
+            <div class="form-check">
+              <%= s.check_box :cleanup_old_records, { class: "form-check-input"}, "true", "false" %>
+              <%= s.label :cleanup_old_records, "Alte Daten regelmäßig löschen", class: "form-check-label" %>
+              <small class="form-text text-muted">
+                Täglich werden Daten diesen Typs gelöscht, wenn diese mehr als 48 Stunden älter sind als der zuletzt importierte Datensatz.
+              </small>
+            </div>
+          </div>
 
-  <div class="form-group">
-    <div class="form-check">
-      <%= d.check_box :role_push_notification, { class: "form-check-input" }, "true", "false" %>
-      <%= d.label :role_push_notification, "Send Push Notification", class: "form-check-label" %>
-    </div>
-  </div>
+          <div class="form-group col-6">
+            <div class="form-check">
+              <%= s.check_box :convert_media_urls_to_external_storage, { class: "form-check-input"}, "true", "false" %>
+              <%= s.label :convert_media_urls_to_external_storage, "Medien importieren und in einem S3/Minio hosten", class: "form-check-label" %>
+              <small class="form-text text-muted">
+                Bei einem Import von Bild-Urls werden diese geladen und zu einem eigenen S3/Minio gesendet.
+                Die Medien-Url wird dabei ersetzt.
+              </small>
+            </div>
+          </div>
+        </div>
 
-  <div class="form-group">
-    <div class="form-check">
-      <%= d.check_box :role_lunch, { class: "form-check-input" }, "true", "false" %>
-      <%= d.label :role_lunch, "Gastro-Angebote", class: "form-check-label" %>
-    </div>
-  </div>
+        <div class="row">
+          <div class="form-group col-6">
+            <%= s.label :default_category_ids, "Default Kategorien" %>
+            <div class="category-tree">
+              <%= render_selectable_categories(Category.all.arrange, s) %>
+            </div>
+            <small class="form-text text-muted">
+              Ausgewählte Kategorien werden beim Import diesen Elementen zusätzlich automatisch zugewiesen.
+            </small>
+            <small class="form-text text-muted">
+              Bei allen Einträgen dieses Data Providers vom Typ <%= s.object.data_resource_type %>
+              können die hier definierten Kategorien nachträglich gesetzt werden:
+              <%= link_to(
+                    t("doorkeeper.applications.buttons.batch_action"),
+                    batch_defaults_account_path(@user, data_resource_type: s.object.data_resource_type),
+                    "data-confirm": "Sollen bei allen Einträgen dieses Data Providers vom Typ #{s.object.data_resource_type} die ausgewählten Kategorien hinzugefügt werden? ACHTUNG: Veränderungen müssen zuvor gespeichert werden!"
+                  ) %>
+            </small>
+          </div>
 
-  <div class="form-group">
-    <div class="form-check">
-      <%= d.check_box :role_waste_calendar, { class: "form-check-input" }, "true", "false" %>
-      <%= d.label :role_waste_calendar, "Abfallkalender", class: "form-check-label" %>
-    </div>
-  </div>
+          <div class="form-group col-6">
+            <%= s.label :only_summary_link_text, "Linktext" %>
+            <%= s.text_field :only_summary_link_text, class: "form-control", placeholder: "Weiterlesen" %>
+            <small class="form-text text-muted">
+              Dieser Text wird angezeigt, wenn die Checkbox 'Nur Zusammenfassung anzeigen' aktiviert ist.
+            </small>
+          </div>
 
-  <div class="form-group">
-    <div class="form-check">
-      <%= d.check_box :role_job, { class: "form-check-input" }, "true", "false" %>
-      <%= d.label :role_job, "Stellenanzeigen", class: "form-check-label" %>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <div class="form-check">
-      <%= d.check_box :role_offer, { class: "form-check-input" }, "true", "false" %>
-      <%= d.label :role_offer, "Werbliche Anzeigen", class: "form-check-label" %>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <div class="form-check">
-      <%= d.check_box :role_constuction_site, { class: "form-check-input" }, "true", "false" %>
-      <%= d.label :role_constuction_site, "Baustellen", class: "form-check-label" %>
-    </div>
-  </div>
-
-  <%= d.fields_for :data_resource_settings do |s| %>
-    <% I18n.with_locale(:de) do %>
-      <h2>Optionen für <%= t(s.object.data_resource_type.pluralize) if s.object.data_resource_type %></h2>
+        </div>
+      </div>
     <% end %>
-    <%= s.hidden_field :id %>
-    <%= s.hidden_field :data_provider_id %>
-    <%= s.hidden_field :data_resource_type %>
-    <div class="row">
-      <div class="form-group col-6">
+  </div>
+
+  <br>
+
+  <h2>Rechte im CMS</h2>
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group">
         <div class="form-check">
-          <%= s.check_box :display_only_summary, { class: "form-check-input"}, "true", "false" %>
-          <%= s.label :display_only_summary, "Nur Zusammenfassung anzeigen", class: "form-check-label" %>
-          <small class="form-text text-muted">
-            Unter der Zusammenfassung wird dann ein Link zur Quelle angezeigt
-          </small>
+          <%= d.check_box :role_tour, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_tour, "Touren", class: "form-check-label" %>
         </div>
       </div>
 
-      <div class="form-group col-6">
+      <div class="form-group">
         <div class="form-check">
-          <%= s.check_box :always_recreate_on_import, { class: "form-check-input"}, "true", "false" %>
-          <%= s.label :always_recreate_on_import, "Datensatz immer neu anlegen", class: "form-check-label" %>
-          <small class="form-text text-muted">
-            Bei einem Import von Daten werden diese immer neu angelegt. Es erfolgt kein Update
-            bestehender Daten
-          </small>
+          <%= d.check_box :role_point_of_interest, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_point_of_interest, "Orte", class: "form-check-label" %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-check">
+          <%= d.check_box :role_news_item, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_news_item, "Nachrichten", class: "form-check-label" %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-check">
+          <%= d.check_box :role_event_record, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_event_record,"Veranstaltungen", class: "form-check-label" %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-check">
+          <%= d.check_box :role_push_notification, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_push_notification, "Push-Notification senden", class: "form-check-label" %>
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="form-group col-6">
+    <div class="col-6">
+      <div class="form-group">
         <div class="form-check">
-          <%= s.check_box :cleanup_old_records, { class: "form-check-input"}, "true", "false" %>
-          <%= s.label :cleanup_old_records, "Alte Daten regelmäßig löschen", class: "form-check-label" %>
-          <small class="form-text text-muted">
-            Täglich werden Daten diesen Typs gelöscht, wenn diese mehr als 48 Stunden älter sind als der zuletzt importierte Datensatz.
-          </small>
+          <%= d.check_box :role_lunch, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_lunch, "Gastro-Angebote", class: "form-check-label" %>
         </div>
       </div>
 
-      <div class="form-group col-6">
+      <div class="form-group">
         <div class="form-check">
-          <%= s.check_box :convert_media_urls_to_external_storage, { class: "form-check-input"}, "true", "false" %>
-          <%= s.label :convert_media_urls_to_external_storage, "Medien importieren und in einem S3/Minio hosten", class: "form-check-label" %>
-          <small class="form-text text-muted">
-            Bei einem Import von Bild-Urls werden diese geladen und zu einem eigenen S3/Minio gesendet.
-            Die Medien-Url wird dabei ersetzt.
-          </small>
+          <%= d.check_box :role_waste_calendar, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_waste_calendar, "Abfallkalender", class: "form-check-label" %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-check">
+          <%= d.check_box :role_job, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_job, "Stellenanzeigen", class: "form-check-label" %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-check">
+          <%= d.check_box :role_offer, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_offer, "Werbliche Anzeigen", class: "form-check-label" %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-check">
+          <%= d.check_box :role_constuction_site, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_constuction_site, "Baustellen", class: "form-check-label" %>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="form-group col-6">
-        <%= s.label :default_category_ids, "Default Kategorien" %>
-        <div class="category-tree">
-          <%= render_selectable_categories(Category.all.arrange, s) %>
-        </div>
-        <small class="form-text text-muted">
-          Ausgewählte Kategorien werden beim Import diesen Elementen zusätzlich automatisch zugewiesen.
-        </small>
-        <small class="form-text text-muted">
-          Bei allen Einträgen dieses Data Providers vom Typ <%= s.object.data_resource_type %>
-          können die hier definierten Kategorien nachträglich gesetzt werden:
-          <%= link_to(
-                t("doorkeeper.applications.buttons.batch_action"),
-                batch_defaults_account_path(@user, data_resource_type: s.object.data_resource_type),
-                "data-confirm": "Sollen bei allen Einträgen dieses Data Providers vom Typ #{s.object.data_resource_type} die ausgewählten Kategorien hinzugefügt werden? ACHTUNG: Veränderungen müssen zuvor gespeichert werden!"
-              ) %>
-        </small>
-      </div>
-
-      <div class="form-group col-6">
-        <%= s.label :only_summary_link_text, "Linktext" %>
-        <%= s.text_field :only_summary_link_text, class: "form-control", placeholder: "Weiterlesen" %>
-        <small class="form-text text-muted">
-          Dieser Text wird angezeigt, wenn die Checkbox 'Nur Zusammenfassung anzeigen' aktiviert ist.
-        </small>
-      </div>
-
-    </div>
-  <% end %>
 <% end %>
+
+<br>
 
 <div class="form-group">
   <%= f.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primary" %>
