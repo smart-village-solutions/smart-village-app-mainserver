@@ -121,6 +121,9 @@ class AccountsController < ApplicationController
           :only_summary_link_text,
           :convert_media_urls_to_external_storage,
           :cleanup_old_records,
+          :post_to_facebook,
+          :facebook_page_id,
+          :facebook_page_access_token,
           default_category_ids: []
         ]
       ]

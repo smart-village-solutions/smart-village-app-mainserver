@@ -42,6 +42,7 @@ class ResourceService
       external_resource.destroy if external_resource.present?
       if @resource.save
         create_external_resource
+        FacebookService.delay.send_post_to_page(resource_id: @resource.id, resource_type: @resource_class.name)
         set_default_categories if @resource.respond_to?(:categories)
       else
         GraphQL::ExecutionError.new("Invalid input: #{@resource.errors.full_messages.join(', ')}")

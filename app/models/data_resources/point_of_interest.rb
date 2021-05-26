@@ -33,6 +33,13 @@ class PointOfInterest < Attraction
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "PointOfInterest").first.try(:settings)
   end
+
+  def content_for_facebook
+    {
+      message: [name, description].compact.join("\n\n"),
+      link: ""
+    }
+  end
 end
 
 # == Schema Information

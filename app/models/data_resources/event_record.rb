@@ -137,6 +137,13 @@ class EventRecord < ApplicationRecord
     categories.first
   end
 
+  def content_for_facebook
+    {
+      message: [title, description].compact.join("\n\n"),
+      link: ""
+    }
+  end
+
   private
 
     def find_or_create_category

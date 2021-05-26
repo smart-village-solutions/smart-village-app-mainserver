@@ -230,7 +230,7 @@
               Ausgewählte Kategorien werden beim Import diesen Elementen zusätzlich automatisch zugewiesen.
             </small>
             <small class="form-text text-muted">
-              Bei allen Einträgen dieses Data Providers vom Typ <%= s.object.data_resource_type %>
+              Bei allen Einträgen dieses Data Providers vom Typ <strong><%= s.object.data_resource_type %></strong>
               können die hier definierten Kategorien nachträglich gesetzt werden:
               <%= link_to(
                     t("doorkeeper.applications.buttons.batch_action"),
@@ -247,7 +247,50 @@
               Dieser Text wird angezeigt, wenn die Checkbox 'Nur Zusammenfassung anzeigen' aktiviert ist.
             </small>
           </div>
+        </div>
 
+        <div class="row">
+          <div class="col-5 align-items-center justify-content-start"><hr></div>
+          <div class="col-2 align-items-center justify-content-center"><center>Facebook</center></div>
+          <div class="col-5 align-items-center justify-content-end"><hr></div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-6">
+            <div class="form-check">
+              <%= s.check_box :post_to_facebook, { class: "form-check-input"}, "true", "false" %>
+              <%= s.label :post_to_facebook, "Sende Daten zu Facebook" %>
+              <small class="form-text text-muted">
+                Erzeugen sie eine App, für den Zugriff auf Ihre Seite unter <a href="https://developers.facebook.com/apps/?show_reminder=true" target="_blank">Meine Apps</a>. <br/>
+                Erzeugen Sie hier den <a href="https://developers.facebook.com/tools/explorer" target="_blank">User Access Token</a> über den Button "Generate Access Token". <br/>
+                Anschließend wählen Sie "Seitenzugriffsschlüssel anfordern" unter "Nutzer oder Seite".<br/>
+                Prüfen Sie anschließend ob folgende Rechte zu zugewiesen sind und fügen Sie gegebenenfalls diese hinzu:
+                <ul>
+                  <li>pages_manage_posts</li>
+                  <li>pages_read_engagement</li>
+                </ul>
+
+                <%= link_to "Beispielfoto der Berechtigungen", asset_path("facebook_page_access_token"), target: "_blank" %>
+              </small>
+            </div>
+          </div>
+
+          <div class="form-group col-6">
+            <%= s.label :facebook_page_id, "Facebook Page ID" %>
+            <%= s.text_field :facebook_page_id, class: "form-control", placeholder: "Facebook Page ID" %>
+            <small class="form-text text-muted">
+              Bitte geben sie hier die ID der Facebook Seite an, zu der die Beiträge erstellt werden sollen.
+              Die ID ergibt sich aus der URL der Seite und besteht nur aus der Nummer, falls eine vorhanden ist.
+            </small>
+
+            <br/>
+
+            <%= s.label :facebook_page_access_token, "Page Access Token" %>
+            <%= s.text_field :facebook_page_access_token, class: "form-control", placeholder: "Page Access Token" %>
+            <small class="form-text text-muted">
+              Hier ist der Seitenzugriffsschlüssel einzutragen, den sie mit Ihrem "User Access Token" zuvor erzeugt haben.
+            </small>
+          </div>
         </div>
       </div>
     <% end %>
