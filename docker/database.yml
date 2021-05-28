@@ -12,7 +12,7 @@
 default: &default
   adapter: mysql2
   encoding: utf8
-  pool: 5
+  pool: 15
   username: smart
   password: smart
   host: db

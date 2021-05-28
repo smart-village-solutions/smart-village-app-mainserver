@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   delayed_job:
-    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver/int-development-main_server
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
     networks:
       - default
       - logs
@@ -12,7 +12,7 @@ services:
       RAILS_LOG_TO_STDOUT: 1
 
   cron_job:
-    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver/int-development-main_server
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
     networks:
       - default
       - public
@@ -31,7 +31,7 @@ services:
         condition: on-failure
 
   app:
-    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver/int-development-main_server
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
     networks:
       - default
       - logs
@@ -46,14 +46,14 @@ services:
         traefik.enable: "true"
         traefik.port: 80
         traefik.docker.network: public
-        traefik.frontend.rule: Host:server.int-development.smart-village.app
+        traefik.frontend.rule: Host:server.${PROJECT}.smart-village.app
 
   db:
     networks:
       default:
       adminer:
         aliases:
-          - int-development-mainserver
+          - ${PROJECT}-mainserver
 
 networks:
   adminer:

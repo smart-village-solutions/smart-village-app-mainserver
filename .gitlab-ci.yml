@@ -1,37 +1,195 @@
-image: nixos/nix:2.2.1
-
 variables:
   DOCKER_HOST: tcp://docker:2375/
-  TARGET_HOST: smartvillage.app
-
-services:
-  - docker:dind
+  QUANTUM_CLI: registry.internal.planetary-networks.de/quantum-public/cli:2
+  DOCKER_AUTH_CONFIG: '{ "auths": { "https://index.docker.io/v1/": { "auth": "$DOCKER_AUTH" } }}'
 
 stages:
   - build
-  - tag
+  - build_release
+  - deploy_release
 
-build:
+services:
+  - docker:19.03.3-dind
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  - docker login -u $DOCKERHUB_LOGIN -p $DOCKERHUB_PASSWORD
+
+
+docker-build:
+  variables:
+    IMAGE: $CI_REGISTRY_IMAGE
+    DOCKERFILE: Dockerfile
   stage: build
-  before_script:
-    - nix-env -iA nixpkgs.docker
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  allow_failure: false
   script:
-    - docker pull $CI_REGISTRY_IMAGE:latest || true
-    - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-    - docker push $CI_REGISTRY_IMAGE:latest
+    - docker pull $IMAGE:latest || true
+    - docker build --cache-from $IMAGE:latest --tag $IMAGE:$CI_COMMIT_SHA --tag $IMAGE:latest -f $DOCKERFILE .
+    - docker push $IMAGE:$CI_COMMIT_SHA
+    - docker push $IMAGE:latest
   only:
-    - master
+    - feature/load-credentials-from-dashboard
+    # TODO:
+    # - release
 
-tag:
-  stage: tag
-  before_script:
-    - nix-env -iA nixpkgs.docker
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+.docker_build_release:
+  stage: build_release
+  image:
+    name: docker/compose:1.25.0
+    entrypoint: ["/bin/sh", "-c"]
+  cache:
+    key: "${CI_PIPELINE_ID}-${PROJECT}"
+    paths: [quantum.yml]
   script:
-    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:production
-    - docker push $CI_REGISTRY_IMAGE:production
-  only:
-    - master
+    - docker-compose -f docker-compose.yml -f stack.yml config > quantum.yml
+  tags: [v2]
+  allow_failure: false
+  when: manual
+
+.deploy_release:
+  stage: deploy_release
+  needs: ["docker-build"]
+  image: $QUANTUM_CLI
+  cache:
+    key: "${CI_PIPELINE_ID}-${PROJECT}"
+    paths: [quantum.yml]
+  script:
+    - cat quantum.yml
+    #- quantum-cli stack update --create --stack $PROJECT-main_server-$QUANTUM_ENDPOINT --wait
+  tags: [v2]
+  allow_failure: false
+  when: on_success
+
+
+# List of Releases:
+#
+# release/int/development
+# release/bb/frankfurt
+# release/bb/kyritz
+# release/bb/birkenwerder
+# release/bb/bad-belzig
+# release/bb/gransee
+# release/bb/falkenberg-elster
+# release/bb/herzberg-elster
+# release/bb/michendorf
+# release/bb/amt-schlieben
+# release/bb/eisenhuettenstadt
+
+#
+# List of releases to build
+#
+int-development-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: int-development
+bb-frankfurt-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-frankfurt
+bb-kyritz-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-kyritz
+bb-birkenwerder-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-birkenwerder
+bb-bad-belzig-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-bad-belzig
+bb-gransee-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-gransee
+bb-falkenberg-elster-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-falkenberg-elster
+bb-herzberg-elster-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-herzberg-elster
+bb-michendorf-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-michendorf
+bb-amt-schlieben-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-amt-schlieben
+bb-eisenhuettenstadt-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-eisenhuettenstadt
+
+
+#
+# List of releases to deploy
+#
+int-development-deploy:
+  extends: .deploy_release
+  needs: ["int-development-build"]
+  variables:
+    PROJECT: int-development
+    QUANTUM_ENDPOINT: portainer-14
+bb-frankfurt-deploy:
+  extends: .deploy_release
+  needs: ["bb-frankfurt-build"]
+  variables:
+    PROJECT: bb-frankfurt
+    QUANTUM_ENDPOINT: portainer-14
+bb-kyritz-deploy:
+  extends: .deploy_release
+  needs: ["bb-kyritz-build"]
+  variables:
+    PROJECT: bb-kyritz
+    QUANTUM_ENDPOINT: portainer-14
+bb-birkenwerder-deploy:
+  extends: .deploy_release
+  needs: ["bb-birkenwerder-build"]
+  variables:
+    PROJECT: bb-birkenwerder
+    QUANTUM_ENDPOINT: portainer-14
+bb-bad-belzig-deploy:
+  extends: .deploy_release
+  needs: ["bb-bad-belzig-build"]
+  variables:
+    PROJECT: bb-bad-belzig
+    QUANTUM_ENDPOINT: portainer-14
+bb-gransee-deploy:
+  extends: .deploy_release
+  needs: ["bb-gransee-build"]
+  variables:
+    PROJECT: bb-gransee
+    QUANTUM_ENDPOINT: portainer-14
+bb-falkenberg-elster-deploy:
+  extends: .deploy_release
+  needs: ["bb-falkenberg-elster-build"]
+  variables:
+    PROJECT: bb-falkenberg-elster
+    QUANTUM_ENDPOINT: portainer-14
+bb-herzberg-elster-deploy:
+  extends: .deploy_release
+  needs: ["bb-herzberg-elster-build"]
+  variables:
+    PROJECT: bb-herzberg-elster
+    QUANTUM_ENDPOINT: portainer-14
+bb-michendorf-deploy:
+  extends: .deploy_release
+  needs: ["bb-michendorf-build"]
+  variables:
+    PROJECT: bb-michendorf
+    QUANTUM_ENDPOINT: portainer-14
+bb-amt-schlieben-deploy:
+  extends: .deploy_release
+  needs: ["bb-amt-schlieben-build"]
+  variables:
+    PROJECT: bb-amt-schlieben
+    QUANTUM_ENDPOINT: portainer-14
+bb-eisenhuettenstadt-deploy:
+  extends: .deploy_release
+  needs: ["bb-eisenhuettenstadt-build"]
+  variables:
+    PROJECT: bb-eisenhuettenstadt
+    QUANTUM_ENDPOINT: portainer-14

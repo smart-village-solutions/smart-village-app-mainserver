@@ -28,6 +28,9 @@ RUN bundle install
 
 COPY . /app
 RUN chmod +x bin/start-cron.sh
+COPY docker/unicorn.rb /app/config/unicorn.rb
+COPY docker/database.yml /app/config/database.yml
+
 # TODO: wie kann assets building ohne DB passieren?
 # RUN bundle exec rake assets:precompile
 
