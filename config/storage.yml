@@ -9,18 +9,18 @@ local:
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:
 #   service: S3
-#   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
-#   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
+#   access_key_id: <%= Settings.config.dig(:aws, :access_key_id) %>
+#   secret_access_key: <%= Settings.config.dig(:aws, :secret_access_key) %>
 #   region: us-east-1
 #   bucket: your_own_bucket
 
 minio:
   service: S3
-  access_key_id: <%= Rails.application.credentials.dig(:minio, :access_key_id) %>
-  secret_access_key: <%= Rails.application.credentials.dig(:minio, :secret_access_key) %>
-  region: <%= Rails.application.credentials.dig(:minio, :region) %>
-  bucket: <%= Rails.application.credentials.dig(:minio, :bucket) %>
-  endpoint: <%= Rails.application.credentials.dig(:minio, :endpoint) %>
+  access_key_id: <%= Settings.config.dig(:minio, :access_key_id) %>
+  secret_access_key: <%= Settings.config.dig(:minio, :secret_access_key) %>
+  region: <%= Settings.config.dig(:minio, :region) %>
+  bucket: <%= Settings.config.dig(:minio, :bucket) %>
+  endpoint: <%= Settings.config.dig(:minio, :endpoint) %>
   force_path_style: true
 
 # Remember not to checkin your GCS keyfile to a repository
@@ -34,7 +34,7 @@ minio:
 # microsoft:
 #   service: AzureStorage
 #   storage_account_name: your_account_name
-#   storage_access_key: <%= Rails.application.credentials.dig(:azure_storage, :storage_access_key) %>
+#   storage_access_key: <%= Settings.config.dig(:azure_storage, :storage_access_key) %>
 #   container: your_container_name
 
 # mirror:

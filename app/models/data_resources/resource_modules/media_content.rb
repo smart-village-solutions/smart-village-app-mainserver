@@ -19,7 +19,7 @@ class MediaContent < ApplicationRecord
   def convert_source_url_to_external_storage
     return unless converting_activated_for_current_resource?
 
-    endpoint = Rails.application.credentials.dig(:minio, :endpoint)
+    endpoint = Settings.config.dig(:minio, :endpoint)
     return if endpoint.blank?
     return if source_url.blank? || source_url.url.blank?
     return if source_url.url.start_with?(endpoint)

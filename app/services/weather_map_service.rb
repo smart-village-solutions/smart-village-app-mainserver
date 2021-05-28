@@ -4,11 +4,11 @@ class WeatherMapService
   attr_accessor :uri
 
   def initialize
-    return if Rails.application.credentials.openweathermap.blank?
+    return if Settings.config[:openweathermap].blank?
 
-    lat = Rails.application.credentials.openweathermap[:lat]
-    lon = Rails.application.credentials.openweathermap[:lon]
-    api_key = Rails.application.credentials.openweathermap[:api_key]
+    lat = Settings.config[:openweathermap][:lat]
+    lon = Settings.config[:openweathermap][:lon]
+    api_key = Settings.config[:openweathermap][:api_key]
     base_url = "https://api.openweathermap.org"
 
     @uri = "#{base_url}/data/2.5/onecall?lat=#{lat}&lon=#{lon}&appid=#{api_key}&units=metric&exclude=minutely&lang=de"

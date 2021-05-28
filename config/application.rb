@@ -2,7 +2,9 @@
 
 require_relative "boot"
 
+require "./lib/settings.rb"
 require "rails"
+
 # Pick the frameworks you want:
 require "active_model/railtie"
 require "active_job/railtie"
@@ -46,12 +48,12 @@ module SmartVillageAppMainserver
   #
   # Defining the GraphQL::Client HTTP adapter and client that we use in app/graphql/loader/directus_loader.rb
   # This can be swapped out with any other way of querying a remote GraphQL API.
-  graphql_endpoint = Rails.application.credentials.dig(:directus, :graphql_endpoint)
+  graphql_endpoint = Settings.config.dig(:directus, :graphql_endpoint)
 
   if graphql_endpoint
     DirectusHTTPAdapter = GraphQL::Client::HTTP.new(graphql_endpoint) do
       def headers(_context)
-        graphql_access_token = Rails.application.credentials.dig(:directus, :graphql_access_token)
+        graphql_access_token = Settings.config.dig(:directus, :graphql_access_token)
 
         {
           "Authorization" => "Bearer #{graphql_access_token}"
