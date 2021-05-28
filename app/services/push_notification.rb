@@ -17,10 +17,13 @@ class PushNotification
 
       # Send PushNotification
       messages = [message_options.merge(to: device_token)]
-      feedback = @client.send_messages(messages)
 
-      # Log PushNotification
-      RedisAdapter.add_push_log(device_token, message_options.merge(date: DateTime.now, payload: feedback.try(:response).try(:body)))
+      begin
+        feedback = @client.send_messages(messages)
+        RedisAdapter.add_push_log(device_token, message_options.merge(date: DateTime.now, payload: feedback.try(:response).try(:body)))
+      rescue => e
+        RedisAdapter.add_push_log(device_token, message_options.merge(rescue_error: "push notification", error: e, date: DateTime.now))
+      end
     end
   end
 end
