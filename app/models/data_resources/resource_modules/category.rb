@@ -11,31 +11,38 @@ class Category < ApplicationRecord
   has_many :points_of_interest, source: :data_resource, source_type: "PointOfInterest", through: :data_resource_categories
   has_many :tours, source: :data_resource, source_type: "Tour", through: :data_resource_categories
   has_many :news_items, source: :data_resource, source_type: "NewsItem", through: :data_resource_categories
+  has_many :generic_items, source: :data_resource, source_type: "GenericItem", through: :data_resource_categories
 
   after_destroy :cleanup_data_resource_settings
+
+  def generic_items_count
+    return 0 if generic_items.blank?
+
+    generic_items.visible.count
+  end
 
   def points_of_interest_count
     return 0 if points_of_interest.blank?
 
-    points_of_interest.count
+    points_of_interest.visible.count
   end
 
   def tours_count
     return 0 if tours.blank?
 
-    tours.count
+    tours.visible.count
   end
 
   def news_items_count
     return 0 if news_items.blank?
 
-    news_items.count
+    news_items.visible.count
   end
 
   def event_records_count
     return 0 if event_records.blank?
 
-    event_records.count
+    event_records.visible.count
   end
 
   def upcoming_event_records

@@ -4,6 +4,7 @@ module Types
   class QueryTypes::CategoryType < Types::BaseObject
     field :id, ID, null: true
     field :name, String, null: true
+    field :generic_items_count, Integer, null: true
     field :points_of_interest_count, Integer, null: true
     field :tours_count, Integer, null: true
     field :news_items_count, Integer, null: true
