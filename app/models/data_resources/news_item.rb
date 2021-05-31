@@ -25,6 +25,7 @@ class NewsItem < ApplicationRecord
   scope :with_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
   }
+  scope :visible, -> { where(visible: true) }
 
   accepts_nested_attributes_for :content_blocks, :data_provider, :address, :source_url
 
