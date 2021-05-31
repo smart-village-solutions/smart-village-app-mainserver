@@ -7,7 +7,7 @@ class NotificationMailer < ApplicationMailer
     @notify_admin_content = notify_admin_content
 
     mail(
-      to: Settings.config[:mailer][:notify_admin][:to],
+      to: Settings.mailer[:notify_admin][:to],
       subject: t("mailers.notification.notify_admin.subject")
     )
   end
