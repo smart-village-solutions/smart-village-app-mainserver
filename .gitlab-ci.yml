@@ -54,8 +54,7 @@ docker-build:
     key: "${CI_PIPELINE_ID}-${PROJECT}"
     paths: [quantum.yml]
   script:
-    - cat quantum.yml
-    #- quantum-cli stack update --create --stack $PROJECT-main_server-$QUANTUM_ENDPOINT --wait
+    - quantum-cli stack update --create --stack $PROJECT-main_server-$QUANTUM_ENDPOINT --wait
   tags: [v2]
   allow_failure: false
   when: on_success
