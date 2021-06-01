@@ -42,6 +42,6 @@ Rails.application.routes.draw do
 
   get "/generate_204", to: "application#generate_204", status: 204
 
-  root to: "data_provider#edit"
+  root to: redirect("accounts")
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
