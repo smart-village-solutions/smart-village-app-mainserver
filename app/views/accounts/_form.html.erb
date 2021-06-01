@@ -155,8 +155,7 @@
     </div>
   <% end %>
 
-  <h2>Optionen für Resourcen</h2>
-
+  <h2>Optionen für Ressourcen</h2>
   <nav>
     <div class="nav nav-tabs" id="resource-nav-tab" role="tablist">
       <%= d.fields_for :data_resource_settings do |s| %>
@@ -261,10 +260,10 @@
               <%= s.check_box :post_to_facebook, { class: "form-check-input"}, "true", "false" %>
               <%= s.label :post_to_facebook, "Sende Daten zu Facebook" %>
               <small class="form-text text-muted">
-                Erzeugen sie eine App, für den Zugriff auf Ihre Seite unter <a href="https://developers.facebook.com/apps/?show_reminder=true" target="_blank">Meine Apps</a>. <br/>
-                Erzeugen Sie hier den <a href="https://developers.facebook.com/tools/explorer" target="_blank">User Access Token</a> über den Button "Generate Access Token". <br/>
+                Erstellen Sie eine App für den Zugriff auf Ihre Seite unter <a href="https://developers.facebook.com/apps/?show_reminder=true" target="_blank">Meine Apps</a> bei Facebook.<br/>
+                Erzeugen Sie einen <a href="https://developers.facebook.com/tools/explorer" target="_blank">User Access Token</a> über den Button "Generate Access Token".<br/>
                 Anschließend wählen Sie "Seitenzugriffsschlüssel anfordern" unter "Nutzer oder Seite".<br/>
-                Prüfen Sie anschließend ob folgende Rechte zu zugewiesen sind und fügen Sie gegebenenfalls diese hinzu:
+                Prüfen Sie danach ob folgende Rechte zugewiesen sind oder fügen Sie diese gegebenenfalls hinzu:
                 <ul>
                   <li>pages_manage_posts</li>
                   <li>pages_read_engagement</li>
@@ -279,16 +278,16 @@
             <%= s.label :facebook_page_id, "Facebook Page ID" %>
             <%= s.text_field :facebook_page_id, class: "form-control", placeholder: "Facebook Page ID" %>
             <small class="form-text text-muted">
-              Bitte geben sie hier die ID der Facebook Seite an, zu der die Beiträge erstellt werden sollen.
+              Bitte geben Sie hier die ID der Facebook Seite an, zu der die Beiträge erstellt werden sollen.
               Die ID ergibt sich aus der URL der Seite und besteht nur aus der Nummer, falls eine vorhanden ist.
             </small>
 
-            <br/>
+            <br />
 
             <%= s.label :facebook_page_access_token, "Page Access Token" %>
             <%= s.text_field :facebook_page_access_token, class: "form-control", placeholder: "Page Access Token" %>
             <small class="form-text text-muted">
-              Hier ist der Seitenzugriffsschlüssel einzutragen, den sie mit Ihrem "User Access Token" zuvor erzeugt haben.
+              Hier ist der Seitenzugriffsschlüssel einzutragen, den Sie mit Ihrem "User Access Token" bei Facebook angefordert haben.
             </small>
           </div>
         </div>
@@ -374,7 +373,6 @@
       </div>
     </div>
   </div>
-
 <% end %>
 
 <br>
