@@ -14,9 +14,45 @@ require "graphql/remote_loader"
 # DirectusClient is defined in config/application.rb
 class DirectusLoader < GraphQL::RemoteLoader::Loader
   def query(query_string, context: {})
-    return unless defined?(DirectusClient)
+    return unless directus_defined?
+    return if directus_client.nil?
 
-    parsed_query = DirectusClient.parse(query_string)
-    DirectusClient.query(parsed_query, variables: {}, context: {})
+    parsed_query = directus_client.parse(query_string)
+    directus_client.query(parsed_query, variables: {}, context: {})
   end
+
+  def directus_defined?
+    Rails.application.credentials.dig(:directus, :graphql_endpoint).present?
+  end
+
+  # EXAMPLE FROM https://github.com/d12/graphql-remote_loader_example/blob/master/config/application.rb
+  #
+  # Defining the GraphQL::Client HTTP adapter and client that we use in query method
+  def directus_client
+    begin
+      @directus_client ||= GraphQL::Client.new(
+        schema: GraphQL::Client.load_schema(directus_http_adapter),
+        execute: directus_http_adapter
+      )
+      @directus_client.allow_dynamic_queries = true
+
+      return @directus_client
+    rescue
+      nil
+    end
+  end
+
+  def directus_http_adapter
+    graphql_endpoint = Rails.application.credentials.dig(:directus, :graphql_endpoint)
+    return if graphql_endpoint.blank?
+
+    GraphQL::Client::HTTP.new(graphql_endpoint) do
+      def headers(_context)
+        graphql_access_token = Rails.application.credentials.dig(:directus, :graphql_access_token)
+
+        { "Authorization" => "Bearer #{graphql_access_token}" }
+      end
+    end
+  end
+
 end
