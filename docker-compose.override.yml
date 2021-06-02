@@ -1,10 +1,19 @@
 version: '3.7'
 
 services:
+  cron_job:
+    environment:
+      SVA_COMMUNITY: int-development
+
+  delayed_job:
+    environment:
+      SVA_COMMUNITY: int-development
+
   app:
     build:
       context: .
     environment:
+      SVA_COMMUNITY: int-development
       RAILS_ENV: development
     volumes:
       - ./docker/database.yml:/app/config/database.yml
