@@ -21,6 +21,8 @@ class Attraction < ApplicationRecord
   has_many :web_urls, as: :web_urlable, dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy
 
+  scope :visible, -> { where(visible: true) }
+
   validates_presence_of :name
   acts_as_taggable
 

@@ -30,6 +30,8 @@ class EventRecord < ApplicationRecord
   has_many :dates, as: :dateable, class_name: "FixedDate", dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy
 
+  scope :visible, -> { where(visible: true) }
+
   # timespan_to_search und timespan werden Arrays der Eventzeiträume
   # und deren Schnittemenge > 0 bedeutet eine Überschneidung.
   #
