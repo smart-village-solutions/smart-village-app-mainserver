@@ -60,6 +60,8 @@ module Types
       argument :id, ID, required: true
     end
 
+    field :surveys, QueryTypes::SurveyType, function: Resolvers::SurveysSearch
+
     def weather_map(id: nil)
       return OpenWeatherMap.find_by(id: id) if id.present?
 
