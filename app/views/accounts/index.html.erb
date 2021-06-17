@@ -71,7 +71,7 @@
             <td class="align-middle"><%= user.id %></td>
             <td class="align-middle"><%= link_to user.email, edit_account_path(user) %></td>
             <td class="align-middle"><%= user.data_provider.try(:name) %></td>
-            <td class="align-middle"><%= user.role.humanize %></td>
+            <td class="align-middle"><%= user.role.try(:humanize) %></td>
             <td class="align-middle">
               <span class="badge <%= user.try(:data_provider).try(:role_point_of_interest) ? 'badge-success' : 'badge-danger' %>">
                 <%= user.try(:data_provider).try(:role_point_of_interest) ? 'aktiv' : '' %>

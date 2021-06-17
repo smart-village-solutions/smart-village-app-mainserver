@@ -273,6 +273,18 @@ input GeoLocationInput {
 }
 
 """
+      A specific JSON type representing I18n
+      text data, for example:
+      ```
+      {
+        de: "deutscher Text",
+        en: "englischer Text"
+      }
+      ```
+"""
+scalar I18nJSON
+
+"""
 Represents untyped JSON
 """
 scalar JSON
@@ -555,6 +567,7 @@ type Query {
   pointsOfInterest(category: String, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: PointsOfInterestOrder = createdAt_DESC, skip: Int): [PointOfInterest]
   publicHtmlFile(name: String!): PublicHtmlFile!
   publicJsonFile(name: String!): PublicJsonFile!
+  surveys(archived: Boolean, ids: [ID], ongoing: Boolean): [SurveyPoll!]!
   tour(id: ID!): Tour!
   tours(category: String, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: ToursOrder = createdAt_DESC, skip: Int): [Tour!]!
   wasteAddresses(ids: [ID], limit: Int, order: WasteLocationOrder = createdAt_DESC, skip: Int): [Address!]!
@@ -590,6 +603,25 @@ type Setting {
   alwaysRecreateOnImport: String
   displayOnlySummary: String
   onlySummaryLinkText: String
+}
+
+type SurveyPoll {
+  createdAt: String
+  date: Date
+  description: I18nJSON
+  id: ID
+  questionTitle: I18nJSON
+  responseOptions: [SurveyResponseOptions!]
+  title: I18nJSON
+  updatedAt: String
+}
+
+type SurveyResponseOptions {
+  createdAt: String
+  id: ID
+  title: I18nJSON
+  updatedAt: String
+  votesCount: Int
 }
 
 type Tour {

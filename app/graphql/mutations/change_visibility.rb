@@ -8,7 +8,7 @@ module Mutations
 
     type Types::ChangeVisibilityType
 
-    RECORD_WHITELIST = ["EventRecord", "NewsItem", "PointOfInterest", "Tour"].freeze
+    RECORD_WHITELIST = ["EventRecord", "NewsItem", "PointOfInterest", "Tour", "Survey::Poll"].freeze
 
     def resolve(id:, record_type:, visible:)
       return error_status("recordType") unless RECORD_WHITELIST.include?(record_type)
