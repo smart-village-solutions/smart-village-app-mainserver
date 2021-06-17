@@ -15,9 +15,19 @@ class Survey::Poll < ApplicationRecord
 
   before_save :set_visibility_by_role
 
-  # TODO: real scopes based on `date` instead of `visible`
-  scope :ongoing, -> { where(visible: true) }
-  scope :archived, -> { where(visible: false) }
+  # Startdatum liegt in der Vergangenheit oder Heute und Enddatum liegt in der Zukunft oder Heute:
+  scope :ongoing, lambda {
+    where.not(fixed_dates: { date_start: [nil, ""] })
+      .where.not(fixed_dates: { date_end: [nil, ""] })
+      .where("fixed_dates.date_start <= ? AND fixed_dates.date_end >= ?", Date.today, Date.today)
+      .joins(:date)
+  }
+
+  # Enddatum liegt in der Vergangenheit:
+  scope :archived, lambda {
+    where.not(fixed_dates: { date_end: [nil, ""] })
+      .where("fixed_dates.date_end < ?", Date.today).joins(:date)
+  }
 
   def question_title
     questions.try(:first).try(:title)
