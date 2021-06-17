@@ -8,7 +8,14 @@ module Mutations
 
     type Types::DestroyType
 
-    RECORD_WHITELIST = ["EventRecord", "NewsItem", "PointOfInterest", "Tour", "GenericItem"].freeze
+    RECORD_WHITELIST = [
+      "EventRecord",
+      "NewsItem",
+      "PointOfInterest",
+      "Tour",
+      "GenericItem",
+      "Survey::Poll"
+    ].freeze
 
     def resolve(id: nil, record_type:, external_id: nil)
       return error_status unless RECORD_WHITELIST.include?(record_type)
