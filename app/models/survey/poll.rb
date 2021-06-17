@@ -4,7 +4,7 @@ class Survey::Poll < ApplicationRecord
   include FilterByRole
 
   has_one :date, as: :dateable, class_name: "FixedDate", dependent: :destroy
-  has_many :questions, class_name: "Survey::Question", foreign_key: "survey_poll_id", dependent: :restrict_with_error
+  has_many :questions, class_name: "Survey::Question", foreign_key: "survey_poll_id", dependent: :destroy
 
   belongs_to :data_provider
 
