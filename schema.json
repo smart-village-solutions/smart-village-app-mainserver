@@ -6438,7 +6438,7 @@
               ],
               "type": {
                 "kind": "SCALAR",
-                "name": "I18nText",
+                "name": "I18nJSON",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -6466,7 +6466,7 @@
               ],
               "type": {
                 "kind": "SCALAR",
-                "name": "I18nText",
+                "name": "I18nJSON",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -6502,7 +6502,7 @@
               ],
               "type": {
                 "kind": "SCALAR",
-                "name": "I18nText",
+                "name": "I18nJSON",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -6532,8 +6532,8 @@
         },
         {
           "kind": "SCALAR",
-          "name": "I18nText",
-          "description": "Represents untyped JSON",
+          "name": "I18nJSON",
+          "description": "      A specific JSON type representing I18n\n      text data, for example:\n      ```\n      {\n        de: \"deutscher Text\",\n        en: \"englischer Text\"\n      }\n      ```\n",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -6581,7 +6581,7 @@
               ],
               "type": {
                 "kind": "SCALAR",
-                "name": "I18nText",
+                "name": "I18nJSON",
                 "ofType": null
               },
               "isDeprecated": false,

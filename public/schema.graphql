@@ -273,9 +273,16 @@ input GeoLocationInput {
 }
 
 """
-Represents untyped JSON
+      A specific JSON type representing I18n
+      text data, for example:
+      ```
+      {
+        de: "deutscher Text",
+        en: "englischer Text"
+      }
+      ```
 """
-scalar I18nText
+scalar I18nJSON
 
 """
 Represents untyped JSON
@@ -601,18 +608,18 @@ type Setting {
 type SurveyPoll {
   createdAt: String
   date: Date
-  description: I18nText
+  description: I18nJSON
   id: ID
-  questionTitle: I18nText
+  questionTitle: I18nJSON
   responseOptions: [SurveyResponseOptions!]
-  title: I18nText
+  title: I18nJSON
   updatedAt: String
 }
 
 type SurveyResponseOptions {
   createdAt: String
   id: ID
-  title: I18nText
+  title: I18nJSON
   updatedAt: String
   votesCount: Int
 }
