@@ -4,3 +4,14 @@ class Survey::Question < ApplicationRecord
 
   store :title, coder: JSON
 end
+
+# == Schema Information
+#
+# Table name: survey_questions
+#
+#  id             :bigint           not null, primary key
+#  survey_poll_id :integer
+#  title          :text(4294967295)
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
