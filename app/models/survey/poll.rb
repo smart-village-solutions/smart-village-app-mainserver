@@ -10,6 +10,17 @@ class Survey::Poll < ApplicationRecord
   store :description, coder: JSON
 
   accepts_nested_attributes_for :date, :questions
+
+  before_commit :set_visibility_by_role
+
+  # Wenn die Rolle Restricted eine Umfrage anlegt oder bearbeitet,
+  # so ist diese per default nicht sichtbar
+  def set_visibility_by_role
+    return unless data_provider
+    return unless data_provider.user
+
+    self.visible = false if data_provider.user.restricted_role?
+  end
 end
 
 # == Schema Information
