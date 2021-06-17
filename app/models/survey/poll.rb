@@ -4,7 +4,7 @@ class Survey::Poll < ApplicationRecord
   include FilterByRole
 
   has_one :date, as: :dateable, class_name: "FixedDate", dependent: :destroy
-  has_many :questions, class_name: "Survey::Question", foreign_key: "survey_poll_id", dependent: :destroy
+  has_many :questions, class_name: "Survey::Question", foreign_key: "survey_poll_id", dependent: :restrict_with_error
 
   belongs_to :data_provider
 
@@ -13,7 +13,7 @@ class Survey::Poll < ApplicationRecord
 
   accepts_nested_attributes_for :date, :questions
 
-  before_commit :set_visibility_by_role
+  before_save :set_visibility_by_role
 
   # Wenn die Rolle Restricted eine Umfrage anlegt oder bearbeitet,
   # so ist diese per default nicht sichtbar
