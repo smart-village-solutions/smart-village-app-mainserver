@@ -15,6 +15,18 @@ class Survey::Poll < ApplicationRecord
 
   before_save :set_visibility_by_role
 
+  # TODO: real scopes based on `date` instead of `visible`
+  scope :ongoing, -> { where(visible: true) }
+  scope :archived, -> { where(visible: false) }
+
+  def question_title
+    questions.try(:first).try(:title)
+  end
+
+  def response_options
+    questions.try(:first).try(:response_options)
+  end
+
   # Wenn die Rolle Restricted eine Umfrage anlegt oder bearbeitet,
   # so ist diese per default nicht sichtbar
   def set_visibility_by_role
