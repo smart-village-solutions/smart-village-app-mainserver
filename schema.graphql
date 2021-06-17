@@ -560,7 +560,7 @@ type Query {
   pointsOfInterest(category: String, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: PointsOfInterestOrder = createdAt_DESC, skip: Int): [PointOfInterest]
   publicHtmlFile(name: String!): PublicHtmlFile!
   publicJsonFile(name: String!): PublicJsonFile!
-  surveys(ids: [ID]): Survey!
+  surveys(archived: Boolean, ids: [ID], ongoing: Boolean): [SurveyPoll!]!
   tour(id: ID!): Tour!
   tours(category: String, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: ToursOrder = createdAt_DESC, skip: Int): [Tour!]!
   wasteAddresses(ids: [ID], limit: Int, order: WasteLocationOrder = createdAt_DESC, skip: Int): [Address!]!
@@ -596,12 +596,6 @@ type Setting {
   alwaysRecreateOnImport: String
   displayOnlySummary: String
   onlySummaryLinkText: String
-}
-
-type Survey {
-  active: [SurveyPoll!]
-  all: [SurveyPoll!]
-  archived: [SurveyPoll!]
 }
 
 type SurveyPoll {
