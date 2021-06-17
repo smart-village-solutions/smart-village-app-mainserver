@@ -1,12 +1,15 @@
+# frozen_string_literal: true
+
 class LanguageService
   def self.languages
     static_content = StaticContent.where(name: "languages", data_type: "json").first.try(:content)
-    return ["de"] if static_content.blank?
+    fallback_language = "de"
+    return [fallback_language] if static_content.blank?
 
     begin
       JSON.parse(static_content)
     rescue
-      ["de"]
+      [fallback_language]
     end
   end
 end
