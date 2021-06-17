@@ -47,6 +47,11 @@ module Mutations
       def destroy_record(record)
         if record.present?
           record.destroy
+
+          if record.errors.present?
+            return { status: record.errors.full_messages.join(", "), status_code: 500 }
+          end
+
           { status: "Record destroyed", status_code: 200 }
         else
           { status: "Record not found", status_code: 404 }
