@@ -2370,6 +2370,20 @@
               "deprecationReason": null
             },
             {
+              "name": "genericItemsCount",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "id",
               "description": null,
               "args": [
@@ -6417,6 +6431,20 @@
               "deprecationReason": null
             },
             {
+              "name": "dataProvider",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "DataProvider",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "date",
               "description": null,
               "args": [
@@ -6517,6 +6545,20 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "visible",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -6680,7 +6722,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "ChangeVisibility",
+                  "name": "Status",
                   "ofType": null
                 }
               },
@@ -7857,6 +7899,16 @@
               "description": null,
               "args": [
                 {
+                  "name": "forceCreate",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "title",
                   "description": null,
                   "type": {
@@ -8302,6 +8354,43 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "Destroy",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "voteForSurvey",
+              "description": null,
+              "args": [
+                {
+                  "name": "increaseId",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "decreaseId",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Status",
                   "ofType": null
                 }
               },
@@ -9884,7 +9973,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "ChangeVisibility",
+          "name": "Status",
           "description": null,
           "fields": [
             {

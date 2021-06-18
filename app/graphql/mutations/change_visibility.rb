@@ -6,7 +6,7 @@ module Mutations
     argument :record_type, String, required: true
     argument :visible, Boolean, required: true
 
-    type Types::ChangeVisibilityType
+    type Types::StatusType
 
     RECORD_WHITELIST = ["EventRecord", "NewsItem", "PointOfInterest", "Tour", "Survey::Poll"].freeze
 
