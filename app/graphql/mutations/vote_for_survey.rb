@@ -18,7 +18,7 @@ module Mutations
         decrease_reponse = Survey::ResponseOption.find_by(id: decrease_id) if decrease_id.present?
         decrease_reponse.decrement!(:votes_count) if decrease_reponse.present?
 
-        OpenStruct.new(id: nil, status: "VoteForSurvey successful ", status_code: 200)
+        OpenStruct.new(id: nil, status: "voted successfully, increased: #{increase_id} decreased: #{decrease_id}", status_code: 200)
       rescue => e
         error_status("Error on voting: #{e}")
       end
