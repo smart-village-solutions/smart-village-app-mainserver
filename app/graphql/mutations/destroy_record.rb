@@ -8,7 +8,14 @@ module Mutations
 
     type Types::DestroyType
 
-    RECORD_WHITELIST = ["EventRecord", "NewsItem", "PointOfInterest", "Tour", "GenericItem"].freeze
+    RECORD_WHITELIST = [
+      "EventRecord",
+      "NewsItem",
+      "PointOfInterest",
+      "Tour",
+      "GenericItem",
+      "Survey::Poll"
+    ].freeze
 
     def resolve(id: nil, record_type:, external_id: nil)
       return error_status unless RECORD_WHITELIST.include?(record_type)
@@ -40,7 +47,12 @@ module Mutations
       def destroy_record(record)
         if record.present?
           record.destroy
-          { status: "Record destroyed", status_code: 200 }
+
+          if record.destroyed?
+            { status: "Record destroyed", status_code: 200 }
+          else
+            { status: record.errors.full_messages.join(", "), status_code: 500 }
+          end
         else
           { status: "Record not found", status_code: 404 }
         end
