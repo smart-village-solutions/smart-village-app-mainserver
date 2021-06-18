@@ -7861,7 +7861,7 @@
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
-                    "name": "JSON",
+                    "name": "I18nJSON",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -7871,7 +7871,7 @@
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
-                    "name": "JSON",
+                    "name": "I18nJSON",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -7894,7 +7894,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "SCALAR",
-                      "name": "JSON",
+                      "name": "I18nJSON",
                       "ofType": null
                     }
                   },
