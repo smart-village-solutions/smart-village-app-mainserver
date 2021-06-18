@@ -2,6 +2,7 @@
 
 module Mutations
   class CreateSurveyPoll < BaseMutation
+    argument :force_create, Boolean, required: false
     argument :title, Types::QueryTypes::I18nJSON, required: false
     argument :description, Types::QueryTypes::I18nJSON, required: false
     argument :date,
