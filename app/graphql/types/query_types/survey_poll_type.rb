@@ -8,6 +8,8 @@ module Types
     field :description, QueryTypes::I18nJSON, null: true
     field :date, QueryTypes::DateType, null: true
     field :response_options, [QueryTypes::SurveyResponseOptionsType], null: true
+    field :data_provider, QueryTypes::DataProviderType, null: true
+    field :visible, Boolean, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
   end
