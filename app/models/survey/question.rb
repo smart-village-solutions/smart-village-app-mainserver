@@ -5,6 +5,8 @@ class Survey::Question < ApplicationRecord
   has_many :response_options, class_name: "Survey::ResponseOption", foreign_key: "survey_question_id", dependent: :restrict_with_error
 
   store :title, coder: JSON
+
+  accepts_nested_attributes_for :response_options
 end
 
 # == Schema Information

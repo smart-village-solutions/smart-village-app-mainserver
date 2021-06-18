@@ -11,7 +11,7 @@ class Survey::Poll < ApplicationRecord
   store :title, coder: JSON
   store :description, coder: JSON
 
-  accepts_nested_attributes_for :date, :questions
+  accepts_nested_attributes_for :date, :questions, :data_provider
 
   before_save :set_visibility_by_role
 

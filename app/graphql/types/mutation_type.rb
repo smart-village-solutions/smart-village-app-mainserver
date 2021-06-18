@@ -10,6 +10,7 @@ module Types
     field :create_point_of_interest, mutation: Mutations::CreatePointOfInterest
     field :create_app_user_content, mutation: Mutations::CreateAppUserContent
     field :create_waste_pick_up_time, mutation: Mutations::CreateWastePickUpTime
+    field :create_survey_poll, mutation: Mutations::CreateSurveyPoll
 
     # destroys
     field :destroy_record, mutation: Mutations::DestroyRecord
