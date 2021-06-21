@@ -31,6 +31,10 @@ class Survey::Poll < ApplicationRecord
       .where("fixed_dates.date_end < ?", Date.today).joins(:date)
   }
 
+  def question_id
+    questions.try(:first).try(:id)
+  end
+
   def question_title
     questions.try(:first).try(:title)
   end
