@@ -7,7 +7,8 @@ RSpec.describe Mutations::VoteForSurvey do
     user = create(:user)
     user.app_role!
     user.save
-    Mutations::VoteForSurvey.new(object: nil, context: {current_user: user}).resolve(args)
+
+    Mutations::VoteForSurvey.new(object: nil, context: { current_user: user }).resolve(args)
   end
 
   before do
@@ -17,10 +18,10 @@ RSpec.describe Mutations::VoteForSurvey do
     @response_option_b = @question.response_options.create
   end
 
-  it "increses a vote" do
-    result = perform(
+  it "increases one vote and decreases another" do
+    perform(
       increase_id: @response_option_a.id,
-      decrease_id: @response_option_b.id,
+      decrease_id: @response_option_b.id
     )
     @response_option_a.reload
     @response_option_b.reload
