@@ -40,7 +40,11 @@ class Survey::Poll < ApplicationRecord
   end
 
   def response_options
-    questions.try(:first).try(:response_options)
+    # select all response options with at least one entry in a title for a language
+    (questions.try(:first).try(:response_options) || []).select do |response_option|
+      response_option.title.values.map(&:present?).include?(true) ||
+        response_option.votes_count.positive?
+    end
   end
 
   # Wenn die Rolle Restricted eine Umfrage anlegt oder bearbeitet,
