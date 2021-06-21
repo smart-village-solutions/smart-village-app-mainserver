@@ -9,7 +9,7 @@ module Mutations
 
     def resolve(increase_id: nil, decrease_id: nil)
       return error_status("Access not permitted: missing role") unless context[:current_user].app_role?
-      return error_status("Missing ResponseOptionID as increase_id or decrease_id") if increase_id.blank? && decrease_id.blank?
+      return error_status("Missing ResponseOptionID as increase_id or decrease_id", 500) if increase_id.blank? && decrease_id.blank?
 
       begin
         increase_reponse = Survey::ResponseOption.find_by(id: increase_id) if increase_id.present?
@@ -26,8 +26,8 @@ module Mutations
 
     private
 
-      def error_status(description)
-        OpenStruct.new(id: nil, status: description, status_code: 403)
+      def error_status(description, status_code = 403)
+        OpenStruct.new(id: nil, status: description, status_code: status_code)
       end
   end
 end
