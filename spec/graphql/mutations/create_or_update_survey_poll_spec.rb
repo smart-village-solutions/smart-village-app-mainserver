@@ -2,9 +2,9 @@
 
 require "rails_helper"
 
-RSpec.describe Mutations::CreateSurveyPoll do
+RSpec.describe Mutations::CreateOrUpdateSurveyPoll do
   def perform(**args)
-    Mutations::CreateSurveyPoll.new(object: nil, context: {}).resolve(args)
+    Mutations::CreateOrUpdateSurveyPoll.new(object: nil, context: {}).resolve(args)
   end
 
   describe "creation of a survey poll with german data" do
