@@ -14,6 +14,9 @@ module Types
 
     # destroys
     field :destroy_record, mutation: Mutations::DestroyRecord
+
+    # actions
     field :change_visibility, mutation: Mutations::ChangeVisibility
+    field :vote_for_survey, mutation: Mutations::VoteForSurvey
   end
 end
