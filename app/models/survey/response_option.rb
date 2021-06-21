@@ -4,6 +4,16 @@ class Survey::ResponseOption < ApplicationRecord
   belongs_to :question, class_name: "Survey::Question", optional: true, foreign_key: "survey_question_id"
 
   store :title, coder: JSON
+
+  after_update :destroy_empty_response
+
+  private
+
+    # after saving response options we want to delete the ones without titles and votes
+    # SVA2-5
+    def destroy_empty_response
+      destroy if !title.values.map(&:present?).include?(true) && votes_count.zero?
+    end
 end
 
 # == Schema Information
