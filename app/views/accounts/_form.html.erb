@@ -160,14 +160,14 @@
     <div class="nav nav-tabs" id="resource-nav-tab" role="tablist">
       <%= d.fields_for :data_resource_settings do |s| %>
         <% next unless s.object.data_resource_type %>
-        <a class="nav-item nav-link <%= s.object.data_resource_type == 'Tour' ? 'active' : '' %>" id="nav-contact-tab" data-toggle="tab" href="#nav-<%= s.object.data_resource_type %>" role="tab" aria-controls="nav-contact" aria-selected="false"><%= s.object.data_resource_type.pluralize %></a>
+        <a class="nav-item nav-link <%= s.object.data_resource_type == 'NewsItem' ? 'active' : '' %>" id="nav-contact-tab" data-toggle="tab" href="#nav-<%= s.object.data_resource_type %>" role="tab" aria-controls="nav-contact" aria-selected="false"><%= s.object.data_resource_type.pluralize %></a>
       <% end %>
     </div>
   </nav>
 
   <div class="tab-content" id="nav-tabContent">
     <%= d.fields_for :data_resource_settings do |s| %>
-      <div class="tab-pane fade show <%= s.object.data_resource_type == 'Tour' ? 'active' : '' %>" id="nav-<%= s.object.data_resource_type %>" role="tabpanel" aria-labelledby="nav-home-tab">
+      <div class="tab-pane fade show <%= s.object.data_resource_type == 'NewsItem' ? 'active' : '' %>" id="nav-<%= s.object.data_resource_type %>" role="tabpanel" aria-labelledby="nav-home-tab">
         <% I18n.with_locale(:de) do %>
         <% end %>
         <%= s.hidden_field :id %>

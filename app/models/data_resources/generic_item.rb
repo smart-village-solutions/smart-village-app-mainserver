@@ -53,7 +53,7 @@ class GenericItem < ApplicationRecord
 
   def content_for_facebook
     {
-      message: [title, teaser, description].compact.join("\n\n"),
+      message: [title, teaser, description].delete_if(&:blank?).compact.join("\n\n"),
       link: ""
     }
   end

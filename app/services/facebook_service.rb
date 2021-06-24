@@ -5,7 +5,7 @@ class FacebookService
     return unless resource
 
     setting = resource.settings
-    return false if setting.blank?
+    return if setting.blank?
     return unless setting.fetch("post_to_facebook", "false") == "true"
 
     facebook_page_id = setting.fetch("facebook_page_id", nil)

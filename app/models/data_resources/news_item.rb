@@ -50,14 +50,14 @@ class NewsItem < ApplicationRecord
   def content_for_facebook
     content_block = content_blocks.first
     message = [
-      content_block.title,
-      content_block.intro,
-      content_block.body
+      content_block.try(:title),
+      content_block.try(:intro),
+      content_block.try(:body)
     ].compact.delete_if(&:blank?).join("\n\n")
 
     {
       message: message,
-      link: source_url.try(:url)
+      link: source_url.try(:url).presence || ""
     }
   end
 
