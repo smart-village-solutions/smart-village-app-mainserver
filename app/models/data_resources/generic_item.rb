@@ -52,6 +52,13 @@ class GenericItem < ApplicationRecord
     data_provider.data_resource_settings.where(data_resource_type: "GenericItem").first.try(:settings)
   end
 
+  def content_for_facebook
+    {
+      message: [title, teaser, description].delete_if(&:blank?).compact.join("\n\n"),
+      link: ""
+    }
+  end
+
   private
 
     def find_or_create_category
