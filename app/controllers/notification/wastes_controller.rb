@@ -67,6 +67,44 @@ class Notification::WastesController < ApplicationController
     end
   end
 
+  def ical_export
+    address = Address.joins(:waste_location_types).where(ical_export_params.slice(:street, :city, :zip)).first
+    raise "Address not found" if address.blank?
+
+    full_address = "#{address.street}, #{address.zip} #{address.city}"
+
+    waste_types = StaticContent.find_by(name: "wasteTypes").try(:content)
+    waste_types = JSON.parse(waste_types) if waste_types.present?
+    return if waste_types.blank?
+
+    @cal = Icalendar::Calendar.new
+    @cal.append_custom_property("NAME", "Abfallkalender")
+    @cal.append_custom_property("X-WR-CALNAME", "Abfallkalender")
+    @cal.append_custom_property("DESCRIPTION", "Alle Abholtermine der Müllabfuhr für #{full_address}")
+    @cal.append_custom_property("X-WR-CALDESC", "Alle Abholtermine der Müllabfuhr für #{full_address}")
+    address.waste_location_types.each do |waste_location_type|
+      waste_label = waste_types.dig(waste_location_type.waste_type, "label")
+      waste_location_type.pick_up_times.each do |pick_up_time|
+        formated_pickup_start_date_for_time = Icalendar::Values::Date.new(pick_up_time.pickup_date.strftime("%Y%m%d"))
+        formated_pickup_end_date_for_time = Icalendar::Values::Date.new((pick_up_time.pickup_date + 1.day).strftime("%Y%m%d"))
+
+        event = Icalendar::Event.new
+        event.dtstart = formated_pickup_start_date_for_time
+        event.dtend = formated_pickup_end_date_for_time
+        event.summary = ["Abfallkalender", waste_label].join(": ")
+        event.description = "Abholung #{waste_label} in #{ical_export_params[:street]}"
+        event.location = full_address
+
+        @cal.add_event(event)
+      end
+    end
+    @cal.publish
+
+    respond_to do |format|
+      format.ics
+    end
+  end
+
   private
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -76,6 +114,10 @@ class Notification::WastesController < ApplicationController
 
     def waste_registration_params
       params.require(:waste_registration).permit(:street, :city, :zip, :notify_for_waste_type)
+    end
+
+    def ical_export_params
+      params.permit(:street, :city, :zip, :format)
     end
 
     def waste_registration_update_params

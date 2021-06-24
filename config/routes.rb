@@ -22,6 +22,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get "/waste_calendar/export", to: "notification/wastes#ical_export", defaults: { format: "ics" }
+
   use_doorkeeper do
     controllers applications: "oauth/applications"
   end
