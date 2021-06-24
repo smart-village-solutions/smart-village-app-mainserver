@@ -11,6 +11,9 @@ class DataResourceSetting < ApplicationRecord
           convert_media_urls_to_external_storage
           default_category_ids
           cleanup_old_records
+          post_to_facebook
+          facebook_page_id
+          facebook_page_access_token
         ],
         coder: JSON
 

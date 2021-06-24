@@ -48,6 +48,20 @@ class NewsItem < ApplicationRecord
     categories.first
   end
 
+  def content_for_facebook
+    content_block = content_blocks.first
+    message = [
+      content_block.try(:title),
+      content_block.try(:intro),
+      content_block.try(:body)
+    ].compact.delete_if(&:blank?).join("\n\n")
+
+    {
+      message: message,
+      link: source_url.try(:url).presence || ""
+    }
+  end
+
   private
 
     def find_or_create_category
