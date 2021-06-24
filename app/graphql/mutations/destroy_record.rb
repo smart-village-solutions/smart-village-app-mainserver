@@ -11,6 +11,7 @@ module Mutations
     RECORD_WHITELIST = ["EventRecord", "NewsItem", "PointOfInterest", "Tour", "GenericItem"].freeze
 
     def resolve(id: nil, record_type:, external_id: nil)
+      raise "Access not permitted" if context[:current_user].read_only_role?
       return error_status unless RECORD_WHITELIST.include?(record_type)
 
       record = if external_id.present?
