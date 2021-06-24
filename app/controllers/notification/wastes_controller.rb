@@ -69,8 +69,9 @@ class Notification::WastesController < ApplicationController
 
   def ical_export
     address = Address.joins(:waste_location_types).where(ical_export_params.slice(:street, :city, :zip)).first
-    full_address = "#{address.street}, #{address.zip} #{address.city}"
     raise "Address not found" if address.blank?
+
+    full_address = "#{address.street}, #{address.zip} #{address.city}"
 
     waste_types = StaticContent.find_by(name: "wasteTypes").try(:content)
     waste_types = JSON.parse(waste_types) if waste_types.present?
