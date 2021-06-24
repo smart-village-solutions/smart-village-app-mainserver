@@ -46,7 +46,7 @@ services:
         traefik.enable: "true"
         traefik.port: 80
         traefik.docker.network: public
-        traefik.frontend.rule: Host:server.${PROJECT}.smart-village.app
+        traefik.frontend.rule: Host:server.${DOMAINNAME}.smart-village.app
 
   db:
     networks:

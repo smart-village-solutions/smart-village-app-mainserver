@@ -52,11 +52,10 @@ docker-build:
     key: "${CI_PIPELINE_ID}-${PROJECT}"
     paths: [quantum.yml]
   script:
-    - quantum-cli stack update --create --stack $PROJECT-main_server-$QUANTUM_ENDPOINT --wait
+    - quantum-cli stack update --create --stack $PROJECT$SERVICENAME-$QUANTUM_ENDPOINT --wait
   tags: [v2]
   allow_failure: false
   when: on_success
-
 
 # List of Releases:
 #
@@ -118,7 +117,7 @@ bb-amt-schlieben-build:
 bb-eisenhuettenstadt-build:
   extends: .docker_build_release
   variables:
-    PROJECT: bb-eisenhuettenstadt
+    PROJECT: eisenhuettenstadt
 
 
 #
@@ -128,65 +127,87 @@ int-development-deploy:
   extends: .deploy_release
   needs: ["int-development-build"]
   variables:
+    SERVICENAME: "-main_server"
     PROJECT: int-development
+    DOMAINNAME: int-development
     QUANTUM_ENDPOINT: portainer-14
 bb-frankfurt-deploy:
   extends: .deploy_release
   needs: ["bb-frankfurt-build"]
   variables:
+    SERVICENAME: "-main_server"
     PROJECT: bb-frankfurt
+    DOMAINNAME: bb-frankfurt
     QUANTUM_ENDPOINT: portainer-14
 bb-kyritz-deploy:
   extends: .deploy_release
   needs: ["bb-kyritz-build"]
   variables:
+    SERVICENAME: "-main_server"
     PROJECT: bb-kyritz
+    DOMAINNAME: bb-kyritz
     QUANTUM_ENDPOINT: portainer-14
 bb-birkenwerder-deploy:
   extends: .deploy_release
   needs: ["bb-birkenwerder-build"]
   variables:
+    SERVICENAME: "-main_server"
     PROJECT: bb-birkenwerder
+    DOMAINNAME: bb-birkenwerder
     QUANTUM_ENDPOINT: portainer-14
 bb-bad-belzig-deploy:
   extends: .deploy_release
   needs: ["bb-bad-belzig-build"]
   variables:
+    SERVICENAME: ""
     PROJECT: bb-bad-belzig
+    DOMAINNAME: bad-belzig
     QUANTUM_ENDPOINT: portainer-14
 bb-gransee-deploy:
   extends: .deploy_release
   needs: ["bb-gransee-build"]
   variables:
+    SERVICENAME: "-main_server"
     PROJECT: bb-gransee
+    DOMAINNAME: bb-gransee
     QUANTUM_ENDPOINT: portainer-14
 bb-falkenberg-elster-deploy:
   extends: .deploy_release
   needs: ["bb-falkenberg-elster-build"]
   variables:
+    SERVICENAME: "-main_server"
     PROJECT: bb-falkenberg-elster
+    DOMAINNAME: bb-falkenberg-elster
     QUANTUM_ENDPOINT: portainer-14
 bb-herzberg-elster-deploy:
   extends: .deploy_release
   needs: ["bb-herzberg-elster-build"]
   variables:
+    SERVICENAME: ""
     PROJECT: bb-herzberg-elster
+    DOMAINNAME: herzberg-elster
     QUANTUM_ENDPOINT: portainer-14
 bb-michendorf-deploy:
   extends: .deploy_release
   needs: ["bb-michendorf-build"]
   variables:
+    SERVICENAME: "-main_server"
     PROJECT: bb-michendorf
+    DOMAINNAME: bb-michendorf
     QUANTUM_ENDPOINT: portainer-14
 bb-amt-schlieben-deploy:
   extends: .deploy_release
   needs: ["bb-amt-schlieben-build"]
   variables:
+    SERVICENAME: "-main_server"
     PROJECT: bb-amt-schlieben
+    DOMAINNAME: bb-amt-schlieben
     QUANTUM_ENDPOINT: portainer-14
 bb-eisenhuettenstadt-deploy:
   extends: .deploy_release
   needs: ["bb-eisenhuettenstadt-build"]
   variables:
-    PROJECT: bb-eisenhuettenstadt
+    SERVICENAME: ""
+    PROJECT: eisenhuettenstadt
+    DOMAINNAME: eisenhuettenstadt
     QUANTUM_ENDPOINT: portainer-14
