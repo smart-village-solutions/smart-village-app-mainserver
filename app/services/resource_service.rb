@@ -12,6 +12,9 @@ class ResourceService
   def create(resource_class, params)
     @params = params
 
+    # Erlaube nur ein Anlegen von Daten wenn der Nutzer nicht ReadOnly ist.
+    raise "Access not permitted" if data_provider.user.read_only_role?
+
     # Wenn die Rolle Restricted eine Information anlegt,
     # so ist diese per default nicht sichtbar, es sei denn
     # das Attribute 'visible' wird in den params mitgegeben und ist 'true'
@@ -54,7 +57,7 @@ class ResourceService
     return @resource.compareable_attributes == record.compareable_attributes if record.respond_to?(:compareable_attributes)
 
     # Fallback, wenn :compareable_attributes nicht beim Model definiert ist.
-    except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id"]
+    except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id", "visible"]
     @resource.attributes.except(*except_attributes) == record.attributes.except(*except_attributes)
   end
 

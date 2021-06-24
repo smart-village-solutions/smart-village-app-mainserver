@@ -12,6 +12,13 @@ class Users::SessionsController < Devise::SessionsController
     sign_in(resource_name, resource)
     resource.save # recreates authentication_token after sign in
 
+    graphql_access_token = Doorkeeper::AccessToken.create(
+      application: resource.oauth_applications.first,
+      resource_owner_id: resource.id,
+      expires_in: 1.day
+    ).token
+    cookies["_graphql_token"] = graphql_access_token
+
     respond_to do |format|
       format.html { respond_with resource, location: after_sign_in_path_for(resource) }
       format.json do

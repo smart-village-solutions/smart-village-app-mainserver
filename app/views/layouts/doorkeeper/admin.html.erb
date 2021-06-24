@@ -16,9 +16,14 @@
 
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
+
       <% if current_user.admin_role? %>
         <li class="nav-item">
           <%= link_to "Accounts", accounts_path, class: 'nav-link' %>
+        </li>
+
+        <li class="nav-item <%= 'active' if request.path == oauth_applications_path %>">
+          <%= link_to t('doorkeeper.layouts.admin.nav.applications'), oauth_applications_path, class: 'nav-link' %>
         </li>
 
         <li class="nav-item">
@@ -37,19 +42,21 @@
           <%= link_to "Backgroundjobs", "/background", class: 'nav-link' %>
         </li>
       <% end %>
+
       <% if current_user && current_user.try(:data_provider).try(:role_push_notification) %>
         <li class="nav-item">
           <%= link_to "Push Notifications", notification_devices_path, class: 'nav-link' %>
         </li>
       <% end %>
-      <li class="nav-item <%= 'active' if request.path == oauth_applications_path %>">
-        <%= link_to t('doorkeeper.layouts.admin.nav.applications'), oauth_applications_path, class: 'nav-link' %>
+
+      <li class="nav-item">
+        <%= link_to "Data Provider", edit_data_provider_path, class: 'nav-link' %>
       </li>
-      <% unless current_user.admin_role? %>
-        <li class="nav-item">
-          <%= link_to "Data Provider", edit_data_provider_path, class: 'nav-link' %>
-        </li>
-      <% end %>
+
+      <li class="nav-item">
+        <%= link_to "GraphQL API", "/graphiql", class: 'nav-link' %>
+      </li>
+
       <li class="nav-item">
         <%= link_to "Sign out (#{current_user.email})", destroy_user_session_path, class: 'nav-link', method: :delete %>
       </li>
