@@ -44,6 +44,7 @@ gem "doorkeeper"
 gem "jquery-rails"
 gem "jsoneditor-rails"
 gem "mailjet"
+gem "mimemagic", ">= 0.3.6"
 
 gem "order_as_specified"
 
