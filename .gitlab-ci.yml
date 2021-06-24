@@ -78,47 +78,57 @@ int-development-build:
   extends: .docker_build_release
   variables:
     PROJECT: int-development
+    DOMAINNAME: int-development
 bb-frankfurt-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-frankfurt
+    DOMAINNAME: bb-frankfurt
 bb-kyritz-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-kyritz
+    DOMAINNAME: bb-kyritz
 bb-birkenwerder-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-birkenwerder
+    DOMAINNAME: bb-birkenwerder
 bb-bad-belzig-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-bad-belzig
+    DOMAINNAME: bad-belzig
 bb-gransee-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-gransee
+    DOMAINNAME: bb-gransee
 bb-falkenberg-elster-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-falkenberg-elster
+    DOMAINNAME: bb-falkenberg-elster
 bb-herzberg-elster-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-herzberg-elster
+    DOMAINNAME: herzberg-elster
 bb-michendorf-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-michendorf
+    DOMAINNAME: bb-michendorf
 bb-amt-schlieben-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-amt-schlieben
+    DOMAINNAME: bb-amt-schlieben
 bb-eisenhuettenstadt-build:
   extends: .docker_build_release
   variables:
     PROJECT: eisenhuettenstadt
-
+    DOMAINNAME: eisenhuettenstadt
 
 #
 # List of releases to deploy
@@ -129,7 +139,6 @@ int-development-deploy:
   variables:
     SERVICENAME: "-main_server"
     PROJECT: int-development
-    DOMAINNAME: int-development
     QUANTUM_ENDPOINT: portainer-14
 bb-frankfurt-deploy:
   extends: .deploy_release
@@ -137,7 +146,6 @@ bb-frankfurt-deploy:
   variables:
     SERVICENAME: "-main_server"
     PROJECT: bb-frankfurt
-    DOMAINNAME: bb-frankfurt
     QUANTUM_ENDPOINT: portainer-14
 bb-kyritz-deploy:
   extends: .deploy_release
@@ -145,7 +153,6 @@ bb-kyritz-deploy:
   variables:
     SERVICENAME: "-main_server"
     PROJECT: bb-kyritz
-    DOMAINNAME: bb-kyritz
     QUANTUM_ENDPOINT: portainer-14
 bb-birkenwerder-deploy:
   extends: .deploy_release
@@ -153,7 +160,6 @@ bb-birkenwerder-deploy:
   variables:
     SERVICENAME: "-main_server"
     PROJECT: bb-birkenwerder
-    DOMAINNAME: bb-birkenwerder
     QUANTUM_ENDPOINT: portainer-14
 bb-bad-belzig-deploy:
   extends: .deploy_release
@@ -161,7 +167,6 @@ bb-bad-belzig-deploy:
   variables:
     SERVICENAME: ""
     PROJECT: bb-bad-belzig
-    DOMAINNAME: bad-belzig
     QUANTUM_ENDPOINT: portainer-14
 bb-gransee-deploy:
   extends: .deploy_release
@@ -169,7 +174,6 @@ bb-gransee-deploy:
   variables:
     SERVICENAME: "-main_server"
     PROJECT: bb-gransee
-    DOMAINNAME: bb-gransee
     QUANTUM_ENDPOINT: portainer-14
 bb-falkenberg-elster-deploy:
   extends: .deploy_release
@@ -177,7 +181,6 @@ bb-falkenberg-elster-deploy:
   variables:
     SERVICENAME: "-main_server"
     PROJECT: bb-falkenberg-elster
-    DOMAINNAME: bb-falkenberg-elster
     QUANTUM_ENDPOINT: portainer-14
 bb-herzberg-elster-deploy:
   extends: .deploy_release
@@ -185,7 +188,6 @@ bb-herzberg-elster-deploy:
   variables:
     SERVICENAME: ""
     PROJECT: bb-herzberg-elster
-    DOMAINNAME: herzberg-elster
     QUANTUM_ENDPOINT: portainer-14
 bb-michendorf-deploy:
   extends: .deploy_release
@@ -193,7 +195,6 @@ bb-michendorf-deploy:
   variables:
     SERVICENAME: "-main_server"
     PROJECT: bb-michendorf
-    DOMAINNAME: bb-michendorf
     QUANTUM_ENDPOINT: portainer-14
 bb-amt-schlieben-deploy:
   extends: .deploy_release
@@ -201,7 +202,6 @@ bb-amt-schlieben-deploy:
   variables:
     SERVICENAME: "-main_server"
     PROJECT: bb-amt-schlieben
-    DOMAINNAME: bb-amt-schlieben
     QUANTUM_ENDPOINT: portainer-14
 bb-eisenhuettenstadt-deploy:
   extends: .deploy_release
@@ -209,5 +209,4 @@ bb-eisenhuettenstadt-deploy:
   variables:
     SERVICENAME: ""
     PROJECT: eisenhuettenstadt
-    DOMAINNAME: eisenhuettenstadt
     QUANTUM_ENDPOINT: portainer-14
