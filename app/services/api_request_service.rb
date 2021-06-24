@@ -21,6 +21,8 @@ class ApiRequestService
   end
 
   def get_request(content_type_xml=false)
+    return nil if @uri.blank?
+
     uri = Addressable::URI.parse(@uri.strip).normalize
 
     uri.query = [uri.query, URI.encode_www_form(@params)].join("&") if @params && @params.any?
