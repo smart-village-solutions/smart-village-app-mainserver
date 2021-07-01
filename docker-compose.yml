@@ -3,7 +3,7 @@ version: '3.7'
 services:
   delayed_job:
     image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
-    command: bin/delayed_job start
+    command: bin/delayed_job run
     environment:
       SVA_COMMUNITY: $PROJECT
       RAILS_ENV: production
