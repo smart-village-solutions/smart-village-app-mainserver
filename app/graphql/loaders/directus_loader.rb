@@ -22,7 +22,7 @@ class DirectusLoader < GraphQL::RemoteLoader::Loader
   end
 
   def directus_defined?
-    Rails.application.credentials.dig(:directus, :graphql_endpoint).present?
+    Settings.directus[:graphql_endpoint].present?
   end
 
   # EXAMPLE FROM https://github.com/d12/graphql-remote_loader_example/blob/master/config/application.rb
@@ -43,12 +43,12 @@ class DirectusLoader < GraphQL::RemoteLoader::Loader
   end
 
   def directus_http_adapter
-    graphql_endpoint = Rails.application.credentials.dig(:directus, :graphql_endpoint)
+    graphql_endpoint = Settings.directus[:graphql_endpoint]
     return if graphql_endpoint.blank?
 
     GraphQL::Client::HTTP.new(graphql_endpoint) do
       def headers(_context)
-        graphql_access_token = Rails.application.credentials.dig(:directus, :graphql_access_token)
+        graphql_access_token = Settings.directus[:graphql_access_token]
 
         { "Authorization" => "Bearer #{graphql_access_token}" }
       end
