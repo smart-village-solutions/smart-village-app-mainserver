@@ -366,6 +366,7 @@ input MediaContentInput {
 
 type Mutation {
   changeVisibility(id: ID!, recordType: String!, visible: Boolean!): Status!
+  commentSurvey(message: String!, surveyId: ID!): Status!
   createAppUserContent(content: String, dataSource: String, dataType: String): AppUserContent!
   createEventRecord(accessibilityInformation: AccessibilityInformationInput, addresses: [AddressInput!], categories: [CategoryInput!], categoryName: String, contacts: [ContactInput!], dates: [DateInput!], description: String, externalId: String, forceCreate: Boolean, location: LocationInput, mediaContents: [MediaContentInput!], organizer: OperatingCompanyInput, parentId: Int, priceInformations: [PriceInput!], region: RegionInput, regionName: String, repeat: Boolean, repeatDuration: RepeatDurationInput, tags: [String!], title: String, urls: [WebUrlInput!]): EventRecord!
   createGenericItem(accessibilityInformations: [AccessibilityInformationInput!], addresses: [AddressInput!], author: String, categories: [CategoryInput!], categoryName: String, companies: [OperatingCompanyInput!], contacts: [ContactInput!], contentBlocks: [ContentBlockInput!], dates: [DateInput!], externalId: String, forceCreate: Boolean, genericItems: [GenericItemInput!], genericType: String, locations: [LocationInput!], mediaContents: [MediaContentInput!], openingHours: [OpeningHourInput!], payload: JSON, priceInformations: [PriceInput!], publicationDate: String, publishedAt: String, pushNotification: Boolean, title: String, webUrls: [WebUrlInput!]): GenericItem!
@@ -608,7 +609,16 @@ type Status {
   statusCode: Int
 }
 
+type SurveyComment {
+  amount: Float
+  id: ID
+  message: String
+  surveyPollId: ID
+  visible: Boolean
+}
+
 type SurveyPoll {
+  comments: [SurveyComment!]
   createdAt: String
   dataProvider: DataProvider
   date: Date

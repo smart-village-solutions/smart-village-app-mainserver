@@ -18,5 +18,6 @@ module Types
     # actions
     field :change_visibility, mutation: Mutations::ChangeVisibility
     field :vote_for_survey, mutation: Mutations::VoteForSurvey
+    field :comment_survey, mutation: Mutations::CommentSurvey
   end
 end
