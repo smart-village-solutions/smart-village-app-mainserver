@@ -42,7 +42,9 @@ docker-build:
     - docker-compose -f docker-compose.yml -f stack.yml config > quantum.yml
   tags: [v2]
   allow_failure: false
-  when: manual
+  when: on_success
+  only:
+    - releases
 
 .deploy_release:
   stage: deploy_release
@@ -56,10 +58,11 @@ docker-build:
   tags: [v2]
   allow_failure: false
   when: on_success
+  only:
+    - releases
 
 # List of Releases:
 #
-# release/int/development
 # release/bb/frankfurt
 # release/bb/kyritz
 # release/bb/birkenwerder
@@ -74,11 +77,6 @@ docker-build:
 #
 # List of releases to build
 #
-int-development-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: int-development
-    DOMAINNAME: int-development
 bb-frankfurt-build:
   extends: .docker_build_release
   variables:
@@ -133,13 +131,6 @@ bb-eisenhuettenstadt-build:
 #
 # List of releases to deploy
 #
-int-development-deploy:
-  extends: .deploy_release
-  needs: ["int-development-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: int-development
-    QUANTUM_ENDPOINT: portainer-14
 bb-frankfurt-deploy:
   extends: .deploy_release
   needs: ["bb-frankfurt-build"]
