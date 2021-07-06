@@ -565,6 +565,7 @@ type Query {
   pointsOfInterest(category: String, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: PointsOfInterestOrder = createdAt_DESC, skip: Int): [PointOfInterest]
   publicHtmlFile(name: String!): PublicHtmlFile!
   publicJsonFile(name: String!): PublicJsonFile!
+  surveyComments(surveyId: ID): [SurveyComment!]!
   surveys(archived: Boolean, ids: [ID], ongoing: Boolean): [SurveyPoll!]!
   tour(id: ID!): Tour!
   tours(category: String, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: ToursOrder = createdAt_DESC, skip: Int): [Tour!]!
@@ -610,7 +611,7 @@ type Status {
 }
 
 type SurveyComment {
-  amount: Float
+  createdAt: String
   id: ID
   message: String
   surveyPollId: ID
@@ -618,7 +619,6 @@ type SurveyComment {
 }
 
 type SurveyPoll {
-  comments: [SurveyComment!]
   createdAt: String
   dataProvider: DataProvider
   date: Date
@@ -627,6 +627,7 @@ type SurveyPoll {
   questionId: ID
   questionTitle: I18nJSON
   responseOptions: [SurveyResponseOptions!]
+  surveyComments: [SurveyComment!]
   title: I18nJSON
   updatedAt: String
   visible: Boolean
