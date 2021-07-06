@@ -20,7 +20,7 @@ module Mutations
 
         OpenStruct.new(id: nil, status: "voted successfully, increased: #{increase_id} decreased: #{decrease_id}", status_code: 200)
       rescue => e
-        error_status("Error on voting: #{e}")
+        error_status("Error on voting: #{e}", 500)
       end
     end
 

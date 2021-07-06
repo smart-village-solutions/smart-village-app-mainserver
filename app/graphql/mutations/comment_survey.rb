@@ -20,7 +20,7 @@ module Mutations
         comment.save
         OpenStruct.new(id: survey_id, status: "comment successfully", status_code: 200)
       rescue => e
-        error_status("Error on commenting: #{e}")
+        error_status("Error on commenting: #{e}", 500)
       end
     end
 
