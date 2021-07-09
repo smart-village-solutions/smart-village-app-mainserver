@@ -73,6 +73,7 @@ docker-build:
 # release/bb/michendorf
 # release/bb/amt-schlieben
 # release/bb/eisenhuettenstadt
+# release/bb/angermuende
 
 #
 # List of releases to build
@@ -127,6 +128,11 @@ bb-eisenhuettenstadt-build:
   variables:
     PROJECT: eisenhuettenstadt
     DOMAINNAME: eisenhuettenstadt
+bb-angermuende-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-angermuende
+    DOMAINNAME: bb-angermuende
 
 #
 # List of releases to deploy
@@ -200,4 +206,11 @@ bb-eisenhuettenstadt-deploy:
   variables:
     SERVICENAME: ""
     PROJECT: eisenhuettenstadt
+    QUANTUM_ENDPOINT: portainer-14
+bb-angermuende-deploy:
+  extends: .deploy_release
+  needs: ["bb-angermuende-build"]
+  variables:
+    SERVICENAME: "-main_server"
+    PROJECT: bb-angermuende
     QUANTUM_ENDPOINT: portainer-14
