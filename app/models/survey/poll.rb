@@ -7,6 +7,7 @@ class Survey::Poll < ApplicationRecord
 
   has_one :date, as: :dateable, class_name: "FixedDate", dependent: :destroy
   has_many :questions, class_name: "Survey::Question", foreign_key: "survey_poll_id", dependent: :destroy
+  has_many :comments, class_name: "Survey::Comment", foreign_key: "survey_poll_id", dependent: :destroy
 
   belongs_to :data_provider
 
@@ -37,6 +38,13 @@ class Survey::Poll < ApplicationRecord
 
   def question_title
     questions.try(:first).try(:title)
+  end
+
+  def archived?
+    return false if date.blank?
+    return false if date.date_end.blank?
+
+    date.date_end < Date.today
   end
 
   def response_options

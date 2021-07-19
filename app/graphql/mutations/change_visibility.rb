@@ -8,13 +8,21 @@ module Mutations
 
     type Types::StatusType
 
-    RECORD_WHITELIST = ["EventRecord", "NewsItem", "PointOfInterest", "Tour", "Survey::Poll"].freeze
+    RECORD_WHITELIST = [
+      "EventRecord",
+      "NewsItem",
+      "PointOfInterest",
+      "Tour",
+      "Survey::Poll",
+      "Survey::Comment"
+    ].freeze
 
     def resolve(id:, record_type:, visible:)
       return error_status("recordType") unless RECORD_WHITELIST.include?(record_type)
       return error_status("visible") unless [true, false].include?(visible)
 
-      record = record_type.constantize
+      record = record_type
+                 .constantize
                  .filtered_for_current_user(context[:current_user])
                  .where(id: id)
                  .first

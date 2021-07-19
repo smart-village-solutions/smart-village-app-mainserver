@@ -55,6 +55,10 @@ module Types
       argument :category_id, ID, required: false
     end
 
+    field :survey_comments, [QueryTypes::SurveyComment], null: false do
+      argument :survey_id, ID, required: false
+    end
+
     field :lunches, [QueryTypes::LunchType], function: Resolvers::LunchesSearch
     field :lunch, QueryTypes::LunchType, null: false do
       argument :id, ID, required: true
@@ -69,6 +73,14 @@ module Types
       return latest_weather_map if latest_weather_map.present? && latest_weather_map.created_at > (Time.now - 1.hour)
 
       WeatherMapService.new.import
+    end
+
+    def survey_comments(survey_id: nil)
+      comments = Survey::Comment.filtered_for_current_user(context[:current_user])
+
+      return comments.where(survey_poll_id: survey_id) if survey_id.present?
+
+      comments
     end
 
     def point_of_interest(id:)
