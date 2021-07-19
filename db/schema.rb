@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_26_112342) do
+ActiveRecord::Schema.define(version: 2021_07_02_072005) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -423,6 +423,38 @@ ActiveRecord::Schema.define(version: 2021_05_26_112342) do
     t.string "name"
     t.string "data_type"
     t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "survey_comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "survey_poll_id"
+    t.text "message"
+    t.boolean "visible", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "survey_polls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.text "title", limit: 4294967295
+    t.text "description", limit: 4294967295
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "visible", default: true
+    t.integer "data_provider_id"
+  end
+
+  create_table "survey_questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "survey_poll_id"
+    t.text "title", limit: 4294967295
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "survey_response_options", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "survey_question_id"
+    t.text "title", limit: 4294967295
+    t.integer "votes_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
