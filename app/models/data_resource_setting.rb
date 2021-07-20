@@ -27,7 +27,7 @@ end
 #  id                 :bigint           not null, primary key
 #  data_provider_id   :integer
 #  data_resource_type :string(255)
-#  settings           :string(255)
+#  settings           :text(16777215)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #

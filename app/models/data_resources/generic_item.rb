@@ -27,7 +27,9 @@ class GenericItem < ApplicationRecord
   has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
   has_many :web_urls, as: :web_urlable, dependent: :destroy
 
-  scope :visible, -> { where(visible: true) }
+  # defined by FilterByRole
+  # scope :visible, -> { where(visible: true) }
+
   scope :with_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
   }

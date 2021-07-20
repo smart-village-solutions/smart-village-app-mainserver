@@ -2,6 +2,8 @@
 
 FactoryBot.define do
   factory :user do
+    email { "test@smart-village.app" }
+    password { "Aute-quis-laborum-euelitsint" }
   end
 end
 

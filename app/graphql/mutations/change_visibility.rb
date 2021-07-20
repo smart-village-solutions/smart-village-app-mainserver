@@ -6,16 +6,24 @@ module Mutations
     argument :record_type, String, required: true
     argument :visible, Boolean, required: true
 
-    type Types::ChangeVisibilityType
+    type Types::StatusType
 
-    RECORD_WHITELIST = ["EventRecord", "NewsItem", "PointOfInterest", "Tour"].freeze
+    RECORD_WHITELIST = [
+      "EventRecord",
+      "NewsItem",
+      "PointOfInterest",
+      "Tour",
+      "Survey::Poll",
+      "Survey::Comment"
+    ].freeze
 
     def resolve(id:, record_type:, visible:)
       raise "Access not permitted" if context[:current_user].read_only_role?
       return error_status("recordType") unless RECORD_WHITELIST.include?(record_type)
       return error_status("visible") unless [true, false].include?(visible)
 
-      record = record_type.constantize
+      record = record_type
+                 .constantize
                  .filtered_for_current_user(context[:current_user])
                  .where(id: id)
                  .first
