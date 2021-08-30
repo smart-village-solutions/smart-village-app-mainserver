@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_02_072005) do
+ActiveRecord::Schema.define(version: 2021_08_30_095926) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 2021_07_02_072005) do
   create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.string "mobile_description"
+    t.text "mobile_description"
     t.boolean "active", default: true
     t.integer "length_km"
     t.integer "means_of_transportation"
@@ -203,7 +203,7 @@ ActiveRecord::Schema.define(version: 2021_07_02_072005) do
     t.string "weekday"
     t.time "time_start"
     t.time "time_end"
-    t.string "time_description"
+    t.text "time_description"
     t.boolean "use_only_time_description", default: false
     t.string "dateable_type"
     t.bigint "dateable_id"

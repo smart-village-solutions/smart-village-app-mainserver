@@ -21,7 +21,7 @@ class Notification::DevicesController < ApplicationController
   end
 
   def send_notification
-    options = params[:notification]
+    options = params.permit![:notification]
     PushNotification.delay.send_notifications(options) if options[:title].present?
 
     respond_to do |format|
