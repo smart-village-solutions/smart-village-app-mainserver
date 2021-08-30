@@ -22,7 +22,7 @@ end
 #  weekday                   :string(255)
 #  time_start                :time
 #  time_end                  :time
-#  time_description          :string(255)
+#  time_description          :text(65535)
 #  use_only_time_description :boolean          default(FALSE)
 #  dateable_type             :string(255)
 #  dateable_id               :bigint
