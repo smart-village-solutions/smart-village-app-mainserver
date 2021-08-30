@@ -14,7 +14,7 @@ end
 #  id                      :bigint           not null, primary key
 #  name                    :string(255)
 #  description             :text(65535)
-#  mobile_description      :string(255)
+#  mobile_description      :text(65535)
 #  active                  :boolean          default(TRUE)
 #  length_km               :integer
 #  means_of_transportation :integer
