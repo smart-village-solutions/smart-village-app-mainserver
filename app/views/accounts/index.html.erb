@@ -89,7 +89,10 @@
           <tr id="user_<%= user.id %>">
             <td class="align-middle"><%= user.id %></td>
             <td class="align-middle"><%= link_to user.email, edit_account_path(user) %></td>
-            <td class="align-middle"><%= user.data_provider.try(:name) %></td>
+            <td class="align-middle">
+              <%= user.data_provider.try(:name) %> <br/>
+              <span class="badge badge-secondary"><%= user.data_provider.try(:data_type).to_s.humanize %></span>
+            </td>
             <td class="align-middle"><%= user.role.try(:humanize) %></td>
             <td class="align-middle">
               <span class="badge <%= user.try(:data_provider).try(:role_point_of_interest) ? 'badge-success' : 'badge-danger' %>">
