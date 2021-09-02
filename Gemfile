@@ -70,6 +70,8 @@ gem "search_object"
 gem "search_object_graphql"
 gem "unicorn"
 
+gem "version"
+
 # Storage to minio service
 gem "aws-sdk-s3", require: false
 

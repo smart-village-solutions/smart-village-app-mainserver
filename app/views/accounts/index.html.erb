@@ -52,14 +52,18 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
 
     <h1 id="accounts">Nutzerverwaltung</h1>
 
     <p><%= link_to "Neuen Nutzer erstellen", new_account_path, class: 'btn btn-success' %></p>
-
     <%= render partial: 'search_form', locals: { form_path: accounts_path, search_column: 'email' } %>
 
-    <table class="table table-striped">
+    <table id="user_accounts" class="table table-striped">
       <thead>
         <tr>
           <th style="min-width: 55px">
@@ -134,3 +138,9 @@
 
   </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#user_accounts').DataTable();
+} );
+</script>
