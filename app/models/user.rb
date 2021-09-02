@@ -15,6 +15,8 @@ class User < ApplicationRecord
   belongs_to :data_provider, optional: true
   accepts_nested_attributes_for :data_provider
 
+  before_update :reset_business_account_outdated_notification_sent_at
+
   has_many :access_grants,
            class_name: "Doorkeeper::AccessGrant",
            foreign_key: :resource_owner_id,
@@ -28,6 +30,12 @@ class User < ApplicationRecord
   has_many :oauth_applications,
            class_name: "Doorkeeper::Application",
            as: :owner
+
+  # sobald sich am Usermodel etwas verändert
+  # wird das Notificationflag zurückgesetzt
+  def reset_business_account_outdated_notification_sent_at
+    self.business_account_outdated_notification_sent_at = nil
+  end
 end
 
 # == Schema Information

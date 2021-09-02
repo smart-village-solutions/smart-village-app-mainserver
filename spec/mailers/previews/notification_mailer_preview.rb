@@ -23,4 +23,10 @@ class NotificationMailerPreview < ActionMailer::Preview
 
     NotificationMailer.survey_commented(comment, survey)
   end
+
+  def business_account_outdated
+    user = User.first
+
+    NotificationMailer.business_account_outdated(user)
+  end
 end

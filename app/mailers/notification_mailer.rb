@@ -26,4 +26,14 @@ class NotificationMailer < ApplicationMailer
       subject: t("mailers.notification.survey_commented.subject")
     )
   end
+
+  def business_account_outdated(user)
+    @sva_community = ENV["SVA_COMMUNITY"]
+
+    mail(
+      to: user.email,
+      from: "noreply@smart-village.solutions",
+      subject: "Überprüfung Ihrer Inhalte in der #{ENV["SVA_COMMUNITY"]} App"
+    )
+  end
 end
