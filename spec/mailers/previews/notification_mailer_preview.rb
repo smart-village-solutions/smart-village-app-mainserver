@@ -16,4 +16,11 @@ class NotificationMailerPreview < ActionMailer::Preview
 
     NotificationMailer.notify_admin(app_user_content)
   end
+
+  def survey_commented
+    survey = Survey::Poll.first_or_create
+    comment = survey.comments.first_or_create(message: "Amet elit laborum commodo voluptate ut.")
+
+    NotificationMailer.survey_commented(comment, survey)
+  end
 end

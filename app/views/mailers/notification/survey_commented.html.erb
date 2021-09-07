@@ -1,0 +1,22 @@
+<p style="margin-bottom: 10px;"><strong>Umfrage</strong></p>
+<p style="margin-bottom: 30px; margin-top: 0;"><%= @survey.title[:de] %></p>
+<p style="margin-bottom: 10px;"><strong>Kommentar</strong></p>
+<p style="margin-bottom: 30px; margin-top: 0;"><%= @comment.message %></p>
+
+<hr />
+
+<p style="margin-bottom: 10px;">
+  Wenn Sie im CMS eingeloggt sind, kann der Kommentar direkt freigeschaltet werden:
+  <%= link_to(
+        "Kommentar jetzt freischalten",
+        "#{@cms_url}/visibility/Survey_Comment/#{@comment.id}/true/#{@survey.id}"
+      ) %>
+</p>
+<p>
+  Andernfalls können Sie sich im CMS einloggen und alle Kommentare zur Umfrage aufrufen, um
+  die Sichtbarkeit einzelner Kommentare einzustellen:
+  <%= link_to(
+        "Alle Kommentare zur Umfrage anzeigen",
+        "#{@cms_url}/surveys/#{@survey.id}/comments"
+      ) %>
+</p>
