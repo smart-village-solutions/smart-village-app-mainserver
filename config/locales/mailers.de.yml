@@ -3,3 +3,5 @@ de:
     notification:
       notify_admin:
         subject: "[Smart Village App] Formular wurde erstellt"
+      survey_commented:
+        subject: "[Smart Village App] Umfrage wurde kommentiert"
