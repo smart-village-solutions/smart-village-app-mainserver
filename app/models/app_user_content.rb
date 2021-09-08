@@ -8,7 +8,7 @@ class AppUserContent < ApplicationRecord
   private
 
     def notify_admin
-      NotificationMailer.notify_admin(self).deliver_now
+      NotificationMailer.notify_admin(self).deliver_later
     end
 end
 
