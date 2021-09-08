@@ -1,0 +1,18 @@
+UMFRAGE:
+
+<%= @survey.title[:de] %>
+
+
+KOMMENTAR:
+
+<%= @comment.message %>
+
+
+--------------------------
+
+Wenn Sie im CMS eingeloggt sind, kann der Kommentar über folgenden Link direkt freigeschaltet werden:
+<%= "#{@cms_url}/visibility/Survey_Comment/#{@comment.id}/true/#{@survey.id}" %>
+
+
+Andernfalls können Sie sich im CMS einloggen und alle Kommentare zur Umfrage aufrufen, um die Sichtbarkeit einzelner Kommentare einzustellen:
+<%= "#{@cms_url}/surveys/#{@survey.id}/comments" %>
