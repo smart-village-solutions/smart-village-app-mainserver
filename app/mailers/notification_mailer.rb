@@ -19,7 +19,7 @@ class NotificationMailer < ApplicationMailer
 
     @survey = survey
     @comment = comment
-    @cms_url = Rails.application.credentials.cms[:url]
+    @cms_url = Settings.cms[:url]
 
     mail(
       to: creator_of_survey.email,
