@@ -11,7 +11,9 @@ class Survey::Comment < ApplicationRecord
     return visible if current_user.app_role?
 
     if current_user.editor_role?
-      data_provider_ids = [current_user.data_provider_id] + User.restricted_role.map(&:data_provider_id)
+      data_provider_ids = [current_user.data_provider_id] +
+                          User.restricted_role.map(&:data_provider_id) +
+                          User.admin_role.map(&:data_provider_id) # SVA-293
       return includes(:poll).where(survey_polls: { data_provider_id: data_provider_ids.compact.flatten })
     end
 
