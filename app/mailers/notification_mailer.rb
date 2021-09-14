@@ -11,4 +11,19 @@ class NotificationMailer < ApplicationMailer
       subject: t("mailers.notification.notify_admin.subject")
     )
   end
+
+  def survey_commented(comment, survey)
+    creator_of_survey = survey.try(:data_provider).try(:user)
+
+    return if creator_of_survey.blank?
+
+    @survey = survey
+    @comment = comment
+    @cms_url = Settings.cms[:url]
+
+    mail(
+      to: creator_of_survey.email,
+      subject: t("mailers.notification.survey_commented.subject")
+    )
+  end
 end
