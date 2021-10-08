@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
   # if Rails.env.development?
   # end
+  get "user" => "users/status#show"
 
   authenticate :user do
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
