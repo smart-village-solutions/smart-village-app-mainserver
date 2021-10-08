@@ -6,7 +6,8 @@ Rails.application.routes.draw do
     resources :devices do
       collection do
         delete "remove" => "devices#destroy"
-        post "send_notification" => "devices#send_notification"
+        post "send_notifications" => "devices#send_notifications"
+        post "send_notification/:id" => "devices#send_notification", as: :send_notification
       end
     end
   end

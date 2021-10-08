@@ -8,7 +8,7 @@ class Notification::DevicesController < ApplicationController
   before_action :auth_user_or_doorkeeper, only: [:create, :destroy]
   before_action :authenticate_user!, except: [:create, :destroy]
   before_action :authenticate_admin, except: [:create, :destroy]
-  before_action :set_notification_device, only: [:show, :edit, :update, :destroy]
+  before_action :set_notification_device, only: [:show, :edit, :update, :destroy, :send_notification]
 
   def authenticate_admin
     render inline: "not allowed", status: 405 unless current_user.admin_role?
@@ -20,12 +20,21 @@ class Notification::DevicesController < ApplicationController
     doorkeeper_authorize! if current_user.blank?
   end
 
-  def send_notification
+  def send_notifications
     options = params.permit![:notification]
     PushNotification.delay.send_notifications(options) if options[:title].present?
 
     respond_to do |format|
-      format.html { redirect_to notification_devices_url, notice: "Push notifications sent." }
+      format.html { redirect_to notification_devices_url, notice: "Push notifications gesendet" }
+    end
+  end
+
+  def send_notification
+    options = params.permit![:notification]
+    PushNotification.delay.send_notification(@notification_device, options) if options[:title].present?
+
+    respond_to do |format|
+      format.html { redirect_to notification_device_path(@notification_device), notice: "Push notification gesendet" }
     end
   end
 
