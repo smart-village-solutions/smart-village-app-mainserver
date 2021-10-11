@@ -32,8 +32,6 @@ Rails.application.routes.draw do
     sessions: "users/sessions"
   }
 
-  # if Rails.env.development?
-  # end
   get "user" => "users/status#show"
 
   authenticate :user do
