@@ -1,4 +1,4 @@
-<%= form_tag(send_notification_notification_devices_path(@notification_device), method: :post) do  %>
+<%= form_tag(send_notifications_notification_devices_path, method: :post) do  %>
   <div class="form-group">
     <%= label_tag "notification_title", "Title *" %>
     <%= text_field_tag "notification[title]", nil ,class: "form-control", required: true %>
@@ -25,7 +25,9 @@
     </small>
   </div>
 
+  <% device_count = Notification::Device.all.count %>
+
   <div class="form-group">
-    <%= submit_tag "An Device senden", class: "btn btn-primary" %>
+    <%= submit_tag "An #{pluralize(device_count, "Device")} senden", class: "btn btn-primary" %>
   </div>
 <% end %>

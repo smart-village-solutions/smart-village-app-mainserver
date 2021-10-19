@@ -13,11 +13,16 @@
     </div>
 
     <div class="form-group">
-      <%= link_to t("doorkeeper.applications.buttons.edit"), edit_notification_device_path(@notification_device), class: "btn btn-primary" %>
       <%= link_to t("doorkeeper.applications.buttons.back"), notification_devices_path, class: "btn btn-default" %>
     </div>
   </div>
 </div>
+
+<br />
+
+<h1>Push Notification senden</h1>
+
+<%= render partial: "notification/devices/send_notification" %>
 
 <br />
 

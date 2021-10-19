@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col">
-    <h1>Push Notification senden</h1>
+    <h1>Push Notifications senden</h1>
 
-    <%= render partial: "notification/devices/send_notification" %>
+    <%= render partial: "notification/devices/send_notifications" %>
 
     <br />
 
@@ -25,8 +25,7 @@
           <tr>
             <td class="align-middle"><%= notification_device.token %></td>
             <td class="align-middle"><%= notification_device.device_type %></td>
-            <td class="align-middle" style="width: 70px"><%= link_to 'Logs', notification_device_path(notification_device), class: 'btn btn-sm btn-outline-secondary' %></td>
-            <td class="align-middle" style="width: 70px"><%= link_to 'Edit', edit_notification_device_path(notification_device), class: 'btn btn-sm btn-outline-secondary' %></td>
+            <td class="align-middle" style="width: 70px"><%= link_to 'More', notification_device_path(notification_device), class: 'btn btn-sm btn-outline-secondary' %></td>
             <td class="align-middle" style="width: 70px"><%= link_to 'Destroy', notification_device, method: :delete,class: 'btn btn-sm btn-outline-danger', data: { confirm: 'Are you sure?' } %></td>
           </tr>
         <% end %>
@@ -35,7 +34,7 @@
 
     <br />
 
-    <h1>All PushNotification Logs</h1>
+    <h1>All Push Notifications Logs</h1>
     <p>Alte Daten werden automatisch gelöscht</p>
 
     <table class="table table-striped">
