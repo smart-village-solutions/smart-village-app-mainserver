@@ -9,10 +9,6 @@
 #   }
 # }
 class PushNotification
-  def initialize
-    @client = Exponent::Push::Client.new
-  end
-
   def self.send_notification(device, message_options = {})
     SendSinglePushNotificationJob.perform_later(device.token, message_options)
   end
