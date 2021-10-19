@@ -26,6 +26,6 @@
 
   <div class="form-group">
     <%= form.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primary" %>
-    <%= link_to t("doorkeeper.applications.buttons.cancel"), notification_devices_path, class: "btn btn-default" %>
+    <%= link_to t("doorkeeper.applications.buttons.cancel"), notification_device_path(notification_device), class: "btn btn-default" %>
   </div>
 <% end %>
