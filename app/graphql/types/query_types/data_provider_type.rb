@@ -9,5 +9,6 @@ module Types
     field :description, String, null: true
     field :address, QueryTypes::AddressType, null: true
     field :contact, QueryTypes::ContactType, null: true
+    field :notice, String, null: true
   end
 end

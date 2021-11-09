@@ -58,4 +58,5 @@ end
 #  always_recreate :text(65535)
 #  roles           :text(65535)
 #  data_type       :integer          default("general_importer")
+#  notice          :text(65535)
 #

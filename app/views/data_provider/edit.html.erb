@@ -17,6 +17,11 @@
         <%= f.text_area :description, class: "form-control" %>
       </div>
 
+      <div class="form-group">
+        <%= f.label :notice %>
+        <%= f.text_area :notice, class: "form-control" %>
+      </div>
+
       <h2>Logo</h2>
       <%= f.fields_for :logo, f.object.logo || f.object.build_logo do |l| %>
         <div class="form-group">

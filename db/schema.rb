@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_30_095926) do
+ActiveRecord::Schema.define(version: 2021_11_09_150013) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -141,6 +141,7 @@ ActiveRecord::Schema.define(version: 2021_08_30_095926) do
     t.text "always_recreate"
     t.text "roles"
     t.integer "data_type", default: 0
+    t.text "notice"
   end
 
   create_table "data_resource_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
