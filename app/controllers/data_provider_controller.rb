@@ -19,7 +19,7 @@ class DataProviderController < ApplicationController
             address: { only: [:addition, :street, :city, :zip] },
             contact: { only: [:first_name, :last_name, :phone, :fax, :email] }
           },
-          only: [:name, :description],
+          only: [:name, :description, :notice],
           root: true
         }
       else
@@ -55,7 +55,7 @@ class DataProviderController < ApplicationController
     end
 
     def provider_params
-      params.require(:data_provider).permit(:name, :description,
+      params.require(:data_provider).permit(:name, :description, :notice,
         address_attributes: [:addition, :city, :street, :zip, :id],
         contact_attributes: [:first_name, :last_name, :phone, :fax, :email, :id],
         logo_attributes: [:url, :description, :id])
