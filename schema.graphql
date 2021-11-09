@@ -116,6 +116,7 @@ type DataProvider {
   id: ID
   logo: WebUrl
   name: String
+  notice: String
 }
 
 type Date {

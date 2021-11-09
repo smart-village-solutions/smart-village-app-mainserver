@@ -18,3 +18,15 @@ class Survey::Comment < ApplicationRecord
     includes(:poll).where(survey_polls: { data_provider_id: current_user.data_provider_id })
   }
 end
+
+# == Schema Information
+#
+# Table name: survey_comments
+#
+#  id             :bigint           not null, primary key
+#  survey_poll_id :integer
+#  message        :text(65535)
+#  visible        :boolean          default(FALSE)
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#

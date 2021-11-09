@@ -14,5 +14,6 @@ module Types
                                         as: :logo_attributes,
                                         prepare: ->(logo, _ctx) { logo.to_h }
     argument :description, String, required: false
+    argument :notice, String, required: false
   end
 end
