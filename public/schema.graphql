@@ -563,13 +563,13 @@ type Query {
   newsItems(categoryId: ID, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: NewsItemsOrder = publishedAt_DESC, skip: Int): [NewsItem]
   newsItemsDataProviders(categoryId: ID): [DataProvider!]!
   pointOfInterest(id: ID!): PointOfInterest!
-  pointsOfInterest(category: String, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: PointsOfInterestOrder = createdAt_DESC, skip: Int): [PointOfInterest]
+  pointsOfInterest(category: String, categoryId: ID, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: PointsOfInterestOrder = createdAt_DESC, skip: Int): [PointOfInterest]
   publicHtmlFile(name: String!): PublicHtmlFile!
   publicJsonFile(name: String!): PublicJsonFile!
   surveyComments(surveyId: ID): [SurveyComment!]!
   surveys(archived: Boolean, ids: [ID], ongoing: Boolean): [SurveyPoll!]!
   tour(id: ID!): Tour!
-  tours(category: String, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: ToursOrder = createdAt_DESC, skip: Int): [Tour!]!
+  tours(category: String, categoryId: ID, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: ToursOrder = createdAt_DESC, skip: Int): [Tour!]!
   wasteAddresses(ids: [ID], limit: Int, order: WasteLocationOrder = createdAt_DESC, skip: Int): [Address!]!
   wasteLocationType(id: ID!): WasteLocationType!
   wasteLocationTypes: [WasteLocationType!]!
