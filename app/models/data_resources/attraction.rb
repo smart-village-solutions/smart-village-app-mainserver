@@ -23,6 +23,10 @@ class Attraction < ApplicationRecord
 
   scope :visible, -> { where(visible: true) }
 
+  scope :with_category, lambda { |category_id|
+    where(categories: { id: category_id }).joins(:categories)
+  }
+
   validates_presence_of :name
   acts_as_taggable
 
