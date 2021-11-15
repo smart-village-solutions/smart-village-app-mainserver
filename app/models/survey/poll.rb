@@ -18,18 +18,44 @@ class Survey::Poll < ApplicationRecord
 
   before_save :set_visibility_by_role
 
-  # Startdatum liegt in der Vergangenheit oder Heute und Enddatum liegt in der Zukunft oder Heute:
   scope :ongoing, lambda {
-    where.not(fixed_dates: { date_start: [nil, ""] })
-      .where.not(fixed_dates: { date_end: [nil, ""] })
-      .where("fixed_dates.date_start <= ? AND fixed_dates.date_end >= ?", Date.today, Date.today)
-      .joins(:date)
+    without_times = where.not(fixed_dates: { date_start: [nil, ""] })
+                      .where.not(fixed_dates: { date_end: [nil, ""] })
+                      .where(fixed_dates: { time_start: [nil, ""] })
+                      .where(fixed_dates: { time_end: [nil, ""] })
+                      .where("? BETWEEN fixed_dates.date_start AND fixed_dates.date_end", Date.today)
+                      .joins(:date)
+
+    without_end_time = FixedDate.where.not(date_start: [nil, ""])
+                         .where.not(date_end: [nil, ""])
+                         .where(time_end: [nil, ""])
+                         .where("TIMESTAMP(fixed_dates.date_start, fixed_dates.time_start) >= NOW()")
+
+    without_start_time = FixedDate.where.not(date_start: [nil, ""])
+                           .where.not(date_end: [nil, ""])
+                           .where(time_start: [nil, ""])
+                           .where("TIMESTAMP(fixed_dates.date_end, fixed_dates.time_end) <= NOW()")
+
+    with_times = FixedDate.where(
+      <<-SQL
+        NOW() BETWEEN TIMESTAMP(fixed_dates.date_start, fixed_dates.time_start)
+        AND TIMESTAMP(fixed_dates.date_end, fixed_dates.time_end)
+      SQL
+    )
+
+    survey_poll_ids = without_times.pluck(:id) +
+                      without_end_time.map(&:dateable).map(&:id) +
+                      without_start_time.map(&:dateable).map(&:id) +
+                      with_times.map(&:dateable).map(&:id)
+
+    where(id: survey_poll_ids.uniq)
   }
 
-  # Enddatum liegt in der Vergangenheit:
   scope :archived, lambda {
     where.not(fixed_dates: { date_end: [nil, ""] })
-      .where("fixed_dates.date_end < ?", Date.today).joins(:date)
+      .where("fixed_dates.date_end < ? AND fixed_dates.time_end IS NULL", Date.today)
+      .or(where("TIMESTAMP(fixed_dates.date_end, fixed_dates.time_end) < NOW()"))
+      .joins(:date)
   }
 
   def question_id
@@ -69,10 +95,11 @@ end
 #
 # Table name: survey_polls
 #
-#  id          :bigint           not null, primary key
-#  title       :text(4294967295)
-#  description :text(4294967295)
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  visible     :boolean          default(TRUE)
+#  id               :bigint           not null, primary key
+#  title            :text(4294967295)
+#  description      :text(4294967295)
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  visible          :boolean          default(TRUE)
+#  data_provider_id :integer
 #

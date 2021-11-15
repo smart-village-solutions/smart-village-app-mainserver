@@ -82,6 +82,7 @@ class AccountsController < ApplicationController
         :name,
         :data_type,
         :description,
+        :notice,
         :role_point_of_interest,
         :role_tour,
         :role_news_item,
