@@ -11,7 +11,7 @@ class NewsItem < ApplicationRecord
   attr_accessor :push_notification
 
   after_save :find_or_create_category
-  after_create :send_push_notification
+  after_save :send_push_notification
 
   belongs_to :data_provider
 
@@ -85,7 +85,10 @@ class NewsItem < ApplicationRecord
     end
 
     def send_push_notification
+      # do not send push notifications, if not explicitly requested
       return unless push_notification.to_s == "true"
+      # do not send push notification, if already sent
+      return if push_notifications_sent_at.present?
 
       push_title = title.presence || content_blocks.try(:first).try(:title).presence || "Neue Nachricht"
       push_body = content_blocks.try(:first).try(:intro).presence || push_title
