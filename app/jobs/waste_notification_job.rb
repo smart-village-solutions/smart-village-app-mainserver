@@ -18,11 +18,14 @@ class WasteNotificationJob
     message_options = { title: title, body: body }
     messages = [message_options.merge(to: device.token)]
 
-    # sending message
+    # Sending message with rescuing errors
     client = Exponent::Push::Client.new
-    feedback = client.send_messages(messages)
 
-    # Log PushNotification
-    RedisAdapter.add_push_log(device.token, message_options.merge(date: DateTime.now, payload: feedback.try(:response).try(:body)))
+    begin
+      feedback = client.send_messages(messages)
+      RedisAdapter.add_push_log(device.token, message_options.merge(date: DateTime.now, payload: feedback.try(:response).try(:body)))
+    rescue => e
+      RedisAdapter.add_push_log(device.token, message_options.merge(rescue_error: "waste push notification", error: e, date: DateTime.now))
+    end
   end
 end
