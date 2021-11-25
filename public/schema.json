@@ -6639,6 +6639,20 @@
               "deprecationReason": null
             },
             {
+              "name": "questionAllowMultipleResponses",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "questionId",
               "description": null,
               "args": [
@@ -7919,6 +7933,16 @@
                       "name": "I18nJSON",
                       "ofType": null
                     }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "questionAllowMultipleResponses",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "I18nJSON",
+                    "ofType": null
                   },
                   "defaultValue": null
                 },
