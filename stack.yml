@@ -5,7 +5,6 @@ services:
     image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
     networks:
       - default
-      - logs
       - sva-redis-server
     environment:
       RAILS_ENV: production
@@ -42,7 +41,6 @@ services:
     image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
     networks:
       - default
-      - logs
       - sva-redis-server
     environment:
       RAILS_ENV: production
@@ -79,8 +77,6 @@ services:
 
 networks:
   adminer:
-    external: true
-  logs:
     external: true
   public:
     external: true
