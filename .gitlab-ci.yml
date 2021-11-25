@@ -75,6 +75,7 @@ docker-build:
 # release/bb/eisenhuettenstadt
 # release/bb/angermuende
 # release/bb/seelow
+# release/bb/eberswalde
 
 #
 # List of releases to build
@@ -161,6 +162,13 @@ bb-seelow-build:
   variables:
     PROJECT: bb-seelow
     DOMAINNAME: bb-seelow
+    NODENAME: node-001.sva
+    VOLUME_LOCALTIME: unused:/unused
+bb-eberswalde-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-eberswalde
+    DOMAINNAME: bb-eberswalde
     NODENAME: node-001.sva
     VOLUME_LOCALTIME: unused:/unused
 
@@ -250,4 +258,11 @@ bb-seelow-deploy:
   variables:
     SERVICENAME: "-main_server"
     PROJECT: bb-seelow
+    QUANTUM_ENDPOINT: sva
+bb-eberswalde-deploy:
+  extends: .deploy_release
+  needs: ["bb-eberswalde-build"]
+  variables:
+    SERVICENAME: "-main_server"
+    PROJECT: bb-eberswalde
     QUANTUM_ENDPOINT: sva
