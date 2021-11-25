@@ -94,6 +94,7 @@ volumes:
   db:
   unicorn:
   assets:
+  unused:
 
 configs:
   mainserver-common-master-key:

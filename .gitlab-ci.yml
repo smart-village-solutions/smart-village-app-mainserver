@@ -162,6 +162,7 @@ bb-seelow-build:
     PROJECT: bb-seelow
     DOMAINNAME: bb-seelow
     NODENAME: node-001.sva
+    VOLUME_LOCALTIME: unused:/unused
 
 #
 # List of releases to deploy
