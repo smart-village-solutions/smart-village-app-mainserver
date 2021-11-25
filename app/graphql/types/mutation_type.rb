@@ -17,7 +17,10 @@ module Types
 
     # actions
     field :change_visibility, mutation: Mutations::ChangeVisibility
-    field :vote_for_survey, mutation: Mutations::VoteForSurvey
+    field :vote_for_survey,
+          mutation: Mutations::VoteForSurvey,
+          deprecation_reason: "Use `votesForSurvey` instead."
+    field :votes_for_survey, mutation: Mutations::VotesForSurvey
     field :comment_survey, mutation: Mutations::CommentSurvey
   end
 end

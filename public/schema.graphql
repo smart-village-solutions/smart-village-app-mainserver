@@ -378,6 +378,7 @@ type Mutation {
   createWastePickUpTime(pickupDate: String!, wasteLocationType: WasteLocationTypeInput, wasteLocationTypeId: Int): WastePickUpTime!
   destroyRecord(externalId: Int, id: Int, recordType: String!): Destroy!
   voteForSurvey(decreaseId: ID, increaseId: ID): Status!
+  votesForSurvey(decreaseId: [ID!], increaseId: [ID!]): Status!
 }
 
 type NewsItem {
