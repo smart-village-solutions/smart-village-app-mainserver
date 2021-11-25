@@ -74,6 +74,7 @@ docker-build:
 # release/bb/amt-schlieben
 # release/bb/eisenhuettenstadt
 # release/bb/angermuende
+# release/bb/seelow
 
 #
 # List of releases to build
@@ -83,56 +84,73 @@ bb-frankfurt-build:
   variables:
     PROJECT: bb-frankfurt
     DOMAINNAME: bb-frankfurt
+    NODENAME: portainer-14.docker.planetary-networks.de
 bb-kyritz-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-kyritz
     DOMAINNAME: bb-kyritz
+    NODENAME: portainer-14.docker.planetary-networks.de
 bb-birkenwerder-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-birkenwerder
     DOMAINNAME: bb-birkenwerder
+    NODENAME: portainer-14.docker.planetary-networks.de
 bb-bad-belzig-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-bad-belzig
     DOMAINNAME: bad-belzig
+    NODENAME: portainer-14.docker.planetary-networks.de
 bb-gransee-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-gransee
     DOMAINNAME: bb-gransee
+    NODENAME: portainer-14.docker.planetary-networks.de
 bb-falkenberg-elster-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-falkenberg-elster
     DOMAINNAME: bb-falkenberg-elster
+    NODENAME: portainer-14.docker.planetary-networks.de
 bb-herzberg-elster-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-herzberg-elster
     DOMAINNAME: herzberg-elster
+    NODENAME: portainer-14.docker.planetary-networks.de
 bb-michendorf-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-michendorf
     DOMAINNAME: bb-michendorf
+    NODENAME: portainer-14.docker.planetary-networks.de
 bb-amt-schlieben-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-amt-schlieben
     DOMAINNAME: bb-amt-schlieben
+    NODENAME: portainer-14.docker.planetary-networks.de
 bb-eisenhuettenstadt-build:
   extends: .docker_build_release
   variables:
     PROJECT: eisenhuettenstadt
     DOMAINNAME: eisenhuettenstadt
+    NODENAME: portainer-14.docker.planetary-networks.de
 bb-angermuende-build:
   extends: .docker_build_release
   variables:
     PROJECT: bb-angermuende
     DOMAINNAME: bb-angermuende
+    NODENAME: portainer-14.docker.planetary-networks.de
+bb-seelow-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-seelow
+    DOMAINNAME: bb-seelow
+    NODENAME: node-001.sva
 
 #
 # List of releases to deploy
@@ -214,3 +232,10 @@ bb-angermuende-deploy:
     SERVICENAME: "-main_server"
     PROJECT: bb-angermuende
     QUANTUM_ENDPOINT: portainer-14
+bb-seelow-deploy:
+  extends: .deploy_release
+  needs: ["bb-seelow-build"]
+  variables:
+    SERVICENAME: "-main_server"
+    PROJECT: bb-seelow
+    QUANTUM_ENDPOINT: sva
