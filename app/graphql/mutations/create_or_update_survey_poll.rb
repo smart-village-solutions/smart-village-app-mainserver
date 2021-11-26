@@ -14,6 +14,7 @@ module Mutations
     argument :questionId, ID, required: false
     argument :questionTitle, Types::QueryTypes::I18nJSON, required: true
     argument :response_options, [GraphQL::Types::JSON], required: true
+    argument :can_comment, Boolean, required: false
 
     field :survey_poll, Types::QueryTypes::SurveyPollType, null: true
 

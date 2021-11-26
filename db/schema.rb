@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_09_150013) do
+ActiveRecord::Schema.define(version: 2021_11_26_154925) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -443,6 +443,7 @@ ActiveRecord::Schema.define(version: 2021_11_09_150013) do
     t.datetime "updated_at", null: false
     t.boolean "visible", default: true
     t.integer "data_provider_id"
+    t.boolean "can_comment", default: true
   end
 
   create_table "survey_questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
