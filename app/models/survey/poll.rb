@@ -102,4 +102,5 @@ end
 #  updated_at       :datetime         not null
 #  visible          :boolean          default(TRUE)
 #  data_provider_id :integer
+#  is_multilingual  :boolean          default(FALSE)
 #
