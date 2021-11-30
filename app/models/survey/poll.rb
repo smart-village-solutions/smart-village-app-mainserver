@@ -103,4 +103,5 @@ end
 #  visible          :boolean          default(TRUE)
 #  data_provider_id :integer
 #  can_comment      :boolean          default(TRUE)
+#  is_multilingual  :boolean          default(FALSE)
 #

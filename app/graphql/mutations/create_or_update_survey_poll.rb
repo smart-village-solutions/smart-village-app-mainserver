@@ -15,6 +15,7 @@ module Mutations
     argument :questionTitle, Types::QueryTypes::I18nJSON, required: true
     argument :response_options, [GraphQL::Types::JSON], required: true
     argument :can_comment, Boolean, required: false
+    argument :is_multilingual, Boolean, required: false
 
     field :survey_poll, Types::QueryTypes::SurveyPollType, null: true
 
