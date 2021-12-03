@@ -6667,6 +6667,20 @@
               "deprecationReason": null
             },
             {
+              "name": "questionAllowMultipleResponses",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "questionId",
               "description": null,
               "args": [
@@ -7951,6 +7965,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "questionAllowMultipleResponses",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "I18nJSON",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "responseOptions",
                   "description": null,
                   "type": {
@@ -8663,7 +8687,7 @@
             },
             {
               "name": "voteForSurvey",
-              "description": null,
+              "description": "`voteForSurvey` is deprecated. Use `votesForSurvey` instead.",
               "args": [
                 {
                   "name": "increaseId",
@@ -8682,6 +8706,59 @@
                     "kind": "SCALAR",
                     "name": "ID",
                     "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Status",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": true,
+              "deprecationReason": "Use `votesForSurvey` instead."
+            },
+            {
+              "name": "votesForSurvey",
+              "description": null,
+              "args": [
+                {
+                  "name": "increaseId",
+                  "description": null,
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "SCALAR",
+                        "name": "ID",
+                        "ofType": null
+                      }
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "decreaseId",
+                  "description": null,
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "SCALAR",
+                        "name": "ID",
+                        "ofType": null
+                      }
+                    }
                   },
                   "defaultValue": null
                 }

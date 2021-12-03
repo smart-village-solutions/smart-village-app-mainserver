@@ -66,6 +66,10 @@ class Survey::Poll < ApplicationRecord
     questions.try(:first).try(:title)
   end
 
+  def question_allow_multiple_responses
+    questions.try(:first).try(:allow_multiple_responses)
+  end
+
   def archived?
     return false if date.blank?
     return false if date.date_end.blank?

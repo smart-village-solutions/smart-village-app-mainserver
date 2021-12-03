@@ -452,6 +452,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_144638) do
     t.text "title", limit: 4294967295
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "allow_multiple_responses", default: false
   end
 
   create_table "survey_response_options", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
