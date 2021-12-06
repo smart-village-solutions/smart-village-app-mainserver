@@ -13,9 +13,10 @@ end
 #
 # Table name: survey_questions
 #
-#  id             :bigint           not null, primary key
-#  survey_poll_id :integer
-#  title          :text(4294967295)
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id                       :bigint           not null, primary key
+#  survey_poll_id           :integer
+#  title                    :text(4294967295)
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  allow_multiple_responses :boolean          default(FALSE)
 #
