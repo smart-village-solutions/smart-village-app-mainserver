@@ -43,6 +43,7 @@ module Types
       argument :id, ID, required: true
     end
 
+    field :public_html_files, [QueryTypes::PublicHtmlFileType], null: false
     field :public_html_file, QueryTypes::PublicHtmlFileType, null: false do
       argument :name, String, required: true
     end
@@ -129,6 +130,10 @@ module Types
 
     def lunch(id:)
       Lunch.find_by(id: id)
+    end
+
+    def public_html_files
+      StaticContent.where(data_type: "html").order(:name)
     end
 
     # Provide contents from html files in `public/mobile-app/contents` through GraphQL query
