@@ -557,7 +557,10 @@ input PriceInput {
 
 type PublicHtmlFile {
   content: String
+  createdAt: String
+  id: ID
   name: String
+  updatedAt: String
 }
 
 type PublicJsonFile {
@@ -576,11 +579,12 @@ type Query {
   lunch(id: ID!): Lunch!
   lunches(dateRange: [String], ids: [ID], limit: Int, order: LunchesOrder = createdAt_DESC, skip: Int): [Lunch!]!
   newsItem(id: ID!): NewsItem!
-  newsItems(categoryId: ID, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: NewsItemsOrder = publishedAt_DESC, skip: Int): [NewsItem]
+  newsItems(categoryId: ID, dataProvider: String, dataProviderId: ID, excludeDataProviderIds: [ID], ids: [ID], limit: Int, order: NewsItemsOrder = publishedAt_DESC, skip: Int): [NewsItem]
   newsItemsDataProviders(categoryId: ID): [DataProvider!]!
   pointOfInterest(id: ID!): PointOfInterest!
   pointsOfInterest(category: String, categoryId: ID, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: PointsOfInterestOrder = createdAt_DESC, skip: Int): [PointOfInterest]
   publicHtmlFile(name: String!, version: String): PublicHtmlFile!
+  publicHtmlFiles: [PublicHtmlFile!]!
   publicJsonFile(name: String!, version: String): PublicJsonFile!
   surveyComments(surveyId: ID): [SurveyComment!]!
   surveys(archived: Boolean, ids: [ID], ongoing: Boolean): [SurveyPoll!]!
