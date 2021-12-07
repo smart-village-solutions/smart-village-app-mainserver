@@ -349,6 +349,13 @@
           <%= d.label :role_survey, "Umfragen", class: "form-check-label" %>
         </div>
       </div>
+
+      <div class="form-group">
+        <div class="form-check">
+          <%= d.check_box :role_static_contents, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_static_contents, "Statische Inhalte", class: "form-check-label" %>
+        </div>
+      </div>
     </div>
 
     <div class="col-6">

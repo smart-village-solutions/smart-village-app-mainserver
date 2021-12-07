@@ -100,6 +100,7 @@ class AccountsController < ApplicationController
         :role_constuction_site,
         :role_survey,
         :role_encounter_support,
+        :role_static_contents,
         logo_attributes: %i[
           id
           url
