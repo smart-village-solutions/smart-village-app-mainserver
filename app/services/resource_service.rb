@@ -9,7 +9,7 @@ class ResourceService
     @data_provider = data_provider
   end
 
-  def create(resource_class, params)
+  def perform(resource_class, params)
     @params = params
 
     # Erlaube nur ein Anlegen von Daten wenn der Nutzer nicht ReadOnly ist.

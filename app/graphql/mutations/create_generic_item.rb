@@ -80,7 +80,7 @@ module Mutations
     def create_generic_item_node(params, parent_id)
       nested_params = params.delete(:generic_items_attributes)
       parent = ResourceService.new(data_provider: context[:current_user].try(:data_provider))
-                 .create(GenericItem, params.merge(parent_id: parent_id))
+                 .perform(GenericItem, params.merge(parent_id: parent_id))
 
       return parent if nested_params.blank?
 

@@ -67,7 +67,7 @@ module Mutations
 
     def resolve(**params)
       ResourceService.new(data_provider: context[:current_user].try(:data_provider))
-        .create(EventRecord, params)
+        .perform(EventRecord, params)
     end
   end
 end

@@ -5,17 +5,17 @@ require "rails_helper"
 RSpec.describe ResourceService, type: :service do
   let(:maz) { create(:data_provider, name: "MAZ", news_item: true) }
   let(:tmb) { create(:data_provider, name: "TMB") }
-  let(:news_item_1) { ResourceService.new(data_provider: maz).create(NewsItem, params_maz) }
-  let(:news_item_2) { ResourceService.new(data_provider: maz).create(NewsItem, params_maz) }
-  let(:poi_1) { ResourceService.new(data_provider: tmb).create(PointOfInterest, params_tmb_poi) }
-  let(:poi_1_changed) { ResourceService.new(data_provider: tmb).create(PointOfInterest, params_tmb_poi_changed) }
-  let(:poi_2) { ResourceService.new(data_provider: tmb).create(PointOfInterest, params_tmb_poi) }
-  let(:tour_1) { ResourceService.new(data_provider: tmb).create(Tour, params_tmb_tour) }
-  let(:tour_1_changed) { ResourceService.new(data_provider: tmb).create(Tour, params_tmb_tour_changed) }
-  let(:tour_2) { ResourceService.new(data_provider: tmb).create(Tour, params_tmb_tour) }
-  let(:event_1) { ResourceService.new(data_provider: tmb).create(EventRecord, params_tmb_event) }
-  let(:event_1_changed) { ResourceService.new(data_provider: tmb).create(EventRecord, params_tmb_event_changed) }
-  let(:event_2) { ResourceService.new(data_provider: tmb).create(EventRecord, params_tmb_event) }
+  let(:news_item_1) { ResourceService.new(data_provider: maz).perform(NewsItem, params_maz) }
+  let(:news_item_2) { ResourceService.new(data_provider: maz).perform(NewsItem, params_maz) }
+  let(:poi_1) { ResourceService.new(data_provider: tmb).perform(PointOfInterest, params_tmb_poi) }
+  let(:poi_1_changed) { ResourceService.new(data_provider: tmb).perform(PointOfInterest, params_tmb_poi_changed) }
+  let(:poi_2) { ResourceService.new(data_provider: tmb).perform(PointOfInterest, params_tmb_poi) }
+  let(:tour_1) { ResourceService.new(data_provider: tmb).perform(Tour, params_tmb_tour) }
+  let(:tour_1_changed) { ResourceService.new(data_provider: tmb).perform(Tour, params_tmb_tour_changed) }
+  let(:tour_2) { ResourceService.new(data_provider: tmb).perform(Tour, params_tmb_tour) }
+  let(:event_1) { ResourceService.new(data_provider: tmb).perform(EventRecord, params_tmb_event) }
+  let(:event_1_changed) { ResourceService.new(data_provider: tmb).perform(EventRecord, params_tmb_event_changed) }
+  let(:event_2) { ResourceService.new(data_provider: tmb).perform(EventRecord, params_tmb_event) }
 
   def params_maz
     { author: "Robert sdf",

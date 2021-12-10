@@ -75,7 +75,7 @@ module Mutations
 
     def resolve(**params)
       ResourceService.new(data_provider: context[:current_user].try(:data_provider))
-        .create(PointOfInterest, params)
+        .perform(PointOfInterest, params)
     end
   end
 end

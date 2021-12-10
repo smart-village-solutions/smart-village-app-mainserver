@@ -40,7 +40,7 @@ module Mutations
 
     def resolve(**params)
       ResourceService.new(data_provider: context[:current_user].try(:data_provider))
-        .create(NewsItem, params)
+        .perform(NewsItem, params)
     end
   end
 end
