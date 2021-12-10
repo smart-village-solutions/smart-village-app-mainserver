@@ -143,7 +143,7 @@ module Types
     # @return [Object] object with the contents of the file, if it exists - otherwise with ""
     def public_html_file(name:)
       static_content = StaticContent.where(name: name, data_type: "html").first
-      return { content: static_content.content, name: name } if static_content.present?
+      return static_content if static_content.present?
 
       { content: "", name: "not found" }
     end
