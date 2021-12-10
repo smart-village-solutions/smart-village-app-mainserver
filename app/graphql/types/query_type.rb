@@ -199,20 +199,16 @@ module Types
         static_contents = StaticContent.where(data_type: data_type, name: name)
         static_content = find_static_content(static_contents, name, version)
 
-        return {
-          content: data_type == "html" ? "" : {},
-          name: "not found"
-        } if static_content.blank?
+        if static_content.blank?
+          return { content: data_type == "html" ? "" : {}, name: "not found" }
+        end
+
+        return static_content if data_type == "html"
 
         begin
-          content = static_content.content
-
-          return {
-            content: data_type == "html" ? content : JSON.parse(content),
-            name: name
-          }
+          return static_content.as_json.merge(content: JSON.parse(static_content.content))
         rescue JSON::ParserError
-          return { content: static_content.content, name: name }
+          return static_content
         end
       end
 

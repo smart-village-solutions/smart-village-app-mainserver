@@ -14,7 +14,8 @@ module Mutations
       "PointOfInterest",
       "Tour",
       "GenericItem",
-      "Survey::Poll"
+      "Survey::Poll",
+      "StaticContent"
     ].freeze
 
     def resolve(id: nil, record_type:, external_id: nil)
