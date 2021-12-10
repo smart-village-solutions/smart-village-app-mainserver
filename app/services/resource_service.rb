@@ -38,7 +38,7 @@ class ResourceService
       return @old_resource
     end
 
-    resource_or_error_message(update_or_create)
+    resource_or_error_message(create_or_update)
   end
 
   private
@@ -54,7 +54,7 @@ class ResourceService
       end
     end
 
-    def update_or_create
+    def create_or_update
       if @old_resource.present?
         update_resource
       else
