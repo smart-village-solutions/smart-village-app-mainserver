@@ -43,6 +43,16 @@ class ResourceService
 
   private
 
+    def find_external_resource
+      return nil if @params.fetch(:force_create, false)
+
+      ExternalReference.find_by(
+        data_provider: @data_provider,
+        external_type: @resource_class,
+        unique_id: @resource.unique_id
+      )
+    end
+
     # Find old resource
     #
     # @return [Object] Instance of @resource_class
@@ -58,8 +68,31 @@ class ResourceService
       if @old_resource.present?
         update_resource
       else
-        create_new_resource
+        create_resource
       end
+    end
+
+    def create_resource
+      ActiveRecord::Base.transaction do
+        @external_resource.destroy if @external_resource.present?
+
+        if @resource.save
+          create_external_resource
+          FacebookService.delay.send_post_to_page(resource_id: @resource.id, resource_type: @resource_class.name)
+          set_default_categories if @resource.respond_to?(:categories)
+        end
+
+        @resource
+      end
+    end
+
+    def create_external_resource
+      ExternalReference.create(
+        data_provider: @data_provider,
+        external_id: @resource.id,
+        external_type: @resource_class,
+        unique_id: @resource.unique_id
+      )
     end
 
     def update_resource
@@ -90,19 +123,6 @@ class ResourceService
       @old_resource
     end
 
-    def create_new_resource
-      ActiveRecord::Base.transaction do
-        @external_resource.destroy if @external_resource.present?
-        if @resource.save
-          create_external_resource
-          FacebookService.delay.send_post_to_page(resource_id: @resource.id, resource_type: @resource_class.name)
-          set_default_categories if @resource.respond_to?(:categories)
-        end
-
-        @resource
-      end
-    end
-
     def unchanged_attributes?
       return false if @old_resource.blank?
       if @old_resource.respond_to?(:compareable_attributes)
@@ -122,25 +142,6 @@ class ResourceService
       return false if setting.blank?
 
       setting.always_recreate_on_import == "true"
-    end
-
-    def find_external_resource
-      return nil if @params.fetch(:force_create, false)
-
-      ExternalReference.find_by(
-        data_provider: @data_provider,
-        external_type: @resource_class,
-        unique_id: @resource.unique_id
-      )
-    end
-
-    def create_external_resource
-      ExternalReference.create(
-        data_provider: @data_provider,
-        external_id: @resource.id,
-        external_type: @resource_class,
-        unique_id: @resource.unique_id
-      )
     end
 
     def resource_or_error_message(record)
