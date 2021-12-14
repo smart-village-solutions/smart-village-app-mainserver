@@ -76,6 +76,14 @@ docker-build:
 # release/bb/angermuende
 # release/bb/seelow
 # release/bb/eberswalde
+# release/bb/ruedersdorf
+# release/bb/hohen-neuendorf
+# release/bb/schoenefeld
+# release/bb/havelland
+# release/bb/uckermark
+# release/bb/nuthetal
+# release/bb/bernau
+# release/mv/hagenow
 
 #
 # List of releases to build
@@ -169,6 +177,62 @@ bb-eberswalde-build:
   variables:
     PROJECT: bb-eberswalde
     DOMAINNAME: bb-eberswalde
+    NODENAME: node-001.sva
+    VOLUME_LOCALTIME: unused:/unused
+bb-ruedersdorf-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-ruedersdorf
+    DOMAINNAME: bb-ruedersdorf
+    NODENAME: node-001.sva
+    VOLUME_LOCALTIME: unused:/unused
+bb-hohen-neuendorf-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-hohen-neuendorf
+    DOMAINNAME: bb-hohen-neuendorf
+    NODENAME: node-001.sva
+    VOLUME_LOCALTIME: unused:/unused
+bb-schoenefeld-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-schoenefeld
+    DOMAINNAME: bb-schoenefeld
+    NODENAME: node-001.sva
+    VOLUME_LOCALTIME: unused:/unused
+bb-havelland-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-havelland
+    DOMAINNAME: bb-havelland
+    NODENAME: node-001.sva
+    VOLUME_LOCALTIME: unused:/unused
+bb-uckermark-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-uckermark
+    DOMAINNAME: bb-uckermark
+    NODENAME: node-001.sva
+    VOLUME_LOCALTIME: unused:/unused
+bb-nuthetal-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-nuthetal
+    DOMAINNAME: bb-nuthetal
+    NODENAME: node-001.sva
+    VOLUME_LOCALTIME: unused:/unused
+bb-bernau-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-bernau
+    DOMAINNAME: bb-bernau
+    NODENAME: node-001.sva
+    VOLUME_LOCALTIME: unused:/unused
+mv-hagenow-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: mv-hagenow
+    DOMAINNAME: mv-hagenow
     NODENAME: node-001.sva
     VOLUME_LOCALTIME: unused:/unused
 
@@ -265,4 +329,60 @@ bb-eberswalde-deploy:
   variables:
     SERVICENAME: "-main_server"
     PROJECT: bb-eberswalde
+    QUANTUM_ENDPOINT: sva
+bb-ruedersdorf-deploy:
+  extends: .deploy_release
+  needs: ["bb-ruedersdorf-build"]
+  variables:
+    SERVICENAME: "-main_server"
+    PROJECT: bb-ruedersdorf
+    QUANTUM_ENDPOINT: sva
+bb-hohen-neuendorf-deploy:
+  extends: .deploy_release
+  needs: ["bb-hohen-neuendorf-build"]
+  variables:
+    SERVICENAME: "-main_server"
+    PROJECT: bb-hohen-neuendorf
+    QUANTUM_ENDPOINT: sva
+bb-schoenefeld-deploy:
+  extends: .deploy_release
+  needs: ["bb-schoenefeld-build"]
+  variables:
+    SERVICENAME: "-main_server"
+    PROJECT: bb-schoenefeld
+    QUANTUM_ENDPOINT: sva
+bb-havelland-deploy:
+  extends: .deploy_release
+  needs: ["bb-havelland-build"]
+  variables:
+    SERVICENAME: "-main_server"
+    PROJECT: bb-havelland
+    QUANTUM_ENDPOINT: sva
+bb-uckermark-deploy:
+  extends: .deploy_release
+  needs: ["bb-uckermark-build"]
+  variables:
+    SERVICENAME: "-main_server"
+    PROJECT: bb-uckermark
+    QUANTUM_ENDPOINT: sva
+bb-nuthetal-deploy:
+  extends: .deploy_release
+  needs: ["bb-nuthetal-build"]
+  variables:
+    SERVICENAME: "-main_server"
+    PROJECT: bb-nuthetal
+    QUANTUM_ENDPOINT: sva
+bb-bernau-deploy:
+  extends: .deploy_release
+  needs: ["bb-bernau-build"]
+  variables:
+    SERVICENAME: "-main_server"
+    PROJECT: bb-bernau
+    QUANTUM_ENDPOINT: sva
+mv-hagenow-deploy:
+  extends: .deploy_release
+  needs: ["mv-hagenow-build"]
+  variables:
+    SERVICENAME: "-main_server"
+    PROJECT: mv-hagenow
     QUANTUM_ENDPOINT: sva
