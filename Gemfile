@@ -85,7 +85,6 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "pry-byebug", platforms: %i[mri mingw x64_mingw]
   gem "codeclimate-test-reporter"
-  gem "database_cleaner"
   gem "debase"
   gem "factory_bot"
   gem "factory_bot_rails"

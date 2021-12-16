@@ -107,7 +107,6 @@ GEM
     concurrent-ruby (1.1.8)
     crass (1.0.6)
     daemons (1.3.1)
-    database_cleaner (1.7.0)
     debase (0.2.2)
       debase-ruby_core_source (>= 0.10.2)
     debase-ruby_core_source (0.10.4)
@@ -463,7 +462,6 @@ DEPENDENCIES
   byebug
   codeclimate-test-reporter
   daemons
-  database_cleaner
   debase
   delayed_job_active_record
   devise
