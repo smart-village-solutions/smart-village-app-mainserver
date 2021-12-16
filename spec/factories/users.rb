@@ -5,6 +5,12 @@ FactoryBot.define do
     email { "test@smart-village.app" }
     password { "Aute-quis-laborum-euelitsint" }
   end
+
+  factory :admin, class: 'User' do
+    email { "admin@smart-village.app" }
+    password { "Aute-admin-laborum-euelitsint" }
+    role { 1 }
+  end
 end
 
 # == Schema Information
