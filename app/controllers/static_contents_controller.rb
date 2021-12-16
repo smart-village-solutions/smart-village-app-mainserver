@@ -15,8 +15,7 @@ class StaticContentsController < ApplicationController
   # GET /static_contents
   # GET /static_contents.json
   def index
-    @static_contents = StaticContent.all
-    @static_contents = @static_contents.filter_by_type(params[:type]) if params[:type].present?
+    @static_contents = StaticContent.for_params(params)
   end
 
   # GET /static_contents/1
