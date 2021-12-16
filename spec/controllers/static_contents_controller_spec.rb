@@ -36,16 +36,48 @@ RSpec.describe StaticContentsController, type: :controller do
     skip("Add a hash of attributes invalid for your model")
   }
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # StaticContentsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
   describe "GET #index" do
-    it "returns a success response" do
-      StaticContent.create! valid_attributes
-      get :index, params: {}, session: valid_session
-      expect(response).to be_successful
+
+    context "when user is logged out" do
+      before do
+        get :index
+      end
+
+      it { is_expected.to redirect_to new_user_session_path }
+    end
+
+    context "when user is signed in" do
+      login_user
+
+      before do
+        get :index
+      end
+
+      it { is_expected.to respond_with :not_found }
+      it { expect(response.body).to include("not allowed") }
+    end
+
+    context "when admin is signed in" do
+      login_admin
+      render_views
+
+      it "returns a success response" do
+        get :index, params: {}, session: valid_session
+        expect(response.status).to eq(200)
+      end
+
+      it "should include static contents" do
+        name1 = 'StaticContentABC'
+        name2 = 'StaticContentXYZ'
+        FactoryBot.create(:static_content, name: name1)
+        FactoryBot.create(:static_content, name: name2)
+        get :index, params: {}
+
+        expect(response.body).to include(name1)
+        expect(response.body).to include(name2)
+      end
     end
   end
 
@@ -59,6 +91,7 @@ RSpec.describe StaticContentsController, type: :controller do
 
   describe "GET #new" do
     it "returns a success response" do
+      static_content = StaticContent.create! valid_attributes
       get :new, params: {}, session: valid_session
       expect(response).to be_successful
     end
