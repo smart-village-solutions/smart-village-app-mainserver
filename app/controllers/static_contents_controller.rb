@@ -72,6 +72,33 @@ class StaticContentsController < ApplicationController
     end
   end
 
+  # Helper method to get the right params for the right context, if:
+  # 1) user clicks on type filter -> preserve sorting of id or name
+  # 2) user clicks on id -> sort for id[asc/desc], preserve type, delete name sorting
+  # 3) user clicks on name -> sort for name[asc/desc], preserve type, delete id sorting
+  #
+  # TODO: Write tests for this method (?)
+  def params_for_link(link_type, type=nil)
+    p = Hash.new
+
+    if link_type == :type
+      p[:name] = params[:name] if params[:name].present?
+      p[:id] = params[:id] if params[:id].present?
+      p[:type] = type if type.present?
+    else
+      p[:type] = params[:type] if params[:type].present?
+
+      if link_type == :name
+        p[:name] = params[:name] == 'desc' ? 'asc' : 'desc'
+      elsif link_type == :id
+        p[:id] = params[:id] == 'desc' ? 'asc' : 'desc'
+      end
+    end
+
+    p
+  end
+  helper_method :params_for_link
+
   private
 
     # Use callbacks to share common setup or constraints between actions.
@@ -83,4 +110,5 @@ class StaticContentsController < ApplicationController
     def static_content_params
       params.require(:static_content).permit(:name, :data_type, :content)
     end
+
 end

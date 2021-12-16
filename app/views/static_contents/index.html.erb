@@ -12,16 +12,38 @@
     <p><%= link_to 'New Static Content', new_static_content_path, class: "btn btn-success" %></p>
 
     <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Choose data type">
-      <a href="<%= static_contents_path %>" class="btn <%= btn_class("") %>">All</a>
-      <a href="<%= static_contents_path(type: "json") %>" class="btn <%= btn_class("json") %>">JSON</a>
-      <a href="<%= static_contents_path(type: "html") %>" class="btn <%= btn_class("html") %>">HTML</a>
+      <a href="<%= static_contents_path(params_for_link(:type)) %>" class="btn <%= btn_class("") %>">All</a>
+      <a href="<%= static_contents_path(params_for_link(:type, "json")) %>" class="btn <%= btn_class("json") %>">JSON</a>
+      <a href="<%= static_contents_path(params_for_link(:type, "html")) %>" class="btn <%= btn_class("html") %>">HTML</a>
     </div>
 
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
+          <th>
+            <%= link_to "ID", static_contents_path(params_for_link(:id)) %>
+            <span class="sort-icon">
+              <% if params[:id] == 'desc' %>
+                <i class="fas fa-sort-down"></i>
+              <% elsif params[:id] == 'asc' %>
+                <i class="fas fa-sort-up"></i>
+              <% else %>
+                <i class="fas fa-sort"></i>
+              <% end %>
+            </span>
+          </th>
+          <th>
+            <%= link_to "Name", static_contents_path(params_for_link(:name)) %>
+            <span class="sort-icon">
+              <% if params[:name] == 'desc' %>
+                <i class="fas fa-sort-down"></i>
+              <% elsif params[:name] == 'asc' %>
+                <i class="fas fa-sort-up"></i>
+              <% else %>
+                <i class="fas fa-sort"></i>
+              <% end %>
+            </span>
+          </th>
           <th>Type</th>
           <th></th>
           <th></th>
