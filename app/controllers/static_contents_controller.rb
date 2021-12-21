@@ -6,6 +6,18 @@ class StaticContentsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin
 
+  include SortableController
+
+  def params_for_link(link_type, value=nil)
+    if link_type == :type
+      p = super()
+      p[:type] = value
+      p
+    else
+      super(link_type)
+    end
+  end
+
   before_action :set_static_content, only: [:show, :edit, :update, :destroy]
 
   def authenticate_admin
@@ -15,7 +27,7 @@ class StaticContentsController < ApplicationController
   # GET /static_contents
   # GET /static_contents.json
   def index
-    @static_contents = StaticContent.for_params(params)
+    @static_contents = StaticContent.sorted_and_filtered_for_params(params)
   end
 
   # GET /static_contents/1
@@ -71,33 +83,6 @@ class StaticContentsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
-  # Helper method to get the right params for the right context, if:
-  # 1) user clicks on type filter -> preserve sorting of id or name
-  # 2) user clicks on id -> sort for id[asc/desc], preserve type, delete name sorting
-  # 3) user clicks on name -> sort for name[asc/desc], preserve type, delete id sorting
-  #
-  # TODO: Write tests for this method (?)
-  def params_for_link(link_type, type=nil)
-    p = Hash.new
-
-    if link_type == :type
-      p[:name] = params[:name] if params[:name].present?
-      p[:id] = params[:id] if params[:id].present?
-      p[:type] = type if type.present?
-    else
-      p[:type] = params[:type] if params[:type].present?
-
-      if link_type == :name
-        p[:name] = params[:name] == 'desc' ? 'asc' : 'desc'
-      elsif link_type == :id
-        p[:id] = params[:id] == 'desc' ? 'asc' : 'desc'
-      end
-    end
-
-    p
-  end
-  helper_method :params_for_link
 
   private
 

@@ -23,10 +23,12 @@
           <th>
             <%= link_to "ID", static_contents_path(params_for_link(:id)) %>
             <span class="sort-icon">
-              <% if params[:id] == 'desc' %>
-                <i class="fas fa-sort-down"></i>
-              <% elsif params[:id] == 'asc' %>
-                <i class="fas fa-sort-up"></i>
+              <% if params[:sort_column] == 'id' %>
+                <% if params[:sort_order] == 'desc' %>
+                  <i class="fas fa-sort-down"></i>
+                <% elsif params[:sort_order] == 'asc' %>
+                  <i class="fas fa-sort-up"></i>
+                <% end %>
               <% else %>
                 <i class="fas fa-sort"></i>
               <% end %>
@@ -35,10 +37,12 @@
           <th>
             <%= link_to "Name", static_contents_path(params_for_link(:name)) %>
             <span class="sort-icon">
-              <% if params[:name] == 'desc' %>
-                <i class="fas fa-sort-down"></i>
-              <% elsif params[:name] == 'asc' %>
-                <i class="fas fa-sort-up"></i>
+              <% if params[:sort_column] == 'name' %>
+                <% if params[:sort_order] == 'desc' %>
+                  <i class="fas fa-sort-down"></i>
+                <% elsif params[:sort_order] == 'asc' %>
+                  <i class="fas fa-sort-up"></i>
+                <% end %>
               <% else %>
                 <i class="fas fa-sort"></i>
               <% end %>

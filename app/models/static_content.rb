@@ -5,23 +5,14 @@ class StaticContent < ApplicationRecord
   validates :name, uniqueness: { case_sensitive: false }
 
   scope :filter_by_type, ->(type) { where data_type: type }
-  scope :ordered_by_name, ->(order) { order(name: order) }
-  scope :ordered_by_id, ->(order) { order(id: order) }
+  include Sortable.new :name, :id
 
-  def self.for_params(params)
-    static_contents = StaticContent.all
-
-    if params[:type].present?
-      static_contents = static_contents.filter_by_type(params[:type])
+  def self.sorted_and_filtered_for_params(params)
+    if params[:type]
+      self.sorted_for_params(params).filter_by_type(params[:type])
+    else
+      self.sorted_for_params(params)
     end
-
-    if params[:id].present?
-      static_contents = static_contents.ordered_by_id(params[:id].to_sym)
-    elsif params[:name].present?
-      static_contents = static_contents.ordered_by_name(params[:name].to_sym)
-    end
-
-    static_contents
   end
 end
 
