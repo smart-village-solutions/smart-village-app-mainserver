@@ -33,6 +33,7 @@ class StaticContentsController < ApplicationController
     @static_contents = StaticContent
       .sorted_and_filtered_for_params(params)
       .where_name_contains(params[:query])
+      .page(params[:page])
   end
 
   # GET /static_contents/1

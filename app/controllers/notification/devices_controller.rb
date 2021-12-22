@@ -46,6 +46,7 @@ class Notification::DevicesController < ApplicationController
     @notification_devices = Notification::Device
       .sorted_for_params(params)
       .where_token_contains(params[:query])
+      .page(params[:page])
     @push_logs = RedisAdapter.get_push_logs
   end
 

@@ -5,9 +5,9 @@ class Oauth::ApplicationsController < Doorkeeper::ApplicationsController
 
   def index
     if current_user.admin_role?
-      @applications = Doorkeeper::Application.all
+      @applications = Doorkeeper::Application.page(params[:page])
     else
-      @applications = current_user.oauth_applications
+      @applications = current_user.oauth_applications.page(params[:page])
     end
   end
 
