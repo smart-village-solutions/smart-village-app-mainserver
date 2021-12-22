@@ -1,64 +1,52 @@
-# The code in here is a bit complicated.
-# I wanted to be able to use include with arguments.
-# Read this blogpost: https://cutt.ly/jUr8M8f
-class Sortable < Module
+module Sortable
+  extend ActiveSupport::Concern
 
-  #
-  # *fields are the fields which can be sorted
-  # 
-  def initialize(*fields)
-    # super() with brackets calls super with no arguments.
-    # Otherwise the would get passed and would throw an error
-    super() do
+  class SortColumnsNotProvidedError < StandardError
+    def initialize()
+      super("You need to call #sortable_on in the Model using this concern.")
+    end
+  end
 
-      # Create an anonymous Module and store it in a local variable
-      # It will contain all the class methods which are later appended
-      # to the ActiveRecord Model.
-      #
-      # For example:
-      # class Model < ActiveRecord::Base
-      #   include Sortable.new :name, :email
-      # end
-      #
-      # Would lead to:
-      # Model.sorted_by_name(order)
-      # Model.sorted_by_email(order)
-      singleton_methods = Module.new do
-        fields.each do |field|
-          method_name = "sorted_by_#{field}".to_sym
-          define_method(method_name) do |sort_order|
-            parameters = Hash.new
-            parameters[field] = sort_order
-            order(p)
-          end
+  included do
+    attr_reader :sort_columns
+  end
 
-        end
+  module ClassMethods
 
-        define_method(:sorted_fields) do
-          fields
-        end
+    # Example:
+    # class Model < ActiveRecord::Base
+    #   include Sortable
+    #   sortable_on :id, :email
+    # end
+    #
+    # Generates:
+    # Model.sorted_by_id(order)
+    # Model.sorted_by_email(order)
+    def sortable_on(*sort_columns)
+      sort_columns.each do |sort_column|
+        method_name = "sorted_by_#{sort_column}".to_sym
 
-        # This class methods returns all records sorted for the specified
-        # column and specified order
-        #
-        # If column is not given or invalid, it returns all records
-        define_method(:sorted_for_params) do |params|
-          if params[:sort_column].present? && params[:sort_order].present?
-            if self.sorted_fields.include?(params[:sort_column].to_sym)
-              method_name = "sorted_by_#{params[:sort_column]}".to_sym
-              return self.send(method_name, params[:sort_order])
-            end
-          end
-
-          self.all
+        define_singleton_method(method_name) do |sort_order|
+          parameters = Hash.new
+          parameters[sort_column] = sort_order
+          self.order(parameters)
         end
       end
-      
-      # We can't just use 'def self.included' here, because we
-      # need accesss to the local variable
-      define_singleton_method :included do |base|
-        base.extend singleton_methods
+
+      @sort_columns = sort_columns
+    end
+
+    def sorted_for_params(params)
+      raise SortColumnsNotProvidedError.new if @sort_columns.nil?
+
+      if params[:sort_column].present? && params[:sort_order].present?
+        if @sort_columns.include?(params[:sort_column].to_sym)
+          method_name = "sorted_by_#{params[:sort_column]}".to_sym
+          return self.send(method_name, params[:sort_order])
+        end
       end
+
+      self.all
     end
   end
 
@@ -72,4 +60,5 @@ class Sortable < Module
       sort_order: sort_order
     })
   end
+
 end

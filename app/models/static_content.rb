@@ -5,7 +5,8 @@ class StaticContent < ApplicationRecord
   validates :name, uniqueness: { case_sensitive: false }
 
   scope :filter_by_type, ->(type) { where data_type: type }
-  include Sortable.new :name, :id
+  include Sortable
+  sortable_on :name, :id
 
   def self.sorted_and_filtered_for_params(params)
     sorted_results = self.sorted_for_params(params)
