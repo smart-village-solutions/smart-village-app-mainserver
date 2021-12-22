@@ -1,0 +1,11 @@
+<span class="sort-icon">
+  <% if params[:sort_column] == sort_column %>
+    <% if params[:sort_order] == 'desc' %>
+      <i class="fas fa-sort-down"></i>
+    <% elsif params[:sort_order] == 'asc' %>
+      <i class="fas fa-sort-up"></i>
+    <% end %>
+  <% else %>
+    <i class="fas fa-sort"></i>
+  <% end %>
+</span>
