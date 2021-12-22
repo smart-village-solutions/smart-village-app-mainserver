@@ -8,11 +8,10 @@ class StaticContent < ApplicationRecord
   include Sortable.new :name, :id
 
   def self.sorted_and_filtered_for_params(params)
-    if params[:type]
-      self.sorted_for_params(params).filter_by_type(params[:type])
-    else
-      self.sorted_for_params(params)
-    end
+    sorted_results = self.sorted_for_params(params)
+    sorted_results = sorted_results.filter_by_type(params[:type]) if params[:type].present?
+
+    sorted_results
   end
 end
 

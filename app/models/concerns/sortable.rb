@@ -26,9 +26,9 @@ class Sortable < Module
       singleton_methods = Module.new do
         fields.each do |field|
           method_name = "sorted_by_#{field}".to_sym
-          define_method(method_name) do |order|
-            p = Hash.new
-            p[field] = order
+          define_method(method_name) do |sort_order|
+            parameters = Hash.new
+            parameters[field] = sort_order
             order(p)
           end
 
