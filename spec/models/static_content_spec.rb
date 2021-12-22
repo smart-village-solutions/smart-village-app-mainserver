@@ -7,10 +7,10 @@ RSpec.describe StaticContent, type: :model do
   it { is_expected.to validate_presence_of(:data_type) }
   it { is_expected.to validate_uniqueness_of(:name).case_insensitive }
 
-  describe ".for_params" do
+  describe ".sorted_and_filtered_for_params" do
 
     let(:params) { {} }
-    subject { StaticContent.for_params(params) }
+    subject { StaticContent.sorted_and_filtered_for_params(params) }
 
     before do
       FactoryBot.create(:static_content, name: 'N', data_type: 'html')
@@ -38,9 +38,9 @@ RSpec.describe StaticContent, type: :model do
     context "with name" do
       ['asc', 'desc'].each do |order|
         context order do
-          let(:params) { { name: order } }
+          let(:params) { { sort_column: 'name', sort_order: order } }
 
-          it { expect(subject).to eq(StaticContent.ordered_by_name(order)) }
+          it { expect(subject).to eq(StaticContent.sorted_by_name(order)) }
         end
       end
     end
@@ -48,9 +48,9 @@ RSpec.describe StaticContent, type: :model do
     context "with id" do
       ['asc', 'desc'].each do |order|
         context order do
-          let(:params) { { id: order } }
+          let(:params) { { sort_column: 'id', sort_order: order } }
 
-          it { expect(subject).to eq(StaticContent.ordered_by_id(order)) }
+          it { expect(subject).to eq(StaticContent.sorted_by_id(order)) }
         end
       end
     end
@@ -60,15 +60,15 @@ RSpec.describe StaticContent, type: :model do
       let(:type) { 'html' }
 
       context "id" do
-        let(:params) { { id: order, type: type } }
+        let(:params) { { sort_column: 'id', sort_order: order, type: type } }
         it { expect(subject.count).to eq(2) }
-        it { expect(subject).to eq(StaticContent.filter_by_type(type).ordered_by_id(order)) }
+        it { expect(subject).to eq(StaticContent.filter_by_type(type).sorted_by_id(order)) }
       end
 
       context "name" do
-        let(:params) { { name: order, type: type } }
+        let(:params) { { sort_column: 'name', sort_order: order, type: type } }
         it { expect(subject.count).to eq(2) }
-        it { expect(subject).to eq(StaticContent.filter_by_type(type).ordered_by_name(order)) }
+        it { expect(subject).to eq(StaticContent.filter_by_type(type).sorted_by_name(order)) }
       end
     end
   end

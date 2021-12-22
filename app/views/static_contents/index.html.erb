@@ -22,27 +22,11 @@
         <tr>
           <th>
             <%= link_to "ID", static_contents_path(params_for_link(:id)) %>
-            <span class="sort-icon">
-              <% if params[:id] == 'desc' %>
-                <i class="fas fa-sort-down"></i>
-              <% elsif params[:id] == 'asc' %>
-                <i class="fas fa-sort-up"></i>
-              <% else %>
-                <i class="fas fa-sort"></i>
-              <% end %>
-            </span>
+            <%= render partial: 'sort_icon', locals: { sort_column: 'id' } %>
           </th>
           <th>
             <%= link_to "Name", static_contents_path(params_for_link(:name)) %>
-            <span class="sort-icon">
-              <% if params[:name] == 'desc' %>
-                <i class="fas fa-sort-down"></i>
-              <% elsif params[:name] == 'asc' %>
-                <i class="fas fa-sort-up"></i>
-              <% else %>
-                <i class="fas fa-sort"></i>
-              <% end %>
-            </span>
+            <%= render partial: 'sort_icon', locals: { sort_column: 'name' } %>
           </th>
           <th>Type</th>
           <th></th>
