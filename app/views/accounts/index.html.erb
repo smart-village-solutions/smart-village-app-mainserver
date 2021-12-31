@@ -57,6 +57,8 @@
 
     <p><%= link_to "Neuen Nutzer erstellen", new_account_path, class: 'btn btn-success' %></p>
 
+    <%= render partial: 'search_form', locals: { form_path: accounts_path, search_column: 'email' } %>
+
     <table class="table table-striped">
       <thead>
         <tr>

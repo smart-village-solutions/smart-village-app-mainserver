@@ -15,7 +15,9 @@ class AccountsController < ApplicationController
   end
 
   def index
-    @users = User.sorted_for_params(params)
+    @users = User
+      .sorted_for_params(params)
+      .where_email_contains(params[:query])
   end
 
   def edit
