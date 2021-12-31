@@ -17,6 +17,8 @@
       <a href="<%= static_contents_path(params_for_link(:type, "html")) %>" class="btn <%= btn_class("html") %>">HTML</a>
     </div>
 
+    <%= render partial: 'search_form', locals: { form_path: static_contents_path, search_column: 'name' } %>
+
     <table class="table table-striped">
       <thead>
         <tr>

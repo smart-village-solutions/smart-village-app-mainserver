@@ -30,7 +30,9 @@ class StaticContentsController < ApplicationController
   # GET /static_contents
   # GET /static_contents.json
   def index
-    @static_contents = StaticContent.sorted_and_filtered_for_params(params)
+    @static_contents = StaticContent
+      .sorted_and_filtered_for_params(params)
+      .where_name_contains(params[:query])
   end
 
   # GET /static_contents/1
