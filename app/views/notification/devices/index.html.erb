@@ -10,6 +10,8 @@
 
     <p><%= link_to 'New Device', new_notification_device_path, class: "btn btn-success" %></p>
 
+    <%= render partial: 'search_form', locals: { form_path: notification_devices_path, search_column: 'token' } %>
+
     <table class="table table-striped">
       <thead>
         <tr>
