@@ -1,0 +1,21 @@
+<form class="form-inline" method="get" action="<%= form_path %>">
+  <div class="form-group mb-2">
+    <input
+      id="query"
+      placeholder="<%= "#{search_column.capitalize} durchsuchen" %>"
+      name="query"
+      type="search"
+      value="<%= request.query_parameters[:query] %>"
+      class="form-control"
+    />
+  </div>
+
+  <button type="submit" class="btn btn-primary mb-2">Suchen</button>
+  <button type="submit" class="btn btn-warning mb-2" onClick="$('#query').val('');">Alles anzeigen</button>
+
+  <%# Preserve other parameters, e.g. for sorting %>
+  <% request.query_parameters.each do |key, value| %>
+    <% next if key == 'query' %>
+    <input type="hidden" name="<%= key %>" value="<%= value %>" />
+  <% end %>
+</form>
