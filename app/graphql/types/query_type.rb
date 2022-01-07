@@ -34,7 +34,7 @@ module Types
       argument :id, ID, required: true
     end
 
-    field :categories, [QueryTypes::CategoryType], null: false
+    field :categories, [QueryTypes::CategoryType], function: Resolvers::CategoriesSearch
     field :category_tree, GraphQL::Types::JSON, null: false
 
     field :waste_addresses, [QueryTypes::AddressType], function: Resolvers::WasteLocationSearch
@@ -101,10 +101,6 @@ module Types
 
     def tour(id:)
       Tour.find_by(id: id)
-    end
-
-    def categories
-      Category.all.order(:name)
     end
 
     def category_tree
