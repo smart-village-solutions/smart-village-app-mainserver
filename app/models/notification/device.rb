@@ -7,6 +7,9 @@ class Notification::Device < ApplicationRecord
   include Sortable
   sortable_on :device_type, :token
 
+  include Searchable
+  searchable_on :token
+
   # Zusätzlich zu der Validierung hier existiert auch ein unique Index auf das Feld 'token'
   validates_uniqueness_of :token, on: :create, message: "must be unique"
   validates_presence_of :token, on: :create, message: "can't be blank"

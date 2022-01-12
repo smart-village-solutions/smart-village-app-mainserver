@@ -9,7 +9,7 @@ class StaticContentsController < ApplicationController
   include SortableController
 
   # We are overwriting SortableController#params_for_link here
-  def params_for_link(link_type, value=nil)
+  def params_for_link(link_type, value = nil)
     if link_type == :type
       # Although we are not inheriting, this still calls SortableController
       # because including actually puts the Module in the Ancestor chain
@@ -30,7 +30,9 @@ class StaticContentsController < ApplicationController
   # GET /static_contents
   # GET /static_contents.json
   def index
-    @static_contents = StaticContent.sorted_and_filtered_for_params(params)
+    @static_contents = StaticContent
+      .sorted_and_filtered_for_params(params)
+      .where_name_contains(params[:query])
   end
 
   # GET /static_contents/1

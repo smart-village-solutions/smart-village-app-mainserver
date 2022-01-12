@@ -31,3 +31,7 @@
 
 en:
   hello: "Hello world"
+  search_column:
+    email: "E-Mail"
+    name: "Name"
+    token: "Token"

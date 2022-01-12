@@ -43,7 +43,9 @@ class Notification::DevicesController < ApplicationController
   # GET /notification/devices
   # GET /notification/devices.json
   def index
-    @notification_devices = Notification::Device.sorted_for_params(params)
+    @notification_devices = Notification::Device
+      .sorted_for_params(params)
+      .where_token_contains(params[:query])
     @push_logs = RedisAdapter.get_push_logs
   end
 

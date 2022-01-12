@@ -9,6 +9,9 @@ class User < ApplicationRecord
   include Sortable
   sortable_on :email, :id
 
+  include Searchable
+  searchable_on :email
+
   belongs_to :data_provider, optional: true
   accepts_nested_attributes_for :data_provider
 
