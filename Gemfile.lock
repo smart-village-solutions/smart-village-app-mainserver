@@ -99,6 +99,9 @@ GEM
     bindex (0.7.0)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
+    bootstrap4-kaminari-views (1.0.1)
+      kaminari (>= 0.13)
+      rails (>= 3.1)
     builder (3.2.4)
     byebug (11.0.1)
     codeclimate-test-reporter (1.0.7)
@@ -207,6 +210,18 @@ GEM
     json (2.3.1)
     jsoneditor-rails (1.0.3)
       sass-rails
+    kaminari (1.2.1)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.1)
+      kaminari-activerecord (= 1.2.1)
+      kaminari-core (= 1.2.1)
+    kaminari-actionview (1.2.1)
+      actionview
+      kaminari-core (= 1.2.1)
+    kaminari-activerecord (1.2.1)
+      activerecord
+      kaminari-core (= 1.2.1)
+    kaminari-core (1.2.1)
     kgio (2.11.2)
     koala (3.0.0)
       addressable
@@ -461,6 +476,7 @@ DEPENDENCIES
   aws-sdk-s3
   better_delayed_job_web
   bootsnap (>= 1.1.0)
+  bootstrap4-kaminari-views
   byebug
   codeclimate-test-reporter
   daemons
@@ -485,6 +501,7 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jquery-rails
   jsoneditor-rails
+  kaminari
   koala
   linter!
   listen (>= 3.0.5, < 3.2)

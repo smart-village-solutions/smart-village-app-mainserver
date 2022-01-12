@@ -80,6 +80,10 @@ gem "delayed_job_active_record"
 gem "hiredis"
 gem "redis"
 
+# Pagination
+gem "bootstrap4-kaminari-views"
+gem "kaminari"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
