@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 # Provide simple searching (per field) capability on model
 # TODO: Maybe add functionality to search on multiple fields at once
 module Searchable
   extend ActiveSupport::Concern
 
   module ClassMethods
-
     # Example:
     # class Model < ActiveRecord::Base
     #   include Searchable
@@ -20,9 +21,9 @@ module Searchable
 
         define_singleton_method(method_name) do |search_query|
           if search_query.present?
-            self.where("#{search_column} LIKE '%#{search_query}%'")
+            where("#{search_column} LIKE '%#{search_query}%'")
           else
-            self.all
+            all
           end
         end
       end

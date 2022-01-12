@@ -2,7 +2,7 @@
   <div class="form-group mb-2">
     <input
       id="query"
-      placeholder="<%= "#{search_column.capitalize} durchsuchen" %>"
+      placeholder="<%= t("search_column.#{search_column}") + " durchsuchen" %>"
       name="query"
       type="search"
       value="<%= request.query_parameters[:query] %>"

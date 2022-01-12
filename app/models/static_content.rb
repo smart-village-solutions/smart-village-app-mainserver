@@ -13,7 +13,7 @@ class StaticContent < ApplicationRecord
   searchable_on :name
 
   def self.sorted_and_filtered_for_params(params)
-    sorted_results = self.sorted_for_params(params)
+    sorted_results = sorted_for_params(params)
     sorted_results = sorted_results.filter_by_type(params[:type]) if params[:type].present?
 
     sorted_results
