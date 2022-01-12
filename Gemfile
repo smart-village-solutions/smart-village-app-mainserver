@@ -81,8 +81,8 @@ gem "hiredis"
 gem "redis"
 
 # Pagination
-gem "bootstrap4-kaminari-views"
-gem "kaminari"
+gem "bootstrap4-kaminari-views", ">= 1.0.1"
+gem "kaminari", ">= 1.2.1"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
