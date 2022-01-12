@@ -13,9 +13,9 @@ class StaticContentsController < ApplicationController
     if link_type == :type
       # Although we are not inheriting, this still calls SortableController
       # because including actually puts the Module in the Ancestor chain
-      p = super()
-      p[:type] = value
-      p
+      parameters = super()
+      parameters[:type] = value
+      parameters
     else
       super(link_type)
     end
