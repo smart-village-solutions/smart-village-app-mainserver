@@ -18,6 +18,7 @@ class AccountsController < ApplicationController
     @users = User
       .sorted_for_params(params)
       .where_email_contains(params[:query])
+      .page(params[:page])
   end
 
   def edit
