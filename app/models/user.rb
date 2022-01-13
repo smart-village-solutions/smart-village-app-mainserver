@@ -6,6 +6,12 @@ class User < ApplicationRecord
   devise :database_authenticatable, :recoverable, :validatable, :lockable, :timeoutable, :token_authenticatable
   enum role: { user: 0, admin: 1, app: 2, restricted: 3, editor: 4, read_only: 5 }, _suffix: :role
 
+  include Sortable
+  sortable_on :email, :id
+
+  include Searchable
+  searchable_on :email
+
   belongs_to :data_provider, optional: true
   accepts_nested_attributes_for :data_provider
 

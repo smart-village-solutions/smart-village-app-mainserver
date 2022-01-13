@@ -6,15 +6,23 @@
 
     <br />
 
-    <h1>Devices</h1>
+    <h1 id="devices">Devices</h1>
 
     <p><%= link_to 'New Device', new_notification_device_path, class: "btn btn-success" %></p>
+
+    <%= render partial: 'search_form', locals: { form_path: notification_devices_path, search_column: 'token' } %>
 
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Token</th>
-          <th>Operating system</th>
+          <th>
+            <%= link_to "Token", notification_devices_path(params_for_link(:token)) + "#devices" %>
+            <%= render partial: 'sort_icon', locals: { sort_column: 'token' } %>
+          </th>
+          <th>
+            <%= link_to "Operating System", notification_devices_path(params_for_link(:device_type)) + "#devices" %>
+            <%= render partial: 'sort_icon', locals: { sort_column: 'device_type' } %>
+          </th>
           <th></th>
           <th></th>
         </tr>
@@ -31,6 +39,8 @@
         <% end %>
       </tbody>
     </table>
+
+    <%= paginate @notification_devices, theme: 'twitter-bootstrap-4' %>
 
     <br />
 

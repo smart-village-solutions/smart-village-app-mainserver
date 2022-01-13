@@ -62,11 +62,11 @@ gem "graphql-client"
 gem "graphql-query-resolver"
 gem "graphql-remote_loader"
 
+gem "lograge"
+gem "rollbar"
 gem "search_object"
 gem "search_object_graphql"
 gem "unicorn"
-gem "lograge"
-gem "rollbar"
 
 # Storage to minio service
 gem "aws-sdk-s3", require: false
@@ -80,15 +80,19 @@ gem "delayed_job_active_record"
 gem "hiredis"
 gem "redis"
 
+# Pagination
+gem "bootstrap4-kaminari-views"
+gem "kaminari"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "codeclimate-test-reporter"
-  gem "database_cleaner"
   gem "debase"
   gem "factory_bot"
   gem "factory_bot_rails"
   gem "linter", git: "https://github.com/ikuseiGmbH/linters.git", tag: "rubocop-0.63.1"
+  gem "pry-byebug", platforms: %i[mri mingw x64_mingw]
   gem "rails-controller-testing"
   gem "rb-readline"
   gem "rspec-rails"
@@ -107,7 +111,9 @@ group :development do
   gem "listen", ">= 3.0.5", "< 3.2"
   gem "web-console", ">= 3.3.0"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem "pry-rails"
   gem "spring"
+  gem "spring-commands-rspec"
   gem "spring-watcher-listen", "~> 2.0.0"
 end
 

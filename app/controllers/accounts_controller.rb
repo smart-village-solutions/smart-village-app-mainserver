@@ -8,12 +8,17 @@ class AccountsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin
 
+  include SortableController
+
   def authenticate_admin
     render inline: "not allowed", status: 404 unless current_user.admin_role?
   end
 
   def index
-    @users = User.all
+    @users = User
+      .sorted_for_params(params)
+      .where_email_contains(params[:query])
+      .page(params[:page])
   end
 
   def edit

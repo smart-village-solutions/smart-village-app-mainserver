@@ -6,6 +6,21 @@ class StaticContentsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin
 
+  include SortableController
+
+  # We are overwriting SortableController#params_for_link here
+  def params_for_link(link_type, value = nil)
+    if link_type == :type
+      # Although we are not inheriting, this still calls SortableController
+      # because including actually puts the Module in the Ancestor chain
+      parameters = super()
+      parameters[:type] = value
+      parameters
+    else
+      super(link_type)
+    end
+  end
+
   before_action :set_static_content, only: [:show, :edit, :update, :destroy]
 
   def authenticate_admin
@@ -15,8 +30,10 @@ class StaticContentsController < ApplicationController
   # GET /static_contents
   # GET /static_contents.json
   def index
-    @static_contents = StaticContent.all
-    @static_contents = @static_contents.filter_by_type(params[:type]) if params[:type].present?
+    @static_contents = StaticContent
+      .sorted_and_filtered_for_params(params)
+      .where_name_contains(params[:query])
+      .page(params[:page])
   end
 
   # GET /static_contents/1
@@ -84,4 +101,5 @@ class StaticContentsController < ApplicationController
     def static_content_params
       params.require(:static_content).permit(:name, :data_type, :content)
     end
+
 end

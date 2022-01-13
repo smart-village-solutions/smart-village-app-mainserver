@@ -3,6 +3,8 @@
 class Notification::DevicesController < ApplicationController
   layout "doorkeeper/admin"
 
+  include SortableController
+
   skip_before_action :verify_authenticity_token, only: [:create, :destroy]
 
   before_action :auth_user_or_doorkeeper, only: [:create, :destroy]
@@ -41,7 +43,10 @@ class Notification::DevicesController < ApplicationController
   # GET /notification/devices
   # GET /notification/devices.json
   def index
-    @notification_devices = Notification::Device.all
+    @notification_devices = Notification::Device
+      .sorted_for_params(params)
+      .where_token_contains(params[:query])
+      .page(params[:page])
     @push_logs = RedisAdapter.get_push_logs
   end
 

@@ -5,6 +5,19 @@ class StaticContent < ApplicationRecord
   validates :name, uniqueness: { case_sensitive: false }
 
   scope :filter_by_type, ->(type) { where data_type: type }
+
+  include Sortable
+  sortable_on :name, :id
+
+  include Searchable
+  searchable_on :name
+
+  def self.sorted_and_filtered_for_params(params)
+    sorted_results = sorted_for_params(params)
+    sorted_results = sorted_results.filter_by_type(params[:type]) if params[:type].present?
+
+    sorted_results
+  end
 end
 
 # == Schema Information

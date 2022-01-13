@@ -53,15 +53,23 @@
       </tbody>
     </table>
 
-    <h1>Nutzerverwaltung</h1>
+    <h1 id="accounts">Nutzerverwaltung</h1>
 
     <p><%= link_to "Neuen Nutzer erstellen", new_account_path, class: 'btn btn-success' %></p>
+
+    <%= render partial: 'search_form', locals: { form_path: accounts_path, search_column: 'email' } %>
 
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>E-Mail</th>
+          <th style="min-width: 55px">
+            <%= link_to "ID", accounts_path(params_for_link(:id)) + "#accounts" %>
+            <%= render partial: 'sort_icon', locals: { sort_column: 'id' } %>
+          </th>
+          <th>
+            <%= link_to "E-Mail", accounts_path(params_for_link(:email)) + "#accounts" %>
+            <%= render partial: 'sort_icon', locals: { sort_column: 'email' } %>
+          </th>
           <th>Data Provider</th>
           <th>Rolle</th>
           <th>CMS POI <span class="badge badge-secondary">Kategorie gesetzt?</span></th>
@@ -121,5 +129,8 @@
         <% end %>
       </tbody>
     </table>
+
+    <%= paginate @users, theme: 'twitter-bootstrap-4' %>
+
   </div>
 </div>

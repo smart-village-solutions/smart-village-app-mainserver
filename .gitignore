@@ -46,3 +46,6 @@ active_record_cheat_sheet.md
 
 # DeepCode
 .dccache
+
+node_modules/
+yarn.lock

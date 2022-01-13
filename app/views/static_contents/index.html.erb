@@ -12,16 +12,24 @@
     <p><%= link_to 'New Static Content', new_static_content_path, class: "btn btn-success" %></p>
 
     <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Choose data type">
-      <a href="<%= static_contents_path %>" class="btn <%= btn_class("") %>">All</a>
-      <a href="<%= static_contents_path(type: "json") %>" class="btn <%= btn_class("json") %>">JSON</a>
-      <a href="<%= static_contents_path(type: "html") %>" class="btn <%= btn_class("html") %>">HTML</a>
+      <a href="<%= static_contents_path(params_for_link(:type)) %>" class="btn <%= btn_class("") %>">All</a>
+      <a href="<%= static_contents_path(params_for_link(:type, "json")) %>" class="btn <%= btn_class("json") %>">JSON</a>
+      <a href="<%= static_contents_path(params_for_link(:type, "html")) %>" class="btn <%= btn_class("html") %>">HTML</a>
     </div>
+
+    <%= render partial: 'search_form', locals: { form_path: static_contents_path, search_column: 'name' } %>
 
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
+          <th>
+            <%= link_to "ID", static_contents_path(params_for_link(:id)) %>
+            <%= render partial: 'sort_icon', locals: { sort_column: 'id' } %>
+          </th>
+          <th>
+            <%= link_to "Name", static_contents_path(params_for_link(:name)) %>
+            <%= render partial: 'sort_icon', locals: { sort_column: 'name' } %>
+          </th>
           <th>Type</th>
           <th></th>
           <th></th>
@@ -40,5 +48,8 @@
         <% end %>
       </tbody>
     </table>
+
+    <%= paginate @static_contents, theme: 'twitter-bootstrap-4' %>
   </div>
+
 </div>
