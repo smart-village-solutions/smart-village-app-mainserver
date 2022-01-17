@@ -2,7 +2,7 @@
 
 class StaticContent < ApplicationRecord
   validates_presence_of :name, :data_type
-  validates :name, uniqueness: { case_sensitive: false }
+  validates :name, uniqueness: { case_sensitive: false, scope: :version }
 
   scope :filter_by_type, ->(type) { where data_type: type }
 
