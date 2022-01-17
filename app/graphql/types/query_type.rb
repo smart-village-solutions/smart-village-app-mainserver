@@ -187,21 +187,7 @@ module Types
       end
 
       def static_content_with_data_type(data_type, name, version = nil)
-        # HINT: mysql REGEXP for /^#{name}(-\d\.\d\.\d)?$/ was not working fully somehow,
-        #       so we query for all contents starting with name and filter with rails afterwards
-        static_contents = StaticContent.where("data_type = '#{data_type}' AND name LIKE '#{name}%'")
-
-        # filter static contents matching name and version number
-        #
-        # examples given the name "someName" and version "1.2.3":
-        #   someName -> true
-        #   someName-1.2.3 -> true
-        #   someName-new -> false
-        #   someName-new-1.2.3 -> false
-        static_contents = static_contents.filter do |static_content|
-          static_content.name.match(/^#{name}(-\d\.\d\.\d)?$/)
-        end
-
+        static_contents = StaticContent.where(data_type: data_type, name: name)
         static_content = find_static_content(static_contents, name, version)
 
         return { content: static_content.content, name: name } if static_content.present?
@@ -209,7 +195,7 @@ module Types
         { content: data_type == "html" ? "" : {}, name: "not found" }
       end
 
-      # loop through static contents for a queried name an optionally queried version
+      # loop through static contents for a queried name and optionally queried version
       #
       # @param [Array] static_contents all entries to loop through
       # @param [String] query_name the content name that was queried
@@ -222,14 +208,12 @@ module Types
         unversioned_static_content = nil
 
         static_contents.each do |static_content|
-          regex_group = static_content.name.match(/#{query_name}-(.+)/)
-
-          unless regex_group
+          if static_content.version.blank?
             unversioned_static_content = static_content
             next
           end
 
-          version = regex_group[1]
+          version = static_content.version
 
           next unless Gem::Version.new(max_version) < Gem::Version.new(version) &&
                       Gem::Version.new(version) <= Gem::Version.new(query_version)
