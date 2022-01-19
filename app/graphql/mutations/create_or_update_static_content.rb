@@ -26,8 +26,9 @@ module Mutations
         static_content_id = params.delete(:id)
 
         if static_content_id.present?
-          static_content = StaticContent.find(static_content_id)
-          static_content.update(params)
+          static_content = StaticContent.filtered_for_current_user(context[:current_user])
+                             .find_by(id: static_content_id)
+          static_content&.update(params)
         else
           static_content = StaticContent.create(params)
         end
@@ -36,6 +37,8 @@ module Mutations
       end
 
       def resource_or_error_message(record)
+        return {} if record.blank?
+
         if record.valid?
           record
         else
