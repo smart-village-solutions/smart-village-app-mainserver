@@ -46,16 +46,30 @@ module Mutations
       create_or_update(params)
     end
 
-    def create_or_update(params)
-      survey_id = params.delete(:id)
+    private
 
-      if survey_id.present?
-        survey = Survey::Poll.find(survey_id)
-        survey.update(params)
-        survey
-      else
-        Survey::Poll.create(params)
+      def create_or_update(params)
+        survey_id = params.delete(:id)
+
+        if survey_id.present?
+          survey = Survey::Poll.filtered_for_current_user(context[:current_user])
+                     .find_by(id: survey_id)
+          survey&.update(params)
+        else
+          survey = Survey::Poll.create(params)
+        end
+
+        resource_or_error_message(survey)
       end
-    end
+
+      def resource_or_error_message(record)
+        return {} if record.blank?
+
+        if record.valid?
+          record
+        else
+          GraphQL::ExecutionError.new("Invalid input: #{record.errors.full_messages.join(", ")}")
+        end
+      end
   end
 end
