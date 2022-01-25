@@ -118,7 +118,11 @@ module Types
     def news_items_data_providers(category_id: nil)
       return DataProvider.joins(:news_items).order(:name).uniq if category_id.blank?
 
-      NewsItem.with_category(category_id).includes(:data_provider).map(&:data_provider).sort_by do |data_provider|
+      NewsItem
+        .with_category(category_id)
+        .includes(:data_provider)
+        .map(&:data_provider)
+        .sort_by do |data_provider|
         data_provider.name.downcase
       end.uniq
     end
