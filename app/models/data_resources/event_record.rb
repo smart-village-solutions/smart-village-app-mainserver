@@ -70,7 +70,7 @@ class EventRecord < ApplicationRecord
     where(id: upcoming_event_record_ids)
   }
 
-  scope :with_category, lambda { |category_id|
+  scope :by_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
   }
 

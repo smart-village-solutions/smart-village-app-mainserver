@@ -59,7 +59,7 @@ class Resolvers::NewsItemsSearch
   end
 
   def apply_category_id(scope, value)
-    scope.with_category(value)
+    scope.by_category(value)
   end
 
   def apply_order_with_created_at_desc(scope)

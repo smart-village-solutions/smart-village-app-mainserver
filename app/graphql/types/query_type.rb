@@ -119,7 +119,7 @@ module Types
       return DataProvider.joins(:news_items).order(:name).uniq if category_id.blank?
 
       NewsItem
-        .with_category(category_id)
+        .by_category(category_id)
         .includes(:data_provider)
         .map(&:data_provider)
         .sort_by do |data_provider|
