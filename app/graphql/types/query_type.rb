@@ -194,9 +194,21 @@ module Types
         static_contents = StaticContent.where(data_type: data_type, name: name)
         static_content = find_static_content(static_contents, name, version)
 
-        return { content: static_content.content, name: name } if static_content.present?
+        return {
+          content: data_type == "html" ? "" : {},
+          name: "not found"
+        } if static_content.blank?
 
-        { content: data_type == "html" ? "" : {}, name: "not found" }
+        begin
+          content = static_content.content
+
+          return {
+            content: data_type == "html" ? content : JSON.parse(content),
+            name: name
+          }
+        rescue JSON::ParserError
+          return { content: static_content.content, name: name }
+        end
       end
 
       # loop through static contents for a queried name and optionally queried version

@@ -561,7 +561,7 @@ type PublicHtmlFile {
 }
 
 type PublicJsonFile {
-  content: String!
+  content: JSON!
   name: String!
 }
 
