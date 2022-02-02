@@ -43,6 +43,17 @@ type AppUserContent {
   updatedAt: String
 }
 
+enum CategoriesOrder {
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
 type Category {
   eventRecords: [EventRecord!]
   eventRecordsCount: Int
@@ -555,7 +566,7 @@ type PublicJsonFile {
 }
 
 type Query {
-  categories: [Category!]!
+  categories(ids: [ID], limit: Int, order: CategoriesOrder = name_ASC, skip: Int): [Category!]!
   categoryTree: JSON!
   directus(query: String): JSON!
   eventRecord(id: ID!): EventRecord!
@@ -569,8 +580,8 @@ type Query {
   newsItemsDataProviders(categoryId: ID): [DataProvider!]!
   pointOfInterest(id: ID!): PointOfInterest!
   pointsOfInterest(category: String, categoryId: ID, dataProvider: String, dataProviderId: ID, ids: [ID], limit: Int, order: PointsOfInterestOrder = createdAt_DESC, skip: Int): [PointOfInterest]
-  publicHtmlFile(name: String!): PublicHtmlFile!
-  publicJsonFile(name: String!): PublicJsonFile!
+  publicHtmlFile(name: String!, version: String): PublicHtmlFile!
+  publicJsonFile(name: String!, version: String): PublicJsonFile!
   surveyComments(surveyId: ID): [SurveyComment!]!
   surveys(archived: Boolean, ids: [ID], ongoing: Boolean): [SurveyPoll!]!
   tour(id: ID!): Tour!
