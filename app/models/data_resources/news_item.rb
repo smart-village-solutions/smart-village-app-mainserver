@@ -22,7 +22,7 @@ class NewsItem < ApplicationRecord
   has_many :categories, through: :data_resource_categories
   has_many :content_blocks, as: :content_blockable, dependent: :destroy
 
-  scope :with_category, lambda { |category_id|
+  scope :by_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
   }
 

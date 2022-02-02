@@ -30,7 +30,7 @@ class GenericItem < ApplicationRecord
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
 
-  scope :with_category, lambda { |category_id|
+  scope :by_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
   }
 

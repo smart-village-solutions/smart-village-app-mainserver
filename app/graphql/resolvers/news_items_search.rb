@@ -27,6 +27,7 @@ class Resolvers::NewsItemsSearch
   option :order, type: NewsItemsOrder, default: "publishedAt_DESC"
   option :dataProvider, type: types.String, with: :apply_data_provider
   option :dataProviderId, type: types.ID, with: :apply_data_provider_id
+  option :excludeDataProviderIds, type: types[types.ID], with: :apply_exclude_data_provider_ids
   option :categoryId, type: types.ID, with: :apply_category_id
 
   def apply_limit(scope, value)
@@ -50,11 +51,15 @@ class Resolvers::NewsItemsSearch
   end
 
   def apply_data_provider_id(scope, value)
-    scope.joins(:data_provider).where(data_providers: { id: value })
+    scope.where(data_provider_id: value)
+  end
+
+  def apply_exclude_data_provider_ids(scope, value)
+    scope.where.not(data_provider_id: value)
   end
 
   def apply_category_id(scope, value)
-    scope.with_category(value)
+    scope.by_category(value)
   end
 
   def apply_order_with_created_at_desc(scope)

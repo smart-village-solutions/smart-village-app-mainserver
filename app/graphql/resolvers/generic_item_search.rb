@@ -98,7 +98,7 @@ class Resolvers::GenericItemSearch
   end
 
   def apply_category_id(scope, value)
-    scope.with_category(value)
+    scope.by_category(value)
   end
 
   def apply_generic_type(scope, value)
