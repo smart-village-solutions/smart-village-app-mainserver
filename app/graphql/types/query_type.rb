@@ -43,6 +43,7 @@ module Types
       argument :id, ID, required: true
     end
 
+    field :public_html_files, [QueryTypes::PublicHtmlFileType], null: false
     field :public_html_file, QueryTypes::PublicHtmlFileType, null: false do
       argument :name, String, required: true
       argument :version, String, required: false
@@ -133,6 +134,10 @@ module Types
       Lunch.find_by(id: id)
     end
 
+    def public_html_files
+      StaticContent.where(data_type: "html").order(:name)
+    end
+
     # Provide contents from html files in `public/mobile-app/contents` through GraphQL query
     #
     # @param [String] name the file name
@@ -194,20 +199,16 @@ module Types
         static_contents = StaticContent.where(data_type: data_type, name: name)
         static_content = find_static_content(static_contents, name, version)
 
-        return {
-          content: data_type == "html" ? "" : {},
-          name: "not found"
-        } if static_content.blank?
+        if static_content.blank?
+          return { content: data_type == "html" ? "" : {}, name: "not found" }
+        end
+
+        return static_content if data_type == "html"
 
         begin
-          content = static_content.content
-
-          return {
-            content: data_type == "html" ? content : JSON.parse(content),
-            name: name
-          }
+          return static_content.as_json.merge(content: JSON.parse(static_content.content))
         rescue JSON::ParserError
-          return { content: static_content.content, name: name }
+          return static_content
         end
       end
 

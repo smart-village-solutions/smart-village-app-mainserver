@@ -176,8 +176,6 @@
   <div class="tab-content" id="nav-tabContent">
     <%= d.fields_for :data_resource_settings do |s| %>
       <div class="tab-pane fade show <%= s.object.data_resource_type == 'NewsItem' ? 'active' : '' %>" id="nav-<%= s.object.data_resource_type %>" role="tabpanel" aria-labelledby="nav-home-tab">
-        <% I18n.with_locale(:de) do %>
-        <% end %>
         <%= s.hidden_field :id %>
         <%= s.hidden_field :data_provider_id %>
         <%= s.hidden_field :data_resource_type %>
@@ -347,6 +345,13 @@
         <div class="form-check">
           <%= d.check_box :role_survey, { class: "form-check-input" }, "true", "false" %>
           <%= d.label :role_survey, "Umfragen", class: "form-check-label" %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-check">
+          <%= d.check_box :role_static_contents, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_static_contents, "Statische Inhalte", class: "form-check-label" %>
         </div>
       </div>
     </div>

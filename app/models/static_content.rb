@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
 class StaticContent < ApplicationRecord
+  # we need the scope for destroying records, which only admins and editors are allowed to
+  scope :filtered_for_current_user, lambda { |current_user|
+    return all if current_user.admin_role?
+    return all if current_user.editor_role?
+
+    none
+  }
+
+  attr_accessor :force_create
+
   validates_presence_of :name, :data_type
   validates :name, uniqueness: { case_sensitive: false, scope: :version }
 
