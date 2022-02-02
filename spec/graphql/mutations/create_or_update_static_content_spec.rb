@@ -4,7 +4,13 @@ require "rails_helper"
 
 RSpec.describe Mutations::CreateOrUpdateStaticContent do
   def perform(**args)
-    Mutations::CreateOrUpdateStaticContent.new(object: nil, context: {}).resolve(args)
+    user = User.find_by(email: "admin@smart-village.app") || create(:admin)
+    user.save
+
+    Mutations::CreateOrUpdateStaticContent.new(
+      object: nil,
+      context: { current_user: user }
+    ).resolve(args)
   end
 
   describe "creation of a html static content" do
