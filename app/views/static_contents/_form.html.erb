@@ -21,6 +21,15 @@
   </div>
 
   <div class="form-group">
+    <%= form.label :version %>
+    <%= form.text_field :version, class: "form-control" %>
+
+    <small class="form-text text-muted">
+      Dreistellige Versionsnummer (Beispiel: 1.2.3) angeben, wenn nötig
+    </small>
+  </div>
+
+  <div class="form-group">
     <%= form.label :data_type %>
     <%= form.select :data_type, [["HTML", "html"], ["JSON", "json"]], {}, class: "form-control" %>
   </div>

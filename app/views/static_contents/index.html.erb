@@ -30,6 +30,7 @@
             <%= link_to "Name", static_contents_path(params_for_link(:name)) %>
             <%= render partial: 'sort_icon', locals: { sort_column: 'name' } %>
           </th>
+          <th>Version</th>
           <th>Type</th>
           <th></th>
           <th></th>
@@ -41,6 +42,7 @@
           <tr>
             <td class="align-middle"><%= static_content.id %></td>
             <td class="align-middle"><%= link_to static_content.name, static_content_path(static_content) %></td>
+            <td class="align-middle"><%= static_content.version %></td>
             <td class="align-middle"><%= static_content.data_type.upcase %></td>
             <td class="align-middle" style="width: 70px"><%= link_to 'Edit', edit_static_content_path(static_content), class: 'btn btn-sm btn-outline-secondary' %></td>
             <td class="align-middle" style="width: 70px"><%= link_to 'Destroy', static_content, method: :delete,class: 'btn btn-sm btn-outline-danger', data: { confirm: 'Are you sure?' } %></td>
