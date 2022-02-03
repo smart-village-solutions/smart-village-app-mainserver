@@ -6,6 +6,7 @@ module Types
     field :name, String, null: true
     field :content, String, null: true
     field :data_type, String, null: true
+    field :version, String, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
   end
