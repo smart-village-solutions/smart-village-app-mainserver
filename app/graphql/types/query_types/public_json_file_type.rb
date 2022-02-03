@@ -6,6 +6,7 @@ module Types
     field :name, String, null: false
     field :content, GraphQL::Types::JSON, null: false
     field :data_type, String, null: true
+    field :version, String, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
   end

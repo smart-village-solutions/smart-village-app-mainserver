@@ -51,6 +51,19 @@ RSpec.describe Mutations::CreateOrUpdateStaticContent do
       expect(new_static_content.message).to eq("Invalid input: Name has already been taken")
     end
 
+    it "creates a new and valid static content with same name and new version" do
+      static_content
+      new_static_content = perform(
+        name: "asd",
+        content: "<p>bbb asd dasd asdwewe</p>",
+        version: "1.0.0",
+        data_type: "html"
+      )
+
+      expect(new_static_content).to be_a(StaticContent)
+      expect(new_static_content).to be_valid
+    end
+
     it "fails creating without data type" do
       static_content
       new_static_content = perform(

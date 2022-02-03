@@ -7,6 +7,7 @@ module Mutations
     argument :name, String, required: false
     argument :content, String, required: false
     argument :data_type, String, required: true
+    argument :version, String, required: false
 
     field :static_content, Types::QueryTypes::PublicHtmlFileType, null: true
 
