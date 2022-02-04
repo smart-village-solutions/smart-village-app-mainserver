@@ -14,6 +14,7 @@ module Types
     field :length_km, Integer, null: true
     field :category, QueryTypes::CategoryType, null: true
     field :categories, [QueryTypes::CategoryType], null: true
+    field :location, QueryTypes::LocationType, null: true
     field :data_provider, QueryTypes::DataProviderType, null: true
     field :tags, String, null: true
     field :contact, QueryTypes::ContactType, null: true
