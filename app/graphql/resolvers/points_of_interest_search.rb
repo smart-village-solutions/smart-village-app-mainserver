@@ -30,6 +30,7 @@ class Resolvers::PointsOfInterestSearch
   option :dataProviderId, type: types.ID, with: :apply_data_provider_id
   option :category, type: types.String, with: :apply_category
   option :categoryId, type: types.ID, with: :apply_category_id
+  option :location, type: types.String, with: :apply_location
 
   def apply_limit(scope, value)
     scope.limit(value)
@@ -61,6 +62,10 @@ class Resolvers::PointsOfInterestSearch
 
   def apply_category_id(scope, value)
     scope.with_category(value)
+  end
+
+  def apply_location(scope, value)
+    scope.by_location(value)
   end
 
   def apply_order_with_created_at_desc(scope)

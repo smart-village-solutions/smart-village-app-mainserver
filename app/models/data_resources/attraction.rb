@@ -20,11 +20,16 @@ class Attraction < ApplicationRecord
   has_one :operating_company, as: :companyable, dependent: :destroy
   has_many :web_urls, as: :web_urlable, dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy
+  has_one :location, as: :locateable, dependent: :destroy
 
   scope :visible, -> { where(visible: true) }
 
   scope :with_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
+  }
+
+  scope :by_location, lambda { |location_name|
+    where(locations: { name: location_name }).joins(:location)
   }
 
   validates_presence_of :name
@@ -34,7 +39,7 @@ class Attraction < ApplicationRecord
   accepts_nested_attributes_for :addresses, :contact, :media_contents,
                                 :accessibility_information, :operating_company,
                                 :data_provider, :certificates,
-                                :regions
+                                :regions, :location
 
   # Sicherstellung der Abwärtskompatibilität seit 09/2020
   def category
