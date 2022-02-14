@@ -29,7 +29,8 @@ class Attraction < ApplicationRecord
   }
 
   scope :by_location, lambda { |location_name|
-    where(locations: { name: location_name }).joins(:location)
+    where(locations: { name: location_name }).or(where(addresses: { city: location_name }))
+      .left_joins(:location).left_joins(:addresses)
   }
 
   validates_presence_of :name
