@@ -106,6 +106,9 @@ class ResourceService
                                       .reflect_on_all_associations
                                       .select { |a| a.options[:dependent] == :destroy }.map(&:name)
 
+      # categories relations have no `dependent: :destroy`, so we need to check them separately
+      association_names_to_delete << :categories if @old_resource.respond_to?(:categories)
+
       # delete all nested resources
       association_names_to_delete.each do |association_name|
         associations = @old_resource.send(association_name)
