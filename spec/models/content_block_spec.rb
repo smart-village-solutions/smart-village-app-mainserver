@@ -5,6 +5,18 @@ require "rails_helper"
 RSpec.describe ContentBlock, type: :model do
   it { is_expected.to belong_to(:content_blockable) }
   it { is_expected.to have_many(:media_contents) }
+
+  ["title", "intro", "body"].each do |column|
+    it "should remove emojis from #{column} before saving" do
+      content_block =  FactoryBot.build(:content_block, {
+        column.to_sym => "test😊😍😌🤕👿👹👧👧🏻👧🏼👧🏽🏼👍🏽👌☝🏼🥝🥦🌶🌽🍎",
+        content_blockable: FactoryBot.create(:news_item)
+      })
+
+      expect(content_block.save).to be true
+      expect(content_block.send(column)).to eq('test')
+    end
+  end
 end
 
 # == Schema Information
