@@ -7358,6 +7358,16 @@
               "description": null,
               "args": [
                 {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "forceCreate",
                   "description": null,
                   "type": {
@@ -7648,6 +7658,16 @@
               "name": "createGenericItem",
               "description": null,
               "args": [
+                {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
                 {
                   "name": "forceCreate",
                   "description": null,
@@ -7999,6 +8019,16 @@
               "name": "createNewsItem",
               "description": null,
               "args": [
+                {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
                 {
                   "name": "forceCreate",
                   "description": null,
@@ -8417,6 +8447,16 @@
               "description": null,
               "args": [
                 {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "forceCreate",
                   "description": null,
                   "type": {
@@ -8699,6 +8739,16 @@
               "name": "createTour",
               "description": null,
               "args": [
+                {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
                 {
                   "name": "forceCreate",
                   "description": null,
@@ -9026,7 +9076,7 @@
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "ID",
                     "ofType": null
                   },
                   "defaultValue": null

@@ -2,6 +2,7 @@
 
 module Mutations
   class CreateEventRecord < BaseMutation
+    argument :id, ID, required: false
     argument :force_create, Boolean, required: false
     argument :parent_id, Integer, required: false
     argument :description, String, required: false
@@ -66,7 +67,7 @@ module Mutations
 
     def resolve(**params)
       ResourceService.new(data_provider: context[:current_user].try(:data_provider))
-        .create(EventRecord, params)
+        .perform(EventRecord, params)
     end
   end
 end

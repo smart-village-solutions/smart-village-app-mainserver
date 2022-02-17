@@ -2,6 +2,7 @@
 
 module Mutations
   class CreateNewsItem < BaseMutation
+    argument :id, ID, required: false
     argument :force_create, Boolean, required: false
     argument :push_notification, Boolean, required: false
     argument :author, String, required: false
@@ -39,7 +40,7 @@ module Mutations
 
     def resolve(**params)
       ResourceService.new(data_provider: context[:current_user].try(:data_provider))
-        .create(NewsItem, params)
+        .perform(NewsItem, params)
     end
   end
 end
