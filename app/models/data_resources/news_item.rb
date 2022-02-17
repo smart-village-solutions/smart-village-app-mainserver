@@ -11,7 +11,7 @@ class NewsItem < ApplicationRecord
   attr_accessor :push_notification
 
   after_save :find_or_create_category
-  after_create :send_push_notification
+  after_save :send_push_notification
 
   belongs_to :data_provider
 
@@ -22,7 +22,7 @@ class NewsItem < ApplicationRecord
   has_many :categories, through: :data_resource_categories
   has_many :content_blocks, as: :content_blockable, dependent: :destroy
 
-  scope :with_category, lambda { |category_id|
+  scope :by_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
   }
 
@@ -74,18 +74,22 @@ class NewsItem < ApplicationRecord
         categories << category_to_add unless categories.include?(category_to_add)
       end
 
-      # Wenn mehrere Kategorein auf einmal gesetzt werden
+      # Wenn mehrere Kategorien auf einmal gesetzt werden
       # ist der attr_accessor :category_names befüllt
       if category_names.present?
-        category_names.each do |cat|
-          category_to_add = Category.where(name: cat[:name]).first_or_create
+        category_names.each do |category|
+          next unless category[:name].present?
+          category_to_add = Category.where(name: category[:name]).first_or_create
           categories << category_to_add unless categories.include?(category_to_add)
         end
       end
     end
 
     def send_push_notification
+      # do not send push notifications, if not explicitly requested
       return unless push_notification.to_s == "true"
+      # do not send push notification, if already sent
+      return if push_notifications_sent_at.present?
 
       push_title = title.presence || content_blocks.try(:first).try(:title).presence || "Neue Nachricht"
       push_body = content_blocks.try(:first).try(:intro).presence || push_title

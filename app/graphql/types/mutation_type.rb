@@ -11,6 +11,7 @@ module Types
     field :create_app_user_content, mutation: Mutations::CreateAppUserContent
     field :create_waste_pick_up_time, mutation: Mutations::CreateWastePickUpTime
     field :create_or_update_survey_poll, mutation: Mutations::CreateOrUpdateSurveyPoll
+    field :create_or_update_static_content, mutation: Mutations::CreateOrUpdateStaticContent
 
     # destroys
     field :destroy_record, mutation: Mutations::DestroyRecord

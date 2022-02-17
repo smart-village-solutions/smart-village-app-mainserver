@@ -2,6 +2,13 @@
   <div class="col">
     <h1><%= @static_content.name %></h1>
 
+    <% if @static_content.version %>
+      <div class="form-group">
+        <label>Version</label>
+        <div><code><%= @static_content.version %></code></div>
+      </div>
+    <% end %>
+
     <div class="form-group">
       <label>Data type</label>
       <div><code><%= @static_content.data_type %></code></div>

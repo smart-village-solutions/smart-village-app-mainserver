@@ -62,7 +62,12 @@ class Resolvers::ToursSearch
   end
 
   def apply_category_id(scope, value)
-    scope.with_category(value)
+    scope.by_category(value)
+  end
+  alias_method :apply_category_ids, :apply_category_id
+
+  def apply_location(scope, value)
+    scope.by_location(value)
   end
 
   def apply_location(scope, value)

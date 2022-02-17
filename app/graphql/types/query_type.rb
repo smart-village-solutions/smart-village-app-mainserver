@@ -43,12 +43,15 @@ module Types
       argument :id, ID, required: true
     end
 
+    field :public_html_files, [QueryTypes::PublicHtmlFileType], null: false
     field :public_html_file, QueryTypes::PublicHtmlFileType, null: false do
       argument :name, String, required: true
+      argument :version, String, required: false
     end
 
     field :public_json_file, QueryTypes::PublicJsonFileType, null: false do
       argument :name, String, required: true
+      argument :version, String, required: false
     end
 
     field :news_items_data_providers, [QueryTypes::DataProviderType], null: false do
@@ -118,7 +121,11 @@ module Types
     def news_items_data_providers(category_id: nil)
       return DataProvider.joins(:news_items).order(:name).uniq if category_id.blank?
 
-      NewsItem.with_category(category_id).map(&:data_provider).sort_by do |data_provider|
+      NewsItem
+        .by_category(category_id)
+        .includes(:data_provider)
+        .map(&:data_provider)
+        .sort_by do |data_provider|
         data_provider.name.downcase
       end.uniq
     end
@@ -127,28 +134,28 @@ module Types
       Lunch.find_by(id: id)
     end
 
+    def public_html_files
+      StaticContent.where(data_type: "html").order(:name)
+    end
+
     # Provide contents from html files in `public/mobile-app/contents` through GraphQL query
     #
     # @param [String] name the file name
+    # @param [String] version an optional requested version number
     #
     # @return [Object] object with the contents of the file, if it exists - otherwise with ""
-    def public_html_file(name:)
-      static_content = StaticContent.where(name: name, data_type: "html").first
-      return { content: static_content.content, name: name } if static_content.present?
-
-      { content: "", name: "not found" }
+    def public_html_file(name:, version: nil)
+      static_content_with_data_type("html", name, version)
     end
 
     # Provide contents from json files in `public/mobile-app/configs` through GraphQL query
     #
     # @param [String] name the file name
+    # @param [String] version an optional requested version number
     #
     # @return [Object] object with the contents of the file, if it exists - otherwise with {}
-    def public_json_file(name:)
-      static_content = StaticContent.where(name: name, data_type: "json").first
-      return { content: static_content.content, name: name } if static_content.present?
-
-      { content: {}, name: "not found" }
+    def public_json_file(name:, version: nil)
+      static_content_with_data_type("json", name, version)
     end
 
     # PASS THROUGH FOR DIRECTUS ENDPOINT
@@ -186,6 +193,57 @@ module Types
       # @return [Boolean] true, if file is existing and included in the whitelist - otherwise false
       def query_file?(file, path, file_type)
         File.exist?(file) && query_files_whitelist(path, file_type).include?(file)
+      end
+
+      def static_content_with_data_type(data_type, name, version = nil)
+        static_contents = StaticContent.where(data_type: data_type, name: name)
+        static_content = find_static_content(static_contents, name, version)
+
+        if static_content.blank?
+          return { content: data_type == "html" ? "" : {}, name: "not found" }
+        end
+
+        return static_content if data_type == "html"
+
+        begin
+          return static_content.as_json.merge(content: JSON.parse(static_content.content))
+        rescue JSON::ParserError
+          return static_content
+        end
+      end
+
+      # loop through static contents for a queried name and optionally queried version
+      #
+      # @param [Array] static_contents all entries to loop through
+      # @param [String] query_name the content name that was queried
+      # @param [String] query_version an optional content version number that was queried
+      #
+      # @return [Object] a (closest) versioned or an unversioned static content
+      def find_static_content(static_contents, query_name, query_version = nil)
+        max_version = nil # refers to 0.0.0 with Gem::Version
+        versioned_static_content = nil
+        unversioned_static_content = nil
+
+        static_contents.each do |static_content|
+          if static_content.version.blank?
+            unversioned_static_content = static_content
+            next
+          end
+
+          version = static_content.version
+
+          next unless Gem::Version.new(max_version) < Gem::Version.new(version) &&
+                      Gem::Version.new(version) <= Gem::Version.new(query_version)
+
+          max_version = version
+          versioned_static_content = static_content
+        end
+
+        return versioned_static_content if versioned_static_content
+
+        unversioned_static_content
+      rescue StandardError
+        nil
       end
   end
 end

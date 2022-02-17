@@ -2,6 +2,7 @@
 
 module Mutations
   class CreateTour < BaseMutation
+    argument :id, ID, required: false
     argument :force_create, Boolean, required: false
     argument :name, String, required: true
     argument :description, String, required: false
@@ -63,7 +64,7 @@ module Mutations
 
     def resolve(**params)
       ResourceService.new(data_provider: context[:current_user].try(:data_provider))
-        .create(Tour, params)
+        .perform(Tour, params)
     end
   end
 end

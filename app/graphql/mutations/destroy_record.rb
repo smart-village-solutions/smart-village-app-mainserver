@@ -2,7 +2,7 @@
 
 module Mutations
   class DestroyRecord < BaseMutation
-    argument :id, Integer, required: false
+    argument :id, ID, required: false
     argument :record_type, String, required: true
     argument :external_id, Integer, required: false
 
@@ -14,7 +14,8 @@ module Mutations
       "PointOfInterest",
       "Tour",
       "GenericItem",
-      "Survey::Poll"
+      "Survey::Poll",
+      "StaticContent"
     ].freeze
 
     def resolve(id: nil, record_type:, external_id: nil)
