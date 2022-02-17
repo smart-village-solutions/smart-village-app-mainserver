@@ -9,6 +9,7 @@ FactoryBot.define do
     publication_date { "2019-05-02 12:50:44" }
     published_at { "2019-05-02 12:50:44" }
     show_publish_date { false }
+    data_provider
   end
 end
 

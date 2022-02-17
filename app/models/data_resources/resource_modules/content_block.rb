@@ -6,6 +6,16 @@ class ContentBlock < ApplicationRecord
   belongs_to :content_blockable, polymorphic: true
 
   accepts_nested_attributes_for :media_contents
+
+  before_save :remove_emojis
+
+  private
+
+    def remove_emojis
+      self.title = RemoveEmoji::Sanitize.call(title)
+      self.intro = RemoveEmoji::Sanitize.call(intro)
+      self.body = RemoveEmoji::Sanitize.call(body)
+    end
 end
 
 # == Schema Information
