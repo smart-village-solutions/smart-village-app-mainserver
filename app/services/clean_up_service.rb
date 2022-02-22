@@ -23,15 +23,16 @@ class CleanUpService
   end
 
   def cleanup_records_for(data_provider, data_resource_type)
-    latest_import_date = ExternalReference
-                           .where(data_provider_id: data_provider.id, external_type: data_resource_type.to_s)
-                           .order(:updated_at)
-                           .last
-                           .updated_at
+    external_references = ExternalReference.where(data_provider_id: data_provider.id, external_type: data_resource_type.to_s)
+
+    return if external_references.blank? || external_references.count.zero?
+
+    latest_import_date = external_references.order(:updated_at).last.try(:updated_at)
+
+    return if latest_import_date.blank?
 
     # Lösche Einträge bis zum Datum: Mitternacht, 1 Tag vor dem letzten Import
     cleanup_records_to_date = (latest_import_date - 1.day).end_of_day
-    external_references = ExternalReference.where(data_provider_id: data_provider.id, external_type: data_resource_type.to_s)
     resource_ids = external_references.where("updated_at < ?", cleanup_records_to_date).pluck(:external_id)
 
     p "Deleting #{resource_ids.count} records of #{data_resource_type}"
