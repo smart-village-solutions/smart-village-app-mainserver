@@ -15,7 +15,9 @@
 
   <%# Preserve other parameters, e.g. for sorting %>
   <% request.query_parameters.each do |key, value| %>
-    <% next if key == 'query' %>
+    <%# Skip query, because it would overwrite the input's value %>
+    <%# also skip page, because we want to be on page 1 when we search %>
+    <% next if key == 'query' || key == 'page' %>
     <input type="hidden" name="<%= key %>" value="<%= value %>" />
   <% end %>
 </form>
