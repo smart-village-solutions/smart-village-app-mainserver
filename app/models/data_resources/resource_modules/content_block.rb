@@ -12,9 +12,9 @@ class ContentBlock < ApplicationRecord
   private
 
     def remove_emojis
-      self.title = RemoveEmoji::Sanitize.call(title)
-      self.intro = RemoveEmoji::Sanitize.call(intro)
-      self.body = RemoveEmoji::Sanitize.call(body)
+      self.title = RemoveEmoji::Sanitize.call(title) if title.present?
+      self.intro = RemoveEmoji::Sanitize.call(intro) if intro.present?
+      self.body = RemoveEmoji::Sanitize.call(body) if body.present?
     end
 end
 
