@@ -17,6 +17,30 @@ RSpec.describe ContentBlock, type: :model do
       expect(content_block.send(column)).to eq('test')
     end
   end
+
+  it "is able to save when title is nil" do
+    content_block =  FactoryBot.build(:content_block,
+      title: nil,
+      content_blockable: FactoryBot.create(:news_item)
+    )
+    expect(content_block.save).to be true
+  end
+
+  it "is able to save when intro is nil" do
+    content_block =  FactoryBot.build(:content_block,
+      intro: nil,
+      content_blockable: FactoryBot.create(:news_item)
+    )
+    expect(content_block.save).to be true
+  end
+
+  it "is able to save when body is nil" do
+    content_block =  FactoryBot.build(:content_block,
+      body: nil,
+      content_blockable: FactoryBot.create(:news_item)
+    )
+    expect(content_block.save).to be true
+  end
 end
 
 # == Schema Information
