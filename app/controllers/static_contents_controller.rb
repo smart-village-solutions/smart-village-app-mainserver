@@ -99,7 +99,7 @@ class StaticContentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def static_content_params
-      params.require(:static_content).permit(:name, :data_type, :content)
+      params.require(:static_content).permit(:name, :version, :data_type, :content)
     end
 
 end
