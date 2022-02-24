@@ -28,12 +28,19 @@ class NotificationMailer < ApplicationMailer
   end
 
   def business_account_outdated(user)
-    @sva_community = ENV["SVA_COMMUNITY"]
+    @sva_community = sva_community_name
 
     mail(
       to: user.email,
       from: "noreply@smart-village.solutions",
-      subject: "Überprüfung Ihrer Inhalte in der #{ENV["SVA_COMMUNITY"]} App"
+      subject: "Überprüfung Ihrer Inhalte in der #{@sva_community} App"
     )
   end
+
+  private
+
+    def sva_community_name(sva_community=ENV["SVA_COMMUNITY"])
+      sva_community = sva_community[3..] if sva_community =~ /^[a-z]{2}-/
+      sva_community.split("-").map(&:capitalize).join(" ")
+    end
 end
