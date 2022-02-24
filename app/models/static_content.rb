@@ -16,6 +16,8 @@ class StaticContent < ApplicationRecord
 
   scope :filter_by_type, ->(type) { where data_type: type }
 
+  before_validation :enforce_nil_for_empty_version
+
   include Sortable
   sortable_on :name, :id
 
@@ -28,6 +30,12 @@ class StaticContent < ApplicationRecord
 
     sorted_results
   end
+
+  private
+
+    def enforce_nil_for_empty_version
+      self.version = nil if version.empty?
+    end
 end
 
 # == Schema Information
