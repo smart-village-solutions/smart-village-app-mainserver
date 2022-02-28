@@ -4,7 +4,7 @@ class Waste::DeviceRegistration < ApplicationRecord
   def notify_at_time
     return nil if notify_at.blank?
 
-    notify_at.to_s(:time)
+    notify_at.localtime.to_s(:time)
   end
 end
 
