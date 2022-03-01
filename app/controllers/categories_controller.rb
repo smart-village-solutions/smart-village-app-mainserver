@@ -3,7 +3,14 @@
 class CategoriesController < ApplicationController
   layout "doorkeeper/admin"
 
+  before_action :authenticate_user!
+  before_action :authenticate_admin
+
   before_action :set_category, only: [:show, :edit, :update, :destroy]
+
+  def authenticate_admin
+    render inline: "not allowed", status: 404 unless current_user.admin_role?
+  end
 
   # GET /categories
   # GET /categories.json
