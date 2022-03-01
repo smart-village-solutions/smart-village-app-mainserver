@@ -34,6 +34,11 @@ class GenericItem < ApplicationRecord
     where(categories: { id: category_id }).joins(:categories)
   }
 
+  scope :by_location, lambda { |location_name|
+    where(locations: { name: location_name }).or(where(addresses: { city: location_name }))
+      .left_joins(:locations).left_joins(:addresses)
+  }
+
   accepts_nested_attributes_for :web_urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :content_blocks, :data_provider, :price_informations, :opening_hours,
                                 :media_contents, :accessibility_informations, :addresses, :contacts,
