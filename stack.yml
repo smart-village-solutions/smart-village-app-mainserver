@@ -25,7 +25,7 @@ services:
       labels:
         swarm.cronjob.enable: "true"
         swarm.cronjob.skip-running: "true"
-        swarm.cronjob.schedule: 1 1 1 * * *
+        swarm.cronjob.schedule: 1 1 * * * *
         traefik.docker.network: public
       restart_policy:
         condition: on-failure
