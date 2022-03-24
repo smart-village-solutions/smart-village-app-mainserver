@@ -199,6 +199,14 @@ module Types
         static_contents = StaticContent.where(data_type: data_type, name: name)
         static_content = find_static_content(static_contents, name, version)
 
+        # fallback for old app versions, that does not send versions, thus handle responses as
+        # string and parses on mobile
+        if version.nil?
+          return static_content if static_content.present?
+
+          return { content: data_type == "html" ? "" : {}, name: "not found" }
+        end
+
         if static_content.blank?
           return { content: data_type == "html" ? "" : {}, name: "not found" }
         end
