@@ -14,8 +14,10 @@ module Types
     field :news_items_count, Integer, null: true
     field :news_items, [QueryTypes::NewsItemType], null: true
     field :points_of_interest_count, Integer, null: true
+    field :points_of_interest_tree_count, Integer, null: true
     field :points_of_interest, [QueryTypes::PointOfInterestType], null: true
     field :tours_count, Integer, null: true
+    field :tours_tree_count, Integer, null: true
     field :tours, [QueryTypes::TourType], null: true
     field :upcoming_event_records_count, Integer, null: true
     field :upcoming_event_records, [QueryTypes::EventRecordType], null: true

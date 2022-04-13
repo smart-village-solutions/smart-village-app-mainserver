@@ -27,10 +27,19 @@ class Category < ApplicationRecord
     points_of_interest.visible.count
   end
 
+  def points_of_interest_tree_count
+    points_of_interest.visible.count +
+      descendants.map { |d| d.points_of_interest.visible.count }.compact.sum
+  end
+
   def tours_count
     return 0 if tours.blank?
 
     tours.visible.count
+  end
+
+  def tours_tree_count
+    tours.visible.count + descendants.map { |d| d.tours.visible.count }.compact.sum
   end
 
   def news_items_count
