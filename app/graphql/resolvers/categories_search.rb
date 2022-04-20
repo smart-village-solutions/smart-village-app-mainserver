@@ -24,6 +24,7 @@ class Resolvers::CategoriesSearch
   option :limit, type: types.Int, with: :apply_limit
   option :skip, type: types.Int, with: :apply_skip
   option :ids, type: types[types.ID], with: :apply_ids
+  option :excludeIds, type: types[types.ID], with: :apply_exclude_ids
   option :order, type: CategoriesOrder, default: "name_ASC"
 
   def apply_limit(scope, value)
@@ -36,6 +37,10 @@ class Resolvers::CategoriesSearch
 
   def apply_ids(scope, value)
     scope.where(id: value)
+  end
+
+  def apply_exclude_ids(scope, value)
+    scope.where.not(id: value)
   end
 
   def apply_order(scope, value)
