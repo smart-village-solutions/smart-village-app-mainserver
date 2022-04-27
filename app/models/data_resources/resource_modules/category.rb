@@ -15,45 +15,27 @@ class Category < ApplicationRecord
 
   after_destroy :cleanup_data_resource_settings
 
-  def generic_items_count
-    return 0 if generic_items.blank?
-
-    generic_items.visible.count
-  end
-
-  def points_of_interest_count
-    return 0 if points_of_interest.blank?
-
-    points_of_interest.visible.count
-  end
-
-  def tours_count
-    return 0 if tours.blank?
-
-    tours.visible.count
-  end
-
-  def news_items_count
-    return 0 if news_items.blank?
-
-    news_items.visible.count
-  end
-
-  def event_records_count
-    return 0 if event_records.blank?
-
-    event_records.visible.count
-  end
-
   def upcoming_event_records
     event_records.upcoming(nil)
   end
 
-  def upcoming_event_records_count
-    return 0 if event_records.blank?
-    return 0 if upcoming_event_records.blank?
+  # Defines 2 methods for a list of record type:
+  # - Returns the number of items the given location and record type
+  # - Returns the items of the given location and record type
+  [:event_records, :upcoming_event_records, :generic_items, :points_of_interest, :tours].each do |item_source|
+    define_method "#{item_source}_by_location" do |args = nil|
+      return nil if send(item_source).blank?
+      return send(item_source).visible.by_location(args[:location]) if args.present? && args[:location].present?
 
-    upcoming_event_records.count
+      send(item_source).visible
+    end
+
+    define_method "#{item_source}_count_by_location" do |args = nil|
+      items = send("#{item_source}_by_location", args)
+      return 0 if items.blank?
+
+      items.count
+    end
   end
 
   # Wenn eine Kategorie gelöscht wird kann es jedoch sein,
