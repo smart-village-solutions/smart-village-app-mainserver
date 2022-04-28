@@ -74,6 +74,11 @@ class EventRecord < ApplicationRecord
     where(categories: { id: category_id }).joins(:categories)
   }
 
+  scope :by_location, lambda { |location_name|
+    where(locations: { name: location_name }).or(where(addresses: { city: location_name }))
+      .left_joins(:location).left_joins(:addresses)
+  }
+
   accepts_nested_attributes_for :urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :data_provider, :organizer,
                                 :addresses, :location, :contacts,

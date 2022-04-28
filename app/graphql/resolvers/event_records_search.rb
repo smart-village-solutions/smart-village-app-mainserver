@@ -32,6 +32,7 @@ class Resolvers::EventRecordsSearch
   option :dataProvider, type: types.String, with: :apply_data_provider
   option :dataProviderId, type: types.ID, with: :apply_data_provider_id
   option :take, type: types.Int, with: :apply_take
+  option :location, type: types.String, with: :apply_location
 
   # :values is array of 2 dates:
   # - first element is :start_date
@@ -80,6 +81,10 @@ class Resolvers::EventRecordsSearch
 
   def apply_data_provider_id(scope, value)
     scope.joins(:data_provider).where(data_providers: { id: value })
+  end
+
+  def apply_location(scope, value)
+    scope.by_location(value)
   end
 
   def apply_order_with_created_at_desc(scope)
