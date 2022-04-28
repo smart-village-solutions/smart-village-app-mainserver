@@ -34,7 +34,7 @@ class StaticContent < ApplicationRecord
   private
 
     def enforce_nil_for_empty_version
-      self.version = nil if version.blank?
+      self.version = nil if version.try(:empty?)
     end
 end
 

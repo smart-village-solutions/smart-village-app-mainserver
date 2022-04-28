@@ -32,6 +32,7 @@ class Resolvers::GenericItemSearch
   option :limit, type: types.Int, with: :apply_limit
   option :order, type: GenericItemOrder, default: "createdAt_DESC"
   option :skip, type: types.Int, with: :apply_skip
+  option :location, type: types.String, with: :apply_location
 
   def apply_limit(scope, value)
     scope.limit(value)
@@ -107,6 +108,10 @@ class Resolvers::GenericItemSearch
 
   def apply_external_id(scope, value)
     scope.where(external_id: value)
+  end
+
+  def apply_location(scope, value)
+    scope.by_location(value)
   end
 
   # https://github.com/nettofarah/graphql-query-resolver
