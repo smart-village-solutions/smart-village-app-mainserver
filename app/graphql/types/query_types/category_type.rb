@@ -7,29 +7,33 @@ module Types
     field :parent, QueryTypes::CategoryType, null: true
     field :children, [QueryTypes::CategoryType], null: true
 
+    field :news_items_count, Integer, null: true
+    field :news_items, [QueryTypes::NewsItemType], null: true
+
+    # fields with optional location filter
     field :event_records_count, Integer, null: true, method: :event_records_count_by_location do
       argument :location, String, required: false
     end
-
     field :event_records, [QueryTypes::EventRecordType], null: true, method: :event_records_by_location do
       argument :location, String, required: false
     end
-
-    field :generic_items, [QueryTypes::GenericItemType], null: true, method: :generic_items_by_location do
+    field :upcoming_event_records_count, Integer, null: true, method: :upcoming_event_records_count_by_location do
+      argument :location, String, required: false
+    end
+    field :upcoming_event_records, [QueryTypes::EventRecordType], null: true, method: :upcoming_event_records_by_location do
       argument :location, String, required: false
     end
 
     field :generic_items_count, Integer, null: true, method: :generic_items_count_by_location do
       argument :location, String, required: false
     end
-
-    field :news_items_count, Integer, null: true
-    field :news_items, [QueryTypes::NewsItemType], null: true
+    field :generic_items, [QueryTypes::GenericItemType], null: true, method: :generic_items_by_location do
+      argument :location, String, required: false
+    end
 
     field :points_of_interest_count, Integer, null: true, method: :points_of_interest_count_by_location do
       argument :location, String, required: false
     end
-
     field :points_of_interest, [QueryTypes::PointOfInterestType], null: true, method: :points_of_interest_by_location do
       argument :location, String, required: false
     end
@@ -37,16 +41,7 @@ module Types
     field :tours_count, Integer, null: true, method: :tours_count_by_location do
       argument :location, String, required: false
     end
-
     field :tours, [QueryTypes::TourType], null: true, method: :tours_by_location do
-      argument :location, String, required: false
-    end
-
-    field :upcoming_event_records_count, Integer, null: true, method: :upcoming_event_records_count_by_location do
-      argument :location, String, required: false
-    end
-
-    field :upcoming_event_records, [QueryTypes::EventRecordType], null: true, method: :upcoming_event_records_by_location do
       argument :location, String, required: false
     end
   end

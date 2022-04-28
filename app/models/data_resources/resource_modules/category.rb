@@ -15,6 +15,12 @@ class Category < ApplicationRecord
 
   after_destroy :cleanup_data_resource_settings
 
+  def news_items_count
+    return 0 if news_items.blank?
+
+    news_items.visible.count
+  end
+
   def upcoming_event_records
     event_records.upcoming(nil)
   end
@@ -24,7 +30,7 @@ class Category < ApplicationRecord
   # - Returns the items of the given location and record type
   [:event_records, :upcoming_event_records, :generic_items, :points_of_interest, :tours].each do |item_source|
     define_method "#{item_source}_by_location" do |args = nil|
-      return nil if send(item_source).blank?
+      return [] if send(item_source).blank?
       return send(item_source).visible.by_location(args[:location]) if args.present? && args[:location].present?
 
       send(item_source).visible
