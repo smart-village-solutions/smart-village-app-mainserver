@@ -15,12 +15,24 @@ class Category < ApplicationRecord
 
   after_destroy :cleanup_data_resource_settings
 
- def points_of_interest_tree_count
+  def points_of_interest_tree_count(args = nil)
+    if args.present? && args[:location].present?
+      return points_of_interest.visible.by_location(args[:location]).count +
+             descendants.map { |d| d.points_of_interest.visible.by_location(args[:location]).count }
+               .compact.sum
+    end
+
     points_of_interest.visible.count +
       descendants.map { |d| d.points_of_interest.visible.count }.compact.sum
   end
 
-  def tours_tree_count
+  def tours_tree_count(args = nil)
+    if args.present? && args[:location].present?
+      return tours.visible.by_location(args[:location]).count +
+             descendants.map { |d| d.tours.visible.by_location(args[:location]).count }
+               .compact.sum
+    end
+
     tours.visible.count + descendants.map { |d| d.tours.visible.count }.compact.sum
   end
 

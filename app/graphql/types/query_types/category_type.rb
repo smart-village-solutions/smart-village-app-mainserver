@@ -37,7 +37,9 @@ module Types
     field :points_of_interest, [QueryTypes::PointOfInterestType], null: true, method: :points_of_interest_by_location do
       argument :location, String, required: false
     end
-    field :points_of_interest_tree_count, Integer, null: true
+    field :points_of_interest_tree_count, Integer, null: true do
+      argument :location, String, required: false
+    end
 
     field :tours_count, Integer, null: true, method: :tours_count_by_location do
       argument :location, String, required: false
@@ -45,6 +47,8 @@ module Types
     field :tours, [QueryTypes::TourType], null: true, method: :tours_by_location do
       argument :location, String, required: false
     end
-    field :tours_tree_count, Integer, null: true
+    field :tours_tree_count, Integer, null: true do
+      argument :location, String, required: false
+    end
   end
 end
