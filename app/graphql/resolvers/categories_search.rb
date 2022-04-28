@@ -25,7 +25,6 @@ class Resolvers::CategoriesSearch
   option :skip, type: types.Int, with: :apply_skip
   option :ids, type: types[types.ID], with: :apply_ids
   option :order, type: CategoriesOrder, default: "name_ASC"
-  option :location, type: types.String, with: :apply_location
 
   def apply_limit(scope, value)
     scope.limit(value)
@@ -41,10 +40,6 @@ class Resolvers::CategoriesSearch
 
   def apply_order(scope, value)
     scope.order(value)
-  end
-
-  def apply_location(scope, _value)
-    scope
   end
 
   def apply_order_with_name_desc(scope)
