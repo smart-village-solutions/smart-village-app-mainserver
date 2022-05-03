@@ -12,8 +12,8 @@ class Notification::WastesController < ApplicationController
     doorkeeper_authorize! if current_user.blank?
   end
 
-  # GET /notification/devices
-  # GET /notification/devices.json
+  # GET /notification/wastes
+  # GET /notification/wastes.json
   def index
     @notification_device = Notification::Device.find_by(token: params[:token])
     @waste_device_registrations = @notification_device.waste_registrations if @notification_device.present?
@@ -27,8 +27,8 @@ class Notification::WastesController < ApplicationController
     end
   end
 
-  # POST /notification/devices
-  # POST /notification/devices.json
+  # POST /notification/wastes
+  # POST /notification/wastes.json
   def create
     @notification_device = Notification::Device
                              .where(token: notification_device_params[:token])
@@ -51,8 +51,8 @@ class Notification::WastesController < ApplicationController
     end
   end
 
-  # DELETE /notification/devices/1
-  # DELETE /notification/devices/1.json
+  # DELETE /notification/wastes/1
+  # DELETE /notification/wastes/1.json
   def destroy
     @notification_device = Notification::Device.find_by(token: params[:token])
     @waste_device_registration = @notification_device.waste_registrations.where(id: params[:id]).first
