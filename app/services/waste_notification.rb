@@ -35,7 +35,10 @@ class WasteNotification
         next if registration_to_check.blank?
         next if waste_pickup_time.blank?
 
-        date_time_to_run = DateTime.parse("#{check_date} #{registration_to_check.notify_at_time}")
+        # this way we can convert times, that are given as winter because of `time` database field,
+        # which serves on first of january, to the local time zone to correct it to summertime
+        # if it is summer
+        date_time_to_run = Time.zone.parse("#{check_date} #{registration_to_check.notify_at.to_s(:time)}")
         p "Registration Found for Waste::LocationType: #{waste_pickup_time.waste_location_type.id}, #{registration_to_check.id} on #{waste_pickup_time.pickup_date}"
         p "Run at: #{date_time_to_run}"
 
