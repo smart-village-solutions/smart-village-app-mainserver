@@ -82,7 +82,7 @@ class ResourceService
         if @resource.save
           create_external_resource
           FacebookService.delay.send_post_to_page(resource_id: @resource.id, resource_type: @resource_class.name)
-          set_default_categories if @resource.respond_to?(:categories)
+          set_default_categories(@resource) if @resource.respond_to?(:categories)
         end
 
         @resource
@@ -129,7 +129,7 @@ class ResourceService
         unique_id: @old_resource.unique_id
       )
 
-      set_default_categories if @old_resource.respond_to?(:categories)
+      set_default_categories(@old_resource) if @old_resource.respond_to?(:categories)
 
       @old_resource
     end
@@ -163,7 +163,7 @@ class ResourceService
       end
     end
 
-    def set_default_categories
+    def set_default_categories(resource)
       setting = @data_provider.data_resource_settings.where(data_resource_type: @resource_class.name).first
       return if setting.blank?
       return if setting.default_category_ids.blank?
@@ -173,7 +173,7 @@ class ResourceService
 
       categories_to_add.each do |cat_id|
         category = Category.find_by(id: cat_id)
-        @resource.categories << category unless @resource.category_ids.include?(cat_id.to_i)
+        resource.categories << category unless resource.category_ids.include?(cat_id.to_i)
       end
     end
 
