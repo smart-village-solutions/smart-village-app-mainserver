@@ -1,15 +1,19 @@
 class WasteNotificationJob
   def self.perform(waste_registration_id, waste_pickup_time_id)
     waste_pickup_time = Waste::PickUpTime.find_by(id: waste_pickup_time_id)
-    registration_to_check = Waste::DeviceRegistration.find_by(id: waste_registration_id)
-    static_content = StaticContent.find_by(name: "wasteTypes")
-    return if static_content.blank?
     return if waste_pickup_time.blank?
     return if waste_pickup_time.pickup_date.blank?
 
-    waste_types = JSON.parse(static_content.content)
+    registration_to_check = Waste::DeviceRegistration.find_by(id: waste_registration_id)
+    return if registration_to_check.blank?
+
     device = registration_to_check.notification_device
     return unless device.present?
+
+    static_content = StaticContent.find_by(name: "wasteTypes")
+    return if static_content.blank?
+
+    waste_types = JSON.parse(static_content.content)
 
     # Message to send
     title = "Abfallkalender"
