@@ -513,6 +513,7 @@ ActiveRecord::Schema.define(version: 2022_01_17_182809) do
     t.integer "role", default: 0
     t.text "authentication_token"
     t.datetime "authentication_token_created_at"
+    t.datetime "business_account_outdated_notification_sent_at"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true, length: 255
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

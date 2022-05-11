@@ -33,6 +33,8 @@ class ResourceService
     # record and the record is not marked as 'always_recreate'
     @external_resource = find_external_resource
     @old_resource = find_old_resource
+
+
     if @external_resource.present? && unchanged_attributes? && !always_recreate?
       # we update the the `updated_at` of the resource anyways, even if no data is changed,
       # because the records date needs to be up to date regarding cleanup processes
@@ -101,6 +103,8 @@ class ResourceService
     # for updating a resource every param of a resource needs to be present, even those, which are
     # not updated. otherwise the would be interpreted as deleted and removed from any association.
     def update_resource
+
+
       # find all association names to delete for a resource
       association_names_to_delete = @resource_class
                                       .reflect_on_all_associations
@@ -118,6 +122,14 @@ class ResourceService
 
       # update all attributes and recreate nested resources
       @old_resource.update(@params)
+
+      # touch user if data_provider is business_acccount
+      data_provider = @old_resource.data_provider
+      if data_provider.present? && data_provider.data_type == "business_account"
+        data_provider.user.touch  
+      end
+
+      @old_resource.touch
 
       # we do not need to delete the old external reference explicitly, because it was already
       # deleted with going through `association_names_to_delete`, as `external_reference` is

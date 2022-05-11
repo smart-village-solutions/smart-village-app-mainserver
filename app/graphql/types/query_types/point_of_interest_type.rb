@@ -26,5 +26,11 @@ module Types
     field :lunches, [QueryTypes::LunchType], null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
+
+    field :needs_update, Boolean, null: true
+
+    def needs_update
+      object.data_provider.user.updated_at < 6.months.ago
+    end
   end
 end

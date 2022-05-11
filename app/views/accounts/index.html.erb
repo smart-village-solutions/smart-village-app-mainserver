@@ -52,11 +52,15 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
 
     <h1 id="accounts">Nutzerverwaltung</h1>
 
     <p><%= link_to "Neuen Nutzer erstellen", new_account_path, class: 'btn btn-success' %></p>
-
     <%= render partial: 'search_form', locals: { form_path: accounts_path, search_column: 'email' } %>
 
     <table class="table table-striped">
@@ -85,7 +89,10 @@
           <tr id="user_<%= user.id %>">
             <td class="align-middle"><%= user.id %></td>
             <td class="align-middle"><%= link_to user.email, edit_account_path(user) %></td>
-            <td class="align-middle"><%= user.data_provider.try(:name) %></td>
+            <td class="align-middle">
+              <%= user.data_provider.try(:name) %> <br/>
+              <span class="badge badge-secondary"><%= user.data_provider.try(:data_type).to_s.humanize %></span>
+            </td>
             <td class="align-middle"><%= user.role.try(:humanize) %></td>
             <td class="align-middle">
               <span class="badge <%= user.try(:data_provider).try(:role_point_of_interest) ? 'badge-success' : 'badge-danger' %>">
