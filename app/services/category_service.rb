@@ -14,7 +14,7 @@ class CategoryService
     data_provider = DataProvider.find_by(id: data_provider_id)
     return if data_provider.blank?
 
-    default_category_ids = data_provider.settings(data_resource_type).try(:default_category_ids)
+    default_category_ids = data_provider.settings(data_resource_type).try(:default_category_ids).map(&:to_i)
     return if default_category_ids.blank?
 
     data_elements = data_provider.send(data_resource_type.underscore.pluralize)
