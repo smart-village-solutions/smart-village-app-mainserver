@@ -2,10 +2,12 @@ class CleanUpService
   def initialize
     @data_resource_types = DataResourceSetting::DATA_RESOURCES
     accounts = User.includes(:data_provider).all
-    @data_providers = accounts.map(&:data_provider)
+    @data_providers = accounts.map(&:data_provider) if accounts.present? && accounts.any?
   end
 
   def perform
+    return if @data_providers.blank?
+
     @data_providers.each do |data_provider|
       @data_resource_types.each do |data_resource_type|
         resource_configs = data_provider.data_resource_settings.where(data_resource_type: data_resource_type.to_s).first
