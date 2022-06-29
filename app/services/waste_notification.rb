@@ -42,6 +42,13 @@ class WasteNotification
         p "Registration Found for Waste::LocationType: #{waste_pickup_time.waste_location_type.id}, #{registration_to_check.id} on #{waste_pickup_time.pickup_date}"
         p "Run at: #{date_time_to_run}"
 
+        # Look for existing Notification
+        existing_notifications_count = Delayed::Backend::ActiveRecord::Job
+                                         .where("handler LIKE '%WasteNotificationJob%'")
+                                         .where("handler LIKE '%args:\n- #{registration_to_check.id}\n- #{waste_pickup_time.id}%'")
+                                         .count
+        next if existing_notifications_count.positive?
+
         # Send Notification
         WasteNotificationJob.delay(run_at: date_time_to_run).perform(registration_to_check.id, waste_pickup_time.id)
       end
