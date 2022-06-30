@@ -83,6 +83,7 @@ docker-build:
 # release/bb/uckermark
 # release/bb/nuthetal
 # release/bb/bernau
+# release/bb/prenzlau
 # release/mv/hagenow
 
 #
@@ -227,6 +228,13 @@ bb-bernau-build:
     PROJECT: bb-bernau
     DOMAINNAME: bb-bernau
     NODENAME: node-001.sva
+    VOLUME_LOCALTIME: unused:/unused
+bb-prenzlau-build:
+  extends: .docker_build_release
+  variables:
+    PROJECT: bb-prenzlau
+    DOMAINNAME: bb-prenzlau
+    NODENAME: node-002.sva
     VOLUME_LOCALTIME: unused:/unused
 mv-hagenow-build:
   extends: .docker_build_release
@@ -378,6 +386,13 @@ bb-bernau-deploy:
   variables:
     SERVICENAME: "-main_server"
     PROJECT: bb-bernau
+    QUANTUM_ENDPOINT: sva
+bb-prenzlau-deploy:
+  extends: .deploy_release
+  needs: ["bb-prenzlau-build"]
+  variables:
+    SERVICENAME: "-main_server"
+    PROJECT: bb-prenzlau
     QUANTUM_ENDPOINT: sva
 mv-hagenow-deploy:
   extends: .deploy_release
