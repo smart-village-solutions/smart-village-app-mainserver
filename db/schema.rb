@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_04_092229) do
+ActiveRecord::Schema.define(version: 2022_07_26_164504) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "description"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2022_07_04_092229) do
     t.string "type", default: "PointOfInterest", null: false
     t.integer "data_provider_id"
     t.boolean "visible", default: true
+    t.text "payload"
     t.index ["data_provider_id"], name: "index_attractions_on_data_provider_id"
     t.index ["external_id"], name: "index_attractions_on_external_id"
     t.index ["name"], name: "index_attractions_on_name"
@@ -178,7 +179,7 @@ ActiveRecord::Schema.define(version: 2022_07_04_092229) do
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
     t.text "handler", null: false
-    t.text "last_error"
+    t.text "last_error", limit: 16777215
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
@@ -516,6 +517,11 @@ ActiveRecord::Schema.define(version: 2022_07_04_092229) do
     t.string "name", collation: "utf8_bin"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
+  create_table "tour_tour_stops", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "tour_id"
+    t.integer "tour_stop_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
