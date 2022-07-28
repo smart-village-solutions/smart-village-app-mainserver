@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-module Mutations
-  class CreateTour < BaseMutation
-    argument :id, ID, required: false
-    argument :force_create, Boolean, required: false
+module Types
+  class InputTypes::TourStopInput < BaseInputObject
     argument :name, String, required: true
     argument :description, String, required: false
     argument :mobile_description, String, required: false
@@ -50,25 +48,6 @@ module Mutations
              prepare: lambda { |accessibility_information, _ctx|
                         accessibility_information.to_h
                       }
-    argument :length_km, Integer, required: true
-    argument :means_of_transportation, String, required: false
-    argument :geometry_tour_data, [Types::InputTypes::GeoLocationInput], required: false,
-                                                             as: :geometry_tour_data_attributes,
-                                                             prepare: lambda { |geometry_tour_data, _ctx|
-                                                                        geometry_tour_data.map(&:to_h)
-                                                                      }
     argument :tags, [String], as: :tag_list, required: false
-    argument :tour_stops, [Types::InputTypes::TourStopInput], required: false,
-                                                  as: :tour_stop_attributes,
-                                                  prepare: ->(tour_stop, _ctx) { tour_stop.to_h }
-
-    field :tour, Types::QueryTypes::TourType, null: false
-
-    type Types::QueryTypes::TourType
-
-    def resolve(**params)
-      ResourceService.new(data_provider: context[:current_user].try(:data_provider))
-        .perform(Tour, params)
-    end
   end
 end
