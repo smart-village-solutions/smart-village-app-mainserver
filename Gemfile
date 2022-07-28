@@ -42,6 +42,7 @@ gem "koala"
 
 # Push Notifications by expo.io
 gem "exponent-server-sdk"
+gem "ffi", "~> 1.15"
 
 gem "acts-as-taggable-on"
 gem "ancestry", "~> 2.1"
@@ -106,6 +107,9 @@ group :development, :test do
   gem "guard-rspec"
   gem "shoulda-matchers"
   gem "simplecov"
+
+  # Visualize rails models
+  gem "rails-erd"
 end
 
 group :development do

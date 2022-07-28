@@ -1,0 +1,9 @@
+orientation: vertical
+markup: true
+filename: doc/erd
+polymorphism: false
+indirect: true
+inheritance: false
+exclude: "ApplicationRecord,ActiveStorage::Attachment,ActiveStorage::Blob,Doorkeeper::AccessGrant,Doorkeeper::AccessToken,Delayed::Backend::ActiveRecord::Job"
+attributes: "content,foreign_keys,primary_keys"
+notation: bachman
