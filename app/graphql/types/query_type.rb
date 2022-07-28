@@ -56,6 +56,7 @@ module Types
 
     field :news_items_data_providers, [QueryTypes::DataProviderType], null: false do
       argument :category_id, ID, required: false
+      argument :category_ids, [ID], required: false
     end
 
     field :survey_comments, [QueryTypes::SurveyComment], null: false do
@@ -118,11 +119,13 @@ module Types
       Waste::LocationType.find(id)
     end
 
-    def news_items_data_providers(category_id: nil)
-      return DataProvider.joins(:news_items).order(:name).uniq if category_id.blank?
+    def news_items_data_providers(category_id: nil, category_ids: nil)
+      if category_id.blank? && category_ids.blank?
+        return DataProvider.joins(:news_items).order(:name).uniq
+      end
 
       NewsItem
-        .by_category(category_id)
+        .by_category(category_id || category_ids)
         .includes(:data_provider)
         .map(&:data_provider)
         .sort_by do |data_provider|
