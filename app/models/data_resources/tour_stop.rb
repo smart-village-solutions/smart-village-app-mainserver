@@ -4,8 +4,8 @@
 # All stops of a tour which are interesting and have more detailed data
 #
 class TourStop < Attraction
-  has_one :tour_tour_stop, class_name: "TourTourStop", foreign_key: :tour_stop_id
-  has_one :tour, through: :tour_tour_stop
+  has_one :tour_stop_assignment, class_name: "TourStopAssignment", foreign_key: :tour_stop_id
+  has_one :tour, through: :tour_stop_assignment
   has_many :data_resource_categories, -> { where(data_resource_type: "TourStop") }, foreign_key: :data_resource_id
   has_many :categories, through: :data_resource_categories
 

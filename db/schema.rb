@@ -519,7 +519,7 @@ ActiveRecord::Schema.define(version: 2022_07_26_164504) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "tour_tour_stops", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "tour_stop_assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "tour_id"
     t.integer "tour_stop_id"
   end
