@@ -59,7 +59,7 @@ module Mutations
                                                                       }
     argument :tags, [String], as: :tag_list, required: false
     argument :tour_stops, [Types::InputTypes::TourStopInput], required: false,
-                                                  as: :tour_stop_attributes,
+                                                  as: :tour_stops_attributes,
                                                   prepare: ->(tour_stop, _ctx) { tour_stop.to_h }
 
     field :tour, Types::QueryTypes::TourType, null: false
