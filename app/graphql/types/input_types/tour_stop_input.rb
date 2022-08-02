@@ -2,7 +2,6 @@
 
 module Types
   class InputTypes::TourStopInput < BaseInputObject
-    argument :data_provider_id, ID, required: true
     argument :name, String, required: true
     argument :description, String, required: false
     argument :mobile_description, String, required: false
