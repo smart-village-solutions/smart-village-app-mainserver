@@ -2,7 +2,7 @@
 
 class TourStopAssignment < ApplicationRecord
   belongs_to :tour
-  belongs_to :tour_stop
+  belongs_to :tour_stop, dependent: :destroy
 end
 
 # == Schema Information

@@ -10,7 +10,7 @@ class Tour < Attraction
   has_many :data_resource_categories, -> { where(data_resource_type: "Tour") }, foreign_key: :data_resource_id
   has_many :categories, through: :data_resource_categories
   has_many :geometry_tour_data, as: :geo_locateable, class_name: "GeoLocation", dependent: :destroy
-  has_many :tour_stop_assignments, class_name: "TourStopAssignment", foreign_key: :tour_id, dependent: :destroy
+  has_many :tour_stop_assignments, foreign_key: :tour_id, dependent: :destroy
   has_many :tour_stops, through: :tour_stop_assignments
 
   accepts_nested_attributes_for :geometry_tour_data, :tour_stops

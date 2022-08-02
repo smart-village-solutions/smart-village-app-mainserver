@@ -69,8 +69,14 @@ module Mutations
     type Types::QueryTypes::TourType
 
     def resolve(**params)
-      ResourceService.new(data_provider: context[:current_user].try(:data_provider))
-        .perform(Tour, params)
+      data_provider = context[:current_user].try(:data_provider)
+
+      # set data provider of each tour stop in params because it is required for tour stop creations
+      params[:tour_stops_attributes].each do |tour_stop|
+        tour_stop[:data_provider_id] = data_provider.try(:id)
+      end
+
+      ResourceService.new(data_provider: data_provider).perform(Tour, params)
     end
   end
 end
