@@ -59,7 +59,7 @@ gem "order_as_specified"
 gem "bootsnap", ">= 1.1.0", require: false
 
 gem "graphiql-rails", "1.4.11"
-gem "graphql"
+gem "graphql", "1.9.21"
 gem "graphql-client"
 gem "graphql-query-resolver"
 gem "graphql-remote_loader"
@@ -67,7 +67,7 @@ gem "graphql-remote_loader"
 gem "lograge"
 gem "rollbar"
 gem "search_object"
-gem "search_object_graphql"
+gem "search_object_graphql", "0.3.2"
 gem "unicorn"
 
 # Storage to minio service
