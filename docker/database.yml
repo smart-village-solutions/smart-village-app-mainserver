@@ -15,7 +15,7 @@ default: &default
   pool: 15
   username: saas-sva-app
   password: saas-sva-app
-  host: saas-database-service
+  host: saas-database-mysql
 
 
 development:
