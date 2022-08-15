@@ -55,6 +55,8 @@ GEM
       activemodel (= 5.2.4.3)
       activesupport (= 5.2.4.3)
       arel (>= 9.0)
+    activerecord-nulldb-adapter (0.8.0)
+      activerecord (>= 5.2.0, < 7.1)
     activestorage (5.2.4.3)
       actionpack (= 5.2.4.3)
       activerecord (= 5.2.4.3)
@@ -479,6 +481,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-nulldb-adapter
   acts-as-taggable-on
   addressable
   ancestry (~> 2.1)
@@ -499,6 +502,7 @@ DEPENDENCIES
   factory_bot
   factory_bot_rails
   faker!
+  ffi (~> 1.15)
   graphiql-rails (= 1.4.11)
   graphql
   graphql-client

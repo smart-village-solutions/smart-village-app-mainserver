@@ -2,11 +2,10 @@ version: '3.7'
 
 services:
   delayed_job:
-    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas
     command: bin/delayed_job run
     environment:
-      SVA_COMMUNITY: $PROJECT
-      DOMAINNAME: $DOMAINNAME
+      SVA_COMMUNITY: saas
       RAILS_ENV: production
       RAILS_LOG_TO_STDOUT: 1
     configs:
@@ -22,11 +21,10 @@ services:
         condition: on-failure
 
   cron_job:
-    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas
     command: bin/start-cron.sh
     environment:
-      SVA_COMMUNITY: $PROJECT
-      DOMAINNAME: $DOMAINNAME
+      SVA_COMMUNITY: saas
       RAILS_ENV: production
       RAILS_LOG_TO_STDOUT: 1
     configs:
@@ -42,17 +40,15 @@ services:
         condition: on-failure
 
   app:
-    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas
     environment:
-      SVA_COMMUNITY: $PROJECT
-      DOMAINNAME: $DOMAINNAME
+      SVA_COMMUNITY: saas
       RAILS_ENV: production
       RAILS_LOG_TO_STDOUT: 1
     configs:
       - source: mainserver-common-master-key
         target: /app/config/master.key
     volumes:
-      - $VOLUME_LOCALTIME
       - unicorn:/unicorn
       - assets:/assets
     deploy:
@@ -76,25 +72,7 @@ services:
       restart_policy:
         condition: on-failure
 
-  db:
-    image: mysql:5.7.21
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-    environment:
-      MYSQL_ROOT_PASSWORD: smart
-      MYSQL_DATABASE: smart
-      MYSQL_USER: smart
-      MYSQL_PASSWORD: smart
-    volumes:
-      - $VOLUME_LOCALTIME
-      - db:/var/lib/mysql
-    deploy:
-      restart_policy:
-        condition: on-failure
-
 volumes:
-  db:
   unicorn:
   assets:
   unused:
@@ -109,4 +87,6 @@ networks:
   public:
     external: true
   sva-redis-server:
+    external: true
+  saas-database-service:
     external: true
