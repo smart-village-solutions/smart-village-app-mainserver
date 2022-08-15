@@ -23,12 +23,12 @@ docker-build:
   stage: build
   allow_failure: false
   script:
-    - docker pull $IMAGE:latest || true
-    - docker build --cache-from $IMAGE:latest --tag $IMAGE:$CI_COMMIT_SHA --tag $IMAGE:latest -f $DOCKERFILE .
+    - docker pull $IMAGE:saas || true
+    - docker build --cache-from $IMAGE:saas --tag $IMAGE:$CI_COMMIT_SHA --tag $IMAGE:saas -f $DOCKERFILE .
     - docker push $IMAGE:$CI_COMMIT_SHA
-    - docker push $IMAGE:latest
+    - docker push $IMAGE:saas
   only:
-    - releases
+    - saas
 
 .docker_build_release:
   stage: build_release
@@ -42,9 +42,9 @@ docker-build:
     - docker-compose -f docker-compose.yml -f stack.yml config > quantum.yml
   tags: [v2]
   allow_failure: false
-  when: manual
+  when: on_success
   only:
-    - releases
+    - saas
 
 .deploy_release:
   stage: deploy_release
@@ -54,350 +54,31 @@ docker-build:
     key: "${CI_PIPELINE_ID}-${PROJECT}"
     paths: [quantum.yml]
   script:
-    - quantum-cli stack update --create --stack $PROJECT$SERVICENAME-$QUANTUM_ENDPOINT --wait
+    - quantum-cli stack update --create --stack $PROJECT$SERVICENAME --wait
   tags: [v2]
   allow_failure: false
   when: on_success
   only:
-    - releases
-
-# List of Releases:
-#
-# release/bb/frankfurt
-# release/bb/kyritz
-# release/bb/birkenwerder
-# release/bb/bad-belzig
-# release/bb/gransee
-# release/bb/falkenberg-elster
-# release/bb/herzberg-elster
-# release/bb/michendorf
-# release/bb/amt-schlieben
-# release/bb/eisenhuettenstadt
-# release/bb/angermuende
-# release/bb/seelow
-# release/bb/eberswalde
-# release/bb/ruedersdorf
-# release/bb/hohen-neuendorf
-# release/bb/schoenefeld
-# release/bb/havelland
-# release/bb/uckermark
-# release/bb/nuthetal
-# release/bb/bernau
-# release/bb/prenzlau
-# release/mv/hagenow
+    - saas
 
 #
 # List of releases to build
 #
-bb-frankfurt-build:
+
+saas-build:
   extends: .docker_build_release
   variables:
-    PROJECT: bb-frankfurt
-    DOMAINNAME: bb-frankfurt
-    NODENAME: portainer-14.docker.planetary-networks.de
-    VOLUME_LOCALTIME: /etc/localtime:/etc/localtime:ro
-bb-kyritz-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-kyritz
-    DOMAINNAME: bb-kyritz
-    NODENAME: portainer-14.docker.planetary-networks.de
-    VOLUME_LOCALTIME: /etc/localtime:/etc/localtime:ro
-bb-birkenwerder-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-birkenwerder
-    DOMAINNAME: bb-birkenwerder
-    NODENAME: portainer-14.docker.planetary-networks.de
-    VOLUME_LOCALTIME: /etc/localtime:/etc/localtime:ro
-bb-bad-belzig-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-bad-belzig
-    DOMAINNAME: bad-belzig
-    NODENAME: portainer-14.docker.planetary-networks.de
-    VOLUME_LOCALTIME: /etc/localtime:/etc/localtime:ro
-bb-gransee-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-gransee
-    DOMAINNAME: bb-gransee
-    NODENAME: portainer-14.docker.planetary-networks.de
-    VOLUME_LOCALTIME: /etc/localtime:/etc/localtime:ro
-bb-falkenberg-elster-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-falkenberg-elster
-    DOMAINNAME: bb-falkenberg-elster
-    NODENAME: portainer-14.docker.planetary-networks.de
-    VOLUME_LOCALTIME: /etc/localtime:/etc/localtime:ro
-bb-herzberg-elster-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-herzberg-elster
-    DOMAINNAME: herzberg-elster
-    NODENAME: portainer-14.docker.planetary-networks.de
-    VOLUME_LOCALTIME: /etc/localtime:/etc/localtime:ro
-bb-michendorf-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-michendorf
-    DOMAINNAME: bb-michendorf
-    NODENAME: portainer-14.docker.planetary-networks.de
-    VOLUME_LOCALTIME: /etc/localtime:/etc/localtime:ro
-bb-amt-schlieben-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-amt-schlieben
-    DOMAINNAME: bb-amt-schlieben
-    NODENAME: portainer-14.docker.planetary-networks.de
-    VOLUME_LOCALTIME: /etc/localtime:/etc/localtime:ro
-bb-eisenhuettenstadt-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: eisenhuettenstadt
-    DOMAINNAME: eisenhuettenstadt
-    NODENAME: portainer-14.docker.planetary-networks.de
-    VOLUME_LOCALTIME: /etc/localtime:/etc/localtime:ro
-bb-angermuende-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-angermuende
-    DOMAINNAME: bb-angermuende
-    NODENAME: portainer-14.docker.planetary-networks.de
-    VOLUME_LOCALTIME: /etc/localtime:/etc/localtime:ro
-bb-seelow-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-seelow
-    DOMAINNAME: bb-seelow
-    NODENAME: node-001.sva
-    VOLUME_LOCALTIME: unused:/unused
-bb-eberswalde-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-eberswalde
-    DOMAINNAME: bb-eberswalde
-    NODENAME: node-001.sva
-    VOLUME_LOCALTIME: unused:/unused
-bb-ruedersdorf-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-ruedersdorf
-    DOMAINNAME: bb-ruedersdorf
-    NODENAME: node-001.sva
-    VOLUME_LOCALTIME: unused:/unused
-bb-hohen-neuendorf-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-hohen-neuendorf
-    DOMAINNAME: bb-hohen-neuendorf
-    NODENAME: node-001.sva
-    VOLUME_LOCALTIME: unused:/unused
-bb-schoenefeld-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-schoenefeld
-    DOMAINNAME: bb-schoenefeld
-    NODENAME: node-001.sva
-    VOLUME_LOCALTIME: unused:/unused
-bb-havelland-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-havelland
-    DOMAINNAME: bb-havelland
-    NODENAME: node-001.sva
-    VOLUME_LOCALTIME: unused:/unused
-bb-uckermark-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-uckermark
-    DOMAINNAME: bb-uckermark
-    NODENAME: node-001.sva
-    VOLUME_LOCALTIME: unused:/unused
-bb-nuthetal-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-nuthetal
-    DOMAINNAME: bb-nuthetal
-    NODENAME: node-001.sva
-    VOLUME_LOCALTIME: unused:/unused
-bb-bernau-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-bernau
-    DOMAINNAME: bb-bernau
-    NODENAME: node-001.sva
-    VOLUME_LOCALTIME: unused:/unused
-bb-prenzlau-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: bb-prenzlau
-    DOMAINNAME: bb-prenzlau
+    PROJECT: saas
     NODENAME: node-002.sva
-    VOLUME_LOCALTIME: unused:/unused
-mv-hagenow-build:
-  extends: .docker_build_release
-  variables:
-    PROJECT: mv-hagenow
-    DOMAINNAME: mv-hagenow
-    NODENAME: node-001.sva
-    VOLUME_LOCALTIME: unused:/unused
 
 #
 # List of releases to deploy
 #
-bb-frankfurt-deploy:
+
+saas-deploy:
   extends: .deploy_release
-  needs: ["bb-frankfurt-build"]
+  needs: ["saas-build"]
   variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-frankfurt
-    QUANTUM_ENDPOINT: portainer-14
-bb-kyritz-deploy:
-  extends: .deploy_release
-  needs: ["bb-kyritz-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-kyritz
-    QUANTUM_ENDPOINT: portainer-14
-bb-birkenwerder-deploy:
-  extends: .deploy_release
-  needs: ["bb-birkenwerder-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-birkenwerder
-    QUANTUM_ENDPOINT: portainer-14
-bb-bad-belzig-deploy:
-  extends: .deploy_release
-  needs: ["bb-bad-belzig-build"]
-  variables:
-    SERVICENAME: ""
-    PROJECT: bb-bad-belzig
-    QUANTUM_ENDPOINT: portainer-14
-bb-gransee-deploy:
-  extends: .deploy_release
-  needs: ["bb-gransee-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-gransee
-    QUANTUM_ENDPOINT: portainer-14
-bb-falkenberg-elster-deploy:
-  extends: .deploy_release
-  needs: ["bb-falkenberg-elster-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-falkenberg-elster
-    QUANTUM_ENDPOINT: portainer-14
-bb-herzberg-elster-deploy:
-  extends: .deploy_release
-  needs: ["bb-herzberg-elster-build"]
-  variables:
-    SERVICENAME: ""
-    PROJECT: bb-herzberg-elster
-    QUANTUM_ENDPOINT: portainer-14
-bb-michendorf-deploy:
-  extends: .deploy_release
-  needs: ["bb-michendorf-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-michendorf
-    QUANTUM_ENDPOINT: portainer-14
-bb-amt-schlieben-deploy:
-  extends: .deploy_release
-  needs: ["bb-amt-schlieben-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-amt-schlieben
-    QUANTUM_ENDPOINT: portainer-14
-bb-eisenhuettenstadt-deploy:
-  extends: .deploy_release
-  needs: ["bb-eisenhuettenstadt-build"]
-  variables:
-    SERVICENAME: ""
-    PROJECT: eisenhuettenstadt
-    QUANTUM_ENDPOINT: portainer-14
-bb-angermuende-deploy:
-  extends: .deploy_release
-  needs: ["bb-angermuende-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-angermuende
-    QUANTUM_ENDPOINT: portainer-14
-bb-seelow-deploy:
-  extends: .deploy_release
-  needs: ["bb-seelow-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-seelow
-    QUANTUM_ENDPOINT: sva
-bb-eberswalde-deploy:
-  extends: .deploy_release
-  needs: ["bb-eberswalde-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-eberswalde
-    QUANTUM_ENDPOINT: sva
-bb-ruedersdorf-deploy:
-  extends: .deploy_release
-  needs: ["bb-ruedersdorf-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-ruedersdorf
-    QUANTUM_ENDPOINT: sva
-bb-hohen-neuendorf-deploy:
-  extends: .deploy_release
-  needs: ["bb-hohen-neuendorf-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-hohen-neuendorf
-    QUANTUM_ENDPOINT: sva
-bb-schoenefeld-deploy:
-  extends: .deploy_release
-  needs: ["bb-schoenefeld-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-schoenefeld
-    QUANTUM_ENDPOINT: sva
-bb-havelland-deploy:
-  extends: .deploy_release
-  needs: ["bb-havelland-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-havelland
-    QUANTUM_ENDPOINT: sva
-bb-uckermark-deploy:
-  extends: .deploy_release
-  needs: ["bb-uckermark-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-uckermark
-    QUANTUM_ENDPOINT: sva
-bb-nuthetal-deploy:
-  extends: .deploy_release
-  needs: ["bb-nuthetal-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-nuthetal
-    QUANTUM_ENDPOINT: sva
-bb-bernau-deploy:
-  extends: .deploy_release
-  needs: ["bb-bernau-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-bernau
-    QUANTUM_ENDPOINT: sva
-bb-prenzlau-deploy:
-  extends: .deploy_release
-  needs: ["bb-prenzlau-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: bb-prenzlau
-    QUANTUM_ENDPOINT: sva
-mv-hagenow-deploy:
-  extends: .deploy_release
-  needs: ["mv-hagenow-build"]
-  variables:
-    SERVICENAME: "-main_server"
-    PROJECT: mv-hagenow
+    SERVICENAME: "-mainserver"
+    PROJECT: saas
     QUANTUM_ENDPOINT: sva
