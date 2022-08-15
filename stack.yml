@@ -60,8 +60,8 @@ services:
         traefik.enable: "true"
         traefik.port: 80
         traefik.docker.network: public
-        traefik.frontend.rule: HostRegexp:{subdomain:[a-zA-Z-_]+}.server.smart-village.app
-        traefik.admin.rule: Host:server.smart-village.app
+        traefik.community.frontend.rule: HostRegexp:{subdomain:[a-zA-Z-_]+}.server.smart-village.app
+        traefik.admin.frontend.rule: Host:server.smart-village.app
 
 networks:
   adminer:
