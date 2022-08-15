@@ -13,7 +13,7 @@ class ResourceService
     @params = params
 
     # Erlaube nur ein Anlegen von Daten wenn der Nutzer nicht ReadOnly ist.
-    raise "Access not permitted" if data_provider.user.read_only_role?
+    raise "Access not permitted" if @data_provider.user.read_only_role?
 
     # cleanup params for given :id
     @old_resource_id = @params.delete(:id)
@@ -108,6 +108,12 @@ class ResourceService
 
       # categories relations have no `dependent: :destroy`, so we need to check them separately
       association_names_to_delete << :categories if @old_resource.respond_to?(:categories)
+
+      # for tours we do not want to delete geometry tour data as it is read only and we will never
+      # edit that data
+      if @old_resource.respond_to?(:geometry_tour_data)
+        association_names_to_delete.delete(:geometry_tour_data)
+      end
 
       # delete all nested resources
       association_names_to_delete.each do |association_name|

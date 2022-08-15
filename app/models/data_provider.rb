@@ -16,6 +16,7 @@ class DataProvider < ApplicationRecord
           role_survey
           role_encounter_support
           role_static_contents
+          role_tour_stops
         ],
         coder: JSON
   enum data_type: { general_importer: 0, business_account: 1 }, _suffix: :role
