@@ -13,25 +13,25 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 15
-  username: smart
-  password: smart
-  host: db
+  username: saas-sva-app
+  password: saas-sva-app
+  host: saas-database-mysql
 
 
 development:
   <<: *default
-  database: smart
+  database: saas-sva-app
 
 staging:
   <<: *default
-  database: smart
+  database: saas-sva-app
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: smart
+  database: saas-sva-app
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -54,4 +54,4 @@ test:
 #
 production:
   <<: *default
-  database: smart
+  database: saas-sva-app
