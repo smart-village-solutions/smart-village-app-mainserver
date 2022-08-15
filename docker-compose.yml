@@ -12,7 +12,6 @@ services:
       - source: mainserver-common-master-key
         target: /app/config/master.key
     volumes:
-      - $VOLUME_LOCALTIME
       - unicorn:/unicorn
       - assets:/assets
     depends_on: [db]
@@ -31,7 +30,6 @@ services:
       - source: mainserver-common-master-key
         target: /app/config/master.key
     volumes:
-      - $VOLUME_LOCALTIME
       - unicorn:/unicorn
       - assets:/assets
     depends_on: [db]
@@ -63,7 +61,6 @@ services:
       - source: smart-village-app-mainserver-nginx-conf
         target: /etc/nginx/conf.d/default.conf
     volumes:
-      - $VOLUME_LOCALTIME
       - unicorn:/unicorn
       - assets:/public
     labels:

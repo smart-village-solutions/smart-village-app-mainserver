@@ -42,7 +42,7 @@ docker-build:
     - docker-compose -f docker-compose.yml -f stack.yml config > quantum.yml
   tags: [v2]
   allow_failure: false
-  when: manual
+  when: on_success
   only:
     - saas
 
