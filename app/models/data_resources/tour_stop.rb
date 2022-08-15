@@ -1,21 +1,11 @@
 # frozen_string_literal: true
 
 #
-# All locations which are interesting and attractive for the public in the
-# smart village and the surrounding area
+# All stops of a tour which are interesting and have more detailed data
 #
-class PointOfInterest < Attraction
-  has_many :data_resource_categories, -> { where(data_resource_type: "PointOfInterest") }, foreign_key: :data_resource_id
-  has_many :categories, through: :data_resource_categories
-  has_many :opening_hours, as: :openingable, dependent: :destroy
-  has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
-  has_many :lunches, dependent: :destroy
-
-  accepts_nested_attributes_for :price_informations, :opening_hours, :lunches
-
-  def settings
-    data_provider.data_resource_settings.where(data_resource_type: "PointOfInterest").first.try(:settings)
-  end
+class TourStop < Attraction
+  has_one :tour_stop_assignment, foreign_key: :tour_stop_id
+  has_one :tour, through: :tour_stop_assignment
 end
 
 # == Schema Information
