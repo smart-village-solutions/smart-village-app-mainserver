@@ -1,4 +1,4 @@
-orientation: vertical
+orientation: horizontal
 markup: true
 filename: doc/erd
 polymorphism: false
