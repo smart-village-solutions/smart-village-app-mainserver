@@ -24,7 +24,8 @@ doorkeeper_app.save
 # Configs für den Abfallkalender
 StaticContent.create(name: "wasteTypes", data_type: "json", content: File.read("doc/waste_types.json") )
 
-def create_web_url = File.read("doc/waste_types.json")
+#  = File.read("doc/waste_types.json")
+def create_web_url
   WebUrl.create(url: Faker::Internet.url, description: Faker::Lorem.sentence)
 end
 

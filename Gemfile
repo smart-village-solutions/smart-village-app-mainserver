@@ -42,6 +42,7 @@ gem "koala"
 
 # Push Notifications by expo.io
 gem "exponent-server-sdk"
+gem "ffi", "~> 1.15"
 
 gem "acts-as-taggable-on"
 gem "ancestry", "~> 2.1"
@@ -86,6 +87,9 @@ gem "redis"
 gem "bootstrap4-kaminari-views"
 gem "kaminari"
 
+# Rake assets precompile without DB
+gem "activerecord-nulldb-adapter"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
@@ -106,6 +110,9 @@ group :development, :test do
   gem "guard-rspec"
   gem "shoulda-matchers"
   gem "simplecov"
+
+  # Visualize rails models
+  gem "rails-erd"
 end
 
 group :development do

@@ -55,6 +55,8 @@ GEM
       activemodel (= 5.2.4.3)
       activesupport (= 5.2.4.3)
       arel (>= 9.0)
+    activerecord-nulldb-adapter (0.8.0)
+      activerecord (>= 5.2.0, < 7.1)
     activestorage (5.2.4.3)
       actionpack (= 5.2.4.3)
       activerecord (= 5.2.4.3)
@@ -104,6 +106,7 @@ GEM
       rails (>= 3.1)
     builder (3.2.4)
     byebug (11.0.1)
+    choice (0.2.0)
     codeclimate-test-reporter (1.0.7)
       simplecov
     coderay (1.1.2)
@@ -319,6 +322,11 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
+    rails-erd (1.7.1)
+      activerecord (>= 4.2)
+      activesupport (>= 4.2)
+      choice (~> 0.2.0)
+      ruby-graphviz (~> 1.2)
     rails-html-sanitizer (1.3.0)
       loofah (~> 2.3)
     railties (5.2.4.3)
@@ -346,6 +354,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    rexml (3.2.5)
     rollbar (2.21.0)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
@@ -380,6 +389,8 @@ GEM
       rubocop (>= 0.60.0)
     ruby-debug-ide (0.6.1)
       rake (>= 0.8.1)
+    ruby-graphviz (1.2.5)
+      rexml
     ruby-progressbar (1.10.0)
     ruby2_keywords (0.0.4)
     ruby_dep (1.5.0)
@@ -470,6 +481,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-nulldb-adapter
   acts-as-taggable-on
   addressable
   ancestry (~> 2.1)
@@ -490,6 +502,7 @@ DEPENDENCIES
   factory_bot
   factory_bot_rails
   faker!
+  ffi (~> 1.15)
   graphiql-rails (= 1.4.11)
   graphql (= 1.9.21)
   graphql-client
@@ -516,6 +529,7 @@ DEPENDENCIES
   puma (~> 3.12)
   rails (~> 5.2.4)
   rails-controller-testing
+  rails-erd
   rb-readline
   redis
   remove_emoji
