@@ -2,9 +2,9 @@ version: '3.7'
 
 services:
   delayed_job:
-    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas
     networks:
-      - default
+      - saas-database-service
       - sva-redis-server
     environment:
       RAILS_ENV: production
@@ -16,10 +16,9 @@ services:
           - node.hostname == ${NODENAME}
 
   cron_job:
-    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas
     networks:
-      - default
-      - public
+      - saas-database-service
       - sva-redis-server
     environment:
       RAILS_ENV: production
@@ -38,9 +37,9 @@ services:
         condition: on-failure
 
   app:
-    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas
     networks:
-      - default
+      - saas-database-service
       - sva-redis-server
     environment:
       RAILS_ENV: production
@@ -61,19 +60,8 @@ services:
         traefik.enable: "true"
         traefik.port: 80
         traefik.docker.network: public
-        traefik.frontend.rule: Host:server.${DOMAINNAME}.smart-village.app
-
-  db:
-    networks:
-      default:
-      adminer:
-        aliases:
-          - ${PROJECT}-mainserver
-    deploy:
-      replicas: 1
-      placement:
-        constraints:
-          - node.hostname == ${NODENAME}
+        traefik.community.frontend.rule: HostRegexp:{subdomain:[a-zA-Z-_]+}.server.smart-village.app
+        traefik.admin.frontend.rule: Host:server.smart-village.app
 
 networks:
   adminer:
