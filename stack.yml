@@ -4,7 +4,7 @@ services:
   delayed_job:
     image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas
     networks:
-      - saas-database-service
+      - saas-smart-village
       - sva-redis-server
     environment:
       RAILS_ENV: production
@@ -18,7 +18,7 @@ services:
   cron_job:
     image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas
     networks:
-      - saas-database-service
+      - saas-smart-village
       - sva-redis-server
     environment:
       RAILS_ENV: production
@@ -39,7 +39,7 @@ services:
   app:
     image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas
     networks:
-      - saas-database-service
+      - saas-smart-village
       - sva-redis-server
     environment:
       RAILS_ENV: production
@@ -67,4 +67,6 @@ networks:
   adminer:
     external: true
   public:
+    external: true
+  saas-smart-village:
     external: true
