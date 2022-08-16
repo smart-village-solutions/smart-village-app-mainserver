@@ -21,6 +21,9 @@ RUN curl -L https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VE
 
 WORKDIR /app
 
+RUN mkdir -p /app/.bundle
+RUN chmod +w /app/.bundle
+
 COPY Gemfile Gemfile.lock /app/
 RUN gem install bundler
 RUN bundle install
