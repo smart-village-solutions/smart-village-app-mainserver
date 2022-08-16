@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :setup do
-  desc "Sets default categories to all elements of a given data_provider and data_resource_type"
+  desc "Sets Admin Account and App"
   task accounts: :environment do
     admin_password = SecureRandom.alphanumeric
     app_password = SecureRandom.alphanumeric
