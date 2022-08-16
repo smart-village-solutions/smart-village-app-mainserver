@@ -503,7 +503,7 @@ DEPENDENCIES
   faker!
   ffi (~> 1.15)
   graphiql-rails (= 1.4.11)
-  graphql
+  graphql (= 1.9.21)
   graphql-client
   graphql-query-resolver
   graphql-remote_loader
@@ -537,7 +537,7 @@ DEPENDENCIES
   ruby-debug-ide
   sass-rails (~> 5.0)
   search_object
-  search_object_graphql
+  search_object_graphql (= 0.3.2)
   shoulda-matchers
   simplecov
   spring

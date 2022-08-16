@@ -9,6 +9,7 @@ module Mutations
     argument :mobile_description, String, required: false
     argument :active, Boolean, required: false
     argument :category_name, String, required: false
+    argument :payload, GraphQL::Types::JSON, required: false
     argument :categories, [Types::InputTypes::CategoryInput], required: false,
                                                   as: :category_names,
                                                   prepare: lambda { |category, _ctx|
@@ -19,11 +20,9 @@ module Mutations
                                                 prepare: lambda { |addresses, _ctx|
                                                   addresses.map(&:to_h)
                                                 }
-
     argument :contact, Types::InputTypes::ContactInput,
              required: false, as: :contact_attributes,
              prepare: ->(contact, _ctx) { contact.to_h }
-
     argument :price_informations, [Types::InputTypes::PriceInput],
              required: false, as: :price_informations_attributes,
              prepare: ->(price_informations, _ctx) { price_informations.map(&:to_h) }
@@ -60,9 +59,7 @@ module Mutations
              prepare: lambda { |accessibility_information, _ctx|
                         accessibility_information.to_h
                       }
-
     argument :tags, [String], as: :tag_list, required: false
-
     argument :lunches,
              [Types::InputTypes::LunchInput],
              required: false,
