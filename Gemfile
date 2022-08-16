@@ -8,7 +8,8 @@ ruby "3.0.3"
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 6.0.5"
 # Use mysql as the database for Active Record
-gem "mysql2", ">= 0.4.4", "< 0.6.0"
+# gem "mysql2", ">= 0.4.4", "< 0.6.0"
+gem "mysql2", "= 0.5.4"
 # Use Puma as the app server
 gem "puma", "~> 3.12"
 # Use SCSS for stylesheets
@@ -52,7 +53,7 @@ gem "doorkeeper"
 gem "jquery-rails"
 gem "jsoneditor-rails"
 gem "mailjet"
-gem "mimemagic", ">= 0.3.6"
+gem "mimemagic", "~> 0.3.6"
 
 gem "order_as_specified"
 
@@ -60,7 +61,7 @@ gem "order_as_specified"
 gem "bootsnap", ">= 1.1.0", require: false
 
 gem "graphiql-rails", "1.4.11"
-gem "graphql", "1.9.21"
+gem "graphql"
 gem "graphql-client"
 gem "graphql-query-resolver"
 gem "graphql-remote_loader"
@@ -97,7 +98,7 @@ group :development, :test do
   gem "debase"
   gem "factory_bot"
   gem "factory_bot_rails"
-  gem "linter", git: "https://github.com/ikuseiGmbH/linters.git", tag: "rubocop-0.63.1"
+  # gem "linter", git: "https://github.com/ikuseiGmbH/linters.git", tag: "rubocop-0.63.1"
   gem "pry-byebug", platforms: %i[mri mingw x64_mingw]
   gem "rails-controller-testing"
   gem "rb-readline"
@@ -105,7 +106,7 @@ group :development, :test do
   gem "ruby-debug-ide"
   # Autorun rspec files on changes
   gem "annotate"
-  gem "faker", git: "https://github.com/stympy/faker.git", branch: "master"
+  # gem "faker", git: "https://github.com/stympy/faker.git", branch: "master"
   gem "guard"
   gem "guard-rspec"
   gem "shoulda-matchers"
