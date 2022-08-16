@@ -22,6 +22,7 @@ RUN mc -help
 WORKDIR /app
 COPY . /app
 
+RUN rm -rf /app/.bundle
 RUN mkdir -p /app/.bundle
 RUN chmod +w /app/.bundle
 
