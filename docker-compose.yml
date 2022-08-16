@@ -51,22 +51,6 @@ services:
       restart_policy:
         condition: on-failure
 
-  nginx:
-    image: nginx
-    depends_on: [app]
-    networks: [default, public]
-    configs:
-      - source: smart-village-app-mainserver-nginx-conf
-        target: /etc/nginx/conf.d/default.conf
-    volumes:
-      - unicorn:/unicorn
-      - assets:/public
-    labels:
-      - traefik.frontend.rule=Host:smartvillage.app
-    deploy:
-      restart_policy:
-        condition: on-failure
-
 volumes:
   unicorn:
   assets:
