@@ -13,7 +13,7 @@ end
 #  id               :bigint           not null, primary key
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  unique_id        :string(255)
+#  unique_id        :text(65535)
 #  data_provider_id :integer
 #  external_id      :integer
 #  external_type    :string(255)
