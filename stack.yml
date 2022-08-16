@@ -49,13 +49,6 @@ services:
       placement:
         constraints:
           - node.hostname == ${NODENAME}
-
-  nginx:
-    deploy:
-      replicas: 1
-      placement:
-        constraints:
-          - node.hostname == ${NODENAME}
       labels:
         traefik.enable: "true"
         traefik.port: 80
