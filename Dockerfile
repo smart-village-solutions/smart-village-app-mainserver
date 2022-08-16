@@ -20,15 +20,15 @@ RUN curl -L https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VE
 # RUN pip install mysqlclient
 
 WORKDIR /app
+COPY . /app
 
 RUN mkdir -p /app/.bundle
 RUN chmod +w /app/.bundle
 
-COPY Gemfile Gemfile.lock /app/
+# COPY Gemfile Gemfile.lock /app/
 RUN gem install bundler
 RUN bundle install
 
-COPY . /app
 RUN chmod +x bin/start-cron.sh
 
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
