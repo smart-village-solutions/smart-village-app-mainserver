@@ -4,10 +4,15 @@
 # Attraction is the superclass for all (touristic) attractions in the smart village.
 #
 class Attraction < ApplicationRecord
+  include FilterByRole
+
+  attr_accessor :force_create
   attr_accessor :category_name
   attr_accessor :category_names
 
   after_save :find_or_create_category
+
+  store :payload, coder: JSON
 
   belongs_to :data_provider
 
@@ -41,6 +46,23 @@ class Attraction < ApplicationRecord
                                 :accessibility_information, :operating_company,
                                 :data_provider, :certificates,
                                 :regions, :location
+
+  def unique_id
+    fields = [name, type]
+
+    first_address = addresses.first
+    address_keys = %i[street zip city kind]
+    address_fields = address_keys.map { |a| first_address.try(:send, a) }
+
+    generate_checksum(fields + address_fields)
+  end
+
+  def content_for_facebook
+    {
+      message: [name, description].compact.join("\n\n"),
+      link: ""
+    }
+  end
 
   # Sicherstellung der Abwärtskompatibilität seit 09/2020
   def category
@@ -79,6 +101,7 @@ end
 # Table name: attractions
 #
 #  id                      :bigint           not null, primary key
+#  external_id             :integer
 #  name                    :string(255)
 #  description             :text(65535)
 #  mobile_description      :text(65535)
@@ -90,4 +113,5 @@ end
 #  type                    :string(255)      default("PointOfInterest"), not null
 #  data_provider_id        :integer
 #  visible                 :boolean          default(TRUE)
+#  payload                 :text(65535)
 #

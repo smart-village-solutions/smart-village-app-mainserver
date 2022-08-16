@@ -24,6 +24,7 @@ module Types
     field :accessibility_information, QueryTypes::AccessibilityInformationType, null: true
     field :tag_list, [String], null: true
     field :lunches, [QueryTypes::LunchType], null: true
+    field :payload, GraphQL::Types::JSON, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
   end

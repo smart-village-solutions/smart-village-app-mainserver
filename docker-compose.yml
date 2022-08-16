@@ -67,3 +67,5 @@ networks:
     external: true
   sva-redis-server:
     external: true
+  saas-database-service:
+    external: true
