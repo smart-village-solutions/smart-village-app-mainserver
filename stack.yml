@@ -39,6 +39,7 @@ services:
   app:
     image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas
     networks:
+      - public
       - saas-smart-village
       - sva-redis-server
     environment:

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 app_dir = "/app"
 worker_processes 10
 working_directory app_dir
