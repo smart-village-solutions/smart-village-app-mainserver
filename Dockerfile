@@ -28,7 +28,7 @@ RUN mkdir -p /app/.bundle
 RUN chmod +w /app/.bundle
 
 # COPY Gemfile Gemfile.lock /app/
-RUN gem install bundler
+RUN gem install bundler --user-install
 RUN bundle install
 
 RUN chmod +x bin/start-cron.sh
