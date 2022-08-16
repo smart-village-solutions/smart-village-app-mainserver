@@ -18,15 +18,7 @@ services:
     volumes:
       - ./docker/database.yml:/app/config/database.yml
       - ./docker/unicorn.rb:/app/config/unicorn.rb
-
-  nginx:
-    volumes:
-      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     labels:
       - traefik.enable=true
       - traefik.docker.network=public
       - traefik.frontend.rule=Host:server.smart-village.docker.localhost
-
-  db:
-    volumes:
-      - ./init:/docker-entrypoint-initdb.d:ro
