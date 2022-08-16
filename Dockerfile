@@ -1,5 +1,5 @@
 # FROM ruby:2.6.8
-FROM registry.gitlab.tpwd.de/cmmc-systems/ruby-nginx/ruby-3.0.3
+FROM registry.gitlab.tpwd.de/cmmc-systems/ruby-nginx/ruby-3.1.2
 
 RUN apk update
 RUN apk add curl ca-certificates
