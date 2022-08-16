@@ -1,17 +1,18 @@
 # FROM ruby:2.6.8
-FROM registry.gitlab.tpwd.de/cmmc-systems/ruby-nginx/ruby-3.1.2
+FROM registry.gitlab.tpwd.de/cmmc-systems/ruby-nginx/ruby-3.0.3
 
-RUN apk update
-RUN apk add curl ca-certificates
+# RUN apk update
+# RUN apk add curl ca-certificates
 RUN apk add mariadb-dev
-# RUN apk add gcc musl-dev mariadb-connector-c-dev
-RUN apk add nodejs
-RUN apk add yarn
-RUN apk add wget
-RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc
-RUN chmod +x mc
-RUN mv mc /bin
-RUN mc -help
+RUN apk add git
+# # RUN apk add gcc musl-dev mariadb-connector-c-dev
+# RUN apk add nodejs
+# RUN apk add yarn
+# RUN apk add wget
+# RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc
+# RUN chmod +x mc
+# RUN mv mc /bin
+# RUN mc -help
 
 # ENV DOCKERIZE_VERSION v0.6.1
 # RUN curl -L https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
@@ -24,12 +25,12 @@ RUN mc -help
 WORKDIR /app
 COPY . /app
 
-RUN rm -rf /app/.bundle
-RUN mkdir -p /app/.bundle
-RUN chmod +w /app/.bundle
+# RUN rm -rf /app/.bundle
+# RUN mkdir -p /app/.bundle
+# RUN chmod +w /app/.bundle
 
 COPY Gemfile Gemfile.lock /app/
-RUN gem install bundler
+# RUN gem install bundler
 RUN bundle install
 
 RUN chmod +x bin/start-cron.sh
