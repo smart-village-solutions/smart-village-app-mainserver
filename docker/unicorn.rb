@@ -14,7 +14,7 @@ timeout 300
 # listen on a Unix domain socket and/or a TCP port,
 
 # listen "/unicorn/socket"
-listen 80, tcp_nopush: true
+listen 3000, tcp_nopush: true
 
 pid "/unicorn.pid"
 
