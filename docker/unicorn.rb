@@ -13,7 +13,9 @@ timeout 300
 
 # listen on a Unix domain socket and/or a TCP port,
 
-listen "/unicorn/socket"
+# listen "/unicorn/socket"
+listen 3000, tcp_nopush: true
+
 pid "/unicorn.pid"
 
 # http://www.rubyenterpriseedition.com/faq.html#adapt_apps_for_cow
