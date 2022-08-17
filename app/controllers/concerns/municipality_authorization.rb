@@ -17,12 +17,14 @@ module MunicipalityAuthorization
 
     # wenn Anzahl der Subdomains 0, dann wird das Admin UI ausgewählt
     # http://localhost:4000
-    return if subdomains.length == 0
+    redirect_to("http://#{ADMIN_URL}/municipalities") and return if subdomains.length == 0
 
     # wenn Anzahl der Subdomains 1 dann wird das Admin UI ausgewählt, sofern die Subdomain nicht "server" ist
     # http://server.smart-village.local
     # http://server.smart-village.app
-    return if subdomains.length == 1 && subdomains.last == "server"
+    if subdomains.length == 1 && subdomains.last == "server"
+      redirect_to("http://#{ADMIN_URL}/municipalities") and return
+    end
 
     # wenn Anzahl der Subdomains größer 2 ist, dann wird ein Fehler geworfen
     # http://bad-belzig.foo.server.smart-village.de
