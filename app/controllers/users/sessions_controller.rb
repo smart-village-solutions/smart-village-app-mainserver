@@ -3,6 +3,8 @@
 # Overide the Devise SessionController to enable login via json
 # and return a json success message
 class Users::SessionsController < Devise::SessionsController
+  include MunicipalityAuthorization
+
   skip_before_action :verify_authenticity_token
 
   # POST /resource/sign_in
