@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Municipality < ApplicationRecord
+  validates_uniqueness_of :slug
+  validates_uniqueness_of :title
+
   store :settings,
         accessors: [
           :mailjet_api_key, :mailjet_api_secret, :mailjet_default_from,
