@@ -22,7 +22,6 @@ RUN mv mc /bin
 RUN mkdir -p /unicorn
 RUN mkdir -p /app
 RUN mkdir -p /run/nginx/
-RUN touch /run/nginx/nginx.pid
 
 WORKDIR /app
 COPY . /app
@@ -45,5 +44,4 @@ VOLUME /unicorn
 VOLUME /assets
 
 # Start the main process.
-# CMD ["bundle", "exec", "unicorn", "-c", "./config/unicorn.rb"]
 CMD ["sh", "-c", "nginx ; bundle exec unicorn -c config/unicorn.rb"]
