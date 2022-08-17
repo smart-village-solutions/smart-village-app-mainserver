@@ -1,0 +1,17 @@
+<p>
+  <strong>Slug:</strong>
+  <%= @municipality.slug %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @municipality.title %>
+</p>
+
+<p>
+  <strong>Settings:</strong>
+  <%= @municipality.settings %>
+</p>
+
+<%= link_to 'Edit', edit_municipality_path(@municipality) %> |
+<%= link_to 'Back', municipalities_path %>

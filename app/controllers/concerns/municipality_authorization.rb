@@ -32,8 +32,12 @@ module MunicipalityAuthorization
     raise "municipality error: subdomain order failed" unless subdomains.last == "server"
 
     # In allen anderen Fällen ist an der ersten Stelle von :subdomains der Name der Kommune
-    # TODO: Prüfen, ob die Kommune existiert
-    @current_municipality = subdomains # Municipality.find_by(slug: subdomains.first)
+    slug_name = subdomains.first.to_s.downcase
+    @current_municipality = Municipality.find_by(slug: slug_name)
+
+    if @current_municipality.blank?
+      redirect_to "http://#{ADMIN_URL}/municipalities?municipality_suggestion=#{slug_name}"
+    end
   end
 
   included do

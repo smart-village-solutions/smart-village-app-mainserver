@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :municipalities
   namespace :notification do
     resources :wastes
     resources :devices do

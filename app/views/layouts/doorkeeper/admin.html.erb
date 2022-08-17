@@ -23,7 +23,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
-  <%= link_to "Smart Village App - Main-Server", root_path, class: 'navbar-brand' %>
+  <%= link_to "Smart Village App - #{@current_municipality.try(:title)}", root_path, class: 'navbar-brand' %>
 
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
@@ -76,11 +76,13 @@
 </nav>
 
 <div class="doorkeeper-admin container">
-  <%- if flash[:notice].present? %>
-    <div class="alert alert-info">
-      <%= flash[:notice] %>
-    </div>
-  <% end -%>
+  <% if flash.any? %>
+    <% flash.each do |type, msg| %>
+      <div class="alert alert-info <%= type %>">
+        <%= msg %>
+      </div>
+    <% end %>
+  <% end %>
 
   <%= yield %>
 </div>

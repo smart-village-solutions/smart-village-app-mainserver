@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Oauth::ApplicationsController < Doorkeeper::ApplicationsController
+  include MunicipalityAuthorization
+
   before_action :authenticate_user!
 
   def index

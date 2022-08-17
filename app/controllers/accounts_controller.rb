@@ -11,7 +11,7 @@ class AccountsController < ApplicationController
   include SortableController
 
   def authenticate_admin
-    render inline: "not allowed", status: 404 unless current_user.admin_role?
+    redirect_to edit_data_provider_path unless current_user.admin_role?
   end
 
   def index
