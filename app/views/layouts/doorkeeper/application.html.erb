@@ -12,12 +12,15 @@
 </head>
 <body>
 <div id="container">
-  <%- if flash[:notice].present? %>
-    <div class="alert alert-info">
-      <%= flash[:notice] %>
-    </div>
-  <% end -%>
+  <% if flash.any? %>
+    <% flash.each do |type, msg| %>
+      <div class="alert alert-info <%= type %>">
+        <%= msg %>
+      </div>
+    <% end %>
+  <% end %>
 
+  <h1><%= @current_municipality.try(:title) %></h1>
   <%= yield %>
 </div>
 </body>
