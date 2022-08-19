@@ -1,15 +1,45 @@
 # frozen_string_literal: true
+# op item create --category=login --title='admin@ni-wittingen.server.smart-village.app' --vault='project-smartvillage' --url='https://ni-wittingen.server.smart-village.app' username='admin@smart-village.app' password='test'
 
 class OnePasswordService
+  require 'expect'
+  require 'pty'
 
-  # TODO: Dockerfile erweitern, sodass das dann auch online funktioniert
-
-  # op item create --category=login --title='admin@ni-wittingen.server.smart-village.app' --vault='project-smartvillage' --url='https://ni-wittingen.server.smart-village.app' username='admin@smart-village.app' password='test'
   def self.setup(municipality_id:, password:, username:)
     municipality = Municipality.find_by(id: municipality_id)
     title = "[SaaS] #{username} #{municipality.slug}.server.smart-village.app - #{municipality.title}"
     url = "https://#{municipality.slug}.server.smart-village.app"
 
-    system("op item create --category=login --title='#{title}' --vault='project-smartvillage' --url='#{url}' username='#{username}' password='#{password}'")
+    two_factor_auth = `oathtool -b --totp '3H7AMJNHUAQORGPX'` # 2FaktorAuthentifizierung
+    one_password_email = "it@tpwd.de"
+    one_password_secret = "A3-463FZT-FM3J4C-CKB4L-AGAJE-DEAFW-8BRVM"
+    one_password_pass = "mgh7fnp_VFW3aep@car"
+    one_password_add_account_cmd = "op account add --address communicatio.1password.com --email #{one_password_email} --secret-key #{one_password_secret}"
+    one_password_sign_in_cmd = "op signin -f --raw"
+
+    # todo: folgende Zeilen auslagern nur nur einmal nach dem starten der App durchführen
+    PTY.spawn(one_password_add_account_cmd) do |reader, writer|
+      reader.expect(/Enter the password.*/, 5) # cont. in 5s if input doesn't match
+      writer.puts(one_password_pass)
+      reader.gets
+      reader.expect(/.*six-digit.*/, 5) # cont. in 5s if input doesn't match
+      writer.puts(two_factor_auth)
+      reader.gets
+    end
+
+    # Login und session token laden
+    session_token = ""
+    PTY.spawn(one_password_sign_in_cmd) do |reader, writer|
+      reader.expect(/Enter the password.*/, 10)
+      writer.puts(one_password_pass)
+      reader.expect(/.*/, 10)
+      reader.gets
+      session_token = reader.gets
+    end
+
+    one_password_create_item_cmd = "op item create --session #{session_token} --category=login --title='#{title}' --vault='project-smartvillage' --url='#{url}' username='#{username}' password='#{password}'\n"
+    PTY.spawn(one_password_create_item_cmd) do |reader, writer|
+      puts reader.gets
+    end
   end
 end
