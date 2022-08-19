@@ -1,6 +1,12 @@
 # frozen_string_literal: true
-# op item create --category=login --title='admin@ni-wittingen.server.smart-village.app' --vault='project-smartvillage' --url='https://ni-wittingen.server.smart-village.app' username='admin@smart-village.app' password='test'
 
+# op item create --category=login --title='admin@ni-wittingen.server.smart-village.app' --vault='project-smartvillage' --url='https://ni-wittingen.server.smart-village.app' username='admin@smart-village.app' password='test'
+# two_factor_auth = `oathtool -b --totp '3H7AMJNHUAQORGPX'` # 2FaktorAuthentifizierung
+# one_password_email = "it@tpwd.de"
+# one_password_secret = "A3-463FZT-FM3J4C-CKB4L-AGAJE-DEAFW-8BRVM"
+# one_password_pass = "mgh7fnp_VFW3aep@car"
+# one_password_add_account_cmd = "op account add --address communicatio.1password.com --email #{one_password_email} --secret-key #{one_password_secret}"
+# one_password_sign_in_cmd = "op signin -f --raw"
 class OnePasswordService
   require 'expect'
   require 'pty'
@@ -15,7 +21,7 @@ class OnePasswordService
     one_password_secret = "A3-463FZT-FM3J4C-CKB4L-AGAJE-DEAFW-8BRVM"
     one_password_pass = "mgh7fnp_VFW3aep@car"
     one_password_add_account_cmd = "op account add --address communicatio.1password.com --email #{one_password_email} --secret-key #{one_password_secret}"
-    one_password_sign_in_cmd = "op signin -f --raw"
+    one_password_sign_in_cmd = "op signin -f --raw > tmp/session_token"
 
     # todo: folgende Zeilen auslagern nur nur einmal nach dem starten der App durchführen
     PTY.spawn(one_password_add_account_cmd) do |reader, writer|
@@ -27,16 +33,16 @@ class OnePasswordService
       reader.gets
     end
 
-    # Login und session token laden
-    session_token = ""
-    PTY.spawn(one_password_sign_in_cmd) do |reader, writer|
-      reader.expect(/Enter the password.*/, 10)
-      writer.puts(one_password_pass)
-      reader.expect(/.*/, 10)
-      reader.gets
-      session_token = reader.gets
+    exp = RubyExpect::Expect.spawn(one_password_sign_in_cmd)
+    exp.procedure do
+      each do
+        expect /.*at communicatio\.1password\.com:/ do
+          send one_password_pass
+        end
+      end
     end
 
+    session_token = File.read("tmp/session_token")
     one_password_create_item_cmd = "op item create --session #{session_token} --category=login --title='#{title}' --vault='project-smartvillage' --url='#{url}' username='#{username}' password='#{password}'\n"
     PTY.spawn(one_password_create_item_cmd) do |reader, writer|
       puts reader.gets
