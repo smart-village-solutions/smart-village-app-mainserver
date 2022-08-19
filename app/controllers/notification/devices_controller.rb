@@ -9,10 +9,10 @@ class Notification::DevicesController < ApplicationController
 
   before_action :auth_user_or_doorkeeper, only: [:create, :destroy]
   before_action :authenticate_user!, except: [:create, :destroy]
-  before_action :authenticate_admin, except: [:create, :destroy]
+  before_action :authenticate_user_role, except: [:create, :destroy]
   before_action :set_notification_device, only: [:show, :edit, :update, :destroy, :send_notification]
 
-  def authenticate_admin
+  def authenticate_user_role
     render inline: "not allowed", status: 405 unless current_user.admin_role?
   end
 

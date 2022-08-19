@@ -4,6 +4,7 @@ namespace :setup do
   desc "Sets Admin Account and App"
   task accounts: :environment do
     admin_password = SecureRandom.alphanumeric
+    superadmin_password = SecureRandom.alphanumeric
     app_password = SecureRandom.alphanumeric
 
     puts "Admin: #{admin_password}"
@@ -11,7 +12,10 @@ namespace :setup do
 
     redirect_uri = "urn:ietf:wg:oauth:2.0:oob"
 
-    # Create Administrator
+    # Create Site Administrator
+    Admin.create(email: "superadmin@smart-village.app", password: superadmin_password, password_confirmation: superadmin_password)
+
+    # Create User with role admin
     admin_data_provider = DataProvider.create(name: "Administrator", description: "", logo: create_web_url)
     admin = User.create(email: "admin@smart-village.app", password: admin_password, password_confirmation: admin_password, role: 1)
     admin.data_provider = admin_data_provider
@@ -21,7 +25,7 @@ namespace :setup do
     doorkeeper_app.save
     puts "Admin created with id: #{admin.id}"
 
-    # Create Mobile App
+    # Create User with role Mobile App
     app_data_provider = DataProvider.create(name: "Mobile App", description: "", logo: create_web_url)
     app_user = User.create(email: "mobile-app@smart-village.app", password: app_password, password_confirmation: app_password, role: 2)
     app_user.data_provider = app_data_provider

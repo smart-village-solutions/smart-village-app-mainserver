@@ -6,11 +6,11 @@ class AccountsController < ApplicationController
   layout "doorkeeper/admin"
 
   before_action :authenticate_user!
-  before_action :authenticate_admin
+  before_action :authenticate_user_role
 
   include SortableController
 
-  def authenticate_admin
+  def authenticate_user_role
     redirect_to edit_data_provider_path unless current_user.admin_role?
   end
 
