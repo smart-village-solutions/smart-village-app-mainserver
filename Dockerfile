@@ -19,6 +19,13 @@ RUN mv mc /bin
 # RUN curl -L https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
 #   | tar -C /usr/local/bin -xz
 
+# Install 1Password CLI
+RUN curl -sSfo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.0.0/op_linux_amd64_v2.0.0.zip \
+  && unzip -od /usr/local/bin/ op.zip \
+  && rm op.zip
+RUN apk add libc6-compat
+RUN apk add oath-toolkit
+
 RUN mkdir -p /unicorn
 RUN mkdir -p /app
 RUN mkdir -p /run/nginx/
