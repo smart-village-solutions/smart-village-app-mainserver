@@ -26,6 +26,9 @@ gem "addressable"
 
 gem "icalendar"
 
+# Execute interactive system calls
+gem "ruby_expect"
+
 gem "remove_emoji"
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
