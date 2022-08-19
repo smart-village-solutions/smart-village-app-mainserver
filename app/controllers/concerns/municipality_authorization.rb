@@ -19,11 +19,17 @@ module MunicipalityAuthorization
     # http://localhost:4000
     redirect_to("http://#{ADMIN_URL}/municipalities") and return if subdomains.length == 0
 
-    # wenn Anzahl der Subdomains 1 dann wird das Admin UI ausgewählt, sofern die Subdomain nicht "server" ist
+    # wenn Anzahl der Subdomains 1 dann wird das Admin UI ausgewählt, sofern die Subdomain "server" ist
     # http://server.smart-village.local
     # http://server.smart-village.app
     if subdomains.length == 1 && subdomains.last == "server"
       redirect_to("http://#{ADMIN_URL}/municipalities") and return
+    end
+
+    # wenn Anzahl der Subdomains 1 und die Subdomain nicht "server" ist
+    # dann sollte diese Domain nicht auf diese Applikation zeigen
+    if subdomains.length == 1 && subdomains.last != "server"
+      raise "municipality error: subdomain not assigned"
     end
 
     # wenn Anzahl der Subdomains größer 2 ist, dann wird ein Fehler geworfen
