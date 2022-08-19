@@ -19,9 +19,10 @@ class OnePasswordService
     two_factor_auth = `oathtool -b --totp '3H7AMJNHUAQORGPX'` # 2FaktorAuthentifizierung
     one_password_email = "it@tpwd.de"
     one_password_secret = "A3-463FZT-FM3J4C-CKB4L-AGAJE-DEAFW-8BRVM"
+    one_password_account_id = "XAKMOZFSEZFJPJSLCHPMZKYZ5E"
     one_password_pass = "mgh7fnp_VFW3aep@car"
     one_password_add_account_cmd = "op account add --address communicatio.1password.com --email #{one_password_email} --secret-key #{one_password_secret}"
-    one_password_sign_in_cmd = "op signin -f --raw > tmp/session_token"
+    one_password_sign_in_cmd = "op signin -f --raw --account #{one_password_account_id} > tmp/op_session_token"
 
     # todo: folgende Zeilen auslagern nur nur einmal nach dem starten der App durchführen
     PTY.spawn(one_password_add_account_cmd) do |reader, writer|
@@ -42,7 +43,9 @@ class OnePasswordService
       end
     end
 
-    session_token = File.read("tmp/session_token")
+    sleep(5)
+
+    session_token = File.read("tmp/op_session_token")
     one_password_create_item_cmd = "op item create --session #{session_token} --category=login --title='#{title}' --vault='project-smartvillage' --url='#{url}' username='#{username}' password='#{password}'\n"
     PTY.spawn(one_password_create_item_cmd) do |reader, writer|
       puts reader.gets
