@@ -7,6 +7,8 @@ class User < ApplicationRecord
   enum role: { user: 0, admin: 1, app: 2, restricted: 3, editor: 4, read_only: 5 }, _suffix: :role
 
   include Sortable
+  include MunicipalityScope
+
   sortable_on :email, :id
 
   include Searchable

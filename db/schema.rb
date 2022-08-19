@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_19_071828) do
+ActiveRecord::Schema.define(version: 2022_08_19_122537) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "description"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_071828) do
     t.string "data_source"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "municipality_id"
   end
 
   create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -133,6 +134,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_071828) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "ancestry"
+    t.integer "municipality_id"
     t.index ["ancestry"], name: "index_categories_on_ancestry"
     t.index ["name"], name: "index_categories_on_name"
   end
@@ -180,6 +182,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_071828) do
     t.text "roles"
     t.integer "data_type", default: 0
     t.text "notice"
+    t.integer "municipality_id"
   end
 
   create_table "data_resource_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -367,6 +370,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_071828) do
     t.integer "device_type", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "municipality_id"
     t.index ["token"], name: "index_notification_devices_on_token", unique: true
   end
 
@@ -419,6 +423,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_071828) do
     t.text "data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "municipality_id"
   end
 
   create_table "opening_hours", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -488,6 +493,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_071828) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "version"
+    t.integer "municipality_id"
     t.index ["data_type"], name: "index_static_contents_on_data_type"
     t.index ["name"], name: "index_static_contents_on_name"
     t.index ["version"], name: "index_static_contents_on_version"
@@ -582,9 +588,10 @@ ActiveRecord::Schema.define(version: 2022_08_19_071828) do
     t.integer "role", default: 0
     t.text "authentication_token"
     t.datetime "authentication_token_created_at"
+    t.integer "municipality_id"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true, length: 255
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["email", "municipality_id"], name: "index_email_on_municipality_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end

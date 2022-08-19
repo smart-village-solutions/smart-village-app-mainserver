@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 class AppUserContent < ApplicationRecord
+  include MunicipalityScope
+
   validates_presence_of :content, :data_type, :data_source
 
   after_create :notify_admin
+
+  belongs_to :municipality
 
   private
 
