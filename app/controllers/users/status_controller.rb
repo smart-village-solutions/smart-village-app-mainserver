@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Users::StatusController < ApplicationController
+  include MunicipalityAuthorization
   before_action :authenticate_user!
 
   def show
