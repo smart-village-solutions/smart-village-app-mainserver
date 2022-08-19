@@ -30,10 +30,10 @@ Rails.application.routes.draw do
     controllers applications: "oauth/applications"
   end
 
-  devise_for :admins
   devise_for :users, controllers: {
     sessions: "users/sessions"
   }
+  devise_for :admins
 
   get "user" => "users/status#show"
 

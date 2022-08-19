@@ -52,10 +52,14 @@ class MunicipalitiesController < AdminController
 
   # DELETE /municipalities/1 or /municipalities/1.json
   def destroy
-    @municipality.destroy
+    # Aus Sicherheitsgründen erst einmal deaktiviert
+    # Wenn eine Kommune gelöscht werden soll müssen vermutlich auch
+    # alle zugehörigen Einträge gelöscht werden
+    # @municipality.destroy
 
     respond_to do |format|
-      format.html { redirect_to municipalities_url, notice: "Municipality was successfully destroyed." }
+      # format.html { redirect_to municipalities_url, notice: "Municipality was successfully destroyed." }
+      format.html { redirect_to municipalities_url }
       format.json { head :no_content }
     end
   end

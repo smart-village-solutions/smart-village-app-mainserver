@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DataProvider < ApplicationRecord
+  include MunicipalityScope
+
   store :roles,
         accessors: %i[
           role_point_of_interest
@@ -21,6 +23,7 @@ class DataProvider < ApplicationRecord
         coder: JSON
   enum data_type: { general_importer: 0, business_account: 1 }, _suffix: :role
 
+  belongs_to :municipality
   has_many :data_resource_settings, class_name: "DataResourceSetting"
   has_many :news_items
   has_many :tours

@@ -5,7 +5,7 @@
     <p><%= link_to 'New Category', new_category_path, class: "btn btn-success" %></p>
 
     <div class="category-index-tree">
-      <%= render_categories(@categories.arrange) %>
+      <%= render_categories(@categories.arrange) if @categories.any? %>
     </div>
   </div>
 </div>

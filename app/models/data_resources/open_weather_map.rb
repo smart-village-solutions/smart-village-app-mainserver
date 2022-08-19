@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class OpenWeatherMap < ApplicationRecord
+  include MunicipalityScope
 
   store :data,
         accessors: %i[
@@ -12,6 +13,8 @@ class OpenWeatherMap < ApplicationRecord
           alerts
         ],
         coder: JSON
+
+  belongs_to :municipality
 end
 
 # == Schema Information
