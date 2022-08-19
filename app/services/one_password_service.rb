@@ -42,13 +42,15 @@ class OnePasswordService
         end
       end
     end
-
-    sleep(5)
+    exp.interact
+    exp.soft_close
 
     session_token = File.read("tmp/op_session_token")
     one_password_create_item_cmd = "op item create --session #{session_token} --category=login --title='#{title}' --vault='project-smartvillage' --url='#{url}' username='#{username}' password='#{password}'\n"
-    PTY.spawn(one_password_create_item_cmd) do |reader, writer|
-      puts reader.gets
-    end
+    system(one_password_create_item_cmd)
+
+    # PTY.spawn(one_password_create_item_cmd) do |reader, writer|
+    #   puts reader.gets
+    # end
   end
 end
