@@ -27,6 +27,6 @@ class Municipality < ApplicationRecord
     username = "admin@smart-village.app"
     user = User.create(email: username, password: user_password, password_confirmation: user_password, role: 1, municipality: self)
 
-    OnePasswordService.setup(municipality_id: self.id, password: user_password, username: username) if user.valid? && Rails.env.production?
+    OnePasswordService.setup(municipality_id: self.id, password: user_password, username: username) if user.id.present? && Rails.env.production?
   end
 end
