@@ -4,6 +4,9 @@ class Municipality < ApplicationRecord
   validates_uniqueness_of :slug
   validates_uniqueness_of :title
 
+  after_create :create_admin_user
+  has_many :users
+
   store :settings,
         accessors: [
           :mailjet_api_key, :mailjet_api_secret, :mailjet_default_from,
@@ -17,5 +20,13 @@ class Municipality < ApplicationRecord
 
   def url
     "http://#{slug}.#{ADMIN_URL}"
+  end
+
+  def create_admin_user
+    user_password = SecureRandom.alphanumeric
+    username = "admin@smart-village.app"
+    user = User.create(email: username, password: user_password, password_confirmation: user_password, role: 1, municipality: self)
+
+    OnePasswordService.setup(municipality_id: self.id, password: user_password, username: username) if user.valid?
   end
 end
