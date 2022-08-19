@@ -9,6 +9,7 @@
 <table class="table table-striped">
   <thead>
     <tr>
+      <th>ID</th>
       <th>Slug</th>
       <th>Title</th>
       <th colspan="3"></th>
@@ -18,11 +19,12 @@
   <tbody>
     <% @municipalities.each do |municipality| %>
       <tr>
+        <td><%= municipality.id %></td>
         <td><%= municipality.slug %></td>
         <td><%= municipality.title %></td>
         <td><%= link_to 'Show', municipality.url, target: "_blank" %></td>
         <td><%= link_to 'Edit', edit_municipality_path(municipality) %></td>
-        <td><%= link_to 'Destroy', municipality, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', municipality, method: :delete, data: { confirm: 'Diese Funktion ist vorübergehend deaktiviert?' } %></td>
       </tr>
     <% end %>
   </tbody>
