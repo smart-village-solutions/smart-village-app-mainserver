@@ -42,7 +42,6 @@ class OnePasswordService
         end
       end
     end
-    exp.interact
     exp.soft_close
 
     session_token = File.read("tmp/op_session_token")
