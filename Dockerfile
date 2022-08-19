@@ -15,9 +15,19 @@ RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc
 RUN chmod +x mc
 RUN mv mc /bin
 
+RUN wget http://dl-cdn.alpinelinux.org/alpine/v3.16/community/x86_64/oath-toolkit-oathtool-2.6.7-r1.apk
+RUN apk add oath-toolkit-oathtool-2.6.7-r1.apk
+
 # ENV DOCKERIZE_VERSION v0.6.1
 # RUN curl -L https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
 #   | tar -C /usr/local/bin -xz
+
+# Install 1Password CLI
+RUN curl -sSfo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.0.0/op_linux_amd64_v2.0.0.zip \
+  && unzip -od /usr/local/bin/ op.zip \
+  && rm op.zip
+RUN apk add libc6-compat
+RUN apk add oath-toolkit
 
 RUN mkdir -p /unicorn
 RUN mkdir -p /app
