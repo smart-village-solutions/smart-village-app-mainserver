@@ -12,7 +12,11 @@ class User < ApplicationRecord
   include Searchable
   searchable_on :email
 
+  validates_presence_of :email
+  validates_uniqueness_of :email, scope: :municipality_id
+
   belongs_to :data_provider, optional: true
+  belongs_to :municipality #, optional: true
   accepts_nested_attributes_for :data_provider
 
   has_many :access_grants,
@@ -28,6 +32,35 @@ class User < ApplicationRecord
   has_many :oauth_applications,
            class_name: "Doorkeeper::Application",
            as: :owner
+
+  # Diese Methode muss kommt von Devise und muss überschrieben werden, damit
+  # der eigene "validates_uniqueness_of :email" ausgeführt wird.
+  def will_save_change_to_email?
+    false
+  end
+
+  # Diese Methode muss kommt von Devise und muss überschrieben werden, damit
+  # der eigene "validates_uniqueness_of :email" ausgeführt wird.
+  def email_changed?
+    false
+  end
+
+  # Diese Methode wird von Devise verwendet um einen User in der Datenbank zu finden
+  # und wird hiermit überschrieben mit einem Filter auf eine Kommune.
+  #
+  # @param [Hash] warden_conditions {:email=>"admin@smart-village.app", :subdomain=>"bad-belzig.server"}
+  #
+  # @return [Scope] User.where...
+  def self.find_for_authentication(warden_conditions)
+    subdomains = Array(warden_conditions.fetch(:subdomain, "").to_s.try(:split, "."))
+
+    municipality_service = MunicipalityService.new(subdomains: subdomains)
+    @current_municipality =  municipality_service.municipality if municipality_service.subdomain_valid?
+
+    return where(:email => warden_conditions[:email], municipality_id: @current_municipality.id ).first if @current_municipality.present?
+
+    where("1 == 0")
+  end
 end
 
 # == Schema Information
