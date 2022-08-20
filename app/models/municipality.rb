@@ -4,8 +4,11 @@ class Municipality < ApplicationRecord
   validates_uniqueness_of :slug
   validates_uniqueness_of :title
 
+  has_many :users, dependent: :destroy
+
   after_create :create_admin_user
-  has_many :users
+  after_create :create_mobile_app_user
+
 
   store :settings,
         accessors: [
@@ -23,10 +26,10 @@ class Municipality < ApplicationRecord
   end
 
   def create_admin_user
-    user_password = SecureRandom.alphanumeric
-    username = "admin@smart-village.app"
-    user = User.create(email: username, password: user_password, password_confirmation: user_password, role: 1, municipality: self)
+    SetupUserService.new(provider_name: "Administrator", email: "admin@smart-village.app", role: 1, municipality_id: self.id, application_name: "Administrator")
+  end
 
-    OnePasswordService.setup(municipality_id: self.id, password: user_password, username: username) if user.id.present? && Rails.env.production?
+  def create_mobile_app_user
+    SetupUserService.new(provider_name: "Mobile App", email: "mobile-app@smart-village.app", role: 2, municipality_id: self.id, application_name: "Mobile App (iOS/Android)")
   end
 end

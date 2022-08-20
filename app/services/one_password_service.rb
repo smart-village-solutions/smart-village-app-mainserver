@@ -25,14 +25,19 @@ class OnePasswordService
     one_password_sign_in_cmd = "op signin -f --raw --account #{one_password_account_id} > tmp/op_session_token"
 
     # todo: folgende Zeilen auslagern nur nur einmal nach dem starten der App durchführen
-    PTY.spawn(one_password_add_account_cmd) do |reader, writer|
-      reader.expect(/Enter the password.*/, 5) # cont. in 5s if input doesn't match
-      writer.puts(one_password_pass)
-      reader.gets
-      reader.expect(/.*six-digit.*/, 5) # cont. in 5s if input doesn't match
-      writer.puts(two_factor_auth)
-      reader.gets
+    begin
+      PTY.spawn(one_password_add_account_cmd) do |reader, writer|
+        reader.expect(/Enter the password.*/, 5) # cont. in 5s if input doesn't match
+        writer.puts(one_password_pass)
+        reader.gets
+        reader.expect(/.*six-digit.*/, 5) # cont. in 5s if input doesn't match
+        writer.puts(two_factor_auth)
+        reader.gets
+      end
+    rescue
+      puts "Fehler beim Hinzufügen des 1Password Accounts"
     end
+
 
     exp = RubyExpect::Expect.spawn(one_password_sign_in_cmd)
     exp.procedure do
