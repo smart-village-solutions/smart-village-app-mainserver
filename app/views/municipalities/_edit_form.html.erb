@@ -1,0 +1,130 @@
+<div class="row">
+  <div class="col">
+    <%= form_with(model: municipality, local: true) do |form| %>
+      <% if municipality.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(municipality.errors.count, "error") %> prohibited this municipality from being saved:</h2>
+
+          <ul>
+            <% municipality.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= form.label :slug %>
+        <%= form.text_field :slug, class: "form-control", disabled: true %>
+        <p></p>
+        <small class="form-text text-muted">bb-bad-belzig, mv-hagenow, ...; <a href="https://de.wikipedia.org/wiki/ISO_3166-2:DE" target="_blank">Mit Prefix der Ländercodes ohne "DE"</a></small>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :title %>
+        <%= form.text_field :title, class: "form-control", disabled: true %>
+      </div>
+
+      <h1>Settings</h1>
+
+      <h2>Mailer</h2>
+      <div class="form-group">
+        <%= form.label :mailjet_api_key %>
+        <%= form.text_field :mailjet_api_key, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :mailjet_api_secret %>
+        <%= form.text_field :mailjet_api_secret, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :mailjet_default_from %>
+        <%= form.text_field :mailjet_default_from, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :mailer_notify_admin_to %>
+        <%= form.text_field :mailer_notify_admin_to, class: "form-control" %>
+      </div>
+
+      <h2>Minio</h2>
+      <div class="form-group">
+        <%= form.label :minio_endpoint %>
+        <%= form.text_field :minio_endpoint, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :minio_access_key %>
+        <%= form.text_field :minio_access_key, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :minio_secret_key %>
+        <%= form.text_field :minio_secret_key, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :minio_bucket %>
+        <%= form.text_field :minio_bucket, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :minio_region %>
+        <%= form.text_field :minio_region, class: "form-control" %>
+      </div>
+
+      <h2>Minio</h2>
+      <div class="form-group">
+        <%= form.label :openweathermap_api_key %>
+        <%= form.text_field :openweathermap_api_key, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :openweathermap_lat %>
+        <%= form.text_field :openweathermap_lat, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :openweathermap_lon %>
+        <%= form.text_field :openweathermap_lon, class: "form-control" %>
+      </div>
+
+      <h2>CMS</h2>
+      <div class="form-group">
+        <%= form.label :cms_url, "CMS URL" %>
+        <%= form.text_field :cms_url, class: "form-control" %>
+      </div>
+
+      <h2>Directus</h2>
+      <div class="form-group">
+        <%= form.label :directus_graphql_endpoint %>
+        <%= form.text_field :directus_graphql_endpoint, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :directus_graphql_access_token %>
+        <%= form.text_field :directus_graphql_access_token, class: "form-control" %>
+      </div>
+
+      <h2>Rollbar</h2>
+      <div class="form-group">
+        <%= form.label :rollbar_access_token %>
+        <%= form.text_field :rollbar_access_token, class: "form-control" %>
+      </div>
+
+      <h2>Redis</h2>
+      <div class="form-group">
+        <%= form.label :redis_host %>
+        <%= form.text_field :redis_host, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :redis_namespace %>
+        <%= form.text_field :redis_namespace, class: "form-control" %>
+      </div>
+
+      <div class="actions">
+        <%= form.submit class: "btn btn-primary" %>
+      </div>
+    <% end %>
