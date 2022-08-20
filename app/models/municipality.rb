@@ -6,6 +6,7 @@ class Municipality < ApplicationRecord
 
   has_many :users, dependent: :destroy
 
+  before_create :setup_defaults
   after_create :create_admin_user
   after_create :create_mobile_app_user
 
