@@ -38,6 +38,7 @@ class OnePasswordService
       puts "Fehler beim Hinzufügen des 1Password Accounts"
     end
 
+    sleep(2)
 
     exp = RubyExpect::Expect.spawn(one_password_sign_in_cmd)
     exp.procedure do

@@ -20,6 +20,7 @@ class MunicipalitiesController < AdminController
 
   # GET /municipalities/1/edit
   def edit
+    @municipality.setup_defaults
   end
 
   # POST /municipalities or /municipalities.json
@@ -41,7 +42,7 @@ class MunicipalitiesController < AdminController
   def update
     respond_to do |format|
       if @municipality.update(municipality_params)
-        format.html { redirect_to municipality_url(@municipality), notice: "Municipality was successfully updated." }
+        format.html { redirect_to edit_municipality_url(@municipality), notice: "Municipality was successfully updated." }
         format.json { render :show, status: :ok, location: @municipality }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -72,6 +73,18 @@ class MunicipalitiesController < AdminController
 
     # Only allow a list of trusted parameters through.
     def municipality_params
-      params.require(:municipality).permit(:slug, :title, :settings)
+      params.require(:municipality).permit(
+        :slug,
+        :title,
+        :settings,
+        :mailer_notify_admin_to,
+        :mailjet_api_key, :mailjet_api_secret, :mailjet_default_from,
+        :minio_endpoint, :minio_access_key, :minio_secret_key, :minio_bucket, :minio_region,
+        :openweathermap_api_key, :openweathermap_lat, :openweathermap_lon,
+        :cms_url,
+        :directus_graphql_endpoint, :directus_graphql_access_token,
+        :rollbar_access_token,
+        :redis_host, :redis_namespace,
+      )
     end
 end
