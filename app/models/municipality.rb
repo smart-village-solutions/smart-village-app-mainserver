@@ -9,7 +9,6 @@ class Municipality < ApplicationRecord
   after_create :create_admin_user
   after_create :create_mobile_app_user
 
-
   store :settings,
         accessors: [
           :mailjet_api_key, :mailjet_api_secret, :mailjet_default_from,
