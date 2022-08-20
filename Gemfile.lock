@@ -66,8 +66,8 @@ GEM
       activerecord (>= 6.0, < 7.1)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    ancestry (2.2.2)
-      activerecord (>= 3.0.0)
+    ancestry (4.2.0)
+      activerecord (>= 5.2.6)
     annotate (3.2.0)
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
@@ -451,7 +451,7 @@ DEPENDENCIES
   activerecord-nulldb-adapter
   acts-as-taggable-on
   addressable
-  ancestry (~> 2.1)
+  ancestry
   annotate
   aws-sdk-s3
   better_delayed_job_web

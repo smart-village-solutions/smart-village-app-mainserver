@@ -49,7 +49,7 @@ gem "exponent-server-sdk"
 gem "ffi", "~> 1.15"
 
 gem "acts-as-taggable-on"
-gem "ancestry", "~> 2.1"
+gem "ancestry"
 gem "devise"
 gem "devise-token_authenticatable"
 gem "doorkeeper"
