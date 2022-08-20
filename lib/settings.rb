@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Settings
   def self.config
     current_community = ENV["SVA_COMMUNITY"].presence || "local-localhost"
