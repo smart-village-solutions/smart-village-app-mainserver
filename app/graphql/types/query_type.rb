@@ -4,40 +4,40 @@ require_relative "../loaders/directus_loader"
 
 module Types
   class QueryType < Types::BaseObject
-    field :generic_items, function: Resolvers::GenericItemSearch
+    field :generic_items, [QueryTypes::GenericItemType], resolver: Resolvers::GenericItemSearch
     field :generic_item, QueryTypes::GenericItemType, null: false do
       argument :id, ID, required: true
     end
 
-    field :weather_maps, function: Resolvers::WeatherSearch
+    field :weather_maps, [QueryTypes::OpenWeatherMapType], resolver: Resolvers::WeatherSearch
     field :weather_map, QueryTypes::OpenWeatherMapType, null: false do
       argument :id, ID, required: false
     end
 
-    field :points_of_interest, function: Resolvers::PointsOfInterestSearch
+    field :points_of_interest, [QueryTypes::PointOfInterestType],  resolver: Resolvers::PointsOfInterestSearch
     field :point_of_interest, QueryTypes::PointOfInterestType, null: false do
       argument :id, ID, required: true
     end
 
-    field :event_records, function: Resolvers::EventRecordsSearch
+    field :event_records, [QueryTypes::EventRecordType], resolver: Resolvers::EventRecordsSearch
     field :event_record, QueryTypes::EventRecordType, null: false do
       argument :id, ID, required: true
     end
 
-    field :news_items, function: Resolvers::NewsItemsSearch
+    field :news_items, [QueryTypes::NewsItemType], resolver: Resolvers::NewsItemsSearch
     field :news_item, QueryTypes::NewsItemType, null: false do
       argument :id, ID, required: true
     end
 
-    field :tours, [QueryTypes::TourType], function: Resolvers::ToursSearch
+    field :tours, [QueryTypes::TourType], resolver: Resolvers::ToursSearch
     field :tour, QueryTypes::TourType, null: false do
       argument :id, ID, required: true
     end
 
-    field :categories, [QueryTypes::CategoryType], function: Resolvers::CategoriesSearch
+    field :categories, [QueryTypes::CategoryType], resolver: Resolvers::CategoriesSearch
     field :category_tree, GraphQL::Types::JSON, null: false
 
-    field :waste_addresses, [QueryTypes::AddressType], function: Resolvers::WasteLocationSearch
+    field :waste_addresses, [QueryTypes::AddressType], resolver: Resolvers::WasteLocationSearch
     field :waste_location_types, [QueryTypes::WasteLocationTypeType], null: false
     field :waste_location_type, QueryTypes::WasteLocationTypeType, null: false do
       argument :id, ID, required: true
@@ -63,12 +63,12 @@ module Types
       argument :survey_id, ID, required: false
     end
 
-    field :lunches, [QueryTypes::LunchType], function: Resolvers::LunchesSearch
+    field :lunches, [QueryTypes::LunchType], resolver: Resolvers::LunchesSearch
     field :lunch, QueryTypes::LunchType, null: false do
       argument :id, ID, required: true
     end
 
-    field :surveys, [QueryTypes::SurveyPollType], function: Resolvers::SurveyPollsSearch
+    field :surveys, [QueryTypes::SurveyPollType], resolver: Resolvers::SurveyPollsSearch
 
     def weather_map(id: nil)
       return OpenWeatherMap.find_by(id: id) if id.present?

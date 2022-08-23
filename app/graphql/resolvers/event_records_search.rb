@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require "search_object/plugin/graphql"
-require "graphql/query_resolver"
 
-class Resolvers::EventRecordsSearch
+class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
   scope { EventRecord.upcoming(context[:current_user]) }
@@ -23,14 +22,14 @@ class Resolvers::EventRecordsSearch
     value "updatedAt_DESC"
   end
 
-  option :dateRange, type: types[types.String], with: :apply_date_range
-  option :categoryId, type: types.ID, with: :apply_category_id
+  option :date_range, type: types[types.String], with: :apply_date_range
+  option :category_id, type: types.ID, with: :apply_category_id
   option :skip, type: types.Int, with: :apply_skip
   option :limit, type: types.Int, with: :apply_limit
   option :ids, type: types[types.ID], with: :apply_ids
   option :order, type: EventRecordsOrder, default: "createdAt_DESC"
-  option :dataProvider, type: types.String, with: :apply_data_provider
-  option :dataProviderId, type: types.ID, with: :apply_data_provider_id
+  option :data_provider, type: types.String, with: :apply_data_provider
+  option :data_provider_id, type: types.ID, with: :apply_data_provider_id
   option :take, type: types.Int, with: :apply_take
   option :location, type: types.String, with: :apply_location
 
@@ -129,16 +128,5 @@ class Resolvers::EventRecordsSearch
     ordered_ids = scope.sort_by(&:list_date).map(&:id)
 
     scope.order_as_specified(id: ordered_ids)
-  end
-
-  # https://github.com/nettofarah/graphql-query-resolver
-
-  def fetch_results
-    # NOTE: Don't run QueryResolver during tests
-    return super unless context.present?
-
-    GraphQL::QueryResolver.run(EventRecord, context, Types::QueryTypes::EventRecordType) do
-      super
-    end
   end
 end

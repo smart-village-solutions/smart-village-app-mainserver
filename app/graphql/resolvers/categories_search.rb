@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require "search_object/plugin/graphql"
-require "graphql/query_resolver"
 
-class Resolvers::CategoriesSearch
+class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
   scope { Category.all }
@@ -24,7 +23,7 @@ class Resolvers::CategoriesSearch
   option :limit, type: types.Int, with: :apply_limit
   option :skip, type: types.Int, with: :apply_skip
   option :ids, type: types[types.ID], with: :apply_ids
-  option :excludeIds, type: types[types.ID], with: :apply_exclude_ids
+  option :exclude_ids, type: types[types.ID], with: :apply_exclude_ids
   option :order, type: CategoriesOrder, default: "name_ASC"
 
   def apply_limit(scope, value)
@@ -77,16 +76,5 @@ class Resolvers::CategoriesSearch
 
   def apply_order_with_id_asc(scope)
     scope.order("id ASC")
-  end
-
-  # https://github.com/nettofarah/graphql-query-resolver
-
-  def fetch_results
-    # NOTE: Don't run QueryResolver during tests
-    return super unless context.present?
-
-    GraphQL::QueryResolver.run(Category, context, Types::QueryTypes::CategoryType) do
-      super
-    end
   end
 end

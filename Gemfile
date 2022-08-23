@@ -63,10 +63,9 @@ gem "order_as_specified"
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.1.0", require: false
 
-gem "graphiql-rails", "1.4.11"
-gem "graphql"
+gem "graphiql-rails"
+gem "graphql", ">= 1.9"
 gem "graphql-client"
-gem "graphql-query-resolver"
 gem "graphql-remote_loader"
 
 gem "lograge"

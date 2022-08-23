@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require "search_object/plugin/graphql"
-require "graphql/query_resolver"
 
-class Resolvers::NewsItemsSearch
+class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
   scope { NewsItem.filtered_for_current_user(context[:current_user]) }
@@ -25,11 +24,11 @@ class Resolvers::NewsItemsSearch
   option :skip, type: types.Int, with: :apply_skip
   option :ids, type: types[types.ID], with: :apply_ids
   option :order, type: NewsItemsOrder, default: "publishedAt_DESC"
-  option :dataProvider, type: types.String, with: :apply_data_provider
-  option :dataProviderId, type: types.ID, with: :apply_data_provider_id
-  option :excludeDataProviderIds, type: types[types.ID], with: :apply_exclude_data_provider_ids
-  option :categoryId, type: types.ID, with: :apply_category_id
-  option :categoryIds, type: types[types.ID], with: :apply_category_ids
+  option :data_provider, type: types.String, with: :apply_data_provider
+  option :data_provider_id, type: types.ID, with: :apply_data_provider_id
+  option :exclude_data_provider_ids, type: types[types.ID], with: :apply_exclude_data_provider_ids
+  option :category_id, type: types.ID, with: :apply_category_id
+  option :category_ids, type: types[types.ID], with: :apply_category_ids
 
   def apply_limit(scope, value)
     scope.limit(value)
@@ -94,16 +93,5 @@ class Resolvers::NewsItemsSearch
 
   def apply_order_with_id_asc(scope)
     scope.order("id ASC")
-  end
-
-  # https://github.com/nettofarah/graphql-query-resolver
-
-  def fetch_results
-    # NOTE: Don't run QueryResolver during tests
-    return super unless context.present?
-
-    GraphQL::QueryResolver.run(NewsItem, context, Types::QueryTypes::NewsItemType) do
-      super
-    end
   end
 end

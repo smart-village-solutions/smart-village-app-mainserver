@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require "search_object/plugin/graphql"
-require "graphql/query_resolver"
 
-class Resolvers::WasteLocationSearch
+class Resolvers::WasteLocationSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
   scope { Address.where(id: Waste::LocationType.all.pluck(:address_id)) }
@@ -62,16 +61,5 @@ class Resolvers::WasteLocationSearch
 
   def apply_order_with_id_asc(scope)
     scope.order("id ASC")
-  end
-
-  # https://github.com/nettofarah/graphql-query-resolver
-
-  def fetch_results
-    # NOTE: Don't run QueryResolver during tests
-    return super unless context.present?
-
-    GraphQL::QueryResolver.run(Address, context, Types::QueryTypes::AddressType) do
-      super
-    end
   end
 end
