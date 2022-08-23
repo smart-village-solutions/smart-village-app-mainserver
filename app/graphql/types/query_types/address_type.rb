@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::AddressType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :addition, String, null: true
     field :street, String, null: true
     field :city, String, null: true

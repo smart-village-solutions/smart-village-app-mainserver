@@ -2,14 +2,14 @@
 
 module Types
   class QueryTypes::OpeningHourType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :weekday, String, null: true
     field :date_from, String, null: true
     field :date_to, String, null: true
     field :time_from, String, null: true
     field :time_to, String, null: true
     field :sort_number, Integer, null: true
-    field :open, Boolean, null: true
+    field :open, GraphQL::Types::Boolean, null: true
     field :description, String, null: true
 
     def time_from

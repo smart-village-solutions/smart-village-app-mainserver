@@ -2,8 +2,8 @@
 
 module Types
   class QueryTypes::EventRecordType < Types::BaseObject
-    field :id, ID, null: true
-    field :visible, Boolean, null: true
+    field :id, GraphQL::Types::ID, null: true
+    field :visible, GraphQL::Types::Boolean, null: true
     field :settings, QueryTypes::SettingType, null: true
     field :external_id, String, null: true
     field :parent_id, Integer, null: true
@@ -11,7 +11,7 @@ module Types
     field :title, String, null: true
     field :dates, [QueryTypes::DateType], null: true
     field :list_date, String, null: true
-    field :repeat, Boolean, null: true
+    field :repeat, GraphQL::Types::Boolean, null: true
     field :repeat_duration, QueryTypes::RepeatDurationType, null: true
     field :category, QueryTypes::CategoryType, null: true
     field :categories, [QueryTypes::CategoryType], null: true

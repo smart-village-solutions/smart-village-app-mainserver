@@ -2,14 +2,14 @@
 
 module Types
   class QueryTypes::PointOfInterestType < Types::BaseObject
-    field :id, ID, null: true
-    field :visible, Boolean, null: true
+    field :id, GraphQL::Types::ID, null: true
+    field :visible, GraphQL::Types::Boolean, null: true
     field :settings, QueryTypes::SettingType, null: true
     field :name, String, null: true
     field :description, String, null: true
     field :mobile_description, String, null: true
     field :addresses, [QueryTypes::AddressType], null: true
-    field :active, Boolean, null: true
+    field :active, GraphQL::Types::Boolean, null: true
     field :category, QueryTypes::CategoryType, null: true
     field :categories, [QueryTypes::CategoryType], null: true
     field :location, QueryTypes::LocationType, null: true

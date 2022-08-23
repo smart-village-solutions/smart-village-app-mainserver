@@ -2,7 +2,7 @@
 
 module Mutations
   class CommentSurvey < BaseMutation
-    argument :survey_id, ID, required: true
+    argument :survey_id, GraphQL::Types::ID, required: true
     argument :message, String, required: true
 
     type Types::StatusType

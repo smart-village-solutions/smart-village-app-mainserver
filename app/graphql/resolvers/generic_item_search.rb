@@ -22,16 +22,16 @@ class Resolvers::GenericItemSearch < GraphQL::Schema::Resolver
     value "updatedAt_DESC"
   end
 
-  option :category_id, type: types.ID, with: :apply_category_id
-  option :data_provider, type: types.String, with: :apply_data_provider
-  option :data_provider_id, type: types.ID, with: :apply_data_provider_id
-  option :external_id, type: types.ID, with: :apply_external_id
-  option :generic_type, type: types.String, with: :apply_generic_type
-  option :ids, type: types[types.ID], with: :apply_ids
-  option :limit, type: types.Int, with: :apply_limit
+  option :category_id, type: GraphQL::Types::ID, with: :apply_category_id
+  option :data_provider, type: GraphQL::Types::String, with: :apply_data_provider
+  option :data_provider_id, type: GraphQL::Types::ID, with: :apply_data_provider_id
+  option :external_id, type: GraphQL::Types::ID, with: :apply_external_id
+  option :generic_type, type: GraphQL::Types::String, with: :apply_generic_type
+  option :ids, type: types[GraphQL::Types::ID], with: :apply_ids
+  option :limit, type: GraphQL::Types::Int, with: :apply_limit
   option :order, type: GenericItemOrder, default: "createdAt_DESC"
-  option :skip, type: types.Int, with: :apply_skip
-  option :location, type: types.String, with: :apply_location
+  option :skip, type: GraphQL::Types::Int, with: :apply_skip
+  option :location, type: GraphQL::Types::String, with: :apply_location
 
   def apply_limit(scope, value)
     scope.limit(value)

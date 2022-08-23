@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::DateType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :weekday, String, null: true
     field :date_start, String, null: true
     field :date_end, String, null: true

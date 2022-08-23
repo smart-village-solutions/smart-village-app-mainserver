@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::PublicJsonFileType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :name, String, null: false
     field :content, GraphQL::Types::JSON, null: false
     field :data_type, String, null: true

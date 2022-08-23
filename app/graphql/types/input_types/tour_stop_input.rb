@@ -5,7 +5,7 @@ module Types
     argument :name, String, required: true
     argument :description, String, required: false
     argument :mobile_description, String, required: false
-    argument :active, Boolean, required: false
+    argument :active, GraphQL::Types::Boolean, required: false
     argument :category_name, String, required: false
     argument :payload, GraphQL::Types::JSON, required: false
     argument :categories, [Types::InputTypes::CategoryInput], required: false,

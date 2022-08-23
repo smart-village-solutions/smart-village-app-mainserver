@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::PublicHtmlFileType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :name, String, null: true
     field :content, String, null: true
     field :data_type, String, null: true

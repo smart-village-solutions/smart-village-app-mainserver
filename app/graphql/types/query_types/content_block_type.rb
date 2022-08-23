@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::ContentBlockType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :title, String, null: true
     field :intro, String, null: true
     field :body, String, null: true

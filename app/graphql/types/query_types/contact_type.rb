@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::ContactType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :first_name, String, null: true
     field :last_name, String, null: true
     field :phone, String, null: true

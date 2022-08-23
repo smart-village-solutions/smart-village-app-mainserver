@@ -2,7 +2,7 @@
 
 module Mutations
   class DestroyRecord < BaseMutation
-    argument :id, ID, required: false
+    argument :id, GraphQL::Types::ID, required: false
     argument :record_type, String, required: true
     argument :external_id, Integer, required: false
 

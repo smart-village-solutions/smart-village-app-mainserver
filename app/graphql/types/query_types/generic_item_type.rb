@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::GenericItemType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :accessibility_informations, [QueryTypes::AccessibilityInformationType], null: true
     field :addresses, [QueryTypes::AddressType], null: true
     field :author, String, null: true
@@ -24,7 +24,7 @@ module Types
     field :published_at, String, null: true
     field :settings, QueryTypes::SettingType, null: true
     field :title, String, null: true
-    field :visible, Boolean, null: true
+    field :visible, GraphQL::Types::Boolean, null: true
     field :web_urls, [QueryTypes::WebUrlType], null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true

@@ -2,8 +2,8 @@
 
 module Types
   class InputTypes::GenericItemInput < BaseInputObject
-    argument :force_create, Boolean, required: false
-    argument :push_notification, Boolean, required: false
+    argument :force_create, GraphQL::Types::Boolean, required: false
+    argument :push_notification, GraphQL::Types::Boolean, required: false
     argument :author, String, required: false
     argument :title, String, required: false
     argument :generic_type, String, required: false

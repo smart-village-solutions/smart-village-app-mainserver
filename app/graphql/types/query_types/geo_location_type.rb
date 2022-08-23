@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::GeoLocationType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :latitude, Float, null: true
     field :longitude, Float, null: true
   end

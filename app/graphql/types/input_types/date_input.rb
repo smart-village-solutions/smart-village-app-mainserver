@@ -8,6 +8,6 @@ module Types
     argument :time_start, String, required: false
     argument :time_end, String, required: false
     argument :time_description, String, required: false
-    argument :use_only_time_description, Boolean, required: false
+    argument :use_only_time_description, GraphQL::Types::Boolean, required: false
   end
 end

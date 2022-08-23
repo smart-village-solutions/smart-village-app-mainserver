@@ -2,8 +2,8 @@
 
 module Mutations
   class CreateEventRecord < BaseMutation
-    argument :id, ID, required: false
-    argument :force_create, Boolean, required: false
+    argument :id, GraphQL::Types::ID, required: false
+    argument :force_create, GraphQL::Types::Boolean, required: false
     argument :parent_id, Integer, required: false
     argument :description, String, required: false
     argument :external_id, String, required: false
@@ -11,7 +11,7 @@ module Mutations
     argument :dates, [Types::InputTypes::DateInput], required: false,
                                          as: :dates_attributes,
                                          prepare: ->(dates, _ctx) { dates.map(&:to_h) }
-    argument :repeat, Boolean, required: false
+    argument :repeat, GraphQL::Types::Boolean, required: false
     argument :repeat_duration, Types::InputTypes::RepeatDurationInput, required: false,
                                                            as: :repeat_duration_attributes,
                                                            prepare: lambda { |repeat_duration, _ctx|
