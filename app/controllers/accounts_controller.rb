@@ -58,7 +58,7 @@ class AccountsController < ApplicationController
   # POST /resource/sign_in
   def update
     @user = User.find(params["id"])
-    @user.update_attributes(account_params)
+    @user.update(account_params)
     flash[:notice] = "Nutzer aktualisiert"
     respond_to do |format|
       format.html { redirect_to action: :edit }
