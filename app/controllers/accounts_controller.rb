@@ -11,7 +11,7 @@ class AccountsController < ApplicationController
   include SortableController
 
   def authenticate_user_role
-    redirect_to edit_data_provider_path unless current_user.admin_role?
+    redirect_to edit_data_provider_path and return unless current_user.admin_role?
   end
 
   def index

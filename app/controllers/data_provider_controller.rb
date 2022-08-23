@@ -64,6 +64,6 @@ class DataProviderController < ApplicationController
     end
 
     def init_data_provider
-      @data_provider = current_user.data_provider || current_user.build_data_provider
+      @data_provider = current_user.data_provider.presence || current_user.build_data_provider
     end
 end
