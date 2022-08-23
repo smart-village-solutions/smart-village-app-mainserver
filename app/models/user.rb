@@ -18,7 +18,7 @@ class User < ApplicationRecord
   validates_uniqueness_of :email, scope: :municipality_id
 
   belongs_to :data_provider, optional: true
-  belongs_to :municipality #, optional: true
+  belongs_to :municipality
   accepts_nested_attributes_for :data_provider
 
   has_many :access_grants,
