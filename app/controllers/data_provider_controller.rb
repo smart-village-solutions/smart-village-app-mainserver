@@ -38,7 +38,7 @@ class DataProviderController < ApplicationController
   end
 
   def update
-    @data_provider.update_attributes(provider_params)
+    @data_provider.update(provider_params)
     current_user.data_provider = @data_provider
     current_user.data_provider.save
 
