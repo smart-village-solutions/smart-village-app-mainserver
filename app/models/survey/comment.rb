@@ -7,15 +7,23 @@ class Survey::Comment < ApplicationRecord
 
   # NOTE: this scope from `FilterByRole` needs to be overridden with adding `includes` for `poll`s
   scope :filtered_for_current_user, lambda { |current_user|
-    return all if current_user.admin_role?
-    return visible if current_user.app_role?
+    # Es wird ein Scope zurückgegeben, der nichts zurück gibt
+    # wenn es keinen current_user gibt (Survey::Comment.none)
+    return none if current_user.blank?
 
-    if current_user.editor_role?
+    # der MunicipalityService setzt den :default_scope dei DataProvider auf die Kommune.
+    if current_user.admin_role? || current_user.app_role?
+      data_provider_ids = DataProvider.all.pluck(:id)
+    elsif current_user.editor_role?
       data_provider_ids = [current_user.data_provider_id] + User.restricted_role.map(&:data_provider_id)
-      return includes(:poll).where(survey_polls: { data_provider_id: data_provider_ids.compact.flatten })
+    else
+      data_provider_ids = current_user.data_provider_id
     end
 
-    includes(:poll).where(survey_polls: { data_provider_id: current_user.data_provider_id })
+    comment_scope = includes(:poll).where(survey_polls: { data_provider_id: data_provider_ids })
+    return comment_scope.visible if current_user.app_role?
+
+    comment_scope
   }
 end
 
