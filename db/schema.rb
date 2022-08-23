@@ -2,17 +2,17 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_19_122537) do
+ActiveRecord::Schema.define(version: 2022_08_23_212011) do
 
-  create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "accessibility_informations", charset: "utf8", force: :cascade do |t|
     t.text "description"
     t.string "types"
     t.string "accessable_type"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["accessable_type", "accessable_id"], name: "index_accessibility_informations_on_type_and_id"
   end
 
-  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "active_storage_attachments", charset: "utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "active_storage_blobs", charset: "utf8", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -41,10 +41,17 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "active_storage_variant_records", charset: "utf8", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "addresses", charset: "utf8", force: :cascade do |t|
     t.string "addition"
     t.string "city"
     t.string "street"
@@ -59,7 +66,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_type_and_id"
   end
 
-  create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "admins", charset: "utf8", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -85,7 +92,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["unlock_token"], name: "index_admins_on_unlock_token", unique: true
   end
 
-  create_table "app_user_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "app_user_contents", charset: "utf8", force: :cascade do |t|
     t.text "content"
     t.string "data_type"
     t.string "data_source"
@@ -94,7 +101,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.integer "municipality_id"
   end
 
-  create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "attractions", charset: "utf8", force: :cascade do |t|
     t.integer "external_id"
     t.string "name"
     t.text "description"
@@ -114,21 +121,21 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["type"], name: "index_attractions_on_type"
   end
 
-  create_table "attractions_certificates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "attractions_certificates", charset: "utf8", force: :cascade do |t|
     t.bigint "attraction_id"
     t.bigint "certificate_id"
     t.index ["attraction_id"], name: "index_attractions_certificates_on_attraction_id"
     t.index ["certificate_id"], name: "index_attractions_certificates_on_certificate_id"
   end
 
-  create_table "attractions_regions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "attractions_regions", charset: "utf8", force: :cascade do |t|
     t.bigint "region_id"
     t.bigint "attraction_id"
     t.index ["attraction_id"], name: "index_attractions_regions_on_attraction_id"
     t.index ["region_id"], name: "index_attractions_regions_on_region_id"
   end
 
-  create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "categories", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.integer "tmb_id"
     t.datetime "created_at", null: false
@@ -139,7 +146,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["name"], name: "index_categories_on_name"
   end
 
-  create_table "certificates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "certificates", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.bigint "point_of_interest_id"
     t.datetime "created_at", null: false
@@ -147,7 +154,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["point_of_interest_id"], name: "index_certificates_on_point_of_interest_id"
   end
 
-  create_table "contacts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "contacts", charset: "utf8", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "phone"
@@ -161,7 +168,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["contactable_type", "contactable_id"], name: "index_contacts_on_type_and_id"
   end
 
-  create_table "content_blocks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "content_blocks", charset: "utf8", force: :cascade do |t|
     t.text "title"
     t.text "intro"
     t.text "body"
@@ -173,7 +180,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["content_blockable_type", "content_blockable_id"], name: "index_content_blocks_on_type_and_id"
   end
 
-  create_table "data_providers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "data_providers", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.datetime "created_at", null: false
@@ -185,7 +192,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.integer "municipality_id"
   end
 
-  create_table "data_resource_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "data_resource_categories", charset: "utf8", force: :cascade do |t|
     t.integer "data_resource_id"
     t.string "data_resource_type"
     t.integer "category_id"
@@ -195,7 +202,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["data_resource_id", "data_resource_type"], name: "index_drc_on_dr_id_and_dr_type"
   end
 
-  create_table "data_resource_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "data_resource_settings", charset: "utf8", force: :cascade do |t|
     t.integer "data_provider_id"
     t.string "data_resource_type"
     t.text "settings", size: :medium
@@ -204,7 +211,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["data_provider_id", "data_resource_type"], name: "index_dr_settings_on_dr_id_and_dr_type"
   end
 
-  create_table "delayed_jobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "delayed_jobs", charset: "utf8", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
     t.text "handler", null: false
@@ -219,7 +226,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "event_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "event_records", charset: "utf8", force: :cascade do |t|
     t.integer "parent_id"
     t.bigint "region_id"
     t.text "description"
@@ -234,7 +241,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["region_id"], name: "index_event_records_on_region_id"
   end
 
-  create_table "external_references", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "external_references", charset: "utf8", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "unique_id"
@@ -244,7 +251,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["external_id", "external_type"], name: "index_external_references_on_id_and_type"
   end
 
-  create_table "fixed_dates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "fixed_dates", charset: "utf8", force: :cascade do |t|
     t.date "date_start"
     t.date "date_end"
     t.string "weekday"
@@ -262,7 +269,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["dateable_type", "dateable_id"], name: "index_fixed_dates_on_type_and_id"
   end
 
-  create_table "generic_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "generic_items", charset: "utf8", force: :cascade do |t|
     t.string "generic_type"
     t.text "author"
     t.datetime "publication_date"
@@ -280,7 +287,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["data_provider_id"], name: "index_generic_items_on_data_provider_id"
   end
 
-  create_table "geo_locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "geo_locations", charset: "utf8", force: :cascade do |t|
     t.float "latitude", limit: 53
     t.float "longitude", limit: 53
     t.string "geo_locateable_type"
@@ -292,7 +299,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["latitude", "longitude"], name: "index_geo_locations_on_latitude_and_longitude"
   end
 
-  create_table "locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "locations", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.string "department"
     t.string "district"
@@ -309,7 +316,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["region_id"], name: "index_locations_on_region_id"
   end
 
-  create_table "lunch_offers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "lunch_offers", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.string "price"
     t.integer "lunch_id"
@@ -317,7 +324,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "lunches", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "lunches", charset: "utf8", force: :cascade do |t|
     t.text "text"
     t.integer "point_of_interest_id"
     t.string "point_of_interest_attributes"
@@ -325,7 +332,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "media_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "media_contents", charset: "utf8", force: :cascade do |t|
     t.text "caption_text"
     t.string "copyright"
     t.string "height"
@@ -339,7 +346,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["mediaable_type", "mediaable_id"], name: "index_media_contents_on_type_and_id"
   end
 
-  create_table "municipalities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "municipalities", charset: "utf8", force: :cascade do |t|
     t.string "slug"
     t.string "title"
     t.text "settings"
@@ -347,7 +354,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "news_items", charset: "utf8", force: :cascade do |t|
     t.string "author"
     t.boolean "full_version"
     t.integer "characters_to_be_shown"
@@ -365,7 +372,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["data_provider_id"], name: "index_news_items_on_data_provider_id"
   end
 
-  create_table "notification_devices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "notification_devices", charset: "utf8", force: :cascade do |t|
     t.string "token"
     t.integer "device_type", default: 0
     t.datetime "created_at", null: false
@@ -374,7 +381,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["token"], name: "index_notification_devices_on_token", unique: true
   end
 
-  create_table "oauth_access_grants", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "oauth_access_grants", charset: "utf8", force: :cascade do |t|
     t.bigint "resource_owner_id", null: false
     t.bigint "application_id", null: false
     t.string "token", null: false
@@ -388,7 +395,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["token"], name: "index_oauth_access_grants_on_token", unique: true
   end
 
-  create_table "oauth_access_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "oauth_access_tokens", charset: "utf8", force: :cascade do |t|
     t.bigint "resource_owner_id"
     t.bigint "application_id", null: false
     t.string "token", null: false
@@ -404,7 +411,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["token"], name: "index_oauth_access_tokens_on_token", unique: true
   end
 
-  create_table "oauth_applications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "oauth_applications", charset: "utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "uid", null: false
     t.string "secret", null: false
@@ -419,14 +426,14 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
-  create_table "open_weather_maps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "open_weather_maps", charset: "utf8", force: :cascade do |t|
     t.text "data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "municipality_id"
   end
 
-  create_table "opening_hours", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "opening_hours", charset: "utf8", force: :cascade do |t|
     t.string "weekday"
     t.date "date_from"
     t.date "date_to"
@@ -442,7 +449,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["openingable_type", "openingable_id"], name: "index_opening_hours_on_openingable_type_and_openingable_id"
   end
 
-  create_table "operating_companies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "operating_companies", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.string "companyable_type"
     t.bigint "companyable_id"
@@ -451,7 +458,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["companyable_type", "companyable_id"], name: "index_operating_companies_on_companyable_type_and_companyable_id"
   end
 
-  create_table "prices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "prices", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.float "amount"
     t.boolean "group_price"
@@ -470,13 +477,13 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["priceable_type", "priceable_id"], name: "index_prices_on_priceable_type_and_priceable_id"
   end
 
-  create_table "regions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "regions", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "repeat_durations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "repeat_durations", charset: "utf8", force: :cascade do |t|
     t.date "start_date"
     t.date "end_date"
     t.boolean "every_year"
@@ -486,7 +493,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["event_record_id"], name: "index_repeat_durations_on_event_record_id"
   end
 
-  create_table "static_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "static_contents", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.string "data_type"
     t.text "content"
@@ -499,7 +506,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["version"], name: "index_static_contents_on_version"
   end
 
-  create_table "survey_comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "survey_comments", charset: "utf8", force: :cascade do |t|
     t.integer "survey_poll_id"
     t.text "message"
     t.boolean "visible", default: false
@@ -507,7 +514,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "survey_polls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "survey_polls", charset: "utf8", force: :cascade do |t|
     t.text "title", size: :long
     t.text "description", size: :long
     t.datetime "created_at", null: false
@@ -518,7 +525,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.boolean "is_multilingual", default: false
   end
 
-  create_table "survey_questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "survey_questions", charset: "utf8", force: :cascade do |t|
     t.integer "survey_poll_id"
     t.text "title", size: :long
     t.datetime "created_at", null: false
@@ -526,7 +533,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.boolean "allow_multiple_responses", default: false
   end
 
-  create_table "survey_response_options", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "survey_response_options", charset: "utf8", force: :cascade do |t|
     t.integer "survey_question_id"
     t.text "title", size: :long
     t.integer "votes_count", default: 0
@@ -534,7 +541,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "taggings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "taggings", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
     t.integer "taggable_id"
@@ -553,18 +560,18 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
   end
 
-  create_table "tags", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "tags", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "name", collation: "utf8_bin"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "tour_stop_assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "tour_stop_assignments", charset: "utf8", force: :cascade do |t|
     t.integer "tour_id"
     t.integer "tour_stop_id"
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "users", charset: "utf8", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -596,7 +603,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
-  create_table "waste_device_registrations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "waste_device_registrations", charset: "utf8", force: :cascade do |t|
     t.string "notification_device_token"
     t.string "street"
     t.string "city"
@@ -608,21 +615,21 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "waste_location_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "waste_location_types", charset: "utf8", force: :cascade do |t|
     t.string "waste_type"
     t.integer "address_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "waste_pick_up_times", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "waste_pick_up_times", charset: "utf8", force: :cascade do |t|
     t.integer "waste_location_type_id"
     t.date "pickup_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "web_urls", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "web_urls", charset: "utf8", force: :cascade do |t|
     t.text "url"
     t.text "description"
     t.string "web_urlable_type"
@@ -634,6 +641,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_122537) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"

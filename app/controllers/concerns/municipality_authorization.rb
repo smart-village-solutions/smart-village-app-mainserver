@@ -25,9 +25,17 @@ module MunicipalityAuthorization
 
   def scope_current_tenant
     MunicipalityService.municipality_id = @current_municipality.id
+    s3_service.set_bucket(@current_municipality) if @current_municipality.minio_config_valid?
     yield
   ensure
     MunicipalityService.municipality_id = nil
+  end
+
+  def s3_service
+    service = ActiveStorage::Blob.service
+    return unless service.class.to_s == "ActiveStorage::Service::MultiBucketService"
+
+    service
   end
 
   included do

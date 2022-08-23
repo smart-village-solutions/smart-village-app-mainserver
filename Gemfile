@@ -24,6 +24,8 @@ gem "jbuilder", "~> 2.5"
 
 gem "addressable"
 
+gem "rack-cors"
+
 gem "icalendar"
 
 # Execute interactive system calls
