@@ -15,7 +15,7 @@ local:
 #   bucket: your_own_bucket
 
 minio:
-  service: S3
+  service: MultiBucket
   access_key_id: <%= Settings.config.dig(:minio, :access_key_id) %>
   secret_access_key: <%= Settings.config.dig(:minio, :secret_access_key) %>
   region: <%= Settings.config.dig(:minio, :region) %>

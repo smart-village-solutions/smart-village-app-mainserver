@@ -23,6 +23,12 @@ class MunicipalityService
     Thread.current[:municipality_id]
   end
 
+  def self.settings
+    return nil if Thread.current[:municipality_id].blank?
+
+    Municipality.find_by(id: Thread.current[:municipality_id]).settings
+  end
+
 
   def initialize(subdomains:)
     @subdomains = subdomains

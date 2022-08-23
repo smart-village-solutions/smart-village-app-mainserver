@@ -27,6 +27,14 @@ class Municipality < ApplicationRecord
     "http://#{slug}.#{ADMIN_URL}"
   end
 
+  def minio_config_valid?
+    minio_endpoint.present? &&
+      minio_access_key.present? &&
+      minio_secret_key.present? &&
+      minio_bucket.present? &&
+      minio_region.present?
+  end
+
   # Setup defaults from saas/credentials.yml
   #
   # checking for "nil?" and not for "blank?" to enable manual empty values

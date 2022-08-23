@@ -4,6 +4,7 @@
 # and return a json success message
 class Users::SessionsController < Devise::SessionsController
   include MunicipalityAuthorization
+  respond_to :json, :html
 
   skip_before_action :verify_authenticity_token
 
@@ -28,7 +29,7 @@ class Users::SessionsController < Devise::SessionsController
     respond_to do |format|
       format.html { respond_with resource, location: after_sign_in_path_for(resource) }
       format.json do
-        return render json: {
+        render json: {
           success: true,
           user: resource,
           applications: resource.oauth_applications.as_json(
@@ -45,11 +46,12 @@ class Users::SessionsController < Devise::SessionsController
   private
 
   def minio_config
-    # Settings only exist on releases branch
-    if defined?(Settings)
-      Settings.config["minio"]
-    else
-      Rails.application.credentials[:minio]
-    end
+    {
+      endpoint: @current_municipality.minio_endpoint,
+      region: @current_municipality.minio_region,
+      bucket: @current_municipality.minio_bucket,
+      access_key_id: @current_municipality.minio_access_key,
+      secret_access_key: @current_municipality.minio_secret_key
+    }
   end
 end
