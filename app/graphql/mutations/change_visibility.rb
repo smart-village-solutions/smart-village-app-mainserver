@@ -2,9 +2,9 @@
 
 module Mutations
   class ChangeVisibility < BaseMutation
-    argument :id, ID, required: true
+    argument :id, GraphQL::Types::ID, required: true
     argument :record_type, String, required: true
-    argument :visible, Boolean, required: true
+    argument :visible, GraphQL::Types::Boolean, required: true
 
     type Types::StatusType
 

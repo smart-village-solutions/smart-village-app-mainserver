@@ -2,13 +2,13 @@
 
 module Types
   class QueryTypes::TourType < Types::BaseObject
-    field :id, ID, null: true
-    field :visible, Boolean, null: true
+    field :id, GraphQL::Types::ID, null: true
+    field :visible, GraphQL::Types::Boolean, null: true
     field :settings, QueryTypes::SettingType, null: true
     field :name, String, null: true
     field :description, String, null: true
     field :mobile_description, String, null: true
-    field :active, Boolean, null: true
+    field :active, GraphQL::Types::Boolean, null: true
     field :addresses, [QueryTypes::AddressType], null: true
     field :means_of_transportation, String, null: true
     field :length_km, Integer, null: true

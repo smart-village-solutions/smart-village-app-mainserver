@@ -22,16 +22,16 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
     value "updatedAt_DESC"
   end
 
-  option :date_range, type: types[types.String], with: :apply_date_range
-  option :category_id, type: types.ID, with: :apply_category_id
-  option :skip, type: types.Int, with: :apply_skip
-  option :limit, type: types.Int, with: :apply_limit
-  option :ids, type: types[types.ID], with: :apply_ids
+  option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range
+  option :category_id, type: GraphQL::Types::ID, with: :apply_category_id
+  option :skip, type: GraphQL::Types::Int, with: :apply_skip
+  option :limit, type: GraphQL::Types::Int, with: :apply_limit
+  option :ids, type: types[GraphQL::Types::ID], with: :apply_ids
   option :order, type: EventRecordsOrder, default: "createdAt_DESC"
-  option :data_provider, type: types.String, with: :apply_data_provider
-  option :data_provider_id, type: types.ID, with: :apply_data_provider_id
-  option :take, type: types.Int, with: :apply_take
-  option :location, type: types.String, with: :apply_location
+  option :data_provider, type: GraphQL::Types::String, with: :apply_data_provider
+  option :data_provider_id, type: GraphQL::Types::ID, with: :apply_data_provider_id
+  option :take, type: GraphQL::Types::Int, with: :apply_take
+  option :location, type: GraphQL::Types::String, with: :apply_location
 
   # :values is array of 2 dates:
   # - first element is :start_date

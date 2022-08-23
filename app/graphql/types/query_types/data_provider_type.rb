@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::DataProviderType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :name, String, null: true
     field :data_type, String, null: true
     field :logo, QueryTypes::WebUrlType, null: true

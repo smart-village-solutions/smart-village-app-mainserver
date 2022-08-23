@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::AccessibilityInformationType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :description, String, null: true
     field :types, String, null: true
     field :urls, [QueryTypes::WebUrlType], null: true

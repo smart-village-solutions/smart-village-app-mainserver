@@ -6,32 +6,32 @@ module Types
   class QueryType < Types::BaseObject
     field :generic_items, [QueryTypes::GenericItemType], resolver: Resolvers::GenericItemSearch
     field :generic_item, QueryTypes::GenericItemType, null: false do
-      argument :id, ID, required: true
+      argument :id, GraphQL::Types::ID, required: true
     end
 
     field :weather_maps, [QueryTypes::OpenWeatherMapType], resolver: Resolvers::WeatherSearch
     field :weather_map, QueryTypes::OpenWeatherMapType, null: false do
-      argument :id, ID, required: false
+      argument :id, GraphQL::Types::ID, required: false
     end
 
     field :points_of_interest, [QueryTypes::PointOfInterestType],  resolver: Resolvers::PointsOfInterestSearch
     field :point_of_interest, QueryTypes::PointOfInterestType, null: false do
-      argument :id, ID, required: true
+      argument :id, GraphQL::Types::ID, required: true
     end
 
     field :event_records, [QueryTypes::EventRecordType], resolver: Resolvers::EventRecordsSearch
     field :event_record, QueryTypes::EventRecordType, null: false do
-      argument :id, ID, required: true
+      argument :id, GraphQL::Types::ID, required: true
     end
 
     field :news_items, [QueryTypes::NewsItemType], resolver: Resolvers::NewsItemsSearch
     field :news_item, QueryTypes::NewsItemType, null: false do
-      argument :id, ID, required: true
+      argument :id, GraphQL::Types::ID, required: true
     end
 
     field :tours, [QueryTypes::TourType], resolver: Resolvers::ToursSearch
     field :tour, QueryTypes::TourType, null: false do
-      argument :id, ID, required: true
+      argument :id, GraphQL::Types::ID, required: true
     end
 
     field :categories, [QueryTypes::CategoryType], resolver: Resolvers::CategoriesSearch
@@ -40,7 +40,7 @@ module Types
     field :waste_addresses, [QueryTypes::AddressType], resolver: Resolvers::WasteLocationSearch
     field :waste_location_types, [QueryTypes::WasteLocationTypeType], null: false
     field :waste_location_type, QueryTypes::WasteLocationTypeType, null: false do
-      argument :id, ID, required: true
+      argument :id, GraphQL::Types::ID, required: true
     end
 
     field :public_html_files, [QueryTypes::PublicHtmlFileType], null: false
@@ -55,17 +55,17 @@ module Types
     end
 
     field :news_items_data_providers, [QueryTypes::DataProviderType], null: false do
-      argument :category_id, ID, required: false
+      argument :category_id, GraphQL::Types::ID, required: false
       argument :category_ids, [ID], required: false
     end
 
     field :survey_comments, [QueryTypes::SurveyComment], null: false do
-      argument :survey_id, ID, required: false
+      argument :survey_id, GraphQL::Types::ID, required: false
     end
 
     field :lunches, [QueryTypes::LunchType], resolver: Resolvers::LunchesSearch
     field :lunch, QueryTypes::LunchType, null: false do
-      argument :id, ID, required: true
+      argument :id, GraphQL::Types::ID, required: true
     end
 
     field :surveys, [QueryTypes::SurveyPollType], resolver: Resolvers::SurveyPollsSearch
@@ -193,7 +193,7 @@ module Types
       # @param [String] path the path to lookup
       # @param [String] file_type the file type to lookup
       #
-      # @return [Boolean] true, if file is existing and included in the whitelist - otherwise false
+      # @return [GraphQL::Types::Boolean] true, if file is existing and included in the whitelist - otherwise false
       def query_file?(file, path, file_type)
         File.exist?(file) && query_files_whitelist(path, file_type).include?(file)
       end

@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::LunchType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :text, String, null: true
     field :list_date, String, null: true
     field :dates, [QueryTypes::DateType], null: true

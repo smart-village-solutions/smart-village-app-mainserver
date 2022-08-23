@@ -2,8 +2,8 @@
 
 module Mutations
   class CreateOrUpdateStaticContent < BaseMutation
-    argument :force_create, Boolean, required: false
-    argument :id, ID, required: false
+    argument :force_create, GraphQL::Types::Boolean, required: false
+    argument :id, GraphQL::Types::ID, required: false
     argument :name, String, required: false
     argument :content, String, required: false
     argument :data_type, String, required: true

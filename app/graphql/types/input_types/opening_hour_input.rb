@@ -8,7 +8,7 @@ module Types
     argument :time_from, String, required: false
     argument :time_to, String, required: false
     argument :sort_number, Integer, required: false
-    argument :open, Boolean, required: false
+    argument :open, GraphQL::Types::Boolean, required: false
     argument :description, String, required: false
   end
 end

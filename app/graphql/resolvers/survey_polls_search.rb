@@ -9,9 +9,9 @@ class Resolvers::SurveyPollsSearch < GraphQL::Schema::Resolver
 
   type types[Types::QueryTypes::SurveyPollType]
 
-  option :ids, type: types[types.ID], with: :apply_ids
-  option :ongoing, type: types.Boolean, with: :apply_ongoing
-  option :archived, type: types.Boolean, with: :apply_archived
+  option :ids, type: types[GraphQL::Types::ID], with: :apply_ids
+  option :ongoing, type: GraphQL::Types::Boolean, with: :apply_ongoing
+  option :archived, type: GraphQL::Types::Boolean, with: :apply_archived
 
   def apply_ids(scope, value)
     scope.where(id: value)

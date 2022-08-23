@@ -18,9 +18,9 @@ class Resolvers::WasteLocationSearch < GraphQL::Schema::Resolver
     value "id_DESC"
   end
 
-  option :limit, type: types.Int, with: :apply_limit
-  option :skip, type: types.Int, with: :apply_skip
-  option :ids, type: types[types.ID], with: :apply_ids
+  option :limit, type: GraphQL::Types::Int, with: :apply_limit
+  option :skip, type: GraphQL::Types::Int, with: :apply_skip
+  option :ids, type: types[GraphQL::Types::ID], with: :apply_ids
   option :order, type: WasteLocationOrder, default: "createdAt_DESC"
 
   def apply_limit(scope, value)

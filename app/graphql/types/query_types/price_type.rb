@@ -2,11 +2,11 @@
 
 module Types
   class QueryTypes::PriceType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :name, String, null: true
     field :category, String, null: true
     field :amount, Float, null: true
-    field :group_price, Boolean, null: true
+    field :group_price, GraphQL::Types::Boolean, null: true
     field :age_from, Integer, null: true
     field :age_to, Integer, null: true
     field :min_adult_count, Integer, null: true

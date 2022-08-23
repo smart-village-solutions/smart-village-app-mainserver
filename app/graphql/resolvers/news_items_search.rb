@@ -20,15 +20,15 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
     value "updatedAt_DESC"
   end
 
-  option :limit, type: types.Int, with: :apply_limit
-  option :skip, type: types.Int, with: :apply_skip
-  option :ids, type: types[types.ID], with: :apply_ids
+  option :limit, type: GraphQL::Types::Int, with: :apply_limit
+  option :skip, type: GraphQL::Types::Int, with: :apply_skip
+  option :ids, type: types[GraphQL::Types::ID], with: :apply_ids
   option :order, type: NewsItemsOrder, default: "publishedAt_DESC"
-  option :data_provider, type: types.String, with: :apply_data_provider
-  option :data_provider_id, type: types.ID, with: :apply_data_provider_id
-  option :exclude_data_provider_ids, type: types[types.ID], with: :apply_exclude_data_provider_ids
-  option :category_id, type: types.ID, with: :apply_category_id
-  option :category_ids, type: types[types.ID], with: :apply_category_ids
+  option :data_provider, type: GraphQL::Types::String, with: :apply_data_provider
+  option :data_provider_id, type: GraphQL::Types::ID, with: :apply_data_provider_id
+  option :exclude_data_provider_ids, type: types[GraphQL::Types::ID], with: :apply_exclude_data_provider_ids
+  option :category_id, type: GraphQL::Types::ID, with: :apply_category_id
+  option :category_ids, type: types[GraphQL::Types::ID], with: :apply_category_ids
 
   def apply_limit(scope, value)
     scope.limit(value)

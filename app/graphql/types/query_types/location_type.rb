@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::LocationType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :name, String, null: true
     field :department, String, null: true
     field :district, String, null: true

@@ -3,8 +3,8 @@
 module Mutations
   class VoteForSurvey < BaseMutation
     description "`voteForSurvey` is deprecated. Use `votesForSurvey` instead."
-    argument :increase_id, ID, required: false
-    argument :decrease_id, ID, required: false
+    argument :increase_id, GraphQL::Types::ID, required: false
+    argument :decrease_id, GraphQL::Types::ID, required: false
 
     type Types::StatusType
 

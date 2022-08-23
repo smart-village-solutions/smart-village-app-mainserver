@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::OpenWeatherMapType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :lat, Float, null: true
     field :lon, Float, null: true
     field :current, GraphQL::Types::JSON, null: true

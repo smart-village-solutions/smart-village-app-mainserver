@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::WasteLocationTypeType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :waste_type, String, null: true
     field :list_pick_up_dates, [String], null: true
     field :pick_up_times, [QueryTypes::WastePickUpTimeType], null: true

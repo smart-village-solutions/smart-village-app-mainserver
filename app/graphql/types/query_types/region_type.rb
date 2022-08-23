@@ -2,7 +2,7 @@
 
 module Types
   class QueryTypes::RegionType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, GraphQL::Types::ID, null: true
     field :name, String, null: true
   end
 end

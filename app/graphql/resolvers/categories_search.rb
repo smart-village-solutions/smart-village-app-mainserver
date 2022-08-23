@@ -20,10 +20,10 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
     value "updatedAt_DESC"
   end
 
-  option :limit, type: types.Int, with: :apply_limit
-  option :skip, type: types.Int, with: :apply_skip
-  option :ids, type: types[types.ID], with: :apply_ids
-  option :exclude_ids, type: types[types.ID], with: :apply_exclude_ids
+  option :limit, type: GraphQL::Types::Int, with: :apply_limit
+  option :skip, type: GraphQL::Types::Int, with: :apply_skip
+  option :ids, type: types[GraphQL::Types::ID], with: :apply_ids
+  option :exclude_ids, type: types[GraphQL::Types::ID], with: :apply_exclude_ids
   option :order, type: CategoriesOrder, default: "name_ASC"
 
   def apply_limit(scope, value)

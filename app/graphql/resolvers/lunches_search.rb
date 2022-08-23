@@ -18,10 +18,10 @@ class Resolvers::LunchesSearch < GraphQL::Schema::Resolver
     value "updatedAt_DESC"
   end
 
-  option :date_range, type: types[types.String], with: :apply_date_range
-  option :limit, type: types.Int, with: :apply_limit
-  option :skip, type: types.Int, with: :apply_skip
-  option :ids, type: types[types.ID], with: :apply_ids
+  option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range
+  option :limit, type: GraphQL::Types::Int, with: :apply_limit
+  option :skip, type: GraphQL::Types::Int, with: :apply_skip
+  option :ids, type: types[GraphQL::Types::ID], with: :apply_ids
   option :order, type: LunchesOrder, default: "createdAt_DESC"
 
   # :values is array of 2 dates:
