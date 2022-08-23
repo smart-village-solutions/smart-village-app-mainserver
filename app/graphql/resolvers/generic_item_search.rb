@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require "search_object/plugin/graphql"
-require "graphql/query_resolver"
 
-class Resolvers::GenericItemSearch
+class Resolvers::GenericItemSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
   scope { GenericItem.filtered_for_current_user(context[:current_user]) }
@@ -23,11 +22,11 @@ class Resolvers::GenericItemSearch
     value "updatedAt_DESC"
   end
 
-  option :categoryId, type: types.ID, with: :apply_category_id
-  option :dataProvider, type: types.String, with: :apply_data_provider
-  option :dataProviderId, type: types.ID, with: :apply_data_provider_id
-  option :externalId, type: types.ID, with: :apply_external_id
-  option :genericType, type: types.String, with: :apply_generic_type
+  option :category_id, type: types.ID, with: :apply_category_id
+  option :data_provider, type: types.String, with: :apply_data_provider
+  option :data_provider_id, type: types.ID, with: :apply_data_provider_id
+  option :external_id, type: types.ID, with: :apply_external_id
+  option :generic_type, type: types.String, with: :apply_generic_type
   option :ids, type: types[types.ID], with: :apply_ids
   option :limit, type: types.Int, with: :apply_limit
   option :order, type: GenericItemOrder, default: "createdAt_DESC"
@@ -112,16 +111,5 @@ class Resolvers::GenericItemSearch
 
   def apply_location(scope, value)
     scope.by_location(value)
-  end
-
-  # https://github.com/nettofarah/graphql-query-resolver
-
-  def fetch_results
-    # NOTE: Don't run QueryResolver during tests
-    return super unless context.present?
-
-    GraphQL::QueryResolver.run(GenericItem, context, Types::QueryTypes::GenericItemType) do
-      super
-    end
   end
 end

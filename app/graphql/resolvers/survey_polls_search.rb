@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require "search_object/plugin/graphql"
-require "graphql/query_resolver"
 
-class Resolvers::SurveyPollsSearch
+class Resolvers::SurveyPollsSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
   scope { Survey::Poll.filtered_for_current_user(context[:current_user]) }
@@ -24,16 +23,5 @@ class Resolvers::SurveyPollsSearch
 
   def apply_archived(scope, _value)
     scope.archived
-  end
-
-  # https://github.com/nettofarah/graphql-query-resolver
-
-  def fetch_results
-    # NOTE: Don't run QueryResolver during tests
-    return super unless context.present?
-
-    GraphQL::QueryResolver.run(Survey::Poll, context, Types::QueryTypes::SurveyPollType) do
-      super
-    end
   end
 end

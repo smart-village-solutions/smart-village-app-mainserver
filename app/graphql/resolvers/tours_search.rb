@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require "search_object/plugin/graphql"
-require "graphql/query_resolver"
 
-class Resolvers::ToursSearch
+class Resolvers::ToursSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
   scope { Tour.filtered_for_current_user(context[:current_user]) }
@@ -26,11 +25,11 @@ class Resolvers::ToursSearch
   option :skip, type: types.Int, with: :apply_skip
   option :ids, type: types[types.ID], with: :apply_ids
   option :order, type: ToursOrder, default: "createdAt_DESC"
-  option :dataProvider, type: types.String, with: :apply_data_provider
-  option :dataProviderId, type: types.ID, with: :apply_data_provider_id
+  option :data_provider, type: types.String, with: :apply_data_provider
+  option :data_provider_id, type: types.ID, with: :apply_data_provider_id
   option :category, type: types.String, with: :apply_category
-  option :categoryId, type: types.ID, with: :apply_category_id
-  option :categoryIds, type: types[types.ID], with: :apply_category_ids
+  option :category_id, type: types.ID, with: :apply_category_id
+  option :category_ids, type: types[types.ID], with: :apply_category_ids
   option :location, type: types.String, with: :apply_location
 
   def apply_limit(scope, value)
@@ -109,16 +108,5 @@ class Resolvers::ToursSearch
 
   def apply_order_with_rand(scope)
     scope.order("RAND()")
-  end
-
-  # https://github.com/nettofarah/graphql-query-resolver
-
-  def fetch_results
-    # NOTE: Don't run QueryResolver during tests
-    return super unless context.present?
-
-    GraphQL::QueryResolver.run(Tour, context, Types::QueryTypes::TourType) do
-      super
-    end
   end
 end

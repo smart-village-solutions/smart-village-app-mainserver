@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require "search_object/plugin/graphql"
-require "graphql/query_resolver"
 
-class Resolvers::LunchesSearch
+class Resolvers::LunchesSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
   scope { Lunch.upcoming }
@@ -19,7 +18,7 @@ class Resolvers::LunchesSearch
     value "updatedAt_DESC"
   end
 
-  option :dateRange, type: types[types.String], with: :apply_date_range
+  option :date_range, type: types[types.String], with: :apply_date_range
   option :limit, type: types.Int, with: :apply_limit
   option :skip, type: types.Int, with: :apply_skip
   option :ids, type: types[types.ID], with: :apply_ids
@@ -81,16 +80,5 @@ class Resolvers::LunchesSearch
 
   def apply_order_with_id_asc(scope)
     scope.order("id ASC")
-  end
-
-  # https://github.com/nettofarah/graphql-query-resolver
-
-  def fetch_results
-    # NOTE: Don't run QueryResolver during tests
-    return super unless context.present?
-
-    GraphQL::QueryResolver.run(Lunch, context, Types::QueryTypes::LunchType) do
-      super
-    end
   end
 end
