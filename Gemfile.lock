@@ -177,8 +177,6 @@ GEM
     graphql-client (0.18.0)
       activesupport (>= 3.0)
       graphql
-    graphql-query-resolver (0.2.0)
-      graphql (~> 1.0, >= 1.0.0)
     graphql-remote_loader (1.0.6)
       graphql (~> 1.9)
       graphql-batch (~> 0.3)
@@ -472,7 +470,6 @@ DEPENDENCIES
   graphiql-rails
   graphql (>= 1.9)
   graphql-client
-  graphql-query-resolver
   graphql-remote_loader
   guard
   guard-rspec
