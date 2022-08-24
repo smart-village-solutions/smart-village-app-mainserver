@@ -69,7 +69,7 @@ saas-build:
   extends: .docker_build_release
   variables:
     PROJECT: saas
-    NODENAME: node-002.sva
+    NODENAME: node-004.sva
 
 #
 # List of releases to deploy
