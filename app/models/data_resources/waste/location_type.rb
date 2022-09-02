@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 class Waste::LocationType < ApplicationRecord
   belongs_to :address, optional: true
+  belongs_to :waste_tour, class_name: "Waste::Tour", foreign_key: "waste_tour_id"
   has_many :pick_up_times, class_name: "Waste::PickUpTime", foreign_key: "waste_location_type_id"
 
   validates_presence_of :waste_type
@@ -25,9 +28,10 @@ end
 #
 # Table name: waste_location_types
 #
-#  id         :bigint           not null, primary key
-#  waste_type :string(255)
-#  address_id :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id            :bigint           not null, primary key
+#  waste_type    :string(255)
+#  address_id    :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  waste_tour_id :integer
 #
