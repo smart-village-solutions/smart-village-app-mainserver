@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Waste::PickUpTime < ApplicationRecord
   belongs_to :waste_location_type, class_name: "Waste::LocationType", foreign_key: "waste_location_type_id"
 

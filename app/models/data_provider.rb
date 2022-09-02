@@ -61,4 +61,5 @@ end
 #  roles           :text(65535)
 #  data_type       :integer          default("general_importer")
 #  notice          :text(65535)
+#  municipality_id :integer
 #
