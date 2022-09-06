@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_26_164504) do
+ActiveRecord::Schema.define(version: 2022_09_09_081855) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "description"
@@ -179,7 +179,7 @@ ActiveRecord::Schema.define(version: 2022_07_26_164504) do
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
     t.text "handler", null: false
-    t.text "last_error", limit: 16777215
+    t.text "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
@@ -572,11 +572,20 @@ ActiveRecord::Schema.define(version: 2022_07_26_164504) do
     t.integer "address_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "waste_tour_id"
   end
 
   create_table "waste_pick_up_times", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "waste_location_type_id"
     t.date "pickup_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "waste_tour_id"
+  end
+
+  create_table "waste_tours", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "title"
+    t.string "waste_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
