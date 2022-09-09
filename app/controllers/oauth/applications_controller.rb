@@ -7,7 +7,8 @@ class Oauth::ApplicationsController < Doorkeeper::ApplicationsController
 
   def index
     if current_user.admin_role?
-      @applications = Doorkeeper::Application.page(params[:page])
+      oauth_app_ids = User.all.map(&:oauth_applications).map(&:ids).flatten
+      @applications = Doorkeeper::Application.where(id: oauth_app_ids).page(params[:page])
     else
       @applications = current_user.oauth_applications.page(params[:page])
     end
