@@ -37,11 +37,11 @@ module RedisAdapter
     # ---------------------------------- #
 
     def redis
-      @redis ||= Redis.new(driver: :hiredis, host: Settings.redis[:host], timeout: 2)
+      @redis ||= Redis.new(driver: :hiredis, host: MunicipalityService.settings[:redis_host], timeout: 2)
     end
 
     def namespace
-      @namespace ||= Settings.redis[:namespace]
+      @namespace ||= MunicipalityService.settings[:redis_namespace]
     end
   end
 end
