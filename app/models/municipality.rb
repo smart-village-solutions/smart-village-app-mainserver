@@ -10,6 +10,7 @@ class Municipality < ApplicationRecord
   after_create :create_admin_user
   after_create :create_mobile_app_user
   after_create :create_minio_bucket
+  after_create :create_uptime_robot_monitor
 
   store :settings,
         accessors: [
@@ -20,7 +21,8 @@ class Municipality < ApplicationRecord
           :openweathermap_api_key, :openweathermap_lat, :openweathermap_lon,
           :cms_url,
           :rollbar_access_token,
-          :redis_host, :redis_namespace
+          :redis_host, :redis_namespace,
+          :uptime_robot_api_key, :uptime_robot_alert_contacts
         ],
         coder: JSON
 
@@ -40,6 +42,10 @@ class Municipality < ApplicationRecord
   #
   # checking for "nil?" and not for "blank?" to enable manual empty values
   def setup_defaults
+    # Uptime Robot
+    self.uptime_robot_api_key = Settings.uptime_robot[:api_key] if self.uptime_robot_api_key.nil?
+    self.uptime_robot_alert_contacts = Settings.uptime_robot[:alert_contacts] if self.uptime_robot_alert_contacts.nil?
+
     # Mailer Settings
     self.mailer_notify_admin_to = Settings.mailer[:notify_admin][:to] if self.mailer_notify_admin_to.nil?
     self.mailjet_api_key = Settings.mailjet[:api_key] if self.mailjet_api_key.nil?
@@ -92,5 +98,9 @@ class Municipality < ApplicationRecord
       secret_key: minio_secret_key,
       region: minio_region
     ).create_bucket(minio_bucket)
+  end
+
+  def create_uptime_robot_monitor
+    UptimeRobotService.new(api_key: uptime_robot_api_key, alert_contacts: uptime_robot_alert_contacts, slug: slug).create_monitors
   end
 end
