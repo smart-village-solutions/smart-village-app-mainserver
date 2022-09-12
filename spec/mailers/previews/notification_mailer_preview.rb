@@ -18,9 +18,10 @@ class NotificationMailerPreview < ActionMailer::Preview
   end
 
   def survey_commented
+    municipality_id = Municipality.first.id
     survey = Survey::Poll.first_or_create
     comment = survey.comments.first_or_create(message: "Amet elit laborum commodo voluptate ut.")
 
-    NotificationMailer.survey_commented(comment, survey)
+    NotificationMailer.survey_commented(comment, survey, municipality_id)
   end
 end

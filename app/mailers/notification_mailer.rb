@@ -12,14 +12,14 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def survey_commented(comment, survey)
+  def survey_commented(comment, survey, municipality_id)
     creator_of_survey = survey.try(:data_provider).try(:user)
 
     return if creator_of_survey.blank?
 
     @survey = survey
     @comment = comment
-    @cms_url = Settings.cms[:url]
+    @cms_url = Municipality.find_by(id: municipality_id).settings[:cms_url]
 
     mail(
       to: creator_of_survey.email,

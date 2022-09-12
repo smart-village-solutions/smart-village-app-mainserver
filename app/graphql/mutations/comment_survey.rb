@@ -18,7 +18,7 @@ module Mutations
 
       begin
         comment.save
-        NotificationMailer.survey_commented(comment, survey).deliver_later
+        NotificationMailer.survey_commented(comment, survey, MunicipalityService.municipality_id).deliver_later
         OpenStruct.new(id: comment.id, status: "commented survey #{survey_id} successfully", status_code: 200)
       rescue => e
         error_status("Error on commenting: #{e}", 500)
