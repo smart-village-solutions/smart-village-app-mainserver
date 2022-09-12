@@ -2,6 +2,7 @@
 
 class NotificationMailerPreview < ActionMailer::Preview
   def notify_admin
+    municipality_id = Municipality.first.id
     app_user_content = AppUserContent.first_or_create(
       data_type: "json",
       data_source: "form",
@@ -14,7 +15,7 @@ class NotificationMailerPreview < ActionMailer::Preview
       }.to_json
     )
 
-    NotificationMailer.notify_admin(app_user_content)
+    NotificationMailer.notify_admin(app_user_content, municipality_id)
   end
 
   def survey_commented

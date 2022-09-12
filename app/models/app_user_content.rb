@@ -12,7 +12,7 @@ class AppUserContent < ApplicationRecord
   private
 
     def notify_admin
-      NotificationMailer.notify_admin(self).deliver_later
+      NotificationMailer.notify_admin(self, MunicipalityService.municipality_id).deliver_later
     end
 end
 
