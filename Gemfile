@@ -77,7 +77,7 @@ gem "search_object_graphql", "0.3.2"
 gem "unicorn"
 
 # Storage to minio service
-gem "aws-sdk-s3", require: false
+gem "aws-sdk-s3"
 
 # Hintergrunddienst delayed job
 gem "better_delayed_job_web"
