@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../loaders/directus_loader"
-
 module Types
   class QueryType < Types::BaseObject
     field :generic_items, [QueryTypes::GenericItemType], resolver: Resolvers::GenericItemSearch
@@ -69,6 +67,12 @@ module Types
     end
 
     field :surveys, [QueryTypes::SurveyPollType], resolver: Resolvers::SurveyPollsSearch
+
+    # PASS THROUGH FOR DIRECTUS ENDPOINT
+    field :directus, GraphQL::Types::JSON, null: false do
+      argument :query, String, required: false
+    end
+
 
     def weather_map(id: nil)
       return OpenWeatherMap.find_by(id: id) if id.present?
@@ -159,11 +163,6 @@ module Types
     # @return [Object] object with the contents of the file, if it exists - otherwise with {}
     def public_json_file(name:, version: nil)
       static_content_with_data_type("json", name, version)
-    end
-
-    # PASS THROUGH FOR DIRECTUS ENDPOINT
-    field :directus, GraphQL::Types::JSON, null: false do
-      argument :query, String, required: false
     end
 
     def directus(query:)

@@ -39,12 +39,12 @@ class DirectusLoader < GraphQL::RemoteLoader::Loader
 
   # Defining the GraphQL::Client::HTTP adapter that we use in query method
   def directus_http_adapter
-    graphql_endpoint = Settings.directus[:graphql_endpoint]
+    graphql_endpoint = MunicipalityService.settings[:directus_graphql_endpoint]
     return if graphql_endpoint.blank?
 
     GraphQL::Client::HTTP.new(graphql_endpoint) do
       def headers(_context)
-        graphql_access_token = Settings.directus[:graphql_access_token]
+        graphql_access_token = MunicipalityService.settings[:directus_graphql_access_token]
 
         { "Authorization" => "Bearer #{graphql_access_token}" }
       end
@@ -52,6 +52,6 @@ class DirectusLoader < GraphQL::RemoteLoader::Loader
   end
 
   def directus_defined?
-    Settings.directus[:graphql_endpoint].present?
+    MunicipalityService.settings[:directus_graphql_endpoint].present?
   end
 end
