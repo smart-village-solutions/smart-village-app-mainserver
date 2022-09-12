@@ -3,11 +3,11 @@
 class NotificationMailer < ApplicationMailer
   default template_path: "/mailers/notification"
 
-  def notify_admin(notify_admin_content)
+  def notify_admin(notify_admin_content, municipality_id)
     @notify_admin_content = notify_admin_content
 
     mail(
-      to: Settings.mailer[:notify_admin][:to],
+      to: Municipality.find_by(id: municipality_id).settings[:mailer_notify_admin_to],
       subject: t("mailers.notification.notify_admin.subject")
     )
   end
