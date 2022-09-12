@@ -27,6 +27,17 @@
 
       <h1>Settings</h1>
 
+      <h2>Uptime Robot</h2>
+      <div class="form-group">
+        <%= form.label :uptime_robot_api_key %>
+        <%= form.text_field :uptime_robot_api_key, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :uptime_robot_alert_contacts %>
+        <%= form.text_field :uptime_robot_alert_contacts, class: "form-control" %>
+      </div>
+
       <h2>Mailer</h2>
       <div class="form-group">
         <%= form.label :mailjet_api_key %>

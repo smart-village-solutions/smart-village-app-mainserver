@@ -85,6 +85,7 @@ class MunicipalitiesController < AdminController
         :directus_graphql_endpoint, :directus_graphql_access_token,
         :rollbar_access_token,
         :redis_host, :redis_namespace,
+        :uptime_robot_api_key, :uptime_robot_alert_contacts
       )
     end
 end
