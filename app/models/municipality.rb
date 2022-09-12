@@ -9,6 +9,7 @@ class Municipality < ApplicationRecord
   before_create :setup_defaults
   after_create :create_admin_user
   after_create :create_mobile_app_user
+  after_create :create_minio_bucket
 
   store :settings,
         accessors: [
@@ -80,5 +81,16 @@ class Municipality < ApplicationRecord
 
   def create_mobile_app_user
     SetupUserService.new(provider_name: "Mobile App", email: "mobile-app@smart-village.app", role: 2, municipality_id: self.id, application_name: "Mobile App (iOS/Android)")
+  end
+
+  def create_minio_bucket
+    return unless minio_config_valid?
+
+    MinioService.new(
+      endpoint: minio_endpoint,
+      access_key: minio_access_key,
+      secret_key: minio_secret_key,
+      region: minio_region
+    ).create_bucket(minio_bucket)
   end
 end
