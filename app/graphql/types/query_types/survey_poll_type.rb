@@ -13,8 +13,8 @@ module Types
     field :response_options, [QueryTypes::SurveyResponseOptionsType], null: true
     field :data_provider, QueryTypes::DataProviderType, null: true
     field :visible, GraphQL::Types::Boolean, null: true
-    field :canComment, GraphQL::Types::Boolean, null: true
-    field :isMultilingual, GraphQL::Types::Boolean, null: true
+    field :can_comment, GraphQL::Types::Boolean, null: true
+    field :is_multilingual, GraphQL::Types::Boolean, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
 
