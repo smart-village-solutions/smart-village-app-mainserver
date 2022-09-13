@@ -35,7 +35,7 @@ class User < ApplicationRecord
            class_name: "Doorkeeper::Application",
            as: :owner
 
-  # Diese Methode muss kommt von Devise und muss überschrieben werden, damit
+  # Diese Methode kommt von Devise und muss überschrieben werden, damit
   # der eigene "validates_uniqueness_of :email" ausgeführt wird.
   def will_save_change_to_email?
     false

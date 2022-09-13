@@ -101,6 +101,8 @@ class Municipality < ApplicationRecord
   end
 
   def create_uptime_robot_monitor
+    return unless Rails.env.production?
+
     UptimeRobotService.new(api_key: uptime_robot_api_key, alert_contacts: uptime_robot_alert_contacts, slug: slug).create_monitors
   end
 end
