@@ -5,6 +5,7 @@ require "search_object/plugin/graphql"
 class Resolvers::LunchesSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
+  # todo: hier fehlt ein Filter auf current User?
   scope { Lunch.upcoming }
 
   type types[Types::QueryTypes::LunchType]

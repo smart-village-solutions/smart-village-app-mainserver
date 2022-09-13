@@ -92,23 +92,23 @@ module Types
     end
 
     def point_of_interest(id:)
-      PointOfInterest.find_by(id: id)
+      PointOfInterest.filtered_for_current_user(context[:current_user]).find_by(id: id)
     end
 
     def event_record(id:)
-      EventRecord.find_by(id: id)
+      EventRecord.filtered_for_current_user(context[:current_user]).find_by(id: id)
     end
 
     def news_item(id:)
-      NewsItem.find_by(id: id)
+      NewsItem.filtered_for_current_user(context[:current_user]).find_by(id: id)
     end
 
     def generic_item(id:)
-      GenericItem.find(id)
+      GenericItem.filtered_for_current_user(context[:current_user]).find(id)
     end
 
     def tour(id:)
-      Tour.find_by(id: id)
+      Tour.filtered_for_current_user(context[:current_user]).find_by(id: id)
     end
 
     def category_tree
@@ -116,10 +116,12 @@ module Types
     end
 
     def waste_location_types
+      # todo: Check ob das so ausreicht an Filterung für eine Municipality
       Waste::LocationType.all
     end
 
     def waste_location_type(id:)
+      # todo: Check ob das so ausreicht an Filterung für eine Municipality
       Waste::LocationType.find(id)
     end
 
@@ -138,6 +140,7 @@ module Types
     end
 
     def lunch(id:)
+      # todo: Check ob das so ausreicht an Filterung für eine Municipality
       Lunch.find_by(id: id)
     end
 
