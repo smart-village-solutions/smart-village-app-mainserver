@@ -27,7 +27,7 @@ class DirectusLoader < GraphQL::RemoteLoader::Loader
   # Defining the GraphQL::Client that we use in query method
   def directus_client
     @directus_client ||= GraphQL::Client.new(
-      schema: GraphQL::Client.load_schema(directus_http_adapter),
+      schema: GraphQL::Client.load_schema("public/directus_schema.json"),
       execute: directus_http_adapter
     )
     @directus_client.allow_dynamic_queries = true
