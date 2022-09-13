@@ -11,9 +11,9 @@ module Mutations
              required: false,
              as: :date_attributes,
              prepare: ->(date, _ctx) { date.to_h }
-    argument :questionId, GraphQL::Types::ID, required: false
-    argument :questionTitle, Types::QueryTypes::I18nJSON, required: true
-    argument :questionAllowMultipleResponses, Types::QueryTypes::I18nJSON, required: false
+    argument :question_id, GraphQL::Types::ID, required: false
+    argument :question_title, Types::QueryTypes::I18nJSON, required: true
+    argument :question_allow_multiple_responses, Types::QueryTypes::I18nJSON, required: false
     argument :response_options, [GraphQL::Types::JSON], required: true
     argument :can_comment, GraphQL::Types::Boolean, required: false
     argument :is_multilingual, GraphQL::Types::Boolean, required: false
