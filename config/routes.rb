@@ -37,12 +37,12 @@ Rails.application.routes.draw do
 
   get "user" => "users/status#show"
 
-  authenticate :user do
+  post "/graphql", to: "graphql#execute"
+
+  constraints(lambda { |request| MunicipalityConstraint.authorized?(request) }) do
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
     match "/background" => BetterDelayedJobWeb, anchor: false, via: [:get, :post]
   end
-
-  post "/graphql", to: "graphql#execute"
 
   get "/generate_204", to: "application#generate_204", status: 204
 
