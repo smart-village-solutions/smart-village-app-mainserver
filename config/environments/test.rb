@@ -45,4 +45,5 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   ADMIN_URL = "server.smart-village.test"
+  CMS_URL = "cms.smart-village.test"
 end

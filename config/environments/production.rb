@@ -100,4 +100,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   ADMIN_URL = "server.smart-village.app"
+  CMS_URL = "cms.smart-village.app"
 end
