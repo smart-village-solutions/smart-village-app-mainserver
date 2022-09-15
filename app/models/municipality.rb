@@ -30,6 +30,10 @@ class Municipality < ApplicationRecord
     "http://#{slug}.#{ADMIN_URL}"
   end
 
+  def cms_url
+    "http://#{slug}.#{ADMIN_URL.gsub("server.", "cms.")}"
+  end
+
   def minio_config_valid?
     minio_endpoint.present? &&
       minio_access_key.present? &&
