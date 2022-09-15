@@ -70,4 +70,5 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = { address: "localhost", port: 1025 }
 
   ADMIN_URL = "server.smart-village.local:4000"
+  CMS_URL = "cms.smart-village.local:3000"
 end
