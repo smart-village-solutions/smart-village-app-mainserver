@@ -408,6 +408,25 @@
       </div>
     </div>
   </div>
+
+  <br>
+
+  <h2>Importer Feeds</h2>
+
+  <div class="form-group">
+    <%= d.hidden_field :import_feeds %>
+    <% content = d.object.import_feeds.to_s.html_safe %>
+    <% valid_json_content = JSON.parse(content) rescue nil %>
+    <% unless valid_json_content %>
+      <p class="text-danger"><small><em>JSON format is not valid!</em></small></p>
+    <% end %>
+    <div id="code_editor" style="height: 400px;"></div>
+    <small class="form-text text-muted">
+      <a target="_blank" href="https://tpwd.atlassian.net/wiki/spaces/SVA/pages/2606202881/RSS+Importer+Config+Options">
+        https://tpwd.atlassian.net/wiki/spaces/SVA/pages/2606202881/RSS+Importer+Config+Options
+      </a>
+    </small>
+  </div>
 <% end %>
 
 <br>
@@ -416,3 +435,24 @@
   <%= f.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primary" %>
   <%= link_to t('doorkeeper.applications.buttons.cancel'), accounts_path, class: "btn btn-default" %>
 </div>
+
+<script>
+  $(function () {
+    var container = document.getElementById("code_editor")
+    var options = {
+      statusBar: false,
+      modes: ['code', 'tree'],
+      onChangeText: function(jsonString) {
+        $("#user_data_provider_attributes_import_feeds").val(jsonString);
+      }
+    }
+    var editor = new JSONEditor(container, options)
+
+    <% content = @user.data_provider.import_feeds.to_s.html_safe %>
+    <% if content.present? %>
+      editor.set(<%= content %>);
+    <% else %>
+      editor.set([{}]);
+    <% end %>
+  });
+</script>

@@ -36,8 +36,8 @@ Rails.application.routes.draw do
   devise_for :admins
 
   get "user" => "users/status#show"
-
   post "/graphql", to: "graphql#execute"
+  get "import_feeds", to: "import_feeds#index"
 
   constraints(lambda { |request| MunicipalityConstraint.authorized?(request) }) do
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"

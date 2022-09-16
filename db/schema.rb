@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_23_212011) do
+ActiveRecord::Schema.define(version: 2022_09_16_091955) do
 
   create_table "accessibility_informations", charset: "utf8", force: :cascade do |t|
     t.text "description"
@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(version: 2022_08_23_212011) do
     t.integer "data_type", default: 0
     t.text "notice"
     t.integer "municipality_id"
+    t.text "import_feeds", size: :medium
   end
 
   create_table "data_resource_categories", charset: "utf8", force: :cascade do |t|
@@ -620,11 +621,19 @@ ActiveRecord::Schema.define(version: 2022_08_23_212011) do
     t.integer "address_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "waste_tour_id"
   end
 
   create_table "waste_pick_up_times", charset: "utf8", force: :cascade do |t|
     t.integer "waste_location_type_id"
     t.date "pickup_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "waste_tours", charset: "utf8", force: :cascade do |t|
+    t.string "title"
+    t.string "waste_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

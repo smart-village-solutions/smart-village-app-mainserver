@@ -49,6 +49,20 @@ class DataProvider < ApplicationRecord
 
     data_resource_settings.where(data_resource_type: data_resource).first
   end
+
+  def import_feeds_json
+    return [] if import_feeds.blank?
+
+    JSON.parse(import_feeds)
+  end
+
+  def import_auth_credentials
+    user = User.unscoped.where(municipality_id: municipality.id, data_provider_id: id).first
+
+    return nil if user.blank?
+    oauth_app = user.oauth_applications.first
+    { client_key: oauth_app.uid, client_secret: oauth_app.plaintext_secret, municipality_slug: municipality.slug }
+  end
 end
 
 # == Schema Information
