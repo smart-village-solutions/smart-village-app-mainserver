@@ -14,7 +14,7 @@ class StaticContent < ApplicationRecord
   attr_accessor :force_create
 
   validates_presence_of :name, :data_type
-  validates :name, uniqueness: { case_sensitive: false, scope: :version }
+  validates :name, uniqueness: { case_sensitive: false, scope: [:version, :municipality_id] }
   belongs_to :municipality
 
   scope :filter_by_type, ->(type) { where data_type: type }
