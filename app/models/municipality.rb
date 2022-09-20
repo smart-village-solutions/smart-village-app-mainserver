@@ -11,6 +11,7 @@ class Municipality < ApplicationRecord
   after_create :create_mobile_app_user
   after_create :create_minio_bucket
   after_create :create_uptime_robot_monitor
+  after_create :create_category_and_static_content
 
   store :settings,
         accessors: [
@@ -108,5 +109,52 @@ class Municipality < ApplicationRecord
     return unless Rails.env.production?
 
     UptimeRobotService.new(api_key: uptime_robot_api_key, alert_contacts: uptime_robot_alert_contacts, slug: slug).create_monitors
+  end
+
+  def create_category_and_static_content
+    category = Category.where(name: "Nachrichten", municipality_id: self.id).first_or_create
+    initial_content = initial_static_content_data_for_news(category.id)
+    StaticContent.create(name: "globalSettings", content: initial_content, data_type: "json", municipality_id: self.id)
+  end
+
+  def initial_static_content_data_for_news(category_id)
+    {
+      "filter": {
+        "news": false,
+        "events": true
+      },
+      "showImageRights": false,
+      "sections": {
+        "showNews": true,
+        "showPointsOfInterestAndTours": true,
+        "showEvents": true,
+        "headlineNews": "Nachrichten",
+        "buttonNews": "Alle Nachrichten anzeigen",
+        "categoriesNews": [
+          {
+            "categoryId": category_id,
+            "categoryTitle": "Nachrichten",
+            "categoryTitleDetail": "Nachricht",
+            "categoryButton": "Alle Nachrichten anzeigen"
+          }
+        ],
+        "headlinePointsOfInterestAndTours": "Touren und Orte",
+        "buttonPointsOfInterestAndTours": "Alle Touren und Orte anzeigen",
+        "headlineEvents": "Veranstaltungen",
+        "buttonEvents": "Alle Veranstaltungen anzeigen",
+        "headlineService": "Service",
+        "headlineAbout": "Über die App"
+      },
+      "settings": {
+        "pushNotifications": true,
+        "feedbackFooter": true,
+        "matomo": false,
+        "locationService": false,
+        "onboarding": false
+      },
+      "widgets": [
+        "weather"
+      ]
+    }.to_json
   end
 end
