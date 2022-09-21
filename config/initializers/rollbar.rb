@@ -23,7 +23,10 @@ Rollbar.configure do |config|
   # provide a lambda like the following. It should return a hash.
   # config.custom_data_method = lambda { {:some_key => "some_value" } }
   config.custom_data_method = lambda {
-    { municipality_id: MunicipalityService.municipality_id }
+    {
+      municipality_id: MunicipalityService.municipality_id,
+      minio_bucket: MunicipalityService.settings[:minio_bucket]
+    }
   }
 
   # Add exception class names to the exception_level_filters hash to
