@@ -81,8 +81,12 @@ class ResourceService
 
         if @resource.save
           create_external_resource
-          FacebookService.delay.send_post_to_page(resource_id: @resource.id, resource_type: @resource_class.name)
           set_default_categories(@resource) if @resource.respond_to?(:categories)
+          begin
+            FacebookService.send_post_to_page(resource_id: @resource.id, resource_type: @resource_class.name)
+          rescue StandardError => e
+            Rails.logger.error "Error while sending post to facebook: #{e.message}"
+          end
         end
 
         @resource
