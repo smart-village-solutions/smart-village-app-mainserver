@@ -12,8 +12,7 @@ class NotificationMailer < ApplicationMailer
     mail(
       to: municipality.settings[:mailer_notify_admin_to],
       from: municipality.settings[:mailjet_default_from],
-      subject: t("mailers.notification.notify_admin.subject"),
-      delivery_method_options: delivery_options
+      subject: t("mailers.notification.notify_admin.subject")
     )
   end
 
