@@ -11,16 +11,16 @@ class Resolvers::GenericItemSearch
   type types[Types::QueryTypes::GenericItemType]
 
   class GenericItemOrder < ::Types::BaseEnum
-    value "createdAt_ASC"
     value "createdAt_DESC"
-    value "id_ASC"
-    value "id_DESC"
-    value "publicationDate_ASC"
-    value "publicationDate_DESC"
-    value "publishedAt_ASC"
-    value "publishedAt_DESC"
-    value "updatedAt_ASC"
+    value "createdAt_ASC"
     value "updatedAt_DESC"
+    value "updatedAt_ASC"
+    value "publishedAt_DESC"
+    value "publishedAt_ASC"
+    value "publicationDate_DESC"
+    value "publicationDate_ASC"
+    value "id_DESC"
+    value "id_ASC"
   end
 
   option :categoryId, type: types.ID, with: :apply_category_id
@@ -50,22 +50,6 @@ class Resolvers::GenericItemSearch
     scope.order(value)
   end
 
-  def apply_order_with_publication_date_desc(scope)
-    scope.order("publication_date DESC")
-  end
-
-  def apply_order_with_publication_date_asc(scope)
-    scope.order("publication_date ASC")
-  end
-
-  def apply_order_with_published_at_desc(scope)
-    scope.order("published_at DESC")
-  end
-
-  def apply_order_with_published_at_asc(scope)
-    scope.order("published_at ASC")
-  end
-
   def apply_order_with_created_at_desc(scope)
     scope.order("created_at DESC")
   end
@@ -80,6 +64,22 @@ class Resolvers::GenericItemSearch
 
   def apply_order_with_updated_at_asc(scope)
     scope.order("updated_at ASC")
+  end
+
+  def apply_order_with_published_at_desc(scope)
+    scope.order("published_at DESC")
+  end
+
+  def apply_order_with_published_at_asc(scope)
+    scope.order("published_at ASC")
+  end
+
+  def apply_order_with_publication_date_desc(scope)
+    scope.order("publication_date DESC")
+  end
+
+  def apply_order_with_publication_date_asc(scope)
+    scope.order("publication_date ASC")
   end
 
   def apply_order_with_id_desc(scope)

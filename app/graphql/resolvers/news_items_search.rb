@@ -11,14 +11,14 @@ class Resolvers::NewsItemsSearch
   type types[Types::QueryTypes::NewsItemType]
 
   class NewsItemsOrder < ::Types::BaseEnum
-    value "createdAt_ASC"
     value "createdAt_DESC"
-    value "id_ASC"
-    value "id_DESC"
-    value "publishedAt_ASC"
-    value "publishedAt_DESC"
-    value "updatedAt_ASC"
+    value "createdAt_ASC"
     value "updatedAt_DESC"
+    value "updatedAt_ASC"
+    value "publishedAt_DESC"
+    value "publishedAt_ASC"
+    value "id_DESC"
+    value "id_ASC"
   end
 
   option :limit, type: types.Int, with: :apply_limit

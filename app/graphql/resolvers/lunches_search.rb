@@ -11,12 +11,12 @@ class Resolvers::LunchesSearch
   type types[Types::QueryTypes::LunchType]
 
   class LunchesOrder < ::Types::BaseEnum
-    value "createdAt_ASC"
     value "createdAt_DESC"
-    value "id_ASC"
-    value "id_DESC"
-    value "updatedAt_ASC"
+    value "createdAt_ASC"
     value "updatedAt_DESC"
+    value "updatedAt_ASC"
+    value "id_DESC"
+    value "id_ASC"
   end
 
   option :dateRange, type: types[types.String], with: :apply_date_range
