@@ -28,11 +28,11 @@ class Municipality < ApplicationRecord
         coder: JSON
 
   def url
-    "http://#{slug}.#{ADMIN_URL}"
+    "https://#{slug}.#{ADMIN_URL}"
   end
 
   def cms_url
-    "http://#{slug}.#{CMS_URL}"
+    "https://#{slug}.#{CMS_URL}"
   end
 
   def minio_config_valid?

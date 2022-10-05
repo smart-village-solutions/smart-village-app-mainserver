@@ -15,11 +15,11 @@ module MunicipalityAuthorization
   def determine_municipality
     municipality_service = MunicipalityService.new(subdomains: request.subdomains)
 
-    redirect_to("http://#{ADMIN_URL}/municipalities") and return if municipality_service.admin_domain?
+    redirect_to("https://#{ADMIN_URL}/municipalities") and return if municipality_service.admin_domain?
 
     @current_municipality = municipality_service.municipality if municipality_service.subdomain_valid?
     if @current_municipality.blank?
-      redirect_to "http://#{ADMIN_URL}/municipalities?municipality_suggestion=#{municipality_service.slug_name}"
+      redirect_to "https://#{ADMIN_URL}/municipalities?municipality_suggestion=#{municipality_service.slug_name}"
     end
   end
 
