@@ -108,13 +108,22 @@ class Municipality < ApplicationRecord
   def create_uptime_robot_monitor
     return unless Rails.env.production?
 
-    UptimeRobotService.new(api_key: uptime_robot_api_key, alert_contacts: uptime_robot_alert_contacts, slug: slug).create_monitors
+    UptimeRobotService.new(
+      api_key: uptime_robot_api_key,
+      alert_contacts: uptime_robot_alert_contacts,
+      slug: slug
+    ).create_monitors
   end
 
   def create_category_and_static_content
     category = Category.where(name: "Nachrichten", municipality_id: self.id).first_or_create
-    initial_content = initial_static_content_data_for_news(category.id)
-    StaticContent.create(name: "globalSettings", content: initial_content, data_type: "json", municipality_id: self.id)
+
+    StaticContent.create(
+      name: "globalSettings",
+      content: initial_static_content_data_for_news(category.id),
+      data_type: "json",
+      municipality_id: self.id
+    )
   end
 
   def initial_static_content_data_for_news(category_id)
