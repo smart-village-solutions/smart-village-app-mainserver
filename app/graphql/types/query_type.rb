@@ -39,7 +39,7 @@ module Types
     field :waste_tour_dates, [QueryTypes::WastePickUpTimeType], null: false do
       argument :tour_id, ID, required: true
     end
-    field :waste_addresses, [QueryTypes::AddressType], function: Resolvers::WasteLocationSearch
+    field :waste_addresses, [QueryTypes::AddressType], resolver: Resolvers::WasteLocationSearch
     field :waste_location_types, [QueryTypes::WasteLocationTypeType], null: false do
       argument :tour_id, ID, required: false
     end
