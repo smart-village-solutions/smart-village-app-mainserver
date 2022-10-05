@@ -69,6 +69,10 @@
       </li>
 
       <li class="nav-item">
+        <%= link_to "CMS", Rails.application.credentials.cms[:url], class: 'nav-link', target: "_blank" %>
+      </li>
+
+      <li class="nav-item">
         <%= link_to "Sign out (#{current_user.email})", destroy_user_session_path, class: 'nav-link', method: :delete %>
       </li>
     </ul>
