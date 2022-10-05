@@ -10,14 +10,14 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
   type types[Types::QueryTypes::CategoryType]
 
   class CategoriesOrder < ::Types::BaseEnum
-    value "name_ASC"
-    value "name_DESC"
-    value "createdAt_ASC"
     value "createdAt_DESC"
-    value "id_ASC"
-    value "id_DESC"
-    value "updatedAt_ASC"
+    value "createdAt_ASC"
     value "updatedAt_DESC"
+    value "updatedAt_ASC"
+    value "id_DESC"
+    value "id_ASC"
+    value "name_DESC"
+    value "name_ASC"
   end
 
   option :limit, type: GraphQL::Types::Int, with: :apply_limit
@@ -46,14 +46,6 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
     scope.order(value)
   end
 
-  def apply_order_with_name_desc(scope)
-    scope.order("name DESC")
-  end
-
-  def apply_order_with_name_asc(scope)
-    scope.order("name ASC")
-  end
-
   def apply_order_with_created_at_desc(scope)
     scope.order("created_at DESC")
   end
@@ -76,5 +68,24 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
 
   def apply_order_with_id_asc(scope)
     scope.order("id ASC")
+  end
+
+  def apply_order_with_name_desc(scope)
+    scope.order("name DESC")
+  end
+
+  def apply_order_with_name_asc(scope)
+    scope.order("name ASC")
+  end
+
+  # https://github.com/nettofarah/graphql-query-resolver
+
+  def fetch_results
+    # NOTE: Don't run QueryResolver during tests
+    return super unless context.present?
+
+    GraphQL::QueryResolver.run(Category, context, Types::QueryTypes::CategoryType) do
+      super
+    end
   end
 end

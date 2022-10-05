@@ -10,14 +10,14 @@ class Resolvers::WasteLocationSearch < GraphQL::Schema::Resolver
   type types[Types::QueryTypes::AddressType]
 
   class WasteLocationOrder < ::Types::BaseEnum
-    value "createdAt_ASC"
     value "createdAt_DESC"
-    value "updatedAt_ASC"
+    value "createdAt_ASC"
     value "updatedAt_DESC"
-    value "id_ASC"
+    value "updatedAt_ASC"
     value "id_DESC"
-    value "street_ASC"
+    value "id_ASC"
     value "street_DESC"
+    value "street_ASC"
   end
 
   option :limit, type: GraphQL::Types::Int, with: :apply_limit
@@ -65,12 +65,12 @@ class Resolvers::WasteLocationSearch < GraphQL::Schema::Resolver
     scope.order("id ASC")
   end
 
-  def apply_order_with_street_asc(scope)
-    scope.order("street ASC")
-  end
-
   def apply_order_with_street_desc(scope)
     scope.order("street DESC")
+  end
+
+  def apply_order_with_street_asc(scope)
+    scope.order("street ASC")
   end
 
   # https://github.com/nettofarah/graphql-query-resolver

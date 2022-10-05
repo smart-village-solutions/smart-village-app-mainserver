@@ -10,15 +10,15 @@ class Resolvers::PointsOfInterestSearch < GraphQL::Schema::Resolver
   type types[Types::QueryTypes::PointOfInterestType]
 
   class PointsOfInterestOrder < ::Types::BaseEnum
-    value "createdAt_ASC"
     value "createdAt_DESC"
-    value "id_ASC"
-    value "id_DESC"
-    value "name_ASC"
-    value "name_DESC"
-    value "RAND"
-    value "updatedAt_ASC"
+    value "createdAt_ASC"
     value "updatedAt_DESC"
+    value "updatedAt_ASC"
+    value "id_DESC"
+    value "id_ASC"
+    value "name_DESC"
+    value "name_ASC"
+    value "RAND"
   end
 
   option :limit, type: GraphQL::Types::Int, with: :apply_limit
@@ -90,20 +90,20 @@ class Resolvers::PointsOfInterestSearch < GraphQL::Schema::Resolver
     scope.order("updated_at ASC")
   end
 
-  def apply_order_with_name_desc(scope)
-    scope.order("name DESC")
-  end
-
-  def apply_order_with_name_asc(scope)
-    scope.order("name ASC")
-  end
-
   def apply_order_with_id_desc(scope)
     scope.order("id DESC")
   end
 
   def apply_order_with_id_asc(scope)
     scope.order("id ASC")
+  end
+
+  def apply_order_with_name_desc(scope)
+    scope.order("name DESC")
+  end
+
+  def apply_order_with_name_asc(scope)
+    scope.order("name ASC")
   end
 
   def apply_order_with_rand(scope)

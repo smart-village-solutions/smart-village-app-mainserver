@@ -11,12 +11,12 @@ class Resolvers::LunchesSearch < GraphQL::Schema::Resolver
   type types[Types::QueryTypes::LunchType]
 
   class LunchesOrder < ::Types::BaseEnum
-    value "createdAt_ASC"
     value "createdAt_DESC"
-    value "id_ASC"
-    value "id_DESC"
-    value "updatedAt_ASC"
+    value "createdAt_ASC"
     value "updatedAt_DESC"
+    value "updatedAt_ASC"
+    value "id_DESC"
+    value "id_ASC"
   end
 
   option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range

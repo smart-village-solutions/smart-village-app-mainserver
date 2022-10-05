@@ -10,16 +10,16 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   type types[Types::QueryTypes::EventRecordType]
 
   class EventRecordsOrder < ::Types::BaseEnum
-    value "createdAt_ASC"
     value "createdAt_DESC"
-    value "id_ASC"
-    value "id_DESC"
-    value "listDate_ASC"
-    value "listDate_DESC"
-    value "title_ASC"
-    value "title_DESC"
-    value "updatedAt_ASC"
+    value "createdAt_ASC"
     value "updatedAt_DESC"
+    value "updatedAt_ASC"
+    value "id_DESC"
+    value "id_ASC"
+    value "title_DESC"
+    value "title_ASC"
+    value "listDate_DESC"
+    value "listDate_ASC"
   end
 
   option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range
@@ -102,20 +102,20 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
     scope.order("updated_at ASC")
   end
 
-  def apply_order_with_title_desc(scope)
-    scope.order("title DESC")
-  end
-
-  def apply_order_with_title_asc(scope)
-    scope.order("title ASC")
-  end
-
   def apply_order_with_id_desc(scope)
     scope.order("id DESC")
   end
 
   def apply_order_with_id_asc(scope)
     scope.order("id ASC")
+  end
+
+  def apply_order_with_title_desc(scope)
+    scope.order("title DESC")
+  end
+
+  def apply_order_with_title_asc(scope)
+    scope.order("title ASC")
   end
 
   def apply_order_with_list_date_desc(scope)
