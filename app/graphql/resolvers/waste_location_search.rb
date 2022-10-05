@@ -16,6 +16,8 @@ class Resolvers::WasteLocationSearch < GraphQL::Schema::Resolver
     value "updatedAt_DESC"
     value "id_ASC"
     value "id_DESC"
+    value "street_ASC"
+    value "street_DESC"
   end
 
   option :limit, type: GraphQL::Types::Int, with: :apply_limit
@@ -61,5 +63,24 @@ class Resolvers::WasteLocationSearch < GraphQL::Schema::Resolver
 
   def apply_order_with_id_asc(scope)
     scope.order("id ASC")
+  end
+
+  def apply_order_with_street_asc(scope)
+    scope.order("street ASC")
+  end
+
+  def apply_order_with_street_desc(scope)
+    scope.order("street DESC")
+  end
+
+  # https://github.com/nettofarah/graphql-query-resolver
+
+  def fetch_results
+    # NOTE: Don't run QueryResolver during tests
+    return super unless context.present?
+
+    GraphQL::QueryResolver.run(Address, context, Types::QueryTypes::AddressType) do
+      super
+    end
   end
 end

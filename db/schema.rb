@@ -629,6 +629,14 @@ ActiveRecord::Schema.define(version: 2022_09_16_091955) do
     t.date "pickup_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "waste_tour_id"
+  end
+
+  create_table "waste_tours", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "title"
+    t.string "waste_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "waste_tours", charset: "utf8", force: :cascade do |t|
