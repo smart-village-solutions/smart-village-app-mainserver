@@ -37,8 +37,14 @@ module Types
     field :categories, [QueryTypes::CategoryType], function: Resolvers::CategoriesSearch
     field :category_tree, GraphQL::Types::JSON, null: false
 
+    field :waste_tours, [QueryTypes::WasteTourType], null: false
+    field :waste_tour_dates, [QueryTypes::WastePickUpTimeType], null: false do
+      argument :tour_id, ID, required: true
+    end
     field :waste_addresses, [QueryTypes::AddressType], function: Resolvers::WasteLocationSearch
-    field :waste_location_types, [QueryTypes::WasteLocationTypeType], null: false
+    field :waste_location_types, [QueryTypes::WasteLocationTypeType], null: false do
+      argument :tour_id, ID, required: false
+    end
     field :waste_location_type, QueryTypes::WasteLocationTypeType, null: false do
       argument :id, ID, required: true
     end
@@ -69,6 +75,14 @@ module Types
     end
 
     field :surveys, [QueryTypes::SurveyPollType], function: Resolvers::SurveyPollsSearch
+
+    def waste_tours
+      Waste::Tour.all
+    end
+
+    def waste_tour_dates(tour_id:)
+      Waste::PickUpTime.where(waste_tour_id: tour_id)
+    end
 
     def weather_map(id: nil)
       return OpenWeatherMap.find_by(id: id) if id.present?
@@ -111,8 +125,11 @@ module Types
       Category.order(:name).select(:id, :name, :ancestry).arrange_serializable
     end
 
-    def waste_location_types
-      Waste::LocationType.all
+    def waste_location_types(tour_id: nil)
+      waste_location_types = Waste::LocationType.all
+      waste_location_types = waste_location_types.where(waste_tour_id: tour_id) if tour_id.present?
+
+      waste_location_types
     end
 
     def waste_location_type(id:)

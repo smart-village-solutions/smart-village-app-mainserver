@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Waste::DeviceRegistration < ApplicationRecord
   belongs_to :notification_device, class_name: "Notification::Device", foreign_key: "notification_device_token", primary_key: "token", optional: true
 

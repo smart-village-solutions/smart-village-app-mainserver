@@ -10,5 +10,6 @@ module Types
     field :address_id, Integer, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
+    field :waste_tour, QueryTypes::WasteTourType, null: true
   end
 end

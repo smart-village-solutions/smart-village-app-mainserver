@@ -4,7 +4,11 @@
 class Address < ApplicationRecord
   belongs_to :addressable, polymorphic: true, optional: true
   has_one :geo_location, as: :geo_locateable, dependent: :destroy
-  has_many :waste_location_types, class_name: "Waste::LocationType"
+  has_many :waste_location_types, class_name: "Waste::LocationType", dependent: :destroy
+
+  scope :filtered_for_current_user, ->(_current_user) { all }
+
+  attr_accessor :force_create
 
   accepts_nested_attributes_for :geo_location,
                                 reject_if: lambda { |attr|
