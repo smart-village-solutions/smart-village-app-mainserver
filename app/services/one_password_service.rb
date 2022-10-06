@@ -14,7 +14,7 @@ class OnePasswordService
   def self.setup(municipality_id:, password:, username:)
     municipality = Municipality.find_by(id: municipality_id)
     title = "[SaaS] #{username} #{municipality.slug}.server.smart-village.app - #{municipality.title}"
-    url = "https://#{municipality.slug}.server.smart-village.app"
+    url = municipality.url
 
     two_factor_auth = `oathtool -b --totp '3H7AMJNHUAQORGPX'` # 2FaktorAuthentifizierung
     one_password_email = "it@tpwd.de"
