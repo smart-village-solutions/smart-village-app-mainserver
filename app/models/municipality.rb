@@ -9,6 +9,7 @@ class Municipality < ApplicationRecord
   before_create :setup_defaults
   after_create :create_admin_user
   after_create :create_mobile_app_user
+  after_create :create_mowas_user
   after_create :create_minio_bucket
   after_create :create_uptime_robot_monitor
   after_create :create_category_and_static_content
@@ -92,6 +93,10 @@ class Municipality < ApplicationRecord
 
   def create_mobile_app_user
     SetupUserService.new(provider_name: "Mobile App", email: "mobile-app@smart-village.app", role: 2, municipality_id: self.id, application_name: "Mobile App (iOS/Android)")
+  end
+
+  def create_mowas_user
+    SetupUserService.new(provider_name: "MoWaS", email: "mowas@smart-village.app", role: 0, municipality_id: self.id, application_name: "Warnsystem des Bundes")
   end
 
   def create_minio_bucket
