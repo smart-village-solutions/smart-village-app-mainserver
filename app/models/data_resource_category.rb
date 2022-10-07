@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class DataResourceCategory < ApplicationRecord
-
   belongs_to :category
   belongs_to :data_resource, polymorphic: true
 end
