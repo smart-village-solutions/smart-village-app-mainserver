@@ -18,6 +18,12 @@ class DataResourceSetting < ApplicationRecord
         coder: JSON
 
   belongs_to :data_provider
+
+  def has_default_categories?
+    return false unless default_category_ids.present?
+
+    default_category_ids.compact.uniq.delete_if(&:blank?).present?
+  end
 end
 
 # == Schema Information

@@ -55,20 +55,20 @@
 
     <h1 id="accounts">Nutzerverwaltung</h1>
 
-    <p><%= link_to "Neuen Nutzer erstellen", new_account_path, class: 'btn btn-success' %></p>
+    <p><%= link_to "Neuen Nutzer erstellen", new_account_path, class: "btn btn-success" %></p>
 
-    <%= render partial: 'search_form', locals: { form_path: accounts_path, search_column: 'email' } %>
+    <%= render partial: "search_form", locals: { form_path: accounts_path, search_column: "email" } %>
 
     <table class="table table-striped">
       <thead>
         <tr>
           <th style="min-width: 55px">
             <%= link_to "ID", accounts_path(params_for_link(:id)) + "#accounts" %>
-            <%= render partial: 'sort_icon', locals: { sort_column: 'id' } %>
+            <%= render partial: "sort_icon", locals: { sort_column: "id" } %>
           </th>
           <th>
             <%= link_to "E-Mail", accounts_path(params_for_link(:email)) + "#accounts" %>
-            <%= render partial: 'sort_icon', locals: { sort_column: 'email' } %>
+            <%= render partial: "sort_icon", locals: { sort_column: "email" } %>
           </th>
           <th>Data Provider</th>
           <th>Rolle</th>
@@ -82,55 +82,56 @@
       </thead>
       <tbody>
         <% @users.each do |user| %>
+          <% data_provider = user.data_provider %>
+
           <tr id="user_<%= user.id %>">
             <td class="align-middle"><%= user.id %></td>
             <td class="align-middle"><%= link_to user.email, edit_account_path(user) %></td>
-            <td class="align-middle"><%= user.data_provider.try(:name) %></td>
+            <td class="align-middle"><%= data_provider.try(:name) %></td>
             <td class="align-middle"><%= user.role.try(:humanize) %></td>
             <td class="align-middle">
-              <span class="badge <%= user.try(:data_provider).try(:role_point_of_interest) ? 'badge-success' : 'badge-danger' %>">
-                <%= user.try(:data_provider).try(:role_point_of_interest) ? 'aktiv' : '' %>
+              <span class="badge <%= data_provider.try(:role_point_of_interest) ? 'badge-success' : 'badge-danger' %>">
+                <%= data_provider.try(:role_point_of_interest) ? "aktiv" : "" %>
               </span>
-                <% if user.try(:data_provider).try(:settings, "PointOfInterest").try(:default_category_ids).present? %>
+                <% if data_provider.try(:settings, "PointOfInterest")&.has_default_categories? %>
                   <span class="badge badge-secondary">ja</span>
                 <% end %>
             </td>
             <td class="align-middle">
-              <span class="badge <%= user.try(:data_provider).try(:role_tour) ? 'badge-success' : 'badge-danger' %>">
-                <%= user.try(:data_provider).try(:role_tour) ? 'aktiv' : '' %>
+              <span class="badge <%= data_provider.try(:role_tour) ? 'badge-success' : 'badge-danger' %>">
+                <%= data_provider.try(:role_tour) ? "aktiv" : "" %>
               </span>
-              <% if user.try(:data_provider).try(:settings, "Tour").try(:default_category_ids).present? %>
+              <% if data_provider.try(:settings, "Tour")&.has_default_categories? %>
                 <span class="badge badge-secondary">ja</span>
               <% end %>
             </td>
             <td class="align-middle">
-              <span class="badge <%= user.try(:data_provider).try(:role_news_item) ? 'badge-success' : 'badge-danger' %>">
-                <%= user.try(:data_provider).try(:role_news_item) ? 'aktiv' : '' %>
+              <span class="badge <%= data_provider.try(:role_news_item) ? 'badge-success' : 'badge-danger' %>">
+                <%= data_provider.try(:role_news_item) ? "aktiv" : "" %>
               </span>
-              <% if user.try(:data_provider).try(:settings, "NewsItem").try(:default_category_ids).present? %>
+              <% if data_provider.try(:settings, "NewsItem")&.has_default_categories? %>
                 <span class="badge badge-secondary">ja</span>
               <% end %>
             </td>
             <td class="align-middle">
-              <span class="badge <%= user.try(:data_provider).try(:role_event_record) ? 'badge-success' : 'badge-danger' %>">
-                <%= user.try(:data_provider).try(:role_event_record) ? 'aktiv' : '' %>
+              <span class="badge <%= data_provider.try(:role_event_record) ? 'badge-success' : 'badge-danger' %>">
+                <%= data_provider.try(:role_event_record) ? "aktiv" : "" %>
               </span>
-              <% if user.try(:data_provider).try(:settings, "EventRecord").try(:default_category_ids).present? %>
+              <% if data_provider.try(:settings, "EventRecord")&.has_default_categories? %>
                 <span class="badge badge-secondary">ja</span>
               <% end %>
             </td>
             <td class="align-middle" style="width: 70px">
-              <%= link_to t('doorkeeper.applications.buttons.edit'), edit_account_path(user), class: 'btn btn-sm btn-outline-secondary' %>
+              <%= link_to t('doorkeeper.applications.buttons.edit'), edit_account_path(user), class: "btn btn-sm btn-outline-secondary" %>
             </td>
             <td class="align-middle" style="width: 70px">
-              <%= link_to "Destroy", account_path(user), method: :delete, class: 'btn btn-sm btn-outline-danger', data: { confirm: "Sind sie sicher?" } %>
+              <%= link_to "Destroy", account_path(user), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: "Sind sie sicher?" } %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
 
-    <%= paginate @users, theme: 'twitter-bootstrap-4' %>
-
+    <%= paginate @users, theme: "twitter-bootstrap-4" %>
   </div>
 </div>
