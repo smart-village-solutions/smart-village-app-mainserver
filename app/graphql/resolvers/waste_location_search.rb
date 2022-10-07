@@ -72,15 +72,4 @@ class Resolvers::WasteLocationSearch < GraphQL::Schema::Resolver
   def apply_order_with_street_asc(scope)
     scope.order("street ASC")
   end
-
-  # https://github.com/nettofarah/graphql-query-resolver
-
-  def fetch_results
-    # NOTE: Don't run QueryResolver during tests
-    return super unless context.present?
-
-    GraphQL::QueryResolver.run(Address, context, Types::QueryTypes::AddressType) do
-      super
-    end
-  end
 end

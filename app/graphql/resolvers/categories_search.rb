@@ -77,15 +77,4 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
   def apply_order_with_name_asc(scope)
     scope.order("name ASC")
   end
-
-  # https://github.com/nettofarah/graphql-query-resolver
-
-  def fetch_results
-    # NOTE: Don't run QueryResolver during tests
-    return super unless context.present?
-
-    GraphQL::QueryResolver.run(Category, context, Types::QueryTypes::CategoryType) do
-      super
-    end
-  end
 end
