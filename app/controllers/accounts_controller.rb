@@ -97,7 +97,7 @@ class AccountsController < ApplicationController
         :role_waste_calendar,
         :role_job,
         :role_offer,
-        :role_constuction_site,
+        :role_construction_site,
         :role_survey,
         :role_encounter_support,
         :role_static_contents,

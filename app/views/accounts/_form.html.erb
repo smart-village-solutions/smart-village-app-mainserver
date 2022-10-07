@@ -389,8 +389,8 @@
 
       <div class="form-group">
         <div class="form-check">
-          <%= d.check_box :role_constuction_site, { class: "form-check-input" }, "true", "false" %>
-          <%= d.label :role_constuction_site, "Baustellen", class: "form-check-label" %>
+          <%= d.check_box :role_construction_site, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_construction_site, "Baustellen", class: "form-check-label" %>
         </div>
       </div>
 
@@ -413,7 +413,6 @@
   <br>
 
   <h2>Importer Feeds</h2>
-
   <div class="form-group">
     <%= d.hidden_field :import_feeds %>
     <% content = d.object.import_feeds.to_s.html_safe %>
