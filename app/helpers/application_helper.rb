@@ -1,7 +1,7 @@
 module ApplicationHelper
   def render_selectable_categories(categories, form)
+    category_tags = ""
     base_element = "user[data_provider_attributes][data_resource_settings_attributes][#{form.options[:child_index]}][default_category_ids][]"
-    category_tags = hidden_field_tag(base_element, false)
 
     categories.each do |category, subtree|
       tree_element = check_box_tag(

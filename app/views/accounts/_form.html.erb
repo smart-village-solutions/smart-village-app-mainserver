@@ -229,6 +229,7 @@
           <div class="form-group col-6">
             <%= s.label :default_category_ids, "Default Kategorien" %>
             <div class="category-tree">
+              <%= hidden_field_tag("user[data_provider_attributes][data_resource_settings_attributes][#{s.options[:child_index]}][default_category_ids][]", nil) %>
               <%= render_selectable_categories(Category.all.arrange, s) %>
             </div>
             <small class="form-text text-muted">
