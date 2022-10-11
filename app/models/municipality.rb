@@ -88,15 +88,52 @@ class Municipality < ApplicationRecord
   private
 
   def create_admin_user
-    SetupUserService.new(provider_name: "Administrator", email: "admin@smart-village.app", role: 1, municipality_id: self.id, application_name: "Administrator")
+    SetupUserService.new(
+      provider_name: "Administrator",
+      email: "admin@smart-village.app",
+      role: 1,
+      municipality_id: self.id,
+      application_name: "Administrator",
+      data_provider_roles: {
+        role_point_of_interest: true,
+        role_tour: true,
+        role_news_item: true,
+        role_event_record: true,
+        role_push_notification: true,
+        role_lunch: true,
+        role_waste_calendar: true,
+        role_job: true,
+        role_offer: true,
+        role_construction_site: true,
+        role_survey: true,
+        role_encounter_support: true,
+        role_static_contents: true,
+        role_tour_stops: true
+      }
+    )
   end
 
   def create_mobile_app_user
-    SetupUserService.new(provider_name: "Mobile App", email: "mobile-app@smart-village.app", role: 2, municipality_id: self.id, application_name: "Mobile App (iOS/Android)")
+    SetupUserService.new(
+      provider_name: "Mobile App",
+      email: "mobile-app@smart-village.app",
+      role: 2,
+      municipality_id: self.id,
+      application_name: "Mobile App (iOS/Android)"
+    )
   end
 
   def create_mowas_user
-    SetupUserService.new(provider_name: "MoWaS", email: "mowas@smart-village.app", role: 0, municipality_id: self.id, application_name: "Warnsystem des Bundes")
+    SetupUserService.new(
+      provider_name: "MoWaS",
+      email: "mowas@smart-village.app",
+      role: 0,
+      municipality_id: self.id,
+      application_name: "Warnsystem des Bundes",
+      data_provider_roles: {
+        role_news_item: true
+      }
+    )
   end
 
   def create_minio_bucket
