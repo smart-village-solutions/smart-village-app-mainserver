@@ -8,8 +8,8 @@
 # one_password_add_account_cmd = "op account add --address communicatio.1password.com --email #{one_password_email} --secret-key #{one_password_secret}"
 # one_password_sign_in_cmd = "op signin -f --raw"
 class OnePasswordService
-  require 'expect'
-  require 'pty'
+  require "expect"
+  require "pty"
 
   def self.setup(municipality_id:, password:, username:)
     municipality = Municipality.find_by(id: municipality_id)
@@ -24,7 +24,7 @@ class OnePasswordService
     one_password_add_account_cmd = "op account add --address communicatio.1password.com --email #{one_password_email} --secret-key #{one_password_secret}"
     one_password_sign_in_cmd = "op signin -f --raw --account #{one_password_account_id} > tmp/op_session_token"
 
-    # todo: folgende Zeilen auslagern nur nur einmal nach dem starten der App durchführen
+    # TODO: folgende Zeilen auslagern nur nur einmal nach dem starten der App durchführen
     begin
       PTY.spawn(one_password_add_account_cmd) do |reader, writer|
         reader.expect(/Enter the password.*/, 5) # cont. in 5s if input doesn't match
@@ -34,16 +34,18 @@ class OnePasswordService
         writer.puts(two_factor_auth)
         reader.gets
       end
-    rescue
+    rescue StandardError
       puts "Fehler beim Hinzufügen des 1Password Accounts"
     end
 
+    # sleep because the installation of the 1Password CLI client sometimes takes a little longer,
+    # but the prompt reports finished beforehand
     sleep(2)
 
     exp = RubyExpect::Expect.spawn(one_password_sign_in_cmd)
     exp.procedure do
       each do
-        expect /.*at communicatio\.1password\.com:/ do
+        expect(/.*at communicatio\.1password\.com:/) do
           send one_password_pass
         end
       end
