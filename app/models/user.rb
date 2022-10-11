@@ -57,9 +57,17 @@ class User < ApplicationRecord
     subdomains = Array(warden_conditions.fetch(:subdomain, "").to_s.try(:split, "."))
 
     municipality_service = MunicipalityService.new(subdomains: subdomains)
-    @current_municipality =  municipality_service.municipality if municipality_service.subdomain_valid?
+    @current_municipality = municipality_service.municipality if municipality_service.subdomain_valid?
 
-    return where(:email => warden_conditions[:email], municipality_id: @current_municipality.id ).first if @current_municipality.present?
+    if @current_municipality.present?
+      params = { municipality_id: @current_municipality.id }
+      params.merge!(email: warden_conditions[:email]) if warden_conditions[:email].present?
+      if warden_conditions[:authentication_token].present?
+        params.merge!(authentication_token: warden_conditions[:authentication_token])
+      end
+
+      return where(params).first
+    end
 
     where("1 == 0")
   end
