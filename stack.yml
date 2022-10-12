@@ -29,6 +29,8 @@ services:
         traefik.docker.network: public
       restart_policy:
         condition: on-failure
+        delay: 60s
+        max_attempts: 1
 
   app:
     image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver/int-development-main_server
