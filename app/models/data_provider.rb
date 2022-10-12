@@ -23,6 +23,7 @@ class DataProvider < ApplicationRecord
 
   has_many :data_resource_settings, class_name: "DataResourceSetting"
   has_many :news_items
+  has_many :generic_items
   has_many :tours
   has_many :point_of_interests
   has_many :event_records

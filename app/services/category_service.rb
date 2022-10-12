@@ -17,13 +17,16 @@ class CategoryService
 
     data_provider_settings = data_provider.settings(data_resource_type)
     return if data_provider_settings.blank?
+    return unless data_provider_settings.has_default_categories?
 
-    default_category_ids = data_provider_settings.try(:default_category_ids)
-    return if default_category_ids.blank?
+    begin
+      data_elements = data_provider.send(data_resource_type.underscore.pluralize)
+    rescue StandardError
+      return
+    end
 
-    data_elements = data_provider.send(data_resource_type.underscore.pluralize)
     data_elements.each do |data_element|
-      category_ids_to_add = default_category_ids.map(&:to_i) - data_element.category_ids
+      category_ids_to_add = data_provider_settings.default_category_ids.map(&:to_i) - data_element.category_ids
       data_element.categories << Category.where(id: category_ids_to_add) if category_ids_to_add.present? && category_ids_to_add.any?
     end
   end
