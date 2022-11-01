@@ -3,7 +3,7 @@
 class SetupUserService
   REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob"
 
-  def initialize(provider_name:, email:, application_name:, role:, municipality_id:, data_provider_roles:)
+  def initialize(provider_name:, email:, application_name:, role:, municipality_id:, data_provider_roles: nil)
     municipality = Municipality.find(municipality_id)
     user_password = SecureRandom.alphanumeric
 
