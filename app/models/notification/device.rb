@@ -4,6 +4,8 @@ class Notification::Device < ApplicationRecord
   enum device_type: { undefined: 0, ios: 1, android: 2 }
   has_many :waste_registrations, class_name: "Waste::DeviceRegistration", primary_key: "token", foreign_key: "notification_device_token"
 
+  serialize :exclude_data_provider_ids, Array
+
   include Sortable
   sortable_on :device_type, :token
 
@@ -19,9 +21,10 @@ end
 #
 # Table name: notification_devices
 #
-#  id          :bigint           not null, primary key
-#  token       :string(255)
-#  device_type :integer          default("undefined")
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id                        :bigint           not null, primary key
+#  token                     :string(255)
+#  device_type               :integer          default("undefined")
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  exclude_data_provider_ids :text(65535)
 #
