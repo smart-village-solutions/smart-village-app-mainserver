@@ -14,4 +14,6 @@ end
 #  id           :bigint           not null, primary key
 #  tour_id      :integer
 #  tour_stop_id :integer
+#  created_at   :datetime
+#  updated_at   :datetime
 #
