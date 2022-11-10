@@ -16,6 +16,7 @@ module Types
     field :update_waste_tour_dates, mutation: Mutations::UpdateWasteTourDates
     field :create_or_update_survey_poll, mutation: Mutations::CreateOrUpdateSurveyPoll
     field :create_or_update_static_content, mutation: Mutations::CreateOrUpdateStaticContent
+    field :send_push_notification, mutation: Mutations::SendPushNotification
 
     # destroys
     field :destroy_record, mutation: Mutations::DestroyRecord
