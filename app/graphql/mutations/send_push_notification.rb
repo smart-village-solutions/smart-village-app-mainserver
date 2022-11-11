@@ -9,6 +9,8 @@ module Mutations
     type Types::StatusType
 
     def resolve(**params)
+      raise "Access not permitted" unless roles[:role_push_notification] == true
+
       if params.include?(:title) && params[:title].present?
         PushNotification.delay.send_notifications(params)
       end
@@ -19,5 +21,11 @@ module Mutations
         status_code: 200
       )
     end
+
+    private
+
+      def roles
+        context[:current_user].try(:data_provider).try(:roles) || {}
+      end
   end
 end
