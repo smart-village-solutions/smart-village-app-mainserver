@@ -102,6 +102,7 @@ class AccountsController < ApplicationController
         :role_encounter_support,
         :role_static_contents,
         :role_tour_stops,
+        :role_deadlines,
         logo_attributes: %i[
           id
           url
