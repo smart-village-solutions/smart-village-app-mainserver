@@ -100,7 +100,8 @@ class NewsItem < ApplicationRecord
         body: push_body,
         data: {
           id: id,
-          query_type: self.class.to_s
+          query_type: self.class.to_s,
+          data_provider_id: data_provider.id
         }
       }
 
