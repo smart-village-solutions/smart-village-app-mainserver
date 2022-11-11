@@ -27,7 +27,7 @@ class Notification::DevicesController < ApplicationController
     PushNotification.delay.send_notifications(options) if options[:title].present?
 
     respond_to do |format|
-      format.html { redirect_to notification_devices_url, notice: "Push notifications gesendet" }
+      format.html { redirect_to notification_devices_url, notice: "Push Notifications gesendet" }
     end
   end
 
@@ -36,7 +36,7 @@ class Notification::DevicesController < ApplicationController
     PushNotification.delay.send_notification(@notification_device, options) if options[:title].present?
 
     respond_to do |format|
-      format.html { redirect_to notification_device_path(@notification_device), notice: "Push notification gesendet" }
+      format.html { redirect_to notification_device_path(@notification_device), notice: "Push Notification gesendet" }
     end
   end
 
@@ -47,6 +47,7 @@ class Notification::DevicesController < ApplicationController
       .sorted_for_params(params)
       .where_token_contains(params[:query])
       .page(params[:page])
+
     @push_logs = RedisAdapter.get_push_logs
   end
 
