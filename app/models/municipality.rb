@@ -125,13 +125,16 @@ class Municipality < ApplicationRecord
 
   def create_mowas_user
     SetupUserService.new(
-      provider_name: "MoWaS",
+      provider_name: "Warnsystem des Bundes",
+      description: "Zur automatischen Erstellung von Warnungen durch das MoWaS (Modulares Warnsystem des Bundes) inkl. Push-Notification",
+      logo_url: "https://fileserver.smart-village.app/fileserver/partner/mowas-banner.png",
       email: "mowas@smart-village.app",
       role: 0,
       municipality_id: self.id,
-      application_name: "Warnsystem des Bundes",
+      application_name: "Zugriff per CMS",
       data_provider_roles: {
-        role_news_item: true
+        role_news_item: true,
+        role_push_notification: true,
       }
     )
   end
