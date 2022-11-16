@@ -20,7 +20,7 @@ module Mutations
       address = Address.joins(:waste_location_types).where(waste_location_type_attributes[:address_attributes]).first_or_create
       waste_location_type = Waste::LocationType.where(address_id: address.id, waste_type: waste_location_type_attributes[:waste_type] ).first_or_create
 
-      Waste::PickUpTime.create(params.merge(waste_location_type_id: waste_location_type.id))
+      Waste::PickUpTime.where(params.merge(waste_location_type_id: waste_location_type.id)).first_or_create
     end
   end
 end

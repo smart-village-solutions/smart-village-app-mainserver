@@ -13,7 +13,7 @@ gem "mysql2", "= 0.5.4"
 # Use Puma as the app server
 gem "puma", "~> 3.12"
 # Use SCSS for stylesheets
-gem "sass-rails", "~> 5.0"
+gem "sass-rails", "~> 5.0", ">= 5.0.7"
 # Use Uglifier as compressor for JavaScript assets
 gem "uglifier", ">= 1.3.0"
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -58,7 +58,7 @@ gem "doorkeeper"
 gem "jquery-rails"
 gem "jsoneditor-rails"
 gem "mailjet"
-gem "mimemagic", "~> 0.3.6"
+gem "mimemagic", ">= 0.3.10"
 
 gem "order_as_specified"
 
@@ -123,7 +123,7 @@ end
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem "listen", ">= 3.0.5", "< 3.2"
-  gem "web-console", ">= 3.3.0"
+  gem "web-console", ">= 3.7.0"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem "pry-rails"
   gem "spring"

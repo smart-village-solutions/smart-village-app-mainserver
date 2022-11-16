@@ -2,7 +2,13 @@
   <div class="col">
     <h1>Push Notifications senden</h1>
 
-    <%= render partial: "notification/devices/send_notifications" %>
+    <%= render(
+          partial: "notification/devices/send_notification",
+          locals: {
+            submit_path: send_notifications_notification_devices_path,
+            submit_text: "An #{pluralize(@notification_devices.total_count, "Device")} senden"
+          }
+        ) %>
 
     <br />
 

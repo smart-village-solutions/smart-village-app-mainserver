@@ -1,4 +1,10 @@
-<%= form_tag(send_notification_notification_devices_path(@notification_device), method: :post) do  %>
+<% submit_path ||= send_notification_notification_devices_path(@notification_device) %>
+<% submit_text ||= "An Device senden" %>
+<% data_resources_for_select = DataResourceSetting::DATA_RESOURCES.map(&:to_s).sort %>
+<% data_providers_for_select = DataProvider.all.map { |dp| [dp.name, dp.id] }
+                                               .sort_by { |dp| dp[0].downcase } %>
+
+<%= form_tag(submit_path, method: :post) do  %>
   <div class="form-group">
     <%= label_tag "notification_title", "Title *" %>
     <%= text_field_tag "notification[title]", nil ,class: "form-control", required: true %>
@@ -12,13 +18,13 @@
   <div class="form-group">
     <%= label_tag "notification_data_query_type", "Data type" %>
     <%= select_tag "notification[data][query_type]",
-                   options_for_select(DataResourceSetting::DATA_RESOURCES.map(&:to_s).sort),
+                   options_for_select(data_resources_for_select),
                    class: "form-control",
                    include_blank: true %>
   </div>
 
   <div class="form-group">
-    <%= label_tag "notification_data_query_id", "Data ID" %>
+    <%= label_tag "notification_data_id", "Data ID" %>
     <%= text_field_tag "notification[data][id]", nil, class: "form-control" %>
     <small class="form-text text-muted">
       Hier kann die ID eines bestimmten Datensatzes mitgegeben werden
@@ -26,6 +32,17 @@
   </div>
 
   <div class="form-group">
-    <%= submit_tag "An Device senden", class: "btn btn-primary" %>
+    <%= label_tag "notification_data_data_provider_id", "Data Provider ID" %>
+    <%= select_tag "notification[data][data_provider_id]",
+                   options_for_select(data_providers_for_select),
+                   class: "form-control",
+                   include_blank: true %>
+    <small class="form-text text-muted">
+      Hier kann die ID eines bestimmten Data Providers mitgegeben werden
+    </small>
+  </div>
+
+  <div class="form-group">
+    <%= submit_tag submit_text, class: "btn btn-primary" %>
   </div>
 <% end %>

@@ -5,11 +5,11 @@ class Notification::DevicesController < ApplicationController
 
   include SortableController
 
-  skip_before_action :verify_authenticity_token, only: [:create, :destroy]
+  skip_before_action :verify_authenticity_token, only: [:create, :update, :destroy]
 
-  before_action :auth_user_or_doorkeeper, only: [:create, :destroy]
-  before_action :authenticate_user!, except: [:create, :destroy]
-  before_action :authenticate_user_role, except: [:create, :destroy]
+  before_action :auth_user_or_doorkeeper, only: [:create, :update, :destroy]
+  before_action :authenticate_user!, except: [:create, :update, :destroy]
+  before_action :authenticate_user_role, except: [:create, :update, :destroy]
   before_action :set_notification_device, only: [:show, :edit, :update, :destroy, :send_notification]
 
   def authenticate_user_role
@@ -27,7 +27,7 @@ class Notification::DevicesController < ApplicationController
     PushNotification.delay.send_notifications(options) if options[:title].present?
 
     respond_to do |format|
-      format.html { redirect_to notification_devices_url, notice: "Push notifications gesendet" }
+      format.html { redirect_to notification_devices_url, notice: "Push Notifications gesendet" }
     end
   end
 
@@ -36,7 +36,7 @@ class Notification::DevicesController < ApplicationController
     PushNotification.delay.send_notification(@notification_device, options) if options[:title].present?
 
     respond_to do |format|
-      format.html { redirect_to notification_device_path(@notification_device), notice: "Push notification gesendet" }
+      format.html { redirect_to notification_device_path(@notification_device), notice: "Push Notification gesendet" }
     end
   end
 
@@ -47,6 +47,7 @@ class Notification::DevicesController < ApplicationController
       .sorted_for_params(params)
       .where_token_contains(params[:query])
       .page(params[:page])
+
     @push_logs = RedisAdapter.get_push_logs
   end
 
@@ -91,7 +92,7 @@ class Notification::DevicesController < ApplicationController
   # PATCH/PUT /notification/devices/1.json
   def update
     respond_to do |format|
-      if @notification_device.update(notification_device_params)
+      if @notification_device.present? && @notification_device.update(notification_device_params)
         format.html { redirect_to @notification_device, notice: "Device was successfully updated." }
         format.json { render :show, status: :ok, location: @notification_device }
       else
@@ -120,12 +121,15 @@ class Notification::DevicesController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_notification_device
+      token = notification_device_params[:token]
+      @notification_device = Notification::Device.find_by(token: token) and return if token.present?
       @notification_device = Notification::Device.find(params[:id]) if params[:id].present?
-      @notification_device = Notification::Device.find_by(token: params[:token]) if params[:token].present?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def notification_device_params
-      params.require(:notification_device).permit(:token, :device_type)
+      params.require(:notification_device).permit(
+        :token, :device_type, exclude_data_provider_ids: []
+      )
     end
 end
