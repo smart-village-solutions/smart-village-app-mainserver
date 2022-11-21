@@ -1,0 +1,16 @@
+<% if @confirmation_action == "destroy" && @record.present? && @record.external.present? %>
+  Bitte bestätigen Sie die Löschung von:
+
+  <div class="row">
+    <div class="col">
+      <h3><%= @record.external.title %></h3>
+      erstellt am: <%= @record.external.created_at %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <%= link_to "Eintrag löschen", "/confirmation/#{@confirmation_action}/#{@confirmation_token}", method: :delete, class: "btn btn-danger" %>
+    </div>
+  </div>
+<% end %>
