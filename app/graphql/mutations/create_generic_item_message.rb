@@ -1,7 +1,7 @@
 # frozen_string_literal: false
 
 module Mutations
-  class MessageGenericItem < BaseMutation
+  class CreateGenericItemMessage < BaseMutation
     argument :generic_item_id, ID, required: true
     argument :name, String, required: true
     argument :email, String, required: true
@@ -29,7 +29,7 @@ module Mutations
 
       return error_status("Access not permitted: GenericItem missing") if generic_item.blank?
 
-      generic_item_message = GenericItemMessage.create(
+      generic_item_message = GenericItem::Message.create(
         generic_item_id: generic_item_id,
         name: name,
         email: email,
@@ -40,7 +40,7 @@ module Mutations
 
       unless generic_item_message.valid?
         return error_status(
-          "Access not permitted: GenericItemMessage invalid,
+          "Access not permitted: GenericItem::Message invalid,
           #{generic_item_message.error_messages}"
         )
       end
@@ -54,7 +54,7 @@ module Mutations
           status_code: 200
         )
       rescue StandardError => e
-        error_status("Error with GenericItemMessage: #{e}", 500)
+        error_status("Error with GenericItem::Message: #{e}", 500)
       end
     end
 

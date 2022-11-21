@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class GenericItemMessage < ApplicationRecord
+class GenericItem::Message < ApplicationRecord
   belongs_to :generic_item
 end
 
