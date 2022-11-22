@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Public::ConfirmRecordsController < PublicController
-
   before_action :validate_record_token, only: [:confirm, :destroy]
 
   def confirm
@@ -10,24 +9,31 @@ class Public::ConfirmRecordsController < PublicController
   end
 
   def destroy
+    @record.destroy
+
     flash[:notice] = "Der Eintrag wurde erfolgreich gelöscht."
+
     redirect_to confirm_record_action_path(confirm_action: "confirmed")
   end
 
-  # Show error page if token is invalid
   def error
   end
 
   private
 
-  def validate_record_token
-    # todo: sollen wir hier noch was anderes prüfen?
-    # - das eine Übergebene E-Mail stimmt?
-    # - ein Recaptcha?
+    def validate_record_token
+      return if params[:confirm_action] == "confirmed"
 
-    @record = ExternalReference.find_by(unique_id: params[:token])
-    return if @record.present? && @record.external.present?
+      external_reference = ExternalReference.find_by(unique_id: params[:token])
+      @record = external_reference.try(:external)
 
-    redirect_to action: :error
-  end
+      return if @record.present?
+
+      # Show error page if token is invalid
+
+      @title = "Es ist ein Fehler aufgetreten"
+      @message = "Der Eintrag konnte nicht gefunden werden."
+
+      render :error
+    end
 end
