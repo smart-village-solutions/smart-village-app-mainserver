@@ -1,0 +1,25 @@
+# frozen_string_literal: true
+
+class NoticeboardMailerPreview < ActionMailer::Preview
+  def notify_creator
+    generic_item = OpenStruct.new(
+      generic_type: GenericItem::GENERIC_TYPES[:noticeboard],
+      title: "Test",
+      published_at: Time.now,
+      category_name: "Angebot"
+    )
+
+    generic_item.contacts = [OpenStruct.new(first_name: "Tim Test", email: "tim.test@smart-village.app")]
+    generic_item.dates = [OpenStruct.new(date_start: Time.now, date_end: Time.now + 3.months)]
+    generic_item.content_blocks = [OpenStruct.new(body: "Test", title: "Test")]
+    generic_item.external_reference = OpenStruct.new(unique_id: "1234567890")
+
+    StaticContent.first_or_create(
+      name: "noticeboard_notify_creator",
+      data_type: "json",
+      content: "{\"app_name\":\"Test-App\",\"mail_footer\":[\"Zeile 1\", \"\", \"Zeile 2\"]}"
+    )
+
+    NoticeboardMailer.notify_creator(generic_item)
+  end
+end
