@@ -76,7 +76,7 @@ class GenericItem < ApplicationRecord
   end
 
   def perform_callbacks
-    noticeboard_notify_creator if is_noticeboard?
+    noticeboard_notify_creator if noticeboard?
   end
 
   private
@@ -100,7 +100,7 @@ class GenericItem < ApplicationRecord
       end
     end
 
-    def is_noticeboard?
+    def noticeboard?
       generic_type == GENERIC_TYPES[:noticeboard]
     end
 
