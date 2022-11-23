@@ -17,6 +17,7 @@ module Types
     field :create_or_update_survey_poll, mutation: Mutations::CreateOrUpdateSurveyPoll
     field :create_or_update_static_content, mutation: Mutations::CreateOrUpdateStaticContent
     field :send_push_notification, mutation: Mutations::SendPushNotification
+    field :create_generic_item_message, mutation: Mutations::CreateGenericItemMessage
 
     # destroys
     field :destroy_record, mutation: Mutations::DestroyRecord
