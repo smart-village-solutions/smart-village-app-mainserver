@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>SmartVillageAppMainserver</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
+    <%= render partial: "layouts/partials/head" %>
   </head>
-
   <body>
     <%= yield %>
   </body>

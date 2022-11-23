@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%= render partial: "layouts/partials/head" %>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+    <%= link_to "Smart Village App - Main-Server", root_path, class: "navbar-brand" %>
+  </nav>
+
+  <div class="container">
+    <%- if flash[:notice].present? %>
+      <div class="alert alert-info">
+        <%= flash[:notice] %>
+      </div>
+    <% end -%>
+
+    <%= yield %>
+  </div>
+</body>
+</html>

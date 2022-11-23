@@ -1,0 +1,35 @@
+<% if @confirmation_action == "destroy" && @record.present? %>
+  <div class="row">
+    <div class="col">
+      <h1>Bitte bestätigen Sie die Löschung von:</h1>
+
+      <h3><%= @record.try(:title) || @record.try(:name) %></h3>
+      <p>
+        erstellt am:
+        <%= @record.created_at.strftime(t("doorkeeper.authorized_applications.index.date_format")) %>
+
+        <% if @record.class.to_s == "GenericItem" &&
+              @record.dates.present? &&
+              @record.dates.first.try(:date_end).present? %>
+          <br />
+
+          gültig bis:
+          <%= @record.dates.first.date_end.strftime(t("doorkeeper.authorized_applications.index.date_format")) %>
+        <% end %>
+      </p>
+
+      <hr />
+
+      <p>
+        Mit einem Klick löschen Sie den Eintrag unwiderruflich.
+      </p>
+
+      <%= link_to(
+            "Eintrag löschen",
+            "/confirmation/#{@confirmation_action}/#{@confirmation_token}",
+            method: :delete,
+            class: "btn btn-danger"
+          ) %>
+    </div>
+  </div>
+<% end %>
