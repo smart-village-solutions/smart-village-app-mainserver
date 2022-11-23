@@ -2,6 +2,13 @@ class GenericItem < ApplicationRecord
   include FilterByRole
   has_ancestry orphan_strategy: :destroy
 
+  GENERIC_TYPES = {
+    job: "Job",
+    offer: "Offer",
+    construction_site: "ConstructionSite",
+    noticeboard: "Noticeboard"
+  }.freeze
+
   attr_accessor :force_create
   attr_accessor :category_name
   attr_accessor :category_names
@@ -44,6 +51,7 @@ class GenericItem < ApplicationRecord
   accepts_nested_attributes_for :content_blocks, :data_provider, :price_informations, :opening_hours,
                                 :media_contents, :accessibility_informations, :addresses, :contacts,
                                 :companies, :locations, :dates
+
   def generic_items
     children
   end
@@ -67,6 +75,10 @@ class GenericItem < ApplicationRecord
     }
   end
 
+  def perform_callbacks
+    noticeboard_notify_creator if is_noticeboard?
+  end
+
   private
 
     def find_or_create_category
@@ -88,6 +100,13 @@ class GenericItem < ApplicationRecord
       end
     end
 
+    def is_noticeboard?
+      generic_type == GENERIC_TYPES[:noticeboard]
+    end
+
+    def noticeboard_notify_creator
+      NoticeboardMailer.notify_creator(self).deliver_later
+    end
 end
 
 # == Schema Information

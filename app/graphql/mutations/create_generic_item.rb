@@ -74,7 +74,10 @@ module Mutations
     type Types::QueryTypes::GenericItemType
 
     def resolve(**params)
-      create_generic_item_node(params, nil)
+      generic_item = create_generic_item_node(params, nil)
+      generic_item.perform_callbacks
+
+      generic_item
     end
 
     def create_generic_item_node(params, parent_id)
