@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
 class GenericItem::Message < ApplicationRecord
+  after_create :new_message_for_entry
+
   belongs_to :generic_item
+
+  private
+
+    def new_message_for_entry
+      NoticeboardMailer.new_message_for_entry(self).deliver_later
+    end
 end
 
 # == Schema Information
