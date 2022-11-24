@@ -8,7 +8,7 @@ class NoticeboardMailer < ApplicationMailer
   def notify_creator(generic_item)
     @name = generic_item.contacts.first.try(:first_name)
     @email = generic_item.contacts.first.try(:email)
-    @category = generic_item.category_name
+    @category = generic_item.categories.first.try(:name)
     @date_end = generic_item.dates.first.try(:date_end).try(:strftime, "%d.%m.%Y")
     @destroy_url = confirm_record_action_url(
       confirm_action: "destroy",
@@ -30,7 +30,7 @@ class NoticeboardMailer < ApplicationMailer
     @name = generic_item.contacts.first.try(:first_name)
     @email = generic_item.contacts.first.try(:email)
     @title = generic_item.title
-    @category = generic_item.category_name
+    @category = generic_item.categories.first.try(:name)
     @date_end = generic_item.dates.first.try(:date_end).try(:strftime, "%d.%m.%Y")
     @destroy_url = confirm_record_action_url(
       confirm_action: "destroy",

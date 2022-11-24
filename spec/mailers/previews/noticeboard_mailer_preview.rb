@@ -5,11 +5,11 @@ class NoticeboardMailerPreview < ActionMailer::Preview
     generic_item = OpenStruct.new(
       generic_type: GenericItem::GENERIC_TYPES[:noticeboard],
       title: "Test",
-      published_at: Time.now,
-      category_name: "Angebot"
+      published_at: Time.now
     )
 
     generic_item.contacts = [OpenStruct.new(first_name: "Tim Test", email: "tim.test@smart-village.app")]
+    generic_item.categories = [OpenStruct.new(name: "Angebot")]
     generic_item.dates = [OpenStruct.new(date_start: Time.now, date_end: Time.now + 3.months)]
     generic_item.content_blocks = [OpenStruct.new(body: "Test", title: "Test")]
     generic_item.external_reference = OpenStruct.new(unique_id: "1234567890")
@@ -27,11 +27,11 @@ class NoticeboardMailerPreview < ActionMailer::Preview
     generic_item = OpenStruct.new(
       generic_type: GenericItem::GENERIC_TYPES[:noticeboard],
       title: "Test",
-      published_at: Time.now,
-      category_name: "Angebot"
+      published_at: Time.now
     )
 
     generic_item.contacts = [OpenStruct.new(first_name: "Tim Test", email: "tim.test@smart-village.app")]
+    generic_item.categories = [OpenStruct.new(name: "Angebot")]
     generic_item.dates = [OpenStruct.new(date_start: Time.now, date_end: Time.now + 3.months)]
     generic_item.content_blocks = [OpenStruct.new(body: "Test", title: "Test")]
     generic_item.external_reference = OpenStruct.new(unique_id: "1234567890")
