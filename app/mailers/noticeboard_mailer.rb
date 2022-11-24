@@ -44,7 +44,8 @@ class NoticeboardMailer < ApplicationMailer
     return unless valid_for_new_message_for_entry?
 
     mail(
-      from: "#{@sender_name} <#{@sender_email}>",
+      from: "#{@app_name} <#{default_params[:from]}>",
+      reply_to: "#{@sender_name} <#{@sender_email}>",
       to: "#{@name} <#{@email}>",
       subject: "Sie haben eine Nachricht zu Ihrem Eintrag (#{@category}) in der #{@app_name} erhalten"
     )
