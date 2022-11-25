@@ -24,4 +24,13 @@ RSpec.describe Notification::Push, type: :model do
       expect(notification.recurring_count).to eq(2)
     end
   end
+
+  describe "belongs_to" do
+    it "generic item" do
+      notification = FactoryBot.build(:notification_push_once)
+      generic_item = FactoryBot.build(:generic_item, push_notifications: [notification])
+
+      expect(generic_item.push_notifications.to_a.size).to eq(1)
+    end
+  end
 end
