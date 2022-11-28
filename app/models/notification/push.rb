@@ -3,6 +3,13 @@
 class Notification::Push < ApplicationRecord
   belongs_to :notification_pushable, polymorphic: true
 
+  store :data,
+        accessors: %i[
+          id
+          query_type
+          data_provider_id
+        ], coder: JSON
+
   def recurring_count
     return 0 unless recurring
 
@@ -37,4 +44,7 @@ end
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  recurring                  :integer          default(0)
+#  title                      :string(255)
+#  body                       :string(255)
+#  data                       :text(65535)
 #
