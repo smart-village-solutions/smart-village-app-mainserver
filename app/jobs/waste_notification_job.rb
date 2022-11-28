@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WasteNotificationJob
   def self.perform(waste_registration_id, waste_pickup_time_id)
     waste_pickup_time = Waste::PickUpTime.find_by(id: waste_pickup_time_id)
@@ -20,16 +22,7 @@ class WasteNotificationJob
     parsed_date = waste_pickup_time.pickup_date.try(:strftime, "%d.%m.%Y")
     body = "#{registration_to_check.street}: Am #{parsed_date} wird #{waste_types[registration_to_check.notify_for_waste_type]["label"]} abgeholt."
     message_options = { title: title, body: body }
-    messages = [message_options.merge(to: device.token)]
 
-    # Sending message with rescuing errors
-    client = Exponent::Push::Client.new
-
-    begin
-      feedback = client.send_messages(messages)
-      RedisAdapter.add_push_log(device.token, message_options.merge(date: DateTime.now, payload: feedback.try(:response).try(:body)))
-    rescue => e
-      RedisAdapter.add_push_log(device.token, message_options.merge(rescue_error: "waste push notification", error: e, date: DateTime.now))
-    end
+    PushNotification.delay.send_notification(device, message_options)
   end
 end

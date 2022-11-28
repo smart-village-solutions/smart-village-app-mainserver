@@ -121,7 +121,7 @@ class Notification::DevicesController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_notification_device
-      token = notification_device_params[:token]
+      token = notification_device_params[:token] if params[:notification_device].present?
       @notification_device = Notification::Device.find_by(token: token) and return if token.present?
       @notification_device = Notification::Device.find(params[:id]) if params[:id].present?
     end

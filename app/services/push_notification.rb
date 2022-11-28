@@ -11,7 +11,7 @@
 # }
 class PushNotification
   def self.send_notification(device, message_options = {})
-    SendSinglePushNotificationJob.perform_later(device.token, message_options)
+    SendSinglePushNotificationJob.perform_later(device.token, message_options) if Rails.env.production?
   end
 
   def self.send_notifications(message_options = {})
