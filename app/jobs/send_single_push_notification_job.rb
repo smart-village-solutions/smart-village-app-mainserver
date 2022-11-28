@@ -38,15 +38,19 @@ class SendSinglePushNotificationJob < ApplicationJob
   def cleanup_if_unregistered_device(device_token, payload)
     return if payload.blank?
 
-    data = payload["data"]
+    data = payload[:data]
 
     return if data.blank?
+    return unless data.is_a?(Array)
 
     data.each do |entry|
-      next unless entry["status"] == "error"
-      next unless entry["message"] == "The recipient device is not registered with FCM."
-      next if entry["details"].blank?
-      next unless entry["details"]["error"] == "DeviceNotRegistered"
+      next unless entry[:status] == "error"
+      next unless entry[:message] == "The recipient device is not registered with FCM."
+
+      details = entry[:details]
+
+      next if details.blank?
+      next unless details[:error] == "DeviceNotRegistered"
 
       Notification::Device.where(token: device_token).destroy_all
     end
