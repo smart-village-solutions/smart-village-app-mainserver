@@ -6,7 +6,7 @@ FactoryBot.define do
     notification_pushable_type { "GenericItem" }
     notification_pushable_id { 1 }
     once_at { "2022-11-25 17:00:00" }
-    is_recurring { false }
+    recurring { 0 }
     monday_at { nil }
     tuesday_at { nil }
     wednesday_at { nil }
@@ -21,7 +21,7 @@ FactoryBot.define do
     notification_pushable_type { "GenericItem" }
     notification_pushable_id { 2 }
     once_at { nil }
-    is_recurring { true }
+    recurring { 1 }
     monday_at { "12:00:00" }
     tuesday_at { nil }
     wednesday_at { nil }
@@ -36,7 +36,7 @@ FactoryBot.define do
     notification_pushable_type { "GenericItem" }
     notification_pushable_id { 3 }
     once_at { nil }
-    is_recurring { true }
+    recurring { 1 }
     monday_at { nil }
     tuesday_at { nil }
     wednesday_at { "14:00:00" }
@@ -53,9 +53,8 @@ end
 #
 #  id                         :bigint           not null, primary key
 #  notification_pushable_type :string(255)
-#  notification_pushable_id   :integer
+#  notification_pushable_id   :bigint
 #  once_at                    :datetime
-#  is_recurring               :boolean          default(FALSE)
 #  monday_at                  :time
 #  tuesday_at                 :time
 #  wednesday_at               :time
@@ -65,4 +64,5 @@ end
 #  sunday_at                  :time
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
+#  recurring                  :integer          default(0)
 #

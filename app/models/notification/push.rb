@@ -4,7 +4,7 @@ class Notification::Push < ApplicationRecord
   belongs_to :notification_pushable, polymorphic: true
 
   def recurring_count
-    return 0 unless is_recurring
+    return 0 unless recurring
 
     # filter present weekday fields and count them
     [
@@ -25,9 +25,8 @@ end
 #
 #  id                         :bigint           not null, primary key
 #  notification_pushable_type :string(255)
-#  notification_pushable_id   :integer
+#  notification_pushable_id   :bigint
 #  once_at                    :datetime
-#  is_recurring               :boolean          default(FALSE)
 #  monday_at                  :time
 #  tuesday_at                 :time
 #  wednesday_at               :time
@@ -37,4 +36,5 @@ end
 #  sunday_at                  :time
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
+#  recurring                  :integer          default(0)
 #

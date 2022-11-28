@@ -4,7 +4,7 @@ class CreateNotificationPushes < ActiveRecord::Migration[5.2]
   def change
     create_table :notification_pushes do |t|
       t.string :notification_pushable_type
-      t.integer :notification_pushable_id
+      t.bigint :notification_pushable_id
       t.datetime :once_at
       t.boolean :is_recurring, default: false
       t.time :monday_at
