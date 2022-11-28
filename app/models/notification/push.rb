@@ -10,8 +10,12 @@ class Notification::Push < ApplicationRecord
           data_provider_id
         ], coder: JSON
 
+  validates :recurring_count,
+            numericality: { greater_than: 0 },
+            if: ->(item) { item.recurring.positive? }
+
   def recurring_count
-    return 0 unless recurring
+    return 0 unless recurring.positive?
 
     # filter present weekday fields and count them
     [
