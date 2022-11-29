@@ -103,6 +103,7 @@ class AccountsController < ApplicationController
         :role_static_contents,
         :role_tour_stops,
         :role_deadlines,
+        :role_noticeboard,
         logo_attributes: %i[
           id
           url

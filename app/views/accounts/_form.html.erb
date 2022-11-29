@@ -413,6 +413,13 @@
           <%= d.label :role_tour_stops, "Tourstopps", class: "form-check-label" %>
         </div>
       </div>
+
+      <div class="form-group">
+        <div class="form-check">
+          <%= d.check_box :role_noticeboard, { class: "form-check-input" }, "true", "false" %>
+          <%= d.label :role_noticeboard, "Schwarzes Brett", class: "form-check-label" %>
+        </div>
+      </div>
     </div>
   </div>
 <% end %>
