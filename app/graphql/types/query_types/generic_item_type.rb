@@ -22,6 +22,7 @@ module Types
     field :price_informations, [QueryTypes::PriceType], null: true
     field :publication_date, String, null: true
     field :published_at, String, null: true
+    field :push_notifications, [QueryTypes::PushNotificationType], null: true
     field :settings, QueryTypes::SettingType, null: true
     field :title, String, null: true
     field :visible, Boolean, null: true

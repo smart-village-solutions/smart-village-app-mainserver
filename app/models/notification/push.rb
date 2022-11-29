@@ -10,6 +10,8 @@ class Notification::Push < ApplicationRecord
           data_provider_id
         ], coder: JSON
 
+  attr_accessor :force_create
+
   validates :recurring_count,
             numericality: { greater_than: 0 },
             if: ->(item) { item.recurring.positive? }
