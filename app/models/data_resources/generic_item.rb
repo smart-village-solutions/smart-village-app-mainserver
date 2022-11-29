@@ -1,5 +1,6 @@
 class GenericItem < ApplicationRecord
   include FilterByRole
+
   has_ancestry orphan_strategy: :destroy
 
   GENERIC_TYPES = {
@@ -34,6 +35,10 @@ class GenericItem < ApplicationRecord
   has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
   has_many :web_urls, as: :web_urlable, dependent: :destroy
   has_many :generic_item_messages, class_name: "GenericItem::Message", dependent: :destroy
+  has_many :push_notifications,
+           as: :notification_pushable,
+           class_name: "Notification::Push",
+           dependent: :destroy
 
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
@@ -50,7 +55,7 @@ class GenericItem < ApplicationRecord
   accepts_nested_attributes_for :web_urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :content_blocks, :data_provider, :price_informations, :opening_hours,
                                 :media_contents, :accessibility_informations, :addresses, :contacts,
-                                :companies, :locations, :dates
+                                :companies, :locations, :dates, :push_notifications
 
   def generic_items
     children
