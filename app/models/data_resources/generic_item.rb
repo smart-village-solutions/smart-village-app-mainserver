@@ -33,7 +33,7 @@ class GenericItem < ApplicationRecord
   has_many :opening_hours, as: :openingable, dependent: :destroy
   has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
   has_many :web_urls, as: :web_urlable, dependent: :destroy
-  has_many :messages, class_name: "GenericItem::Message", dependent: :destroy
+  has_many :generic_item_messages, class_name: "GenericItem::Message", dependent: :destroy
 
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }

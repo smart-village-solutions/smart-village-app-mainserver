@@ -17,6 +17,7 @@ module Types
     field :generic_type, String, null: true
     field :locations, [QueryTypes::LocationType], null: true
     field :media_contents, [QueryTypes::MediaContentType], null: true
+    field :generic_item_messages, [QueryTypes::GenericItemMessageType], null: true
     field :opening_hours, [QueryTypes::OpeningHourType], null: true
     field :payload, GraphQL::Types::JSON, null: true
     field :price_informations, [QueryTypes::PriceType], null: true
