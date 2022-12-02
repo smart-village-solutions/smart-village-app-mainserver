@@ -10,6 +10,8 @@ Rails.application.routes.draw do
         post "send_notification/:id" => "devices#send_notification", as: :send_notification
       end
     end
+    post "push_device_assignments/add" => "push_device_assignments#add", defaults: { format: "json" }
+    delete "push_device_assignments/remove" => "push_device_assignments#remove", defaults: { format: "json" }
   end
   resources :categories
   resources :app_user_contents

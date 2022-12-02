@@ -64,10 +64,7 @@ class PushNotification
       message_options = {
         title: notification_push.title,
         body: notification_push.body,
-        data: {
-          id: notification_push.notification_pushable_id,
-          query_type: notification_push.notification_pushable_type
-        }
+        data: notification_push.data
       }
 
       # get all devices to push to

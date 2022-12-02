@@ -5,6 +5,8 @@ require "rails_helper"
 RSpec.describe Notification::PushDeviceAssignment, type: :model do
   it { is_expected.to belong_to(:notification_push) }
   it { is_expected.to belong_to(:notification_device) }
+  it { is_expected.to validate_presence_of(:notification_push) }
+  it { is_expected.to validate_presence_of(:notification_device) }
 end
 
 # == Schema Information
