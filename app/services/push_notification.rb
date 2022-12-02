@@ -49,8 +49,10 @@ class PushNotification
 
         next unless notification_push.methods.include?(weekday_method)
 
-        time_to_run = notification_push.send(weekday_method).to_s(:time)
+        time_to_run = notification_push.send(weekday_method).try(:to_s, :time)
       end
+
+      next unless time_to_run.present?
 
       # this way we can convert times, that are given as winter because of `time` database field,
       # which serves on first of january, to the local time zone to correct it to summertime
@@ -59,11 +61,43 @@ class PushNotification
       p "Push notification found for: #{notification_push.notification_pushable_type} ##{notification_push.notification_pushable_id}"
       p "Scheduled at: #{date_time_to_run}"
 
-      next unless Rails.env.production?
+      message_options = {
+        title: notification_push.title,
+        body: notification_push.body,
+        data: {
+          id: notification_push.notification_pushable_id,
+          query_type: notification_push.notification_pushable_type
+        }
+      }
 
-      SendSinglePushNotificationJob.delay(run_at: date_time_to_run).perform(device.token, message_options)
+      # get all devices to push to
+      devices = notification_push.devices
+
+      p "For #{devices.count} device(s)"
+
+      devices.each do |device|
+        next if existing_notifications_count(device, message_options).positive?
+
+        # next unless Rails.env.production?
+
+        SendSinglePushNotificationJob.delay(run_at: date_time_to_run).perform(device.token, message_options)
+      end
     end
 
     "Notifications scheduled for today"
   end
+
+  private
+
+    # Lookup for existing notifications
+    def existing_notifications_count(device, message_options = {})
+      Delayed::Backend::ActiveRecord::Job
+        .where("handler LIKE '%SendSinglePushNotificationJob%'")
+        .where("handler LIKE '%args:\n- #{device.token}%'")
+        .where("handler LIKE '%\n- :title: #{message_options.dig(:title)}%'")
+        .where("handler LIKE '%\n  :body: #{message_options.dig(:body)}%'")
+        .where("handler LIKE '%\n    :id: #{message_options.dig(:data, :id)}%'")
+        .where("handler LIKE '%\n    :query_type: #{message_options.dig(:data, :query_type)}%'")
+        .count
+    end
 end
