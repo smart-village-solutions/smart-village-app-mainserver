@@ -11,12 +11,7 @@ class Notification::Push < ApplicationRecord
            class_name: "Notification::Device",
            source: :notification_device
 
-  store :data,
-        accessors: %i[
-          id
-          query_type
-          data_provider_id
-        ], coder: JSON
+  store :data, coder: JSON
 
   attr_accessor :force_create
 
