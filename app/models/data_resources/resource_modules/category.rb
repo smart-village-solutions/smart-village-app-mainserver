@@ -7,7 +7,7 @@ class Category < ApplicationRecord
 
   has_ancestry orphan_strategy: :destroy
   validates_presence_of :name
-  validates_uniqueness_of :name
+  validates_uniqueness_of :name, scope: :municipality_id
   belongs_to :municipality
   has_many :data_resource_categories
   has_many :event_records, source: :data_resource, source_type: "EventRecord", through: :data_resource_categories
