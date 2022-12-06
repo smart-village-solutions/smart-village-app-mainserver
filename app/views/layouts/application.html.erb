@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>SmartVillageAppMainserver</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "doorkeeper/admin/application" %>
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
+    <%= render partial: "layouts/partials/head" %>
   </head>
-
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
       <%= link_to "Smart Village App - Administration", root_path, class: 'navbar-brand' %>
@@ -29,13 +23,13 @@
     </nav>
 
     <div class="doorkeeper-admin container">
-      <% if flash.any? %>
+      <%- if flash.any? %>
         <% flash.each do |type, msg| %>
           <div class="alert alert-info <%= type %>">
             <%= msg %>
           </div>
         <% end %>
-      <% end %>
+      <% end -%>
 
       <%= yield %>
     </div>

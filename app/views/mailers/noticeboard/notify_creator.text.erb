@@ -1,0 +1,15 @@
+Hallo <%= @name %>,
+
+Ihr Eintrag für die <%= @app_name %> ist nun freigeschaltet und bleibt online bis zum <%= @date_end %>.
+Sollten Sie Ihren Eintrag vorher löschen wollen, klicken Sie bitte auf den folgenden Link:
+
+<%= @destroy_url %>
+
+Anfragen an uns können nur per E-Mail gestellt werden.
+
+Mit freundlichen Grüßen
+Ihr Team der <%= @app_name %>
+
+--------------------------
+
+<%= @mail_footer %>

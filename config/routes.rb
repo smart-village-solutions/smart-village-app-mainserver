@@ -26,6 +26,10 @@ Rails.application.routes.draw do
 
   get "/waste_calendar/export", to: "notification/wastes#ical_export", defaults: { format: "ics" }
 
+  get "confirmation/error", to: "public/confirm_records#error"
+  get "confirmation/:confirm_action/:token", to: "public/confirm_records#confirm", as: :confirm_record_action
+  delete "confirmation/destroy/:token", to: "public/confirm_records#destroy"
+
   use_doorkeeper do
     controllers applications: "oauth/applications"
   end

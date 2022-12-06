@@ -10,11 +10,12 @@ module Mutations
 
     RECORD_WHITELIST = [
       "EventRecord",
+      "GenericItem",
       "NewsItem",
       "PointOfInterest",
-      "Tour",
+      "Survey::Comment",
       "Survey::Poll",
-      "Survey::Comment"
+      "Tour",
     ].freeze
 
     def resolve(id:, record_type:, visible:)

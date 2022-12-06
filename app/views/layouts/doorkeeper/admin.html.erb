@@ -1,94 +1,76 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title><%= t('doorkeeper.layouts.admin.title') %></title>
-
-  <%= stylesheet_link_tag "doorkeeper/admin/application" %>
-  <%= stylesheet_link_tag "application" %>
-
-  <%= javascript_include_tag 'application' %>
-  <script
-    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"
-  ></script>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <%= csrf_meta_tags %>
+  <%= render partial: "layouts/partials/head" %>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
-  <%= link_to "Smart Village App - #{@current_municipality.try(:title)}", root_path, class: 'navbar-brand' %>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+    <%= link_to "Smart Village App - Main-Server - #{@current_municipality.try(:title)}", root_path, class: "navbar-brand" %>
 
-  <div class="collapse navbar-collapse">
-    <ul class="navbar-nav mr-auto">
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
 
-      <% if current_user.admin_role? %>
+        <% if current_user.admin_role? %>
+          <li class="nav-item">
+            <%= link_to "Accounts", accounts_path, class: "nav-link" %>
+          </li>
+
+          <li class="nav-item <%= 'active' if request.path == oauth_applications_path %>">
+            <%= link_to t('doorkeeper.layouts.admin.nav.applications'), oauth_applications_path, class: "nav-link" %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to "Static Contents", static_contents_path, class: "nav-link" %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to "App User Contents", app_user_contents_path, class: "nav-link" %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to "Categories", categories_path, class: "nav-link" %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to "Backgroundjobs", "/background", class: "nav-link" %>
+          </li>
+        <% end %>
+
+        <% if current_user && current_user.try(:data_provider).try(:role_push_notification) %>
+          <li class="nav-item">
+            <%= link_to "Push Notifications", notification_devices_path, class: "nav-link" %>
+          </li>
+        <% end %>
+
         <li class="nav-item">
-          <%= link_to "Accounts", accounts_path, class: 'nav-link' %>
-        </li>
-
-        <li class="nav-item <%= 'active' if request.path == oauth_applications_path %>">
-          <%= link_to t('doorkeeper.layouts.admin.nav.applications'), oauth_applications_path, class: 'nav-link' %>
+          <%= link_to "Data Provider", edit_data_provider_path, class: "nav-link" %>
         </li>
 
         <li class="nav-item">
-          <%= link_to "Static Contents", static_contents_path, class: 'nav-link' %>
+          <%= link_to "GraphQL API", "/graphiql", class: "nav-link" %>
         </li>
 
         <li class="nav-item">
-          <%= link_to "App User Contents", app_user_contents_path, class: 'nav-link' %>
+          <%= link_to "CMS", @current_municipality.cms_url, class: "nav-link", target: "_blank" %>
         </li>
 
         <li class="nav-item">
-          <%= link_to "Categories", categories_path, class: 'nav-link' %>
+          <%= link_to "Sign out (#{current_user.email})", destroy_user_session_path, class: "nav-link", method: :delete %>
         </li>
+      </ul>
+    </div>
+  </nav>
 
-        <li class="nav-item">
-          <%= link_to "Backgroundjobs", "/background", class: 'nav-link' %>
-        </li>
+  <div class="doorkeeper-admin container">
+    <%- if flash.any? %>
+      <% flash.each do |type, msg| %>
+        <div class="alert alert-info <%= type %>">
+          <%= msg %>
+        </div>
       <% end %>
+    <% end -%>
 
-      <% if current_user && current_user.try(:data_provider).try(:role_push_notification) %>
-        <li class="nav-item">
-          <%= link_to "Push Notifications", notification_devices_path, class: 'nav-link' %>
-        </li>
-      <% end %>
-
-      <li class="nav-item">
-        <%= link_to "Data Provider", edit_data_provider_path, class: 'nav-link' %>
-      </li>
-
-      <li class="nav-item">
-        <%= link_to "GraphQL API", "/graphiql", class: 'nav-link' %>
-      </li>
-
-      <li class="nav-item">
-        <%= link_to "CMS", @current_municipality.cms_url, class: 'nav-link', target: "_blank" %>
-      </li>
-
-      <li class="nav-item">
-        <%= link_to "Sign out (#{current_user.email})", destroy_user_session_path, class: 'nav-link', method: :delete %>
-      </li>
-    </ul>
+    <%= yield %>
   </div>
-</nav>
-
-<div class="doorkeeper-admin container">
-  <% if flash.any? %>
-    <% flash.each do |type, msg| %>
-      <div class="alert alert-info <%= type %>">
-        <%= msg %>
-      </div>
-    <% end %>
-  <% end %>
-
-  <%= yield %>
-</div>
 </body>
 </html>

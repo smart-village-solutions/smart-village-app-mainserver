@@ -105,7 +105,7 @@ class NewsItem < ApplicationRecord
         }
       }
 
-      PushNotification.delay.send_notifications(options) if Rails.env.production?
+      PushNotification.delay.send_notifications(options)
 
       touch(:push_notifications_sent_at)
     end

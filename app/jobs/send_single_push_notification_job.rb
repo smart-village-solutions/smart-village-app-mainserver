@@ -19,9 +19,41 @@ class SendSinglePushNotificationJob < ApplicationJob
 
     begin
       feedback = client.send_messages(messages)
-      RedisAdapter.add_push_log(device_token, message_options.merge(date: DateTime.now, payload: feedback.try(:response).try(:body)))
-    rescue => e
-      RedisAdapter.add_push_log(device_token, message_options.merge(rescue_error: "push notification", error: e, date: DateTime.now))
+      payload = feedback.try(:response).try(:body)
+
+      RedisAdapter.add_push_log(
+        device_token,
+        message_options.merge(date: DateTime.now, payload: payload)
+      )
+
+      cleanup_if_unregistered_device(device_token, payload)
+    rescue StandardError => e
+      RedisAdapter.add_push_log(
+        device_token,
+        message_options.merge(rescue_error: "push notification", error: e, date: DateTime.now)
+      )
+    end
+  end
+
+  def cleanup_if_unregistered_device(device_token, payload)
+    return if payload.blank?
+
+    payload = JSON.parse(payload)
+    data = payload["data"]
+
+    return if data.blank?
+    return unless data.is_a?(Array)
+
+    data.each do |entry|
+      next unless entry["status"] == "error"
+      next unless entry["message"] == "The recipient device is not registered with FCM."
+
+      details = entry["details"]
+
+      next if details.blank?
+      next unless details["error"] == "DeviceNotRegistered"
+
+      Notification::Device.where(token: device_token).destroy_all
     end
   end
 end

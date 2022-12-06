@@ -1,27 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= t('doorkeeper.layouts.application.title') %></title>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <%= stylesheet_link_tag "doorkeeper/application" %>
-  <%= javascript_include_tag 'application' %>
-  <%= csrf_meta_tags %>
+  <%= render partial: "layouts/partials/head", locals: { no_admin_styles: true }  %>
 </head>
 <body>
-<div id="container">
-  <% if flash.any? %>
-    <% flash.each do |type, msg| %>
-      <div class="alert alert-info <%= type %>">
-        <%= msg %>
-      </div>
-    <% end %>
-  <% end %>
+  <div id="container">
+    <%- if flash.any? %>
+      <% flash.each do |type, msg| %>
+        <div class="alert alert-info <%= type %>">
+          <%= msg %>
+        </div>
+      <% end %>
+    <% end -%>
 
-  <h1><%= @current_municipality.try(:title) %></h1>
-  <%= yield %>
-</div>
+    <h1><%= @current_municipality.try(:title) %></h1>
+
+    <%= yield %>
+  </div>
 </body>
 </html>

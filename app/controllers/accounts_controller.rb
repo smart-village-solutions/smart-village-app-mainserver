@@ -102,6 +102,8 @@ class AccountsController < ApplicationController
         :role_encounter_support,
         :role_static_contents,
         :role_tour_stops,
+        :role_deadlines,
+        :role_noticeboard,
         :import_feeds,
         logo_attributes: %i[
           id
