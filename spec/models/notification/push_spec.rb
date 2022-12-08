@@ -4,6 +4,7 @@ require "rails_helper"
 
 RSpec.describe Notification::Push, type: :model do
   it { is_expected.to belong_to(:notification_pushable) }
+  it { is_expected.to have_many(:devices) }
 
   describe "recurring_count" do
     it "is 0 if once" do

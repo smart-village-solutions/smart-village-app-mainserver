@@ -2,13 +2,16 @@
 
 class Notification::Push < ApplicationRecord
   belongs_to :notification_pushable, polymorphic: true
+  has_many :notification_push_device_assignments,
+           class_name: "Notification::PushDeviceAssignment",
+           foreign_key: "notification_push_id",
+           dependent: :destroy
+  has_many :devices,
+           through: :notification_push_device_assignments,
+           class_name: "Notification::Device",
+           source: :notification_device
 
-  store :data,
-        accessors: %i[
-          id
-          query_type
-          data_provider_id
-        ], coder: JSON
+  store :data, coder: JSON
 
   attr_accessor :force_create
 

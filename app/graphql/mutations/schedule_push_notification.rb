@@ -32,7 +32,26 @@ module Mutations
       raise "Access not permitted" unless roles[:role_push_notification] == true
       return GraphQL::ExecutionError.new("Request not valid") unless valid?(params)
 
-      push_notification = Notification::Push.create(params)
+      push_notification = Notification::Push.create(
+        notification_pushable_type: params[:notification_pushable_type],
+        notification_pushable_id: params[:notification_pushable_id],
+        once_at: params[:once_at],
+        monday_at: params[:monday_at],
+        tuesday_at: params[:tuesday_at],
+        wednesday_at: params[:wednesday_at],
+        thursday_at: params[:thursday_at],
+        friday_at: params[:friday_at],
+        saturday_at: params[:saturday_at],
+        sunday_at: params[:sunday_at],
+        recurring: params[:recurring],
+        title: params[:title],
+        body: params[:body],
+        data: {
+          id: params.dig(:data, :id) || params[:notification_pushable_id],
+          query_type: params.dig(:data, :query_type) || params[:notification_pushable_type]
+        },
+        force_create: params[:force_create]
+      )
 
       unless push_notification.valid?
         return GraphQL::ExecutionError.new(
