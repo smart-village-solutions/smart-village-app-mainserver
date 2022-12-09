@@ -13,7 +13,7 @@ class SendSinglePushNotificationJob < ApplicationJob
   # }
   #
   # device_token = "ExponentPushToken[RkCuwM123456778g29lQb0ZK]"
-  def perform(device_token, message_options)
+  def self.perform(device_token, message_options)
     client = Exponent::Push::Client.new
     messages = [message_options.merge(to: device_token)]
 
@@ -35,7 +35,7 @@ class SendSinglePushNotificationJob < ApplicationJob
     end
   end
 
-  def cleanup_if_unregistered_device(device_token, payload)
+  def self.cleanup_if_unregistered_device(device_token, payload)
     return if payload.blank?
 
     payload = JSON.parse(payload)

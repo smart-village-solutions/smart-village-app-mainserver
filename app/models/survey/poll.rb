@@ -19,20 +19,19 @@ class Survey::Poll < ApplicationRecord
   before_save :set_visibility_by_role
 
   scope :ongoing, lambda {
-    without_times = where.not(fixed_dates: { date_start: [nil, ""] })
-                      .where.not(fixed_dates: { date_end: [nil, ""] })
-                      .where(fixed_dates: { time_start: [nil, ""] })
-                      .where(fixed_dates: { time_end: [nil, ""] })
+    without_times = FixedDate.where.not(date_start: nil).or(FixedDate.where.not(date_start: ""))
+                      .where.not(date_end: nil).or(FixedDate.where.not(date_end: ""))
+                      .where(time_start: [nil, ""])
+                      .where(time_end: [nil, ""])
                       .where("? BETWEEN fixed_dates.date_start AND fixed_dates.date_end", Date.today)
-                      .joins(:date)
 
-    without_end_time = FixedDate.where.not(date_start: [nil, ""])
-                         .where.not(date_end: [nil, ""])
+    without_end_time = FixedDate.where.not(date_start: nil).or(FixedDate.where.not(date_start: ""))
+                         .where.not(date_end: nil).or(FixedDate.where.not(date_end: ""))
                          .where(time_end: [nil, ""])
                          .where("TIMESTAMP(fixed_dates.date_start, fixed_dates.time_start) >= NOW()")
 
-    without_start_time = FixedDate.where.not(date_start: [nil, ""])
-                           .where.not(date_end: [nil, ""])
+    without_start_time = FixedDate.where.not(date_start: nil).or(FixedDate.where.not(date_start: ""))
+                           .where.not(date_end: nil).or(FixedDate.where.not(date_end: ""))
                            .where(time_start: [nil, ""])
                            .where("TIMESTAMP(fixed_dates.date_end, fixed_dates.time_end) <= NOW()")
 
@@ -43,7 +42,7 @@ class Survey::Poll < ApplicationRecord
       SQL
     )
 
-    survey_poll_ids = without_times.pluck(:id) +
+    survey_poll_ids = without_times.map(&:dateable).compact.map(&:id) +
                       without_end_time.map(&:dateable).compact.map(&:id) +
                       without_start_time.map(&:dateable).compact.map(&:id) +
                       with_times.map(&:dateable).compact.map(&:id)
