@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_16_091955) do
+ActiveRecord::Schema.define(version: 2022_12_02_145050) do
 
   create_table "accessibility_informations", charset: "utf8", force: :cascade do |t|
     t.text "description"
@@ -270,6 +270,16 @@ ActiveRecord::Schema.define(version: 2022_09_16_091955) do
     t.index ["dateable_type", "dateable_id"], name: "index_fixed_dates_on_type_and_id"
   end
 
+  create_table "generic_item_messages", charset: "utf8", force: :cascade do |t|
+    t.integer "generic_item_id"
+    t.boolean "visible", default: true
+    t.text "message"
+    t.string "name"
+    t.string "email"
+    t.string "phone_number"
+    t.boolean "terms_of_service", default: false
+  end
+
   create_table "generic_items", charset: "utf8", force: :cascade do |t|
     t.string "generic_type"
     t.text "author"
@@ -379,7 +389,34 @@ ActiveRecord::Schema.define(version: 2022_09_16_091955) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "municipality_id"
+    t.text "exclude_data_provider_ids"
     t.index ["token"], name: "index_notification_devices_on_token", unique: true
+  end
+
+  create_table "notification_push_device_assignments", charset: "utf8", force: :cascade do |t|
+    t.integer "notification_push_id"
+    t.integer "notification_device_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "notification_pushes", charset: "utf8", force: :cascade do |t|
+    t.string "notification_pushable_type"
+    t.bigint "notification_pushable_id"
+    t.datetime "once_at"
+    t.time "monday_at"
+    t.time "tuesday_at"
+    t.time "wednesday_at"
+    t.time "thursday_at"
+    t.time "friday_at"
+    t.time "saturday_at"
+    t.time "sunday_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "recurring", default: 0
+    t.string "title"
+    t.string "body"
+    t.text "data"
   end
 
   create_table "oauth_access_grants", charset: "utf8", force: :cascade do |t|
@@ -570,6 +607,8 @@ ActiveRecord::Schema.define(version: 2022_09_16_091955) do
   create_table "tour_stop_assignments", charset: "utf8", force: :cascade do |t|
     t.integer "tour_id"
     t.integer "tour_stop_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", charset: "utf8", force: :cascade do |t|
@@ -630,13 +669,6 @@ ActiveRecord::Schema.define(version: 2022_09_16_091955) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "waste_tour_id"
-  end
-
-  create_table "waste_tours", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "title"
-    t.string "waste_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "waste_tours", charset: "utf8", force: :cascade do |t|
