@@ -7,7 +7,7 @@ class MediaContent < ApplicationRecord
   has_one :source_url, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
   has_one_attached :attachment
 
-  after_save :convert_source_url_to_external_storage
+  after_create :convert_source_url_to_external_storage
 
   validates_presence_of :content_type
 
@@ -24,17 +24,20 @@ class MediaContent < ApplicationRecord
     return if endpoint.blank?
     return if source_url.blank? || source_url.url.blank?
     return if source_url.url.start_with?(endpoint)
+    return if source_url.url.start_with?("https://fileserver.smart-village.app")
 
     begin
       uri = URI.open(source_url.url)
       file = File.open(uri)
       attachment.attach(io: file, filename: File.basename(file))
     rescue StandardError
-     return
+     return false
     end
 
-    source_url.url = attachment.service_url.sub(/\?.*/, "")
-    source_url.save
+    if attachment.present? && attachment.service_url.present?
+      source_url.url = attachment.service_url.sub(/\?.*/, "")
+      source_url.save
+    end
   end
 
   # Sollen die Medien für die aktuelle Resource und den aktuellen DataProvider
