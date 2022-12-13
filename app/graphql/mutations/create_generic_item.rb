@@ -35,9 +35,9 @@ module Mutations
                                                           as: :web_urls_attributes,
                                                           prepare: ->(source_url, _ctx) { source_url.map(&:to_h) }
     argument :addresses, [Types::InputTypes::AddressInput], required: false,
-                                                            as: :address_attributes,
-                                                            prepare: lambda { |address, _ctx|
-                                                              address.to_h
+                                                            as: :addresses_attributes,
+                                                            prepare: lambda { |addresses, _ctx|
+                                                              addresses.map(&:to_h)
                                                             }
     argument :content_blocks, [Types::InputTypes::ContentBlockInput], required: false,
                                                                       as: :content_blocks_attributes,

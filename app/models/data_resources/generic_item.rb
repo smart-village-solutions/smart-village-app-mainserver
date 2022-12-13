@@ -4,6 +4,7 @@ class GenericItem < ApplicationRecord
   has_ancestry orphan_strategy: :destroy
 
   GENERIC_TYPES = {
+    defect_report: "DefectReport",
     job: "Job",
     offer: "Offer",
     construction_site: "ConstructionSite",
@@ -82,6 +83,7 @@ class GenericItem < ApplicationRecord
 
   def perform_callbacks
     noticeboard_notify_creator if noticeboard?
+    defect_report_notify_for_category if defect_report?
   end
 
   private
@@ -109,8 +111,18 @@ class GenericItem < ApplicationRecord
       generic_type == GENERIC_TYPES[:noticeboard]
     end
 
+    # send an email to the creator if generic type is "Noticeboard"
     def noticeboard_notify_creator
       NoticeboardMailer.notify_creator(self).deliver_later
+    end
+
+    def defect_report?
+      generic_type == GENERIC_TYPES[:defect_report]
+    end
+
+    # send an email to addresses based on category if generic type is "DefectReport"
+    def defect_report_notify_for_category
+      DefectReportMailer.notify_for_category(self).deliver_later
     end
 end
 
