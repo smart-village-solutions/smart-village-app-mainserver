@@ -12,6 +12,13 @@
       <div><code><%= @category.ancestry %></code></div>
     </div>
 
+    <% if @category.contact.present? %>
+      <div class="form-group">
+        <label>E-mails for certain notifications</label>
+        <div><code><%= @category.contact.email %></code></div>
+      </div>
+    <% end %>
+
     <div class="form-group">
       <%= link_to t("doorkeeper.applications.buttons.edit"), edit_category_path(@category), class: "btn btn-primary" %>
       <%= link_to t("doorkeeper.applications.buttons.back"), categories_path, class: "btn btn-default" %>

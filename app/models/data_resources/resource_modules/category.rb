@@ -12,8 +12,11 @@ class Category < ApplicationRecord
   has_many :tours, source: :data_resource, source_type: "Tour", through: :data_resource_categories
   has_many :news_items, source: :data_resource, source_type: "NewsItem", through: :data_resource_categories
   has_many :generic_items, source: :data_resource, source_type: "GenericItem", through: :data_resource_categories
+  has_one :contact, as: :contactable, dependent: :destroy
 
   after_destroy :cleanup_data_resource_settings
+
+  accepts_nested_attributes_for :contact
 
   def points_of_interest_tree_count(args = nil)
     if args.present? && args[:location].present?
