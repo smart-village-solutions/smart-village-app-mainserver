@@ -7,7 +7,7 @@ class MediaContent < ApplicationRecord
   has_one :source_url, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
   has_one_attached :attachment
 
-  after_save :convert_source_url_to_external_storage
+  after_create :convert_source_url_to_external_storage
 
   validates_presence_of :content_type
 
