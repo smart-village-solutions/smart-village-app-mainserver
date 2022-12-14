@@ -104,6 +104,7 @@ class AccountsController < ApplicationController
         :role_tour_stops,
         :role_deadlines,
         :role_noticeboard,
+        :role_defect_report,
         logo_attributes: %i[
           id
           url

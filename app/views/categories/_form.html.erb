@@ -26,6 +26,17 @@
     </small>
   </div>
 
+  <%= form.fields_for :contact, object: @category.contact || @category.build_contact do |contact| %>
+    <div class="form-group">
+      <%= contact.label :email, "E-mails for certain notifications" %>
+      <%= contact.text_field :email, class: "form-control" %>
+      <small class="form-text text-muted">
+        If there are notification logics for that category,
+        e-mail should go to these addresses (comma separated)
+      </small>
+    </div>
+  <% end %>
+
   <div class="form-group">
     <%= form.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primary" %>
     <%= link_to t("doorkeeper.applications.buttons.cancel"), categories_path, class: "btn btn-default" %>

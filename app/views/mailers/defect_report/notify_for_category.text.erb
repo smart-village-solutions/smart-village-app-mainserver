@@ -1,0 +1,38 @@
+Hallo,
+
+es gibt eine neue Mängelmeldung in der Kategorie <%= @category %> mit folgendem Inhalt:
+
+<%= @title %>
+
+<%= @body %>
+<%- if @image_url %>
+
+Foto: <%= @image_url %>
+<% end -%>
+<%- if @location %>
+
+Adresse: <%= @location %>
+<% end -%>
+<%- if @map_link %>
+Auf Karte: <%= @map_link %>
+<% end -%>
+<%- if @creator %>
+
+Meldung erstellt von:
+<%- if @name %>
+<%= @name %>
+<% end -%>
+<%- if @email %>
+<%= @email %>
+<% end -%>
+<%- if @phone %>
+<%= @phone %>
+<% end -%>
+<% end -%>
+
+Mit freundlichen Grüßen
+Ihr Team der <%= @app_name %>
+
+--------------------------
+
+<%= @mail_footer %>

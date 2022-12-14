@@ -15,7 +15,7 @@ class NoticeboardMailerPreview < ActionMailer::Preview
     generic_item.external_reference = OpenStruct.new(unique_id: "1234567890")
 
     StaticContent.first_or_create(
-      name: "noticeboard_notify_creator",
+      name: "noticeboard-notify-creator",
       data_type: "json",
       content: "{\"app_name\":\"Test-App\",\"mail_footer\":[\"Zeile 1\", \"\", \"Zeile 2\"]}"
     )
