@@ -27,7 +27,7 @@ module ApplicationHelper
       if category.contact.present?
         tree_element << content_tag(
           "span",
-          pluralize(category.contact.email.split(",").count, "E-Mail"),
+          pluralize(category.contact.email.to_s.split(",").count, "E-Mail"),
           class: "badge badge-warning cursor-arrow",
           title: category.contact.email,
           style: "cursor: help;"
