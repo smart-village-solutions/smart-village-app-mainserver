@@ -4,6 +4,7 @@ class GenericItem < ApplicationRecord
   has_ancestry orphan_strategy: :destroy
 
   GENERIC_TYPES = {
+    deadline: "Deadline",
     defect_report: "DefectReport",
     job: "Job",
     offer: "Offer",
