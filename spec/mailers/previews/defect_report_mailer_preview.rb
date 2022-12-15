@@ -29,7 +29,7 @@ class DefectReportMailerPreview < ActionMailer::Preview
     generic_item.contacts = [OpenStruct.new(first_name: "Tim Test", email: "tim.test@smart-village.app", phone: "0123456789")]
     generic_item.categories = [OpenStruct.new(name: "Abfall/Müll", contact: OpenStruct.new(email: "tom.tast@smart-village.app"))]
     generic_item.content_blocks = [OpenStruct.new(body: "Test mit mehr Worten", title: "Test")]
-    generic_item.media_contents = [OpenStruct.new(sourceUrl: OpenStruct.new(url: "https://fileserver.smart-village.app/herzberg-elster/ehrenamt/service-kalender.png"), content_type: "image")]
+    generic_item.media_contents = [OpenStruct.new(source_url: OpenStruct.new(url: "https://fileserver.smart-village.app/herzberg-elster/ehrenamt/service-kalender.png"), content_type: "image")]
     generic_item.addresses = [OpenStruct.new(street: "Straße", zip: "03443", city: "Stadt", geo_location: OpenStruct.new(latitude: 50.1212, longitude: 13.3434))]
     generic_item.external_reference = OpenStruct.new(unique_id: "1234567890")
 

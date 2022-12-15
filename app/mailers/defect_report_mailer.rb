@@ -13,7 +13,7 @@ class DefectReportMailer < ApplicationMailer
 
     return unless valid_for_notify_for_category?
 
-    @image_url = generic_item.media_contents.try(:first).try(:sourceUrl).try(:url)
+    @image_url = generic_item.media_contents.try(:first).try(:source_url).try(:url)
 
     @address = generic_item.addresses.try(:first)
 
@@ -28,12 +28,12 @@ class DefectReportMailer < ApplicationMailer
       @map_link = "https://www.openstreetmap.org/?mlat=#{lat}&mlon=#{lon}" if lat && lon
     end
 
-    @creator = generic_item.contacts.try(:first)
+    creator = generic_item.contacts.try(:first)
 
-    if @creator
-      @name = @creator.first_name
-      @email = @creator.email
-      @phone = @creator.phone
+    if creator.present?
+      @name = creator.first_name
+      @email = creator.email
+      @phone = creator.phone
     end
 
     mail(
