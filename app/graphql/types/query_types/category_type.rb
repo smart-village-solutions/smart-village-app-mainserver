@@ -50,5 +50,7 @@ module Types
     field :tours_tree_count, Integer, null: true do
       argument :location, String, required: false
     end
+
+    field :contact, QueryTypes::ContactType, null: true
   end
 end
