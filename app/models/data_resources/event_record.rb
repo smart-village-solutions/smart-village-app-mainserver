@@ -63,11 +63,9 @@ class EventRecord < ApplicationRecord
                       EventRecord.all
                     end
 
-    upcoming_event_record_ids = event_records.select do |event_record|
-      event_record.list_date.try(:to_time).to_i >= Date.today.to_time.to_i
-    end.map(&:id)
-
-    where(id: upcoming_event_record_ids)
+    event_records
+      .joins(:dates)
+      .where("fixed_dates.date_start >= ? OR fixed_dates.date_end >= ?", Date.today, Date.today)
   }
 
   scope :by_category, lambda { |category_id|
