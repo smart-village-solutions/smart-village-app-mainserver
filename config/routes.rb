@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :categories
   resources :app_user_contents
   resources :static_contents
+  resources :media_contents, only: %i[create], defaults: { format: "json" }
   get "data_provider", to: "data_provider#show", as: :data_provider
   get "data_provider/edit", as: :edit_data_provider
   post "data_provider/update", as: :update_data_provider

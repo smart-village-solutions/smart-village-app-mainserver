@@ -3,7 +3,7 @@
 # This model provides media content of various types to any other resource who
 # needs one or more media contents.
 class MediaContent < ApplicationRecord
-  belongs_to :mediaable, polymorphic: true
+  belongs_to :mediaable, polymorphic: true, optional: true
   has_one :source_url, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
   has_one_attached :attachment
 

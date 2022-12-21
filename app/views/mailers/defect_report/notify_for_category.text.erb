@@ -16,7 +16,7 @@ Adresse: <%= @location %>
 <%- if @map_link %>
 Auf Karte: <%= @map_link %>
 <% end -%>
-<%- if @creator %>
+<%- if @name || @email || @phone %>
 
 Meldung erstellt von:
 <%- if @name %>
