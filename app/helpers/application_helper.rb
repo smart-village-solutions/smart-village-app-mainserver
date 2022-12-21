@@ -24,7 +24,7 @@ module ApplicationHelper
       element_buttons = []
 
       tree_element << content_tag("span", "ID:#{category.id}", class: "badge badge-info")
-      if category.contact.present?
+      if category.contact.try(:email).present?
         tree_element << content_tag(
           "span",
           pluralize(category.contact.email.to_s.split(",").count, "E-Mail"),
