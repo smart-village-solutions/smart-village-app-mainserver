@@ -3,7 +3,7 @@
 module Types
   class InputTypes::PriceInput < BaseInputObject
     argument :name, String, required: false
-    argument :amount, AnyPrimitiveType, required: false
+    argument :amount, Float, required: false
     argument :group_price, GraphQL::Types::Boolean, required: false
     argument :age_from, Integer, required: false
     argument :age_to, Integer, required: false
