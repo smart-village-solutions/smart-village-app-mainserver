@@ -247,6 +247,7 @@ GEM
     mimemagic (0.4.3)
       nokogiri (~> 1)
       rake
+    mini_magick (4.11.0)
     mini_mime (1.1.2)
     minitest (5.16.3)
     msgpack (1.6.0)
@@ -488,6 +489,7 @@ DEPENDENCIES
   lograge
   mailjet
   mimemagic (>= 0.3.10)
+  mini_magick (~> 4.8)
   mysql2 (= 0.5.4)
   order_as_specified
   pry-byebug

@@ -38,7 +38,7 @@ gem "remove_emoji"
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use ActiveStorage variant
-# gem 'mini_magick', '~> 4.8'
+gem 'mini_magick', '~> 4.8'
 
 # Facebook Library to Access GraphAPI
 gem "koala"
