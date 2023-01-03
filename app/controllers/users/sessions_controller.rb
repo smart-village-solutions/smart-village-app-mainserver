@@ -7,8 +7,8 @@ class Users::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
-    resource = warden.authenticate!(scope: resource_name, recall: "#{controller_path}#new")
-    set_flash_message(:notice, :signed_in) if is_navigational_format?
+    resource = warden.authenticate!(auth_options)
+    set_flash_message(:notice, :signed_in) if is_flashing_format?
     sign_in(resource_name, resource)
     resource.save # recreates authentication_token after sign in
 
@@ -41,6 +41,10 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   private
+
+    def auth_options
+      { scope: resource_name, recall: "#{controller_path}#new" }
+    end
 
   def minio_config
     # Settings only exist on releases branch
