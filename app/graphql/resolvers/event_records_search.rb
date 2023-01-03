@@ -126,7 +126,7 @@ class Resolvers::EventRecordsSearch
   end
 
   def apply_order_with_list_date_asc(scope)
-    ordered_ids = scope.sort_by(&:list_date).map(&:id)
+    ordered_ids = scope.select(&:list_date).sort_by(&:list_date).map(&:id)
 
     scope.order_as_specified(id: ordered_ids)
   end
