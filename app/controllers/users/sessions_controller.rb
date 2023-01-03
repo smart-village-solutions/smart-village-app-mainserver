@@ -14,7 +14,7 @@ class Users::SessionsController < Devise::SessionsController
     clean_up_passwords(resource)
 
     respond_to do |format|
-      format.html { respond_with(resource, serialize_options(resource)) }
+      format.html { super }
       format.json do
         return render json: {
           success: resource.id ? false : true,
@@ -49,7 +49,7 @@ class Users::SessionsController < Devise::SessionsController
     end
 
     respond_to do |format|
-      format.html { respond_with resource, location: after_sign_in_path_for(resource) }
+      format.html { super }
       format.json do
         render json: {
           success: true,
@@ -66,10 +66,6 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   private
-
-    def auth_options
-      { scope: resource_name, recall: "#{controller_path}#new" }
-    end
 
   def minio_config
     {
