@@ -24,9 +24,9 @@ class MunicipalityService
   end
 
   def self.settings
-    return nil if Thread.current[:municipality_id].blank?
+    return {} if Thread.current[:municipality_id].blank?
 
-    Municipality.find_by(id: Thread.current[:municipality_id]).try(:settings)
+    Municipality.find_by(id: Thread.current[:municipality_id]).try(:settings) || {}
   end
 
 
