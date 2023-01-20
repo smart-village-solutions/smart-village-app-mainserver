@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_02_145050) do
+ActiveRecord::Schema.define(version: 2023_01_20_141513) do
 
   create_table "accessibility_informations", charset: "utf8", force: :cascade do |t|
     t.text "description"
@@ -661,6 +661,7 @@ ActiveRecord::Schema.define(version: 2022_12_02_145050) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "waste_tour_id"
+    t.integer "municipality_id"
   end
 
   create_table "waste_pick_up_times", charset: "utf8", force: :cascade do |t|
@@ -669,6 +670,7 @@ ActiveRecord::Schema.define(version: 2022_12_02_145050) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "waste_tour_id"
+    t.integer "municipality_id"
   end
 
   create_table "waste_tours", charset: "utf8", force: :cascade do |t|
@@ -676,6 +678,7 @@ ActiveRecord::Schema.define(version: 2022_12_02_145050) do
     t.string "waste_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "municipality_id"
   end
 
   create_table "web_urls", charset: "utf8", force: :cascade do |t|

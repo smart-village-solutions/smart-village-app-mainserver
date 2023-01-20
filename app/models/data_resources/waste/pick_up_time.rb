@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Waste::PickUpTime < ApplicationRecord
+  include MunicipalityScope
+
   belongs_to :waste_location_type, class_name: "Waste::LocationType", foreign_key: "waste_location_type_id", optional: true
   belongs_to :waste_tour, class_name: "Waste::Tour", foreign_key: "waste_tour_id", optional: true
 

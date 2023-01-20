@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Waste::Tour < ApplicationRecord
+  include MunicipalityScope
+
   has_many :waste_location_types, class_name: "Waste::LocationType", foreign_key: "waste_tour_id", dependent: :destroy
   has_many :pick_up_times, class_name: "Waste::PickUpTime", foreign_key: "waste_tour_id", dependent: :destroy
   attr_accessor :force_create
