@@ -1,4 +1,13 @@
+# frozen_string_literal: true
+
 class CleanUpService
+  def self.perform
+    Municipality.all.each do |municipality|
+      MunicipalityService.municipality_id = municipality.id
+      CleanUpService.new.perform
+    end
+  end
+
   def initialize
     @data_resource_types = DataResourceSetting::DATA_RESOURCES
     accounts = User.includes(:data_provider).all
