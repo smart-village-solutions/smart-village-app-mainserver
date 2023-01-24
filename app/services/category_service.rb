@@ -1,4 +1,13 @@
+# frozen_string_literal: true
+
 class CategoryService
+  def self.update_all_defaults
+    Municipality.all.each do |municipality|
+      MunicipalityService.municipality_id = municipality.id
+      CategoryService.new.update_all_defaults
+    end
+  end
+
   def update_all_defaults
     data_resource_types = DataResourceSetting::DATA_RESOURCES.map(&:to_s)
     data_provider_ids = User.all.map(&:data_provider_id)
