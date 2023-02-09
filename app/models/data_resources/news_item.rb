@@ -105,7 +105,7 @@ class NewsItem < ApplicationRecord
         }
       }
 
-      PushNotification.delay.send_notifications(options)
+      PushNotification.delay.send_notifications(options, MunicipalityService.municipality_id)
 
       touch(:push_notifications_sent_at)
     end
