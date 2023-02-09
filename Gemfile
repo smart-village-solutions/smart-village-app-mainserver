@@ -85,8 +85,8 @@ gem "daemons"
 gem "delayed_job_active_record"
 
 # Redis Server and Connection
-gem "hiredis"
 gem "redis"
+gem "hiredis-client"
 
 # Pagination
 gem "bootstrap4-kaminari-views"
