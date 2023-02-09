@@ -16,7 +16,8 @@ class PushNotification
     SendSinglePushNotificationJob.perform_later(device.token, message_options)
   end
 
-  def self.send_notifications(message_options = {})
+  def self.send_notifications(message_options = {}, municipality_id = nil)
+    MunicipalityService.municipality_id = municipality_id
     notification_devices = Notification::Device.all
     data_provider_id = message_options[:data_provider_id]
 

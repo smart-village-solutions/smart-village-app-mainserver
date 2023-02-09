@@ -18,7 +18,7 @@ module Mutations
         message_options[:data] = { data_provider_id: data.data_provider_id.to_i }
       end
 
-      PushNotification.delay.send_notifications(message_options) if title.present?
+      PushNotification.delay.send_notifications(message_options, MunicipalityService.municipality_id) if title.present?
 
       OpenStruct.new(
         id: nil,

@@ -24,7 +24,7 @@ class Notification::DevicesController < ApplicationController
 
   def send_notifications
     options = params.permit![:notification]
-    PushNotification.delay.send_notifications(options) if options[:title].present?
+    PushNotification.delay.send_notifications(options, MunicipalityService.municipality_id) if options[:title].present?
 
     respond_to do |format|
       format.html { redirect_to notification_devices_url, notice: "Push Notifications gesendet" }
