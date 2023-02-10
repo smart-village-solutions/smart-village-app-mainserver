@@ -51,6 +51,8 @@ Rails.application.routes.draw do
 
   get "/generate_204", to: "application#generate_204", status: 204
 
+  get "*not_found", to: "application#not_found_404", status: 404
+
   root to: redirect("accounts")
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
