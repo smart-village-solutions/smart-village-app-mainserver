@@ -9,6 +9,7 @@ class EventRecord < ApplicationRecord
   attr_accessor :category_names
   attr_accessor :region_name
   attr_accessor :force_create
+  attr_accessor :in_date_range_start_date
 
   after_save :find_or_create_category
   before_validation :find_or_create_region
@@ -53,7 +54,13 @@ class EventRecord < ApplicationRecord
       (timespan_to_search & timespan).count.positive?
     end
 
-    joins(:dates).where(fixed_dates: { id: list_of_fixed_date_ids.map(&:id) })
+    events = joins(:dates).where(fixed_dates: { id: list_of_fixed_date_ids.map(&:id) })
+
+    events.map do |event_record|
+      event_record.in_date_range_start_date = start_date
+    end
+
+    events
   }
 
   scope :upcoming, lambda { |current_user|
@@ -118,8 +125,11 @@ class EventRecord < ApplicationRecord
   end
 
   def list_date
+    return in_date_range_start_date if in_date_range_start_date.present?
+
     event_dates = dates.order(date_start: :asc)
     dates_count = event_dates.count
+
     return if dates_count.zero?
 
     future_dates = event_dates.select do |date|
@@ -128,6 +138,7 @@ class EventRecord < ApplicationRecord
     future_date = future_dates.first.try(:date_start)
 
     return future_date if future_date.present?
+
     return today_in_time_range(event_dates.first) if dates_count == 1
 
     event_dates.last.try(:date_start)
