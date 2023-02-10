@@ -8,4 +8,8 @@ class ApplicationController < ActionController::Base
   def generate_204
     head(:no_content)
   end
+
+  def not_found_404
+    head(:not_found)
+  end
 end
