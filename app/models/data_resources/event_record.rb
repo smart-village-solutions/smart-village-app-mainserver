@@ -124,24 +124,42 @@ class EventRecord < ApplicationRecord
     list_of_attributes
   end
 
+  # @return [Date]
   def list_date
     return in_date_range_start_date if in_date_range_start_date.present?
+
+    list_date_cached = RedisAdapter.get_event_list_date(id)
+    if list_date_cached.present?
+      return list_date_cached == 0 ? nil : Time.zone.at(list_date_cached.to_i).to_date
+    end
 
     event_dates = dates.order(date_start: :asc)
     dates_count = event_dates.count
 
-    return if dates_count.zero?
+    if dates_count.zero?
+      RedisAdapter.set_event_list_date(id, 0)
+      return nil
+    end
 
     future_dates = event_dates.select do |date|
       date.date_start.try(:to_time).to_i >= Time.zone.now.beginning_of_day.to_i
     end
-    future_date = future_dates.first.try(:date_start)
+    calculated_list_date = future_dates.first.try(:date_start)
 
-    return future_date if future_date.present?
+    if calculated_list_date.present?
+      RedisAdapter.set_event_list_date(id, calculated_list_date.to_time.to_i)
+      return calculated_list_date
+    end
 
-    return today_in_time_range(event_dates.first) if dates_count == 1
+    if dates_count == 1
+      calculated_list_date = today_in_time_range(event_dates.first)
+      RedisAdapter.set_event_list_date(id, calculated_list_date.to_time.to_i)
+      return calculated_list_date
+    end
 
-    event_dates.last.try(:date_start)
+    calculated_list_date = event_dates.last.try(:date_start)
+    RedisAdapter.set_event_list_date(id, calculated_list_date.to_time.to_i)
+    calculated_list_date
   end
 
   def settings
