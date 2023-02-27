@@ -49,11 +49,11 @@ class ResourceService
     def find_external_resource
       return nil if @params.fetch(:force_create, false)
 
-      ExternalReference.find_by(
+      ExternalReference.where(
         data_provider: @data_provider,
         external_type: @resource_class,
         unique_id: @resource.unique_id
-      )
+      ).last
     end
 
     # Find old resource
