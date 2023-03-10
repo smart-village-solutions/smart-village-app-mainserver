@@ -7,6 +7,7 @@ require_relative "config/application"
 require "graphql/rake_task"
 
 Rails.application.load_tasks
+Doorkeeper::Rake.load_tasks
 
 GraphQL::RakeTask.new(schema_name: "SmartVillageAppMainserverSchema",
                       idl_outfile: "public/schema.graphql",
