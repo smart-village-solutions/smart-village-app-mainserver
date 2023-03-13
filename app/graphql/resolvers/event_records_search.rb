@@ -5,8 +5,17 @@ require "graphql/query_resolver"
 
 class Resolvers::EventRecordsSearch
   include SearchObject.module(:graphql)
+  extras [:lookahead]
 
-  scope { EventRecord.upcoming(context[:current_user]) }
+  scope {
+    lookahead = context[:current_arguments][:lookahead]
+    event_records = EventRecord.upcoming(context[:current_user])
+    event_records = event_records.includes(:addresses) if lookahead.selects?(:addresses)
+    event_records = event_records.includes(:categories) if lookahead.selects?(:categories)
+    event_records = event_records.includes(:dates) if lookahead.selects?(:list_date) || lookahead.selects?(:dates)
+
+    event_records
+  }
 
   type types[Types::QueryTypes::EventRecordType]
 
@@ -88,35 +97,35 @@ class Resolvers::EventRecordsSearch
   end
 
   def apply_order_with_created_at_desc(scope)
-    scope.order("created_at DESC")
+    scope.order("event_records.created_at DESC")
   end
 
   def apply_order_with_created_at_asc(scope)
-    scope.order("created_at ASC")
+    scope.order("event_records.created_at ASC")
   end
 
   def apply_order_with_updated_at_desc(scope)
-    scope.order("updated_at DESC")
+    scope.order("event_records.updated_at DESC")
   end
 
   def apply_order_with_updated_at_asc(scope)
-    scope.order("updated_at ASC")
+    scope.order("event_records.updated_at ASC")
   end
 
   def apply_order_with_id_desc(scope)
-    scope.order("id DESC")
+    scope.order("event_records.id DESC")
   end
 
   def apply_order_with_id_asc(scope)
-    scope.order("id ASC")
+    scope.order("event_records.id ASC")
   end
 
   def apply_order_with_title_desc(scope)
-    scope.order("title DESC")
+    scope.order("event_records.title DESC")
   end
 
   def apply_order_with_title_asc(scope)
-    scope.order("title ASC")
+    scope.order("event_records.title ASC")
   end
 
   def apply_order_with_list_date_desc(scope)
