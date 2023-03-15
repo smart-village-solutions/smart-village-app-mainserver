@@ -19,7 +19,7 @@ class SetupUserService
     data_provider = DataProvider.create(
       name: provider_name,
       description: description,
-      logo: logo_url || create_web_url,
+      logo: create_web_url(logo_url),
       roles: data_provider_roles
     )
     user = User.create(
@@ -48,7 +48,8 @@ class SetupUserService
 
   private
 
-    def create_web_url
-      WebUrl.create(url: "https://smart-village.solutions/wp-content/uploads/2020/09/Logo-Smart-Village-Solutions-SVS.png")
+    def create_web_url(logo_url)
+      logo_url = "https://smart-village.solutions/wp-content/uploads/2020/09/Logo-Smart-Village-Solutions-SVS.png" if logo_url.blank?
+      WebUrl.create(url: logo_url)
     end
 end
