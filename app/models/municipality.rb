@@ -11,7 +11,8 @@ class Municipality < ApplicationRecord
   after_create :create_mobile_app_user
   after_create :create_mowas_user
   after_create :create_minio_bucket
-  after_create :create_uptime_robot_monitor
+  # Erstmal deaktiviert, da wir bereits genug Uptime Robot Monitore haben die auf den gleichen SaaS Service zeigen
+  # after_create :create_uptime_robot_monitor
   after_create :create_category_and_static_content
 
   store :settings,
