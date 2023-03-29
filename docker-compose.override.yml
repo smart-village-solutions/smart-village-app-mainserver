@@ -11,6 +11,9 @@ services:
       - ./docker/unicorn.rb:/app/config/unicorn.rb
 
   nginx:
+    environment:
+      SVA_COMMUNITY: int-development
+      VOLUME_LOCALTIME: "unused:/unused"
     volumes:
       - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     labels:
