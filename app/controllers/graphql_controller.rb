@@ -12,17 +12,20 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       # Query context goes here, for example:
-      current_user: current_resource_owner
+      current_user: current_resource_owner,
+      extras: { lookahead: GraphQL::Query.new(SmartVillageAppMainserverSchema, query).lookahead }
 
       # NOTE: if we want to have more data, we can add the `request` here, for example:
       # request: request
     }
+
     result = SmartVillageAppMainserverSchema.execute(
       query,
       variables: variables,
       context: context,
       operation_name: operation_name
     )
+
     log_graphql_execution_error(result, query)
     render json: result
   rescue StandardError => error
