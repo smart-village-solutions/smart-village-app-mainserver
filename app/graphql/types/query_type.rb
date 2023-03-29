@@ -19,7 +19,7 @@ module Types
       argument :id, ID, required: true
     end
 
-    field :event_records, [QueryTypes::EventRecordType], resolver: Resolvers::EventRecordsSearch
+    field :event_records, [QueryTypes::EventRecordType], function: Resolvers::EventRecordsSearch
     field :event_record, QueryTypes::EventRecordType, null: false do
       argument :id, ID, required: true
     end
