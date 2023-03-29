@@ -16,6 +16,7 @@ class GenericItem < ApplicationRecord
   attr_accessor :category_name
   attr_accessor :category_names
 
+  before_save :remove_emojis
   after_save :find_or_create_category
 
   validates_presence_of :generic_type
@@ -124,6 +125,11 @@ class GenericItem < ApplicationRecord
     # send an email to addresses based on category if generic type is "DefectReport"
     def defect_report_notify_for_category
       DefectReportMailer.notify_for_category(self).deliver_later
+    end
+
+    def remove_emojis
+      self.title = RemoveEmoji::Sanitize.call(title) if title.present?
+      self.description = RemoveEmoji::Sanitize.call(description) if description.present?
     end
 end
 
