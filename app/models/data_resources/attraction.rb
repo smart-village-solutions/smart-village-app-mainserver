@@ -10,6 +10,7 @@ class Attraction < ApplicationRecord
   attr_accessor :category_name
   attr_accessor :category_names
 
+  before_save :remove_emojis
   after_save :find_or_create_category
 
   store :payload, coder: JSON
@@ -93,6 +94,12 @@ class Attraction < ApplicationRecord
           categories << category_to_add unless categories.include?(category_to_add)
         end
       end
+    end
+
+    def remove_emojis
+      self.name = RemoveEmoji::Sanitize.call(name) if name.present?
+      self.description = RemoveEmoji::Sanitize.call(description) if description.present?
+      self.mobile_description = RemoveEmoji::Sanitize.call(mobile_description) if mobile_description.present?
     end
 end
 

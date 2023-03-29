@@ -11,6 +11,7 @@ class EventRecord < ApplicationRecord
   attr_accessor :force_create
   attr_accessor :in_date_range_start_date
 
+  before_save :remove_emojis
   after_save :find_or_create_category
   before_validation :find_or_create_region
 
@@ -217,6 +218,11 @@ class EventRecord < ApplicationRecord
 
       # return "today" if there is a future end date
       today.to_date
+    end
+
+    def remove_emojis
+      self.title = RemoveEmoji::Sanitize.call(title) if title.present?
+      self.description = RemoveEmoji::Sanitize.call(description) if description.present?
     end
 end
 
