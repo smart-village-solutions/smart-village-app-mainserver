@@ -24,6 +24,8 @@ module Types
       argument :id, ID, required: true
     end
 
+    field :event_records_addresses, [QueryTypes::AddressType], null: false
+
     field :news_items, function: Resolvers::NewsItemsSearch
     field :news_item, QueryTypes::NewsItemType, null: false do
       argument :id, ID, required: true
@@ -107,6 +109,14 @@ module Types
 
     def event_record(id:)
       EventRecord.find_by(id: id)
+    end
+
+    def event_records_addresses
+      Address.find_by_sql("
+        SELECT `#{Address.table_name}`.*
+        FROM `#{Address.table_name}`
+        INNER JOIN `#{EventRecord.table_name}` ON `#{EventRecord.table_name}`.`id` = `#{Address.table_name}`.`addressable_id` AND `#{Address.table_name}`.`addressable_type` = '#{EventRecord.name}'
+      ")
     end
 
     def news_item(id:)
