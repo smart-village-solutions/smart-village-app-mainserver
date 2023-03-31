@@ -64,7 +64,7 @@ class EventRecord < ApplicationRecord
     events
   }
 
-  scope :upcoming, lambda { |current_user|
+  scope :upcoming, lambda { |current_user = nil|
     event_records = if current_user.present?
                       EventRecord.filtered_for_current_user(current_user)
                     else

@@ -24,7 +24,9 @@ module Types
       argument :id, ID, required: true
     end
 
-    field :event_records_addresses, [QueryTypes::AddressType], null: false
+    field :event_records_addresses, [QueryTypes::AddressType], null: false do
+      description "Adresses for upcoming events"
+    end
 
     field :news_items, function: Resolvers::NewsItemsSearch
     field :news_item, QueryTypes::NewsItemType, null: false do
@@ -112,10 +114,13 @@ module Types
     end
 
     def event_records_addresses
+      upcoming_event_ids = EventRecord.upcoming.pluck(:id)
+
       Address.find_by_sql("
         SELECT `#{Address.table_name}`.*
         FROM `#{Address.table_name}`
         INNER JOIN `#{EventRecord.table_name}` ON `#{EventRecord.table_name}`.`id` = `#{Address.table_name}`.`addressable_id` AND `#{Address.table_name}`.`addressable_type` = '#{EventRecord.name}'
+        WHERE `#{EventRecord.table_name}`.`id` IN (#{upcoming_event_ids.join(",")})
       ")
     end
 
