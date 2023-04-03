@@ -49,7 +49,7 @@ class Category < ApplicationRecord
   end
 
   def upcoming_event_records
-    event_records.upcoming(nil)
+    event_records.upcoming
   end
 
   # Defines 2 methods for a list of record type:
