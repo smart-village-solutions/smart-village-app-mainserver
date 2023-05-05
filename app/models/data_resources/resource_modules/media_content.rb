@@ -27,7 +27,19 @@ class MediaContent < ApplicationRecord
     begin
       uri = URI.open(source_url.url)
       file = File.open(uri)
-      attachment.attach(io: file, filename: File.basename(file))
+
+      # Versuche den Dateinamen aus dem Header zu extrahieren
+      # bsp.: Content-Disposition: attachment; filename=quot.pdf;
+      content_disposition = uri.meta['content-disposition']
+      original_filename = content_disposition&.match(/filename="(.+)"/i)&.[](1)
+
+      # Andernfalls extrahiere den Dateinamen aus der URL
+      original_filename ||= File.basename(URI.parse(source_url.url).path)
+
+      # Andernfalls verwende den Dateinamen aus dem Attachment
+      original_filename ||= File.basename(file)
+
+      attachment.attach(io: file, filename: original_filename)
     rescue StandardError
       return
     end
