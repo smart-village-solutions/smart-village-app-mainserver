@@ -48,25 +48,6 @@ class Attraction < ApplicationRecord
                                 :data_provider, :certificates,
                                 :regions, :location
 
-  def unique_id
-    fields = [name, type]
-
-    first_address = addresses.first
-    address_keys = %i[street zip city kind]
-    address_fields = address_keys.map { |a| first_address.try(:send, a) }
-
-    # add opening hours to checksum for point of interests
-    opening_hour_fields = []
-    if opening_hours.present? && opening_hours.any?
-      opening_hour_keys = %i[weekday date_from date_to time_from time_to open description]
-      opening_hours.map do |opening_hour|
-        opening_hour_fields << opening_hour_keys.map { |oh| opening_hour.try(:send, oh) }
-      end
-    end
-
-    generate_checksum(fields + address_fields + opening_hour_fields.flatten)
-  end
-
   def content_for_facebook
     {
       message: [name, description].compact.join("\n\n"),

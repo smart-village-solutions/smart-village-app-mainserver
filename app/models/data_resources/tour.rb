@@ -18,6 +18,16 @@ class Tour < Attraction
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "Tour").first.try(:settings)
   end
+
+  def unique_id
+    fields = [name, type]
+
+    first_address = addresses.first
+    address_keys = %i[street zip city kind]
+    address_fields = address_keys.map { |a| first_address.try(:send, a) }
+
+    generate_checksum(fields + address_fields)
+  end
 end
 
 # == Schema Information
