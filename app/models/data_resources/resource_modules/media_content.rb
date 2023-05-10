@@ -15,7 +15,6 @@ class MediaContent < ApplicationRecord
 
   # if in configs for a resource defined, move an asset to defined external storage
   # and switch urls stored in source_url.
-  #
   def convert_source_url_to_external_storage
     return unless converting_activated_for_current_resource?
 
@@ -29,7 +28,11 @@ class MediaContent < ApplicationRecord
     begin
       uri = URI.open(source_url.url)
       file = File.open(uri)
-      attachment.attach(io: file, filename: File.basename(file))
+      attachment.attach(
+        io: file,
+        filename: File.basename(URI.parse(source_url.url).path) || File.basename(file),
+        content_type: uri.content_type
+      )
     rescue StandardError
      return false
     end
