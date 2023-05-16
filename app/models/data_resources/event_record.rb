@@ -47,7 +47,7 @@ class EventRecord < ApplicationRecord
   scope :in_date_range, lambda { |start_date, end_date|
     timespan_to_search = (start_date..end_date).to_a
 
-    list_of_fixed_date_ids = FixedDate.where.not(date_start: nil).to_a.select do |a|
+    list_of_fixed_dates = FixedDate.where.not(date_start: nil).to_a.select do |a|
       timespan = [] if a.date_start.blank?
       timespan = (a.date_start..a.date_start).to_a if a.date_start.present? && a.date_end.blank?
       timespan = (a.date_start..a.date_end).to_a if a.date_start.present? && a.date_end.present?
@@ -55,13 +55,13 @@ class EventRecord < ApplicationRecord
       (timespan_to_search & timespan).count.positive?
     end
 
-    events = joins(:dates).where(fixed_dates: { id: list_of_fixed_date_ids.map(&:id) })
-
-    events.map do |event_record|
-      event_record.in_date_range_start_date = start_date
+    events_in_timespan = joins(:dates).where(fixed_dates: { id: list_of_fixed_dates.map(&:id) })
+    events_in_timespan.map do |event_record|
+      # return the start_date of the event if the requested start_date is before the event start_date
+      event_record.in_date_range_start_date = start_date < event_record.dates.first.date_start ? event_record.dates.first.date_start : start_date
     end
 
-    events
+    events_in_timespan
   }
 
   scope :upcoming, lambda { |current_user = nil|
