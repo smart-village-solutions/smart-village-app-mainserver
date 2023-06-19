@@ -3,6 +3,13 @@
 class WasteNotification
   attr_accessor :client, :message_options, :check_date, :waste_types
 
+  def self.perform
+    Municipality.all.each do |municipality|
+      MunicipalityService.municipality_id = municipality.id
+      WasteNotification.new.send_notifications
+    end
+  end
+
   def initialize(check_date = Date.today)
     @check_date = check_date
   end
@@ -12,9 +19,9 @@ class WasteNotification
 
     # Load all possible addresses for registered push notifications
     possible_address_ids = Address.joins(:waste_location_types).where(
-      street: all_waste_registrations.pluck(:street),
-      city: all_waste_registrations.pluck(:city),
-      zip: all_waste_registrations.pluck(:zip)
+      street: all_waste_registrations.pluck(:street).uniq,
+      city: all_waste_registrations.pluck(:city).uniq,
+      zip: all_waste_registrations.pluck(:zip).uniq
     ).pluck(:id)
 
     # Load all PickupTimes of next couple days

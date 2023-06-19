@@ -33,6 +33,13 @@ class PushNotification
     end
   end
 
+  def self.perform_schedule
+    Municipality.all.each do |municipality|
+      MunicipalityService.municipality_id = municipality.id
+      PushNotification.new.schedule_notifications
+    end
+  end
+
   def schedule_notifications
     check_date = Date.today
     notification_pushes = Notification::Push.all
