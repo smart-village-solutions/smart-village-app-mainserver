@@ -5,7 +5,7 @@
 class MediaContent < ApplicationRecord
   belongs_to :mediaable, polymorphic: true, optional: true
   has_one :source_url, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
-  has_one_attached :attachment
+  has_one_attached :attachment, dependent: :purge
 
   after_create :convert_source_url_to_external_storage
 
