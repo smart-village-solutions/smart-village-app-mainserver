@@ -9,7 +9,7 @@ RSpec.describe SendSinglePushNotificationJob, type: :job do
     message_options = {}
 
     expect do
-      SendSinglePushNotificationJob.perform_now(device_token, message_options)
+      SendSinglePushNotificationJob.perform_now(device_token, message_options, 19)
     end.not_to raise_error
   end
 
@@ -19,7 +19,7 @@ RSpec.describe SendSinglePushNotificationJob, type: :job do
     message_options = {}
 
     expect do
-      SendSinglePushNotificationJob.perform_later(device_token, message_options)
+      SendSinglePushNotificationJob.perform_later(device_token, message_options, 19)
     end.not_to raise_error
   end
 
@@ -38,7 +38,7 @@ RSpec.describe SendSinglePushNotificationJob, type: :job do
     device = Notification::Device.create(token: device_token)
     payload = "{\"data\":[{\"status\":\"error\",\"message\":\"The recipient device is not registered with FCM.\",\"details\":{\"error\":\"DeviceNotRegistered\",\"fault\":\"developer\"}}]}"
 
-    SendSinglePushNotificationJob.cleanup_if_unregistered_device(device_token, payload)
+    SendSinglePushNotificationJob.new.cleanup_if_unregistered_device(device_token, payload)
 
     expect(Notification::Device.all).not_to include(device)
   end

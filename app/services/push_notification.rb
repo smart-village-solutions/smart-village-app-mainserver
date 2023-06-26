@@ -10,14 +10,15 @@
 #   }
 # }
 class PushNotification
-  def self.send_notification(device, message_options = {})
+  def self.send_notification(device, message_options = {}, municipality_id)
     return unless Rails.env.production?
 
-    SendSinglePushNotificationJob.perform_later(device.token, message_options)
+    SendSinglePushNotificationJob.perform_later(device.token, message_options, municipality_id)
   end
 
   def self.send_notifications(message_options = {}, municipality_id = nil)
     MunicipalityService.municipality_id = municipality_id
+
     notification_devices = Notification::Device.all
     data_provider_id = message_options[:data_provider_id]
 
@@ -29,7 +30,7 @@ class PushNotification
     end
 
     notification_devices.each do |device|
-      send_notification(device, message_options)
+      send_notification(device, message_options, municipality_id)
     end
   end
 

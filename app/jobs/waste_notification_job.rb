@@ -25,6 +25,6 @@ class WasteNotificationJob
     body = "#{registration_to_check.street}: Am #{parsed_date} wird #{waste_types[registration_to_check.notify_for_waste_type]["label"]} abgeholt."
     message_options = { title: title, body: body }
 
-    PushNotification.delay.send_notification(device, message_options)
+    PushNotification.delay.send_notification(device, message_options, municipality_id)
   end
 end
