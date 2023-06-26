@@ -22,7 +22,7 @@ class WasteNotification
       street: all_waste_registrations.pluck(:street).uniq,
       city: all_waste_registrations.pluck(:city).uniq,
       zip: all_waste_registrations.pluck(:zip).uniq
-    ).pluck(:id)
+    ).pluck(:id).uniq
 
     # Load all PickupTimes of next couple days
     number_of_days = all_waste_registrations.pluck(:notify_days_before).uniq
@@ -37,10 +37,10 @@ class WasteNotification
 
     all_waste_registrations.each do |registration_to_check|
       waste_pickup_times.each do |waste_pickup_time|
-        next unless matching_address_and_type(waste_pickup_time, registration_to_check)
-        next unless (check_date + registration_to_check.notify_days_before.days) == waste_pickup_time.pickup_date
         next if registration_to_check.blank?
         next if waste_pickup_time.blank?
+        next unless matching_address_and_type(waste_pickup_time, registration_to_check)
+        next unless (check_date + registration_to_check.notify_days_before.days) == waste_pickup_time.pickup_date
 
         # this way we can convert times, that are given as winter because of `time` database field,
         # which serves on first of january, to the local time zone to correct it to summertime
@@ -52,12 +52,12 @@ class WasteNotification
         # Look for existing Notification
         existing_notifications_count = Delayed::Backend::ActiveRecord::Job
                                          .where("handler LIKE '%WasteNotificationJob%'")
-                                         .where("handler LIKE '%args:\n- #{registration_to_check.id}\n- #{waste_pickup_time.id}%'")
+                                         .where("handler LIKE '%args:\n- #{registration_to_check.id}\n- #{waste_pickup_time.id}\n- #{MunicipalityService.municipality_id}%'")
                                          .count
         next if existing_notifications_count.positive?
 
         # Send Notification
-        WasteNotificationJob.delay(run_at: date_time_to_run).perform(registration_to_check.id, waste_pickup_time.id)
+        WasteNotificationJob.delay(run_at: date_time_to_run).perform(registration_to_check.id, waste_pickup_time.id, MunicipalityService.municipality_id)
       end
     end
 

@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class WasteNotificationJob
-  def self.perform(waste_registration_id, waste_pickup_time_id)
+  def self.perform(waste_registration_id, waste_pickup_time_id, municipality_id)
+    MunicipalityService.municipality_id = municipality_id
+
     waste_pickup_time = Waste::PickUpTime.find_by(id: waste_pickup_time_id)
     return if waste_pickup_time.blank?
     return if waste_pickup_time.pickup_date.blank?
@@ -10,7 +12,7 @@ class WasteNotificationJob
     return if registration_to_check.blank?
 
     device = registration_to_check.notification_device
-    return unless device.present?
+    return if device.blank?
 
     static_content = StaticContent.find_by(name: "wasteTypes")
     return if static_content.blank?
