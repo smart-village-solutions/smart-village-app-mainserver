@@ -41,14 +41,16 @@ Rails.application.routes.draw do
     sessions: "users/sessions"
   }
   devise_for :admins
+  authenticate :admin do
+    match "/background" => BetterDelayedJobWeb, anchor: false, via: %i[get post]
+  end
 
   get "user" => "users/status#show"
   post "/graphql", to: "graphql#execute"
   get "import_feeds", to: "import_feeds#index"
 
-  constraints(lambda { |request| MunicipalityConstraint.authorized?(request) }) do
+  constraints(->(request) { MunicipalityConstraint.authorized?(request) }) do
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
-    match "/background" => BetterDelayedJobWeb, anchor: false, via: [:get, :post]
   end
 
   get "/generate_204", to: "application#generate_204", status: 204
