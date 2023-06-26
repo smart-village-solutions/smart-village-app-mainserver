@@ -39,7 +39,7 @@ class SendSinglePushNotificationJob < ApplicationJob
     perform(device_token, message_options)
   end
 
-  def self.cleanup_if_unregistered_device(device_token, payload)
+  def cleanup_if_unregistered_device(device_token, payload)
     return if payload.blank?
 
     payload = JSON.parse(payload)

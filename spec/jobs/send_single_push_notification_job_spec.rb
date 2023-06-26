@@ -38,7 +38,7 @@ RSpec.describe SendSinglePushNotificationJob, type: :job do
     device = Notification::Device.create(token: device_token)
     payload = "{\"data\":[{\"status\":\"error\",\"message\":\"The recipient device is not registered with FCM.\",\"details\":{\"error\":\"DeviceNotRegistered\",\"fault\":\"developer\"}}]}"
 
-    SendSinglePushNotificationJob.cleanup_if_unregistered_device(device_token, payload)
+    SendSinglePushNotificationJob.new.cleanup_if_unregistered_device(device_token, payload)
 
     expect(Notification::Device.all).not_to include(device)
   end
