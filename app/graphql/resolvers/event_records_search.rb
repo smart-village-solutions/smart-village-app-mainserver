@@ -36,7 +36,6 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
     value "listDate_ASC"
   end
 
-  option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range
   option :category_id, type: GraphQL::Types::ID, with: :apply_category_id
   option :skip, type: GraphQL::Types::Int, with: :apply_skip
   option :limit, type: GraphQL::Types::Int, with: :apply_limit
@@ -46,24 +45,7 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   option :data_provider_id, type: GraphQL::Types::ID, with: :apply_data_provider_id
   option :take, type: GraphQL::Types::Int, with: :apply_take
   option :location, type: GraphQL::Types::String, with: :apply_location
-
-  # :values is array of 2 dates:
-  # - first element is :start_date
-  # - second element is :end_date
-  # Each element is of format "2020-12-31"
-  def apply_date_range(scope, values)
-    error_message = "DateRange invalid! Should be [start_date, end_date] each with format `2020-12-31`"
-    raise error_message unless values.count == 2
-
-    begin
-      start_date = Date.parse(values[0])
-      end_date = Date.parse(values[1])
-    rescue ArgumentError
-      raise error_message
-    end
-
-    scope.in_date_range(start_date, end_date)
-  end
+  option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range
 
   def apply_category_id(scope, value)
     scope.by_category(value)
@@ -98,6 +80,24 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
 
   def apply_location(scope, value)
     scope.by_location(value)
+  end
+
+  # :values is array of 2 dates:
+  # - first element is :start_date
+  # - second element is :end_date
+  # Each element is of format "2020-12-31"
+  def apply_date_range(scope, values)
+    error_message = "DateRange invalid! Should be [start_date, end_date] each with format `2020-12-31`"
+    raise error_message unless values.count == 2
+
+    begin
+      start_date = Date.parse(values[0])
+      end_date = Date.parse(values[1])
+    rescue ArgumentError
+      raise error_message
+    end
+
+    scope.in_date_range(start_date, end_date)
   end
 
   def apply_order_with_created_at_desc(scope)
