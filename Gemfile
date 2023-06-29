@@ -60,9 +60,7 @@ gem "bootsnap", ">= 1.1.0", require: false
 
 gem "graphiql-rails", "1.4.11"
 gem "graphql", "1.9.21"
-gem "graphql-client"
 gem "graphql-query-resolver"
-gem "graphql-remote_loader"
 
 gem "lograge"
 gem "rollbar"
