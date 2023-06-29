@@ -14,7 +14,7 @@ class SendSinglePushNotificationJob < ApplicationJob
   #
   # device_token = "ExponentPushToken[RkCuwM123456778g29lQb0ZK]"
   def perform(device_token, message_options, municipality_id)
-    MunicipalityService.municipality_id = municipality.id
+    MunicipalityService.municipality_id = municipality_id
 
     client = Exponent::Push::Client.new
     messages = [message_options.merge(to: device_token)]
