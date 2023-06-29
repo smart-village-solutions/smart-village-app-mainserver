@@ -198,13 +198,6 @@ module Types
       static_content_with_data_type("json", name, version)
     end
 
-    def directus(query:)
-      DirectusLoader.load(query).then do |results|
-        results["data"] unless results["errors"]
-      end
-    end
-    ####################################
-
     private
 
       # Provide a list of files within a folder that are whitelisted to be queried by the
