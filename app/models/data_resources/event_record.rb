@@ -216,6 +216,12 @@ class EventRecord < ApplicationRecord
       # return start date if the end date is in the past
       return start_date if end_date < today
 
+      # TODO: Möglicher fix für SVA-1092
+      #       Leider taucht das Problem nicht mehr auf, daher kann es nicht getestet werden.
+      #
+      # return start date if the start date is in the future
+      return start_date if start_date > today
+
       # return "today" if there is a future end date
       today.to_date
     end
