@@ -13,6 +13,30 @@ class MinioService
     return true if bucket_exists?(bucket_name)
 
     aws_client.create_bucket(bucket: bucket_name)
+    set_bucket_policy(bucket_name)
+  end
+
+  def set_bucket_policy(bucket_name)
+    policy = {
+      "Version":"2012-10-17",
+      "Statement":[
+        {
+          "Principal":"*",
+          "Effect":"Allow",
+          "Action":[
+            "s3:GetObject"
+          ],
+          "Resource":[
+            "arn:aws:s3:::#{bucket_name}/*"
+          ]
+        }
+      ]
+    }
+
+    aws_client.put_bucket_policy({
+      bucket: bucket_name,
+      policy: policy.to_json
+    })
   end
 
   def bucket_exists?(bucket_name)
