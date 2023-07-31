@@ -210,6 +210,9 @@ class EventRecord < ApplicationRecord
       end_date = date.date_end
       today = Time.zone.now.beginning_of_day
 
+      # return start date if the start date is in the future
+      return start_date if start_date > today
+
       # return start date if there is no end date
       return start_date if end_date.blank?
 
