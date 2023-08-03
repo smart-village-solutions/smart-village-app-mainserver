@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_20_141513) do
+ActiveRecord::Schema.define(version: 2023_08_03_145654) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -234,6 +234,10 @@ ActiveRecord::Schema.define(version: 2023_01_20_141513) do
     t.integer "data_provider_id"
     t.string "external_id"
     t.boolean "visible", default: true
+    t.boolean "recurring", default: false
+    t.string "recurring_weekdays"
+    t.integer "recurring_type"
+    t.integer "recurring_interval"
     t.index ["data_provider_id"], name: "index_event_records_on_data_provider_id"
     t.index ["region_id"], name: "index_event_records_on_region_id"
   end

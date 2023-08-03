@@ -23,15 +23,19 @@ end
 #
 # Table name: event_records
 #
-#  id               :bigint           not null, primary key
-#  parent_id        :integer
-#  region_id        :bigint
-#  description      :text(65535)
-#  repeat           :boolean
-#  title            :string(255)
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  data_provider_id :integer
-#  external_id      :string(255)
-#  visible          :boolean          default(TRUE)
+#  id                 :bigint           not null, primary key
+#  parent_id          :integer
+#  region_id          :bigint
+#  description        :text(65535)
+#  repeat             :boolean
+#  title              :string(255)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  data_provider_id   :integer
+#  external_id        :string(255)
+#  visible            :boolean          default(TRUE)
+#  recurring          :boolean          default(FALSE)
+#  recurring_weekdays :string(255)
+#  recurring_type     :integer
+#  recurring_interval :integer
 #
