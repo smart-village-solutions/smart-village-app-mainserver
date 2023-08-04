@@ -51,7 +51,6 @@ class EventRecord < ApplicationRecord
     timespan_to_search = (start_date..end_date).to_a
 
     list_of_fixed_dates = FixedDate.where.not(date_start: nil).to_a.select do |a|
-      timespan = [] if a.date_start.blank?
       timespan = (a.date_start..a.date_start).to_a if a.date_start.present? && a.date_end.blank?
       timespan = (a.date_start..a.date_end).to_a if a.date_start.present? && a.date_end.present?
 
@@ -59,9 +58,18 @@ class EventRecord < ApplicationRecord
     end
 
     events_in_timespan = joins(:dates).where(fixed_dates: { id: list_of_fixed_dates.map(&:id) })
+    # reject recurring events with just one date object, because all dates are outside the timespan.
+    # the one date object is the original date of the recurring event, that need to be ignored.
+    events_in_timespan = events_in_timespan.reject do |event_record|
+      event_record.recurring? && event_record.dates.size == 1
+    end
     events_in_timespan.map do |event_record|
-      # return the start_date of the event if the requested start_date is before the event start_date
-      event_record.in_date_range_start_date = start_date < event_record.dates.first.date_start ? event_record.dates.first.date_start : start_date
+      # return the start_date of the event if the requested start_date is before event start_date
+      if start_date < event_record.dates.first.date_start
+        event_record.in_date_range_start_date = event_record.dates.first.date_start
+      else
+        event_record.in_date_range_start_date = start_date
+      end
     end
 
     events_in_timespan
@@ -134,29 +142,30 @@ class EventRecord < ApplicationRecord
 
     list_date_cached = RedisAdapter.get_event_list_date(id)
     if list_date_cached.present?
-      return list_date_cached == 0 ? nil : Time.zone.at(list_date_cached.to_i).to_date
+      return list_date_cached.to_i.zero? ? nil : Time.zone.at(list_date_cached.to_i).to_date
     end
 
     event_dates = dates.order(date_start: :asc)
-    dates_count = event_dates.count
+    # ignore the first date if recurring, because it is the original date object with a time span
+    event_dates = event_dates[1..-1] if recurring?
+    dates_count = event_dates.size
 
     if dates_count.zero?
       RedisAdapter.set_event_list_date(id, 0)
       return nil
     end
 
-    future_dates = event_dates.select do |date|
-      date.date_start.try(:to_time).to_i >= Time.zone.now.beginning_of_day.to_i
-    end
-    calculated_list_date = future_dates.first.try(:date_start)
-
-    if calculated_list_date.present?
+    if dates_count == 1 && !recurring?
+      calculated_list_date = today_in_time_range(event_dates.first)
       RedisAdapter.set_event_list_date(id, calculated_list_date.to_time.to_i)
       return calculated_list_date
     end
 
-    if dates_count == 1
-      calculated_list_date = today_in_time_range(event_dates.first)
+    future_dates = event_dates.select do |date|
+      date.date_start.try(:to_time).to_i >= Time.zone.now.beginning_of_day.to_i
+    end
+    if future_dates.present?
+      calculated_list_date = future_dates.first.try(:date_start)
       RedisAdapter.set_event_list_date(id, calculated_list_date.to_time.to_i)
       return calculated_list_date
     end
@@ -206,7 +215,6 @@ class EventRecord < ApplicationRecord
     end
 
     # need to check start and end date and return "today" if there is only one date.
-    # per CMS only one date can be saved.
     # if a start and end date describes a larger time range, "today" needs to be returned until end
     # is reached.
     def today_in_time_range(date)
