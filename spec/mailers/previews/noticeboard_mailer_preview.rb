@@ -14,11 +14,9 @@ class NoticeboardMailerPreview < ActionMailer::Preview
     generic_item.content_blocks = [OpenStruct.new(body: "Test", title: "Test")]
     generic_item.external_reference = OpenStruct.new(unique_id: "1234567890")
 
-    StaticContent.first_or_create(
-      name: "noticeboard-notify-creator",
-      data_type: "json",
-      content: "{\"app_name\":\"Test-App\",\"mail_footer\":[\"Zeile 1\", \"\", \"Zeile 2\"]}"
-    )
+    StaticContent.find_or_create_by(name: "noticeboard-notify-creator", data_type: "json") do |s|
+      s.content = "{\"app_name\":\"Test-App\",\"mail_footer\":[\"Zeile 1\", \"\", \"Zeile 2\"]}"
+    end
 
     NoticeboardMailer.notify_creator(generic_item)
   end
@@ -45,11 +43,9 @@ class NoticeboardMailerPreview < ActionMailer::Preview
       terms_of_service: true
     )
 
-    StaticContent.first_or_create(
-      name: "noticeboard_notify_creator",
-      data_type: "json",
-      content: "{\"app_name\":\"Test-App\",\"mail_footer\":[\"Zeile 1\", \"\", \"Zeile 2\"]}"
-    )
+    StaticContent.find_or_create_by(name: "noticeboard-notify-creator", data_type: "json") do |s|
+      s.content = "{\"app_name\":\"Test-App\",\"mail_footer\":[\"Zeile 1\", \"\", \"Zeile 2\"]}"
+    end
 
     NoticeboardMailer.new_message_for_entry(generic_item_message)
   end
