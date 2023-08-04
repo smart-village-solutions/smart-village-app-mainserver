@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Service to create recurring dates for an event based on its recurring pattern
 class RecurringDatesForEventService
   def initialize(event)
     @event_id = event.id
@@ -7,7 +8,7 @@ class RecurringDatesForEventService
     @date_end = event.dates.first.date_end
     @time_start = event.dates.first.time_start
     @time_end = event.dates.first.time_end
-    @weekdays = event.recurring_weekdays
+    @weekdays = event.recurring_weekdays.map(&:to_i)
     @type = event.recurring_type # 0 - daily, 1 - weekly, 2 - monthly, 3 - yearly
     @interval = event.recurring_interval
   end
@@ -17,7 +18,7 @@ class RecurringDatesForEventService
     when 0
       create_daily_events
     when 1
-      # TODO: create_weekly_events
+      create_weekly_events
     when 2
       # TODO: create_monthly_events
     when 3
@@ -30,23 +31,36 @@ class RecurringDatesForEventService
     # create a date for all appointments between date_start and date_end based on the days interval
     def create_daily_events
       while @date_start <= @date_end
-        create_date(
-          date_start: @date_start,
-          date_end: @date_start,
-          time_start: @time_start,
-          time_end: @time_end
-        )
-
+        create_date
         @date_start += @interval.days
       end
     end
 
-    def create_date(params)
+    # create a date for all appointments between date_start and date_end based on the weeks interval
+    # considering the weekdays in each week.
+    def create_weekly_events
+      beginning_of_week = @date_start.beginning_of_week
+
+      while beginning_of_week <= @date_end
+        @weekdays.each do |weekday|
+          next unless (beginning_of_week + weekday.days) >= @date_start
+
+          @date_start = beginning_of_week + weekday.days
+          create_date
+        end
+
+        beginning_of_week += @interval.weeks
+      end
+    end
+
+    def create_date
       FixedDate.create(
-        params.merge(
-          dateable_type: "EventRecord",
-          dateable_id: @event_id
-        )
+        date_start: @date_start,
+        date_end: @date_start,
+        time_start: @time_start,
+        time_end: @time_end,
+        dateable_type: "EventRecord",
+        dateable_id: @event_id
       )
     end
 end
