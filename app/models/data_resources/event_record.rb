@@ -12,6 +12,7 @@ class EventRecord < ApplicationRecord
   attr_accessor :in_date_range_start_date
 
   before_save :remove_emojis
+  before_save :handle_recurring_dates
   after_save :find_or_create_category
   before_validation :find_or_create_region
 
@@ -197,6 +198,7 @@ class EventRecord < ApplicationRecord
       if category_names.present?
         category_names.each do |category|
           next unless category[:name].present?
+
           category_to_add = Category.where(name: category[:name]).first_or_create
           categories << category_to_add unless categories.include?(category_to_add)
         end
@@ -228,6 +230,24 @@ class EventRecord < ApplicationRecord
     def remove_emojis
       self.title = RemoveEmoji::Sanitize.call(title) if title.present?
       self.description = RemoveEmoji::Sanitize.call(description) if description.present?
+    end
+
+    # Check if `recurring` is true and if so, handle recurring dates following the given pattern.
+    # This method is called after the event is created or updated and recreates dates based on the
+    # given recurring pattern. The creation takes place in a background job to avoid long running
+    # requests. If `recurring` is false, recurring patterns gets reset.
+    def handle_recurring_dates
+      if (recurring_weekdays_changed? || recurring_type_changed? || recurring_interval_changed?) && recurring?
+        RecurringDatesForEventService.new(self).delay.create_with_pattern
+      end
+
+      reset_recurring_attributes if recurring_changed? && !recurring?
+    end
+
+    def reset_recurring_attributes
+      self.recurring_weekdays = nil
+      self.recurring_type = nil
+      self.recurring_interval = nil
     end
 end
 
