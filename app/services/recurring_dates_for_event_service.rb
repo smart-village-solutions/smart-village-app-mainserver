@@ -22,7 +22,7 @@ class RecurringDatesForEventService
     when 2
       create_monthly_events
     when 3
-      # TODO: create_yearly_events
+      create_yearly_events
     end
   end
 
@@ -60,6 +60,15 @@ class RecurringDatesForEventService
       while @date_start <= @date_end
         create_date
         @date_start += @interval.months
+      end
+    end
+
+    # create a date for all appointments between `date_start` and `date_end` based on the years
+    # interval
+    def create_yearly_events
+      while @date_start <= @date_end
+        create_date
+        @date_start += @interval.years
       end
     end
 
