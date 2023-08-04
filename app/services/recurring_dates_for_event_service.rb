@@ -20,7 +20,7 @@ class RecurringDatesForEventService
     when 1
       create_weekly_events
     when 2
-      # TODO: create_monthly_events
+      create_monthly_events
     when 3
       # TODO: create_yearly_events
     end
@@ -28,7 +28,8 @@ class RecurringDatesForEventService
 
   private
 
-    # create a date for all appointments between date_start and date_end based on the days interval
+    # create a date for all appointments between `date_start` and `date_end` based on the days
+    # interval
     def create_daily_events
       while @date_start <= @date_end
         create_date
@@ -36,8 +37,8 @@ class RecurringDatesForEventService
       end
     end
 
-    # create a date for all appointments between date_start and date_end based on the weeks interval
-    # considering the weekdays in each week.
+    # create a date for all appointments between `date_start` and `date_end` based on the weeks
+    # interval considering the weekdays in each week
     def create_weekly_events
       beginning_of_week = @date_start.beginning_of_week
 
@@ -50,6 +51,15 @@ class RecurringDatesForEventService
         end
 
         beginning_of_week += @interval.weeks
+      end
+    end
+
+    # create a date for all appointments between `date_start` and `date_end` based on the months
+    # interval
+    def create_monthly_events
+      while @date_start <= @date_end
+        create_date
+        @date_start += @interval.months
       end
     end
 
