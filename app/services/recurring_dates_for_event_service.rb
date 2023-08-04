@@ -45,6 +45,7 @@ class RecurringDatesForEventService
       while beginning_of_week <= @date_end
         @weekdays.each do |weekday|
           next unless (beginning_of_week + weekday.days) >= @date_start
+          next unless (beginning_of_week + weekday.days) <= @date_end
 
           @date_start = beginning_of_week + weekday.days
           create_date
