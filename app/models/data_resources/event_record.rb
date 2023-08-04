@@ -237,17 +237,28 @@ class EventRecord < ApplicationRecord
     # given recurring pattern. The creation takes place in a background job to avoid long running
     # requests. If `recurring` is false, recurring patterns gets reset.
     def handle_recurring_dates
-      if (recurring_weekdays_changed? || recurring_type_changed? || recurring_interval_changed?) && recurring?
+      if recurring? && (recurring_pattern_changed? || event_date_changed?)
         RecurringDatesForEventService.new(self).delay.create_with_pattern
       end
 
-      reset_recurring_attributes if recurring_changed? && !recurring?
+      reset_recurring_attributes if !recurring? && recurring_changed?
     end
 
     def reset_recurring_attributes
       self.recurring_weekdays = nil
       self.recurring_type = nil
       self.recurring_interval = nil
+    end
+
+    def recurring_pattern_changed?
+      recurring_weekdays_changed? || recurring_type_changed? || recurring_interval_changed?
+    end
+
+    def event_date_changed?
+      date = dates.first
+
+      date.date_start_changed? || date.date_end_changed? || date.time_start_changed? ||
+        date.time_end_changed?
     end
 end
 
