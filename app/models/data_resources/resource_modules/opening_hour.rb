@@ -21,4 +21,5 @@ end
 #  openingable_id   :bigint
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  use_year         :boolean
 #

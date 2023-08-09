@@ -9,6 +9,7 @@ module Types
     argument :time_to, String, required: false
     argument :sort_number, Integer, required: false
     argument :open, Boolean, required: false
+    argument :use_year, Boolean, required: false
     argument :description, String, required: false
   end
 end

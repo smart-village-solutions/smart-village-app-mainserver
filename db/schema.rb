@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_20_141513) do
+ActiveRecord::Schema.define(version: 2023_08_03_180807) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -470,6 +470,7 @@ ActiveRecord::Schema.define(version: 2023_01_20_141513) do
     t.bigint "openingable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "use_year"
     t.index ["openingable_type", "openingable_id"], name: "index_opening_hours_on_openingable_type_and_openingable_id"
   end
 
