@@ -11,11 +11,9 @@ class DefectReportMailerPreview < ActionMailer::Preview
     generic_item.content_blocks = [OpenStruct.new(body: "Test mit mehr Worten", title: "Test")]
     generic_item.external_reference = OpenStruct.new(unique_id: "1234567890")
 
-    StaticContent.first_or_create(
-      name: "defectreport-notify-for-category",
-      data_type: "json",
-      content: "{\"app_name\":\"Test-App\",\"mail_footer\":[\"Zeile 1\", \"\", \"Zeile 2\"]}"
-    )
+    StaticContent.find_or_create_by(name: "defectreport-notify-for-category", data_type: "json" ) do |s|
+       s.content = "{\"app_name\":\"Test-App\",\"mail_footer\":[\"Zeile 1\", \"\", \"Zeile 2\"]}" 
+    end
 
     DefectReportMailer.notify_for_category(generic_item)
   end
@@ -33,11 +31,9 @@ class DefectReportMailerPreview < ActionMailer::Preview
     generic_item.addresses = [OpenStruct.new(street: "Straße", zip: "03443", city: "Stadt", geo_location: OpenStruct.new(latitude: 50.1212, longitude: 13.3434))]
     generic_item.external_reference = OpenStruct.new(unique_id: "1234567890")
 
-    StaticContent.first_or_create(
-      name: "defectreport-notify-for-category",
-      data_type: "json",
-      content: "{\"app_name\":\"Test-App\",\"mail_footer\":[\"Zeile 1\", \"\", \"Zeile 2\"]}"
-    )
+    StaticContent.find_or_create_by(name: "defectreport-notify-for-category", data_type: "json") do |s|
+        s.content = "{\"app_name\":\"Test-App\",\"mail_footer\":[\"Zeile 1\", \"\", \"Zeile 2\"]}"
+    end
 
     DefectReportMailer.notify_for_category(generic_item)
   end
