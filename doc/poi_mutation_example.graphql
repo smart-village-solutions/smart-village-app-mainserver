@@ -82,6 +82,7 @@ mutation {
 				timeTo: "00:02:00 UTC"
 				open: true
 				sortNumber: 1
+        useYear: true
 				description: "Ut id veritatis nihil."
 			}
 		]
@@ -207,6 +208,7 @@ mutation {
 			timeTo
 			open
 			sortNumber
+      useYear
 			description
 		}
 		operatingCompany {

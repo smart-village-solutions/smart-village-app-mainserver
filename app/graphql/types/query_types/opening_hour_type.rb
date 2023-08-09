@@ -10,6 +10,7 @@ module Types
     field :time_to, String, null: true
     field :sort_number, Integer, null: true
     field :open, GraphQL::Types::Boolean, null: true
+    field :use_year, GraphQL::Types::Boolean, null: true
     field :description, String, null: true
 
     def time_from
