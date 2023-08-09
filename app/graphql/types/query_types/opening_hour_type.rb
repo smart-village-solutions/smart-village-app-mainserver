@@ -10,6 +10,7 @@ module Types
     field :time_to, String, null: true
     field :sort_number, Integer, null: true
     field :open, Boolean, null: true
+    field :use_year, Boolean, null: true
     field :description, String, null: true
 
     def time_from
