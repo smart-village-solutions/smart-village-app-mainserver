@@ -42,5 +42,7 @@ module SmartVillageAppMainserver
     config.generators.system_tests = nil
 
     config.i18n.available_locales = %i[de en]
+    config.i18n.default_locale = :de
+    config.i18n.fallbacks = [:en]
   end
 end
