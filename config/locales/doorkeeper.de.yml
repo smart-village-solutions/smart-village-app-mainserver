@@ -1,0 +1,140 @@
+de:
+  activerecord:
+    attributes:
+      doorkeeper/application:
+        name: 'Name'
+        redirect_uri: 'Weiterleitungs-URI'
+    errors:
+      models:
+        doorkeeper/application:
+          attributes:
+            redirect_uri:
+              fragment_present: 'darf keinen Fragment enthalten.'
+              invalid_uri: 'muss eine gültige URI sein.'
+              relative_uri: 'muss eine absolute URI sein.'
+              secured_uri: 'muss eine HTTPS/SSL URI sein.'
+              forbidden_uri: 'wird vom Server verboten.'
+            scopes:
+              not_match_configured: "stimmt nicht mit dem vom Server konfigurierten überein."
+
+  doorkeeper:
+    applications:
+      confirmations:
+        destroy: 'Sind Sie sicher?'
+      buttons:
+        edit: 'Bearbeiten'
+        destroy: 'Löschen'
+        submit: 'Absenden'
+        cancel: 'Abbrechen'
+        back: 'Zurück'
+        authorize: 'Autorisieren'
+        batch_action: "Sammelaktion starten"
+      form:
+        error: 'Hoppla! Überprüfen Sie das Formular auf mögliche Fehler'
+      help:
+        confidential: 'Die Anwendung wird dort verwendet, wo das Client-Geheimnis vertraulich aufbewahrt werden kann. Native Mobile-Apps und Single Page Apps gelten als nicht vertraulich.'
+        redirect_uri: 'Verwenden Sie eine Zeile pro URI'
+        blank_redirect_uri: "Lassen Sie es leer, wenn Sie Ihren Anbieter so konfiguriert haben, dass er Client Credentials, Resource Owner Password Credentials oder einen anderen Grant-Typ verwendet, der keine Weiterleitungs-URI benötigt."
+        native_redirect_uri: 'Verwenden Sie %{native_redirect_uri}, wenn Sie localhost URIs für Entwicklungsanwendungen hinzufügen möchten'
+        scopes: 'Trennen Sie Bereiche mit Leerzeichen. Lassen Sie das Feld leer, um die Standardbereiche zu verwenden.'
+      edit:
+        title: 'Anwendung bearbeiten'
+      index:
+        title: 'Ihre Anwendungen'
+        new: 'Neue Anwendung'
+        name: 'Name'
+        callback_url: 'Callback-URL'
+        confidential: 'Vertraulich?'
+        actions: 'Aktionen'
+        confidentiality:
+          'yes': 'Ja'
+          'no': 'Nein'
+      new:
+        title: 'Neue Anwendung'
+      show:
+        title: 'Anwendung: %{name}'
+        application_id: 'Anwendungs-UID'
+        secret: 'Geheimnis'
+        scopes: 'Bereiche'
+        confidential: 'Vertraulich'
+        callback_urls: 'Callback-URLs'
+        actions: 'Aktionen'
+
+    authorizations:
+      buttons:
+        authorize: 'Autorisieren'
+        deny: 'Verweigern'
+      error:
+        title: 'Ein Fehler ist aufgetreten'
+      new:
+        title: 'Autorisierung erforderlich'
+        prompt: 'Autorisieren Sie %{client_name}, Ihr Konto zu verwenden?'
+        able_to: 'Diese Anwendung wird in der Lage sein'
+      show:
+        title: 'Autorisierungscode'
+
+    authorized_applications:
+      confirmations:
+        revoke: 'Sind Sie sicher?'
+      buttons:
+        revoke: 'Widerrufen'
+      index:
+        title: 'Ihre autorisierten Anwendungen'
+        application: 'Anwendung'
+        created_at: 'Erstellt am'
+        date_format: '%Y-%m-%d %H:%M:%S'
+
+    pre_authorization:
+      status: 'Vorab-Autorisierung'
+
+    errors:
+      messages:
+        # Common error messages
+        invalid_request: 'Der Antrag fehlt ein erforderliches Parameter, enthält einen nicht unterstützten Parameterwert oder ist anderweitig fehlerhaft.'
+        invalid_redirect_uri: "Die angeforderte Weiterleitungs-URI ist fehlerhaft oder stimmt nicht mit der Weiterleitungs-URI des Clients überein."
+        unauthorized_client: 'Der Client ist nicht berechtigt, diese Anfrage mit dieser Methode durchzuführen.'
+        access_denied: 'Der Ressourcenbesitzer oder der Autorisierungsserver hat die Anfrage verweigert.'
+        invalid_scope: 'Der angeforderte Bereich ist ungültig, unbekannt oder fehlerhaft.'
+        invalid_code_challenge_method: 'Die Code-Herausforderungsmethode muss plain oder S256 sein.'
+        server_error: 'Der Autorisierungsserver hat einen unerwarteten Zustand erkannt, der ihn daran gehindert hat, die Anfrage zu erfüllen.'
+        temporarily_unavailable: 'Der Autorisierungsserver kann die Anfrage derzeit aufgrund einer vorübergehenden Überlastung oder Wartung des Servers nicht bearbeiten.'
+
+        # Configuration error messages
+        credential_flow_not_configured: 'Der Resource Owner Password Credentials-Fluss ist fehlgeschlagen, da Doorkeeper.configure.resource_owner_from_credentials nicht konfiguriert wurde.'
+        resource_owner_authenticator_not_configured: 'Das Finden des Ressourcenbesitzers ist aufgrund von Doorkeeper.configure.resource_owner_authenticator nicht konfiguriert fehlgeschlagen.'
+        admin_authenticator_not_configured: 'Der Zugang zum Admin-Panel ist verboten, da Doorkeeper.configure.admin_authenticator nicht konfiguriert wurde.'
+
+        # Access grant errors
+        unsupported_response_type: 'Der Autorisierungsserver unterstützt diesen Antworttyp nicht.'
+
+        # Access token errors
+        invalid_client: 'Die Client-Authentifizierung ist fehlgeschlagen aufgrund eines unbekannten Clients, keiner enthaltenen Client-Authentifizierung oder einer nicht unterstützten Authentifizierungsmethode.'
+        invalid_grant: 'Das bereitgestellte Autorisierungs-Grant ist ungültig, abgelaufen, widerrufen, stimmt nicht mit der in der Autorisierungsanfrage verwendeten Weiterleitungs-URI überein oder wurde an einen anderen Client ausgestellt.'
+        unsupported_grant_type: 'Der Autorisierungs-Grant-Typ wird vom Autorisierungsserver nicht unterstützt.'
+
+        invalid_token:
+          revoked: "Das Zugriffstoken wurde widerrufen"
+          expired: "Das Zugriffstoken ist abgelaufen"
+          unknown: "Das Zugriffstoken ist ungültig"
+
+    flash:
+      applications:
+        create:
+          notice: 'Anwendung erstellt.'
+        destroy:
+          notice: 'Anwendung gelöscht.'
+        update:
+          notice: 'Anwendung aktualisiert.'
+      authorized_applications:
+        destroy:
+          notice: 'Anwendung widerrufen.'
+
+    layouts:
+      admin:
+        title: 'Doorkeeper'
+        nav:
+          oauth2_provider: 'OAuth2-Anbieter'
+          applications: 'Anwendungen'
+          home: 'Startseite'
+      application:
+        title: 'OAuth-Autorisierung erforderlich'
