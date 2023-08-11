@@ -9,3 +9,7 @@ de:
         Ä: "Ae"
         Ü: "Ue"
         Ö: "Oe"
+  search_column:
+    email: "E-Mail"
+    name: "Name"
+    token: "Token"
