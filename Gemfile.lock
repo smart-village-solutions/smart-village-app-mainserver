@@ -165,9 +165,6 @@ GEM
       railties
       sprockets-rails
     graphql (1.9.21)
-    graphql-client (0.16.0)
-      activesupport (>= 3.0)
-      graphql (~> 1.8)
     graphql-query-resolver (0.2.0)
       graphql (~> 1.0, >= 1.0.0)
     guard (2.15.0)
@@ -261,6 +258,8 @@ GEM
     nio4r (2.3.1)
     nokogiri (1.11.5-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.11.5-x86_64-linux)
+      racc (~> 1.4)
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
@@ -283,7 +282,8 @@ GEM
     pry-rails (0.3.9)
       pry (>= 0.10.4)
     public_suffix (4.0.6)
-    puma (3.12.6)
+    puma (5.6.7)
+      nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-protection (2.1.0)
@@ -459,6 +459,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   acts-as-taggable-on
@@ -483,7 +484,6 @@ DEPENDENCIES
   faker!
   graphiql-rails (= 1.4.11)
   graphql (= 1.9.21)
-  graphql-client
   graphql-query-resolver
   guard
   guard-rspec
@@ -503,7 +503,7 @@ DEPENDENCIES
   order_as_specified
   pry-byebug
   pry-rails
-  puma (~> 3.12)
+  puma (~> 5.6)
   rails (~> 5.2.4, >= 5.2.4.3)
   rails-controller-testing
   rb-readline
