@@ -12,6 +12,7 @@ class EventRecord < ApplicationRecord
   attr_accessor :in_date_range_start_date
 
   before_save :remove_emojis
+  before_save :handle_recurring_dates
   after_save :find_or_create_category
   before_validation :find_or_create_region
 
@@ -32,6 +33,8 @@ class EventRecord < ApplicationRecord
   has_many :dates, as: :dateable, class_name: "FixedDate", dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy
 
+  serialize :recurring_weekdays, Array
+
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
 
@@ -48,7 +51,6 @@ class EventRecord < ApplicationRecord
     timespan_to_search = (start_date..end_date).to_a
 
     list_of_fixed_dates = FixedDate.where.not(date_start: nil).to_a.select do |a|
-      timespan = [] if a.date_start.blank?
       timespan = (a.date_start..a.date_start).to_a if a.date_start.present? && a.date_end.blank?
       timespan = (a.date_start..a.date_end).to_a if a.date_start.present? && a.date_end.present?
 
@@ -56,9 +58,18 @@ class EventRecord < ApplicationRecord
     end
 
     events_in_timespan = joins(:dates).where(fixed_dates: { id: list_of_fixed_dates.map(&:id) })
+    # reject recurring events with just one date object, because all dates are outside the timespan.
+    # the one date object is the original date of the recurring event, that need to be ignored.
+    events_in_timespan = events_in_timespan.reject do |event_record|
+      event_record.recurring? && event_record.dates.size == 1
+    end
     events_in_timespan.map do |event_record|
-      # return the start_date of the event if the requested start_date is before the event start_date
-      event_record.in_date_range_start_date = start_date < event_record.dates.first.date_start ? event_record.dates.first.date_start : start_date
+      # return the start_date of the event if the requested start_date is before event start_date
+      if start_date < event_record.dates.first.date_start
+        event_record.in_date_range_start_date = event_record.dates.first.date_start
+      else
+        event_record.in_date_range_start_date = start_date
+      end
     end
 
     events_in_timespan
@@ -131,29 +142,30 @@ class EventRecord < ApplicationRecord
 
     list_date_cached = RedisAdapter.get_event_list_date(id)
     if list_date_cached.present?
-      return list_date_cached == 0 ? nil : Time.zone.at(list_date_cached.to_i).to_date
+      return list_date_cached.to_i.zero? ? nil : Time.zone.at(list_date_cached.to_i).to_date
     end
 
     event_dates = dates.order(date_start: :asc)
-    dates_count = event_dates.count
+    # ignore the first date if recurring, because it is the original date object with a time span
+    event_dates = event_dates[1..-1] if recurring?
+    dates_count = event_dates.size
 
     if dates_count.zero?
       RedisAdapter.set_event_list_date(id, 0)
       return nil
     end
 
-    future_dates = event_dates.select do |date|
-      date.date_start.try(:to_time).to_i >= Time.zone.now.beginning_of_day.to_i
-    end
-    calculated_list_date = future_dates.first.try(:date_start)
-
-    if calculated_list_date.present?
+    if dates_count == 1 && !recurring?
+      calculated_list_date = today_in_time_range(event_dates.first)
       RedisAdapter.set_event_list_date(id, calculated_list_date.to_time.to_i)
       return calculated_list_date
     end
 
-    if dates_count == 1
-      calculated_list_date = today_in_time_range(event_dates.first)
+    future_dates = event_dates.select do |date|
+      date.date_start.try(:to_time).to_i >= Time.zone.now.beginning_of_day.to_i
+    end
+    if future_dates.present?
+      calculated_list_date = future_dates.first.try(:date_start)
       RedisAdapter.set_event_list_date(id, calculated_list_date.to_time.to_i)
       return calculated_list_date
     end
@@ -195,6 +207,7 @@ class EventRecord < ApplicationRecord
       if category_names.present?
         category_names.each do |category|
           next unless category[:name].present?
+
           category_to_add = Category.where(name: category[:name]).first_or_create
           categories << category_to_add unless categories.include?(category_to_add)
         end
@@ -202,7 +215,6 @@ class EventRecord < ApplicationRecord
     end
 
     # need to check start and end date and return "today" if there is only one date.
-    # per CMS only one date can be saved.
     # if a start and end date describes a larger time range, "today" needs to be returned until end
     # is reached.
     def today_in_time_range(date)
@@ -227,21 +239,54 @@ class EventRecord < ApplicationRecord
       self.title = RemoveEmoji::Sanitize.call(title) if title.present?
       self.description = RemoveEmoji::Sanitize.call(description) if description.present?
     end
+
+    # Check if `recurring` is true and if so, handle recurring dates following the given pattern.
+    # This method is called after the event is created or updated and recreates dates based on the
+    # given recurring pattern. The creation takes place in a background job to avoid long running
+    # requests. If `recurring` is false, recurring patterns gets reset.
+    def handle_recurring_dates
+      if recurring? && (recurring_pattern_changed? || event_date_changed?)
+        RecurringDatesForEventService.new(self).delay.create_with_pattern
+      end
+
+      reset_recurring_attributes if !recurring? && recurring_changed?
+    end
+
+    def reset_recurring_attributes
+      self.recurring_weekdays = nil
+      self.recurring_type = nil
+      self.recurring_interval = nil
+    end
+
+    def recurring_pattern_changed?
+      recurring_weekdays_changed? || recurring_type_changed? || recurring_interval_changed?
+    end
+
+    def event_date_changed?
+      date = dates.first
+
+      date.date_start_changed? || date.date_end_changed? || date.time_start_changed? ||
+        date.time_end_changed?
+    end
 end
 
 # == Schema Information
 #
 # Table name: event_records
 #
-#  id               :bigint           not null, primary key
-#  parent_id        :integer
-#  region_id        :bigint
-#  description      :text(65535)
-#  repeat           :boolean
-#  title            :string(255)
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  data_provider_id :integer
-#  external_id      :string(255)
-#  visible          :boolean          default(TRUE)
+#  id                 :bigint           not null, primary key
+#  parent_id          :integer
+#  region_id          :bigint
+#  description        :text(65535)
+#  repeat             :boolean
+#  title              :string(255)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  data_provider_id   :integer
+#  external_id        :string(255)
+#  visible            :boolean          default(TRUE)
+#  recurring          :boolean          default(FALSE)
+#  recurring_weekdays :string(255)
+#  recurring_type     :integer
+#  recurring_interval :integer
 #

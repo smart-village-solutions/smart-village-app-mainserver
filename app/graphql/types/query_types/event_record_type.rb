@@ -27,6 +27,10 @@ module Types
     field :price_informations, [QueryTypes::PriceType], null: true
     field :accessibility_information, QueryTypes::AccessibilityInformationType, null: true
     field :tag_list, [String], null: true
+    field :recurring, Boolean, null: true
+    field :recurring_weekdays, [Integer], null: true
+    field :recurring_type, Integer, null: true
+    field :recurring_interval, Integer, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
   end

@@ -60,6 +60,10 @@ module Mutations
                         accessibility_information.to_h
                       }
     argument :tags, [String], as: :tag_list, required: false
+    argument :recurring, String, required: false
+    argument :recurring_weekdays, [String], required: false
+    argument :recurring_type, String, required: false
+    argument :recurring_interval, String, required: false
 
     field :event, Types::QueryTypes::EventRecordType, null: true
 

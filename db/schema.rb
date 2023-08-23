@@ -237,6 +237,10 @@ ActiveRecord::Schema.define(version: 2023_08_03_180807) do
     t.integer "data_provider_id"
     t.string "external_id"
     t.boolean "visible", default: true
+    t.boolean "recurring", default: false
+    t.string "recurring_weekdays"
+    t.integer "recurring_type"
+    t.integer "recurring_interval"
     t.index ["data_provider_id"], name: "index_event_records_on_data_provider_id"
     t.index ["region_id"], name: "index_event_records_on_region_id"
   end
