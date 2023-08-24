@@ -132,6 +132,7 @@ class EventRecord < ApplicationRecord
     list_of_attributes = {}
     list_of_attributes.merge!(attributes.except(*except_attributes))
     list_of_attributes.merge!(dates: dates.map { |date| date.attributes.except(*except_attributes) })
+    list_of_attributes.merge!(addresses: addresses.map { |address| address.attributes.except(*except_attributes) })
 
     list_of_attributes
   end
