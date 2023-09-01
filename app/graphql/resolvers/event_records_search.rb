@@ -19,7 +19,7 @@ class Resolvers::EventRecordsSearch
       # ignore
     end
 
-    event_records
+    event_records.distinct
   }
 
   type types[Types::QueryTypes::EventRecordType]
