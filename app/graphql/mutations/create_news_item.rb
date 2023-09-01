@@ -15,6 +15,7 @@ module Mutations
     argument :published_at, String, required: false
     argument :show_publish_date, Boolean, required: false
     argument :category_name, String, required: false
+    argument :payload, GraphQL::Types::JSON, required: false
     argument :categories, [Types::InputTypes::CategoryInput], required: false,
                                                   as: :category_names,
                                                   prepare: lambda { |category, _ctx|
