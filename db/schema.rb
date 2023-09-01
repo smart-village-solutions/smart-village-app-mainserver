@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_03_180807) do
+ActiveRecord::Schema.define(version: 2023_09_01_090616) do
 
   create_table "accessibility_informations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -383,6 +383,7 @@ ActiveRecord::Schema.define(version: 2023_08_03_180807) do
     t.string "title"
     t.boolean "visible", default: true
     t.datetime "push_notifications_sent_at"
+    t.text "payload"
     t.index ["data_provider_id"], name: "index_news_items_on_data_provider_id"
   end
 

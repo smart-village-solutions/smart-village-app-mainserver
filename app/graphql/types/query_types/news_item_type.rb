@@ -19,6 +19,7 @@ module Types
     field :address, QueryTypes::AddressType, null: true
     field :source_url, QueryTypes::WebUrlType, null: true
     field :content_blocks, [QueryTypes::ContentBlockType], null: true
+    field :payload, GraphQL::Types::JSON, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
     field :push_notifications_sent_at, String, null: true

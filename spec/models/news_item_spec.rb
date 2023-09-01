@@ -27,4 +27,5 @@ end
 #  title                      :string(255)
 #  visible                    :boolean          default(TRUE)
 #  push_notifications_sent_at :datetime
+#  payload                    :text(65535)
 #

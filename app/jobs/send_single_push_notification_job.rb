@@ -13,7 +13,7 @@ class SendSinglePushNotificationJob < ApplicationJob
   # }
   #
   # device_token = "ExponentPushToken[RkCuwM123456778g29lQb0ZK]"
-  def perform(device_token, message_options, municipality_id)
+  def self.send_single_push_notification(device_token, message_options, municipality_id)
     MunicipalityService.municipality_id = municipality_id
 
     client = Exponent::Push::Client.new
@@ -38,7 +38,7 @@ class SendSinglePushNotificationJob < ApplicationJob
   end
 
   def self.perform(device_token, message_options)
-    perform(device_token, message_options)
+    send_single_push_notification(device_token, message_options)
   end
 
   def cleanup_if_unregistered_device(device_token, payload)
