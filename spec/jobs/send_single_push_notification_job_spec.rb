@@ -29,7 +29,7 @@ RSpec.describe SendSinglePushNotificationJob, type: :job do
     message_options = {}
 
     expect do
-      SendSinglePushNotificationJob.delay(run_at: Time.now).perform(device_token, message_options)
+      SendSinglePushNotificationJob.delay(run_at: Time.now).perform(device_token, message_options, 19)
     end.not_to raise_error
   end
 

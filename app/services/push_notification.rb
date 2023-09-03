@@ -86,7 +86,11 @@ class PushNotification
 
         # next unless Rails.env.production?
 
-        SendSinglePushNotificationJob.delay(run_at: date_time_to_run).perform(device.token, message_options)
+        SendSinglePushNotificationJob.delay(run_at: date_time_to_run).perform(
+          device.token,
+          message_options,
+          MunicipalityService.municipality_id
+        )
       end
     end
 
