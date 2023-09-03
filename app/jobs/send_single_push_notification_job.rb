@@ -35,6 +35,10 @@ class SendSinglePushNotificationJob < ApplicationJob
     end
   end
 
+  def perform(device_token, message_options)
+    send_single_push_notification(device_token, message_options)
+  end
+
   def self.perform(device_token, message_options)
     send_single_push_notification(device_token, message_options)
   end
