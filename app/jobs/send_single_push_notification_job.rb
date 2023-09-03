@@ -13,6 +13,29 @@ class SendSinglePushNotificationJob < ApplicationJob
   # }
   #
   # device_token = "ExponentPushToken[RkCuwM123456778g29lQb0ZK]"
+
+  def send_single_push_notification(device_token, message_options)
+    client = Exponent::Push::Client.new
+    messages = [message_options.merge(to: device_token)]
+
+    begin
+      feedback = client.send_messages(messages)
+      payload = feedback.try(:response).try(:body)
+
+      RedisAdapter.add_push_log(
+        device_token,
+        message_options.merge(date: DateTime.now, payload: payload)
+      )
+
+      cleanup_if_unregistered_device(device_token, payload)
+    rescue StandardError => e
+      RedisAdapter.add_push_log(
+        device_token,
+        message_options.merge(rescue_error: "push notification", error: e, date: DateTime.now)
+      )
+    end
+  end
+
   def self.send_single_push_notification(device_token, message_options)
     client = Exponent::Push::Client.new
     messages = [message_options.merge(to: device_token)]
