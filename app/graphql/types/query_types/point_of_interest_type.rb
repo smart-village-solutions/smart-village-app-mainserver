@@ -23,9 +23,16 @@ module Types
     field :certificates, [QueryTypes::CertificateType], null: true
     field :accessibility_information, QueryTypes::AccessibilityInformationType, null: true
     field :tag_list, [String], null: true
+    field :travel_times, [GraphQL::Types::JSON], null: true do
+      argument :date, String, required: false
+    end
     field :lunches, [QueryTypes::LunchType], null: true
     field :payload, GraphQL::Types::JSON, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
+  end
+
+  def travel_times(date:)
+    object.gtfs_travel_times(date: date)
   end
 end

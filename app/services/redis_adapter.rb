@@ -3,6 +3,75 @@
 module RedisAdapter
   class << self
 
+    def get_gtfs_calendar_dates(service_id, date)
+      redis.get("#{namespace}:gtfs:calendar_dates:#{service_id}:#{date}")
+    end
+
+    def set_gtfs_calendar_dates(service_id, date, exception_type)
+      redis.set("#{namespace}:gtfs:calendar_dates:#{service_id}:#{date}", exception_type)
+    end
+
+    # get service
+    def get_gtfs_calendar(service_id)
+      service_data = redis.get("#{namespace}:gtfs:calendar:#{service_id}")
+      JSON.parse(service_data).to_h if service_data.present?
+    end
+
+    # set service
+    def set_gtfs_calendar(service_id, service_data)
+      redis.set("#{namespace}:gtfs:calendar:#{service_id}", service_data.to_json)
+    end
+
+    # get route data
+    def get_gtfs_route(route_id)
+      route_data = redis.get("#{namespace}:gtfs:route:#{route_id}")
+      JSON.parse(route_data).to_h if route_data.present?
+    end
+
+    # set route data
+    def set_gtfs_route(route_id, route_data)
+      redis.set("#{namespace}:gtfs:route:#{route_id}", route_data.to_json)
+    end
+
+    # get all Trip IDs
+    def get_gtfs_route_ids
+      redis.lrange("#{namespace}:gtfs:route_ids", 0, -1)
+    end
+
+    def set_gtfs_route_ids(route_id)
+      redis.rpush("#{namespace}:gtfs:route_ids", route_id)
+    end
+
+    # load StopTimes for POI
+    def get_gtfs_stop_times(stop_id)
+      stop_time_data = redis.lrange("#{namespace}:gtfs:stop:#{stop_id}:stop_times", 0, -1)
+      stop_time_data.map { |stop_time| JSON.parse(stop_time) }.map(&:to_h)
+    end
+
+    def set_gtfs_stop_times(stop_id, stop_times)
+      redis.rpush("#{namespace}:gtfs:stop:#{stop_id}:stop_times", stop_times.to_json)
+    end
+
+    # Trip Data
+    def get_gtfs_trip(trip_id)
+      trip_data = redis.get("#{namespace}:gtfs:trip:#{trip_id}")
+      JSON.parse(trip_data).to_h if trip_data.present?
+    end
+
+    def set_gtfs_trip(trip_id, trip_data)
+      redis.set("#{namespace}:gtfs:trip:#{trip_id}", trip_data.to_json)
+    end
+
+    # get all Trip IDs
+    def get_gtfs_trip_ids
+      redis.lrange("#{namespace}:gtfs:trip_ids", 0, -1)
+    end
+
+    # store a new trip id
+    def set_gtfs_trip_ids(trip_id)
+      redis.rpush("#{namespace}:gtfs:trip_ids", trip_id)
+    end
+
     def set_event_list_date(event_id, list_date)
       expires_in = Time.zone.now.end_of_day.to_i - Time.zone.now.to_i
       redis.set("#{namespace}:event_list_date_for_id:#{event_id}", list_date)
