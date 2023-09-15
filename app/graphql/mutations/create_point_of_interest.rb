@@ -5,6 +5,7 @@ module Mutations
     argument :id, GraphQL::Types::ID, required: false
     argument :force_create, GraphQL::Types::Boolean, required: false
     argument :name, String, required: true
+    argument :external_id, String, required: false
     argument :description, String, required: false
     argument :mobile_description, String, required: false
     argument :active, GraphQL::Types::Boolean, required: false
