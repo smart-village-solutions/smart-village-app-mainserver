@@ -5,6 +5,7 @@ module Types
     field :id, GraphQL::Types::ID, null: true
     field :visible, GraphQL::Types::Boolean, null: true
     field :settings, QueryTypes::SettingType, null: true
+    field :external_id, String, null: true
     field :name, String, null: true
     field :description, String, null: true
     field :mobile_description, String, null: true
