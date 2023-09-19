@@ -30,9 +30,9 @@ module Types
     field :payload, GraphQL::Types::JSON, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
-  end
 
-  def travel_times(date:)
-    object.gtfs_travel_times(date: date)
+    def travel_times(date:)
+      object.gtfs_travel_times(date: date)
+    end
   end
 end
