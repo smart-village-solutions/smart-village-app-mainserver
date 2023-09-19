@@ -40,8 +40,4 @@ module Types
       object.gtfs_travel_times(date: date, sort_by: sort_by, sort_order: sort_order)
     end
   end
-
-  def travel_times(date:)
-    object.gtfs_travel_times(date: date)
-  end
 end
