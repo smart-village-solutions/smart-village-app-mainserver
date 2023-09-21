@@ -2,7 +2,8 @@ require "rubygems"
 require "zip"
 require "csv"
 require "benchmark"
-require 'open-uri'
+require 'net/http'
+require 'uri'
 
 # Zipfile including following files:
 # - agency.txt
@@ -28,13 +29,14 @@ class PublicTransportation::ImportService
 
   def call
     namespace_key = "gtfs-#{Time.zone.now.strftime('%Y%m%d%H%M%S')}"
-    # download zip file from @gtfs_url and store it in @zip_file_path
-
     @zip_file_path = Rails.root.join("tmp", "#{namespace_key}.zip")
-    open(@gtfs_url) do |file|
+    response = fetch_url(@gtfs_url)
+    if response.is_a?(Net::HTTPSuccess)
       File.open(@zip_file_path, 'wb') do |output_file|
-        output_file.write(file.read)
+        output_file.write(response.body)
       end
+    else
+      puts "Ein Fehler ist aufgetreten: #{response.message}"
     end
 
     # abbrechen wenn die Temp Datei nicht existiert oder leer ist
@@ -187,6 +189,24 @@ class PublicTransportation::ImportService
 
       # Call the given block with the parsed line
       yield(parsed_line) if block_given?
+    end
+  end
+
+  def fetch_url(uri_str, limit = 10)
+    raise ArgumentError, 'HTTP-Weiterleitungs-Schleife' if limit == 0
+
+    uri = URI.parse(uri_str)
+    response = Net::HTTP.get_response(uri)
+
+    case response
+    when Net::HTTPSuccess then
+      response
+    when Net::HTTPRedirection then
+      location = response['location']
+      warn "Weitergeleitet nach #{location}"
+      fetch_url(location, limit - 1)
+    else
+      response.value
     end
   end
 end
