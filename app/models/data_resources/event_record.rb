@@ -85,6 +85,7 @@ class EventRecord < ApplicationRecord
     event_records
       .joins(:dates)
       .where("fixed_dates.date_start >= ? OR fixed_dates.date_end >= ?", Date.today, Date.today)
+      .distinct
   }
 
   scope :by_category, lambda { |category_id|
