@@ -13,7 +13,32 @@ RSpec.describe PointOfInterest, type: :model do
   it { is_expected.to have_many(:price_informations) }
   it { is_expected.to have_one(:accessibility_information) }
   it { is_expected.to have_many(:lunches) }
+  it { is_expected.to have_many(:travel_times) }
   it { is_expected.to validate_presence_of(:name) }
+
+  describe "associations" do
+    let(:point_of_interest) { create(:point_of_interest) }
+
+    it "should only have travel_times with dateable_type 'PointOfInterest'" do
+      travel_time_for_poi = point_of_interest.travel_times.create
+
+      travel_time_loaded_from_db = PublicTransportation::TravelTime.find(travel_time_for_poi.id)
+      expect(point_of_interest.travel_times).to include(travel_time_for_poi)
+      expect(travel_time_loaded_from_db.dateable_type).to eq("PointOfInterest")
+      expect(travel_time_loaded_from_db.type).to eq("PublicTransportation::TravelTime")
+    end
+
+    it "should behave as before on model EventRecord" do
+      event_record = create(:event_record)
+      event_record.dates.create
+
+      event_record.reload
+
+      expect(event_record.dates.count).to eq(1)
+      expect(event_record.dates.first.dateable_type).to eq("EventRecord")
+      expect(event_record.dates.first.type).to eq(nil)
+    end
+  end
 end
 
 # == Schema Information

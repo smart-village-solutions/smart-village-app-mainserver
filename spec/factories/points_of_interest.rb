@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :point_of_interest do
     external_id { 1 }
-    category
+    data_provider
     name { "MyString" }
     description { "MyString" }
     mobile_description { "MyString" }
