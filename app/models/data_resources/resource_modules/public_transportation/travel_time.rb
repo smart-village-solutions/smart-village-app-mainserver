@@ -41,15 +41,16 @@ class PublicTransportation::TravelTime
     @travel_time_from = @travel_date.strftime("%H:%M:%S")
 
     @calculated_travel_times = []
+    @redis = GtfsRedisAdapter.new
   end
 
   def travel_times
     return [] if @external_id.blank?
 
-    stop_times = RedisAdapter.get_gtfs_stop_times(@external_id, @data_provider_id)
+    stop_times = @redis.get_gtfs_stop_times(@external_id, @data_provider_id)
     stop_times.each do |stop_time|
       stop_time_data = gtfs_stop_time_data(stop_time)
-      trip = RedisAdapter.get_gtfs_trip(stop_time["trip_id"], @data_provider_id)
+      trip = @redis.get_gtfs_trip(stop_time["trip_id"], @data_provider_id)
       if trip.present?
         stop_time_data["trip"] = gtfs_trip_data(trip)
         stop_time_data["route"] = gtfs_route(trip["route_id"])
@@ -67,7 +68,7 @@ class PublicTransportation::TravelTime
   def gtfs_calendar(stop_time, service_id)
     gtfs_cal_data = RedisAdapter.get_gtfs_calendar(service_id, @data_provider_id)
     traveling = gtfs_cal_data[@weekday_name].to_i
-    exception = RedisAdapter.get_gtfs_calendar_dates(service_id, @calendar_exception_date, @data_provider_id) || nil
+    exception = @redis.get_gtfs_calendar_dates(service_id, @calendar_exception_date, @data_provider_id) || nil
 
     case exception.to_i
     when 1
@@ -93,7 +94,7 @@ class PublicTransportation::TravelTime
   end
 
   def gtfs_route(route_id)
-    route_data = RedisAdapter.get_gtfs_route(route_id, @data_provider_id)
+    route_data = @redis.get_gtfs_route(route_id, @data_provider_id)
 
     {
       route_short_name: route_data["route_short_name"],
