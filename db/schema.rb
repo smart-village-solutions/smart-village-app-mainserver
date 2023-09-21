@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_01_090616) do
+ActiveRecord::Schema.define(version: 2023_09_18_130709) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "description"
@@ -101,8 +101,8 @@ ActiveRecord::Schema.define(version: 2023_09_01_090616) do
     t.integer "municipality_id"
   end
 
-  create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "external_id"
+  create_table "attractions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "external_id"
     t.string "name"
     t.text "description"
     t.text "mobile_description"
@@ -243,6 +243,7 @@ ActiveRecord::Schema.define(version: 2023_09_01_090616) do
     t.integer "recurring_type"
     t.integer "recurring_interval"
     t.index ["data_provider_id"], name: "index_event_records_on_data_provider_id"
+    t.index ["external_id"], name: "index_event_records_on_external_id"
     t.index ["region_id"], name: "index_event_records_on_region_id"
   end
 

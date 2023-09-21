@@ -21,6 +21,8 @@ class Resolvers::GenericItemSearch
     value "publicationDate_ASC"
     value "id_DESC"
     value "id_ASC"
+    value "title_DESC"
+    value "title_ASC"
   end
 
   option :categoryId, type: types.ID, with: :apply_category_id
@@ -88,6 +90,14 @@ class Resolvers::GenericItemSearch
 
   def apply_order_with_id_asc(scope)
     scope.order("id ASC")
+  end
+
+  def apply_order_with_title_desc(scope)
+    scope.order("title DESC")
+  end
+
+  def apply_order_with_title_asc(scope)
+    scope.order("title ASC")
   end
 
   def apply_data_provider(scope, value)
