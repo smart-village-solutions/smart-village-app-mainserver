@@ -7,10 +7,19 @@
       <div><code><%= @category.name %></code></div>
     </div>
 
-    <div class="form-group">
-      <label>Ancestry IDs</label>
-      <div><code><%= @category.ancestry %></code></div>
-    </div>
+    <% if @category.ancestry.present? %>
+      <div class="form-group">
+        <label>Ancestry IDs</label>
+        <div><code><%= @category.ancestry %></code></div>
+      </div>
+    <% end %>
+
+    <% if @category.icon_name.present? %>
+      <div class="form-group">
+        <label>Icon name</label>
+        <div><code><%= @category.icon_name %></code></div>
+      </div>
+    <% end %>
 
     <% if @category.contact.present? %>
       <div class="form-group">

@@ -4,6 +4,7 @@ module Types
   class QueryTypes::CategoryType < Types::BaseObject
     field :id, ID, null: true
     field :name, String, null: true
+    field :icon_name, String, null: true
     field :parent, QueryTypes::CategoryType, null: true
     field :children, [QueryTypes::CategoryType], null: true
 
