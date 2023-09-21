@@ -91,7 +91,7 @@ class PublicTransportation::ImportService
     p "Parsing calendar_dates.txt"
     calendar_dates_counter = 0
     parse_file_of_zip(zip_file, "calendar_dates.txt") do |parsed_line|
-      RedisAdapter.set_gtfs_calendar_dates(parsed_line["service_id"], parsed_line["date"], parsed_line["exception_type"])
+      RedisAdapter.set_gtfs_calendar_dates(parsed_line["service_id"], parsed_line["date"], parsed_line["exception_type"], @data_provider_id)
       calendar_dates_counter += 1
     end
     p "Found #{calendar_dates_counter} CalendarDates in calendar_dates.txt"
@@ -101,7 +101,7 @@ class PublicTransportation::ImportService
     p "Parsing calendar.txt"
     calendar_counter = 0
     parse_file_of_zip(zip_file, "calendar.txt") do |parsed_line|
-      RedisAdapter.set_gtfs_calendar(parsed_line["service_id"], parsed_line)
+      RedisAdapter.set_gtfs_calendar(parsed_line["service_id"], parsed_line, @data_provider_id)
       calendar_counter += 1
     end
     p "Found #{calendar_counter} Calendars in calendar.txt"
@@ -111,12 +111,12 @@ class PublicTransportation::ImportService
   def parse_routes(zip_file)
     p "Parsing routes.txt"
     route_counter = 0
-    route_ids_of_trips = RedisAdapter.get_gtfs_route_ids
+    route_ids_of_trips = RedisAdapter.get_gtfs_route_ids(@data_provider_id)
     parse_file_of_zip(zip_file, "routes.txt") do |parsed_line|
       route_id = parsed_line["route_id"].to_i
       next unless route_ids_of_trips.include?(route_id.to_s)
 
-      RedisAdapter.set_gtfs_route(route_id, parsed_line)
+      RedisAdapter.set_gtfs_route(route_id, parsed_line, @data_provider_id)
       route_counter += 1
     end
     p "Found #{route_counter} Routes in routes.txt"
@@ -125,13 +125,13 @@ class PublicTransportation::ImportService
   def parse_trips(zip_file)
     p "Parsing trips.txt"
     trip_counter = 0
-    trip_ids_of_stop_times = RedisAdapter.get_gtfs_trip_ids.map(&:to_i)
+    trip_ids_of_stop_times = RedisAdapter.get_gtfs_trip_ids(@data_provider_id).map(&:to_i)
     parse_file_of_zip(zip_file, "trips.txt") do |parsed_line|
       trip_id = parsed_line["trip_id"].to_i
       # next unless trip_ids_of_stop_times.include?(trip_id)
 
-      RedisAdapter.set_gtfs_trip(trip_id, parsed_line)
-      RedisAdapter.set_gtfs_route_ids(parsed_line["route_id"])
+      RedisAdapter.set_gtfs_trip(trip_id, parsed_line, @data_provider_id)
+      RedisAdapter.set_gtfs_route_ids(parsed_line["route_id"], @data_provider_id)
       trip_counter += 1
     end
     p "Found #{trip_counter} trips in trips.txt"
@@ -144,8 +144,8 @@ class PublicTransportation::ImportService
       stop_id = parsed_line["stop_id"].to_i
       next unless @pois.keys.include?(stop_id)
 
-      RedisAdapter.set_gtfs_trip_ids(parsed_line["trip_id"].to_i)
-      RedisAdapter.set_gtfs_stop_times(stop_id, parsed_line)
+      RedisAdapter.set_gtfs_trip_ids(parsed_line["trip_id"].to_i, @data_provider_id)
+      RedisAdapter.set_gtfs_stop_times(stop_id, parsed_line, @data_provider_id)
       stop_counter += 1
     end
 

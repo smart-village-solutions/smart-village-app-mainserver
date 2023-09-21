@@ -40,7 +40,7 @@ class PointOfInterest < Attraction
   #
   # @param [String] date "2023-09-18T12:00"
   def gtfs_travel_times(date:)
-    PublicTransportation::TravelTime.new(date: date, external_id: external_id).travel_times
+    PublicTransportation::TravelTime.new(date: date, external_id: external_id, data_provider_id: data_provider_id).travel_times
   end
 end
 
