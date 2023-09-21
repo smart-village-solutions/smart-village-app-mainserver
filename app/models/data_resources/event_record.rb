@@ -156,15 +156,28 @@ class EventRecord < ApplicationRecord
       return nil
     end
 
-    if dates_count == 1 && !recurring?
-      calculated_list_date = today_in_time_range(event_dates.first)
+    future_dates = event_dates.select do |date|
+      date.date_start.try(:to_time).to_i > Time.zone.now.beginning_of_day.to_i
+    end
+
+    event_dates = event_dates - future_dates
+
+    if event_dates.any?
+      event_start_dates = event_dates.map do |event_date|
+        today_in_time_range(event_date)
+      end.compact.uniq.sort
+
+      calculated_list_date = event_start_dates.first
+
+      if calculated_list_date.blank?
+        RedisAdapter.set_event_list_date(id, 0)
+        return nil
+      end
+
       RedisAdapter.set_event_list_date(id, calculated_list_date.to_time.to_i)
       return calculated_list_date
     end
 
-    future_dates = event_dates.select do |date|
-      date.date_start.try(:to_time).to_i >= Time.zone.now.beginning_of_day.to_i
-    end
     if future_dates.present?
       calculated_list_date = future_dates.first.try(:date_start)
       RedisAdapter.set_event_list_date(id, calculated_list_date.to_time.to_i)
@@ -215,22 +228,17 @@ class EventRecord < ApplicationRecord
       end
     end
 
-    # need to check start and end date and return "today" if there is only one date.
     # if a start and end date describes a larger time range, "today" needs to be returned until end
     # is reached.
     def today_in_time_range(date)
-      start_date = date.date_start
       end_date = date.date_end
       today = Time.zone.now.beginning_of_day
 
-      # return start date if the start date is in the future
-      return start_date if start_date > today
+      # return "today" if there is no end date
+      return today.to_date if end_date.blank?
 
-      # return start date if there is no end date
-      return start_date if end_date.blank?
-
-      # return start date if the end date is in the past
-      return start_date if end_date < today
+      # return nil if the start and end dates are in the past
+      return nil if end_date < today
 
       # return "today" if there is a future end date
       today.to_date
