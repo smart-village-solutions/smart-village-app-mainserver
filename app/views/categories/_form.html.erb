@@ -26,6 +26,15 @@
     </small>
   </div>
 
+  <div class="form-group">
+    <%= form.label :icon_name %>
+    <%= form.text_field :icon_name, class: "form-control" %>
+    <small class="form-text text-muted">
+      An icon name can be given that is available in the mobile app to show in certain screens
+      and as fallback in some cases where images of data resources are missing.
+    </small>
+  </div>
+
   <%= form.fields_for :contact, object: @category.contact || @category.build_contact do |contact| %>
     <div class="form-group">
       <%= contact.label :email, "E-mails for certain notifications" %>

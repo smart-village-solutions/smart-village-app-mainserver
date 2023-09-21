@@ -23,7 +23,10 @@ module ApplicationHelper
       tree_element = []
       element_buttons = []
 
-      tree_element << content_tag("span", "ID:#{category.id}", class: "badge badge-info")
+      tree_element << content_tag("span", "ID: #{category.id}", class: "badge badge-info")
+      if category.icon_name.present?
+        tree_element << content_tag("span", "Icon: #{category.icon_name}", class: "badge badge-secondary")
+      end
       if category.contact.try(:email).present?
         tree_element << content_tag(
           "span",
