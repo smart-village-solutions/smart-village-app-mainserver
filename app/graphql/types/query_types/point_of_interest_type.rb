@@ -32,7 +32,9 @@ module Types
     field :updated_at, String, null: true
     field :created_at, String, null: true
 
-    def travel_times(date:)
+    def travel_times(date: "")
+      return [] if date.blank?
+
       object.gtfs_travel_times(date: date)
     end
   end
