@@ -30,15 +30,14 @@
 # ]
 class PublicTransportation::TravelTime
   def initialize(date:, external_id:, data_provider_id:)
-    @external_id = external_id
     @date = date
-    @travel_date = DateTime.parse(@date)
+    @external_id = external_id
     @data_provider_id = data_provider_id
 
-    # get weekday of date string "2023-09-18T12:00"
-    @weekday_name = @travel_date.strftime("%A").downcase
-    @calendar_exception_date = @travel_date.strftime("%Y%m%d")
-    @travel_time_from = @travel_date.strftime("%H:%M:%S")
+    travel_date = DateTime.parse(@date)
+    @weekday = travel_date.strftime("%A").downcase
+    @calendar_exception_date = travel_date.strftime("%Y%m%d")
+    @travel_time_from = travel_date.strftime("%H:%M:%S")
 
     @calculated_travel_times = []
     @redis = GtfsRedisAdapter.new
@@ -72,7 +71,7 @@ class PublicTransportation::TravelTime
 
     def gtfs_calendar(stop_time, service_id)
       gtfs_cal_data = @redis.get_gtfs_calendar(service_id, @data_provider_id)
-      traveling = gtfs_cal_data[@weekday_name].to_i
+      traveling = gtfs_cal_data[@weekday].to_i
       exception = @redis.get_gtfs_calendar_dates(service_id, @calendar_exception_date, @data_provider_id) || nil
 
       case exception.to_i
