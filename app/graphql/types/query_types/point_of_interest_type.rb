@@ -24,7 +24,7 @@ module Types
     field :certificates, [QueryTypes::CertificateType], null: true
     field :accessibility_information, QueryTypes::AccessibilityInformationType, null: true
     field :tag_list, [String], null: true
-    field :travel_times, [GraphQL::Types::JSON], null: true do
+    field :travel_times, [QueryTypes::PublicTransportation::TravelTimesType], null: true do
       argument :date, String, required: false
       argument :sort_by, String, required: false
       argument :sort_order, String, required: false
