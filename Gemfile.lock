@@ -370,6 +370,7 @@ GEM
       rexml
     ruby2_keywords (0.0.5)
     ruby_expect (1.7.5)
+    rubyzip (2.3.2)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
