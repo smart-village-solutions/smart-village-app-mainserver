@@ -163,6 +163,14 @@ class EventRecord < ApplicationRecord
 
     event_dates = event_dates - future_dates
 
+    past_dates = event_dates.select do |date|
+      date.date_start.try(:to_time).to_i < Time.zone.now.beginning_of_day.to_i &&
+      date.date_end.present? &&
+      date.date_end.try(:to_time).to_i < Time.zone.now.beginning_of_day.to_i
+    end
+
+    event_dates = event_dates - past_dates
+
     if event_dates.any?
       event_start_dates = event_dates.map do |event_date|
         today_in_time_range(event_date)
