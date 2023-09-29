@@ -183,18 +183,18 @@ class EventRecord < ApplicationRecord
         return nil
       end
 
-      RedisAdapter.set_event_list_date(id, calculated_list_date.to_time.to_i)
+      RedisAdapter.set_event_list_date(id, calculated_list_date.try(:to_time).to_i)
       return calculated_list_date
     end
 
     if future_dates.present?
       calculated_list_date = future_dates.first.try(:date_start)
-      RedisAdapter.set_event_list_date(id, calculated_list_date.to_time.to_i)
+      RedisAdapter.set_event_list_date(id, calculated_list_date.try(:to_time).to_i)
       return calculated_list_date
     end
 
     calculated_list_date = event_dates.last.try(:date_start)
-    RedisAdapter.set_event_list_date(id, calculated_list_date.to_time.to_i)
+    RedisAdapter.set_event_list_date(id, calculated_list_date.try(:to_time).to_i)
     calculated_list_date
   end
 
