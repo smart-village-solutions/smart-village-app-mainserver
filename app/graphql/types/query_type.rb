@@ -112,7 +112,7 @@ module Types
     end
 
     def event_records_addresses
-      upcoming_event_ids = EventRecord.upcoming.pluck(:id)
+      upcoming_event_ids = EventRecord.upcoming(context[:current_user]).pluck(:id)
 
       Address.joins("INNER JOIN event_records ON event_records.id = addresses.addressable_id AND addresses.addressable_type = 'EventRecord'")
         .where(event_records: { id: upcoming_event_ids })
