@@ -117,14 +117,12 @@ module Types
     end
 
     def event_records_addresses
-      upcoming_event_ids = EventRecord.upcoming.pluck(:id)
+      upcoming_event_ids = EventRecord.upcoming(context[:current_user]).pluck(:id)
 
-      Address.find_by_sql("
-        SELECT `#{Address.table_name}`.*
-        FROM `#{Address.table_name}`
-        INNER JOIN `#{EventRecord.table_name}` ON `#{EventRecord.table_name}`.`id` = `#{Address.table_name}`.`addressable_id` AND `#{Address.table_name}`.`addressable_type` = '#{EventRecord.name}'
-        WHERE `#{EventRecord.table_name}`.`id` IN (#{upcoming_event_ids.join(",")})
-      ")
+      Address.joins("
+        INNER JOIN event_records ON event_records.id = addresses.addressable_id
+        AND addresses.addressable_type = 'EventRecord'
+      ").where(event_records: { id: upcoming_event_ids })
     end
 
     def news_item(id:)

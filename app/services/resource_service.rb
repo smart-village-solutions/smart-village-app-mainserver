@@ -146,6 +146,7 @@ class ResourceService
 
     def unchanged_attributes?
       return false if @old_resource.blank?
+
       if @old_resource.respond_to?(:compareable_attributes)
         return @resource.compareable_attributes == @old_resource.compareable_attributes
       end
