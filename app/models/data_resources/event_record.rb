@@ -128,7 +128,7 @@ class EventRecord < ApplicationRecord
   end
 
   def compareable_attributes
-    except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id", "dateable_id"]
+    except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id", "dateable_id", "addressable_id"]
 
     list_of_attributes = {}
     list_of_attributes.merge!(attributes.except(*except_attributes))
