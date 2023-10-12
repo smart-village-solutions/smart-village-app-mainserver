@@ -19,7 +19,7 @@ gem "uglifier", ">= 1.3.0"
 # gem 'mini_racer', platforms: :ruby
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem "jbuilder", "~> 2.5"
+gem "jbuilder", "~> 2.9", ">= 2.9.1"
 
 gem "addressable"
 
@@ -44,7 +44,7 @@ gem "koala"
 gem "exponent-server-sdk"
 
 gem "acts-as-taggable-on"
-gem "ancestry", "~> 2.1"
+gem "ancestry", "~> 2.2", ">= 2.2.2"
 gem "devise"
 gem "devise-token_authenticatable"
 gem "doorkeeper"
@@ -114,7 +114,7 @@ group :development do
   gem "pry-rails"
   gem "spring"
   gem "spring-commands-rspec"
-  gem "spring-watcher-listen", "~> 2.0.0"
+  gem "spring-watcher-listen", "~> 2.0.1"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
