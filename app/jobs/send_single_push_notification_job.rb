@@ -3,17 +3,17 @@
 class SendSinglePushNotificationJob < ApplicationJob
   queue_as :default
 
+  # device_token = "ExponentPushToken[RkCuwM123456778g29lQb0ZK]"
   # message_options = {
   #   title: push_title,
   #   body: push_body,
   #   data: {
   #     id: id,
-  #     query_type: self.class.to_s
+  #     query_type: self.class.to_s,
+  #     data_provider_id: data_provider.id,
+  #     payload: payload
   #   }
   # }
-  #
-  # device_token = "ExponentPushToken[RkCuwM123456778g29lQb0ZK]"
-
   def send_single_push_notification(device_token, message_options)
     client = Exponent::Push::Client.new
     messages = [message_options.merge(to: device_token)]
