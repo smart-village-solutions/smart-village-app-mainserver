@@ -49,14 +49,19 @@ class PublicTransportation::TravelTime
 
     stop_times = @redis.get_gtfs_stop_times(@external_id, @data_provider_id)
     stop_times.each do |stop_time|
-      stop_time_data = gtfs_stop_time_data(stop_time)
-      trip = @redis.get_gtfs_trip(stop_time["trip_id"], @data_provider_id)
-      if trip.present?
-        stop_time_data["trip"] = gtfs_trip_data(trip)
-        stop_time_data["route"] = gtfs_route(trip["route_id"])
+      begin
+        stop_time_data = gtfs_stop_time_data(stop_time)
+        trip = @redis.get_gtfs_trip(stop_time["trip_id"], @data_provider_id)
+        if trip.present?
+          stop_time_data["trip"] = gtfs_trip_data(trip)
+          stop_time_data["route"] = gtfs_route(trip["route_id"])
 
-        traveling = gtfs_calendar(stop_time, trip["service_id"])
-        @calculated_travel_times << stop_time_data if traveling
+          traveling = gtfs_calendar(stop_time, trip["service_id"])
+          @calculated_travel_times << stop_time_data if traveling
+        end
+      rescue => e
+        p "Error: #{e.message}, #{e.backtrace.first}"
+        # do nothing
       end
     end
 
@@ -117,6 +122,7 @@ class PublicTransportation::TravelTime
   end
 
   def gtfs_stop_time_data(stop_time)
+
     {
       stop_sequence: stop_time["stop_sequence"],
       stop_headsign: stop_time["stop_headsign"],
