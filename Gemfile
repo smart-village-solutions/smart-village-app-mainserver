@@ -102,8 +102,10 @@ group :development, :test do
   gem "faker", git: "https://github.com/stympy/faker.git", branch: "master"
   gem "guard"
   gem "guard-rspec"
+  gem "rubocop", require: false
   gem "shoulda-matchers"
   gem "simplecov"
+  gem "solargraph"
 end
 
 group :development do
