@@ -94,7 +94,12 @@ class PublicTransportation::ImportService
       p "Parsing calendar_dates.txt"
       calendar_dates_counter = 0
       parse_file_of_zip(zip_file, "calendar_dates.txt") do |parsed_line|
-        @redis.set_gtfs_calendar_dates(parsed_line["service_id"], parsed_line["date"], parsed_line["exception_type"], @data_provider_id)
+        @redis.set_gtfs_calendar_dates(
+          parsed_line["service_id"],
+          parsed_line["date"],
+          parsed_line["exception_type"],
+          @data_provider_id
+        )
         calendar_dates_counter += 1
       end
       p "Found #{calendar_dates_counter} CalendarDates in calendar_dates.txt"
@@ -127,7 +132,7 @@ class PublicTransportation::ImportService
     def parse_trips(zip_file)
       p "Parsing trips.txt"
       trip_counter = 0
-      trip_ids_of_stop_times = @redis.get_gtfs_trip_ids(@data_provider_id).map(&:to_i)
+      # trip_ids_of_stop_times = @redis.get_gtfs_trip_ids(@data_provider_id).map(&:to_i)
       parse_file_of_zip(zip_file, "trips.txt") do |parsed_line|
         trip_id = parsed_line["trip_id"].to_i
         # next unless trip_ids_of_stop_times.include?(trip_id)
@@ -141,22 +146,22 @@ class PublicTransportation::ImportService
 
     def parse_stop_times(zip_file)
       p "Parsing stop_times.txt"
-      stop_counter = 0
+      stop_time_counter = 0
       parse_file_of_zip(zip_file, "stop_times.txt") do |parsed_line|
         stop_id = parsed_line["stop_id"].to_i
         next unless @pois.keys.include?(stop_id)
 
         @redis.set_gtfs_trip_ids(parsed_line["trip_id"].to_i, @data_provider_id)
         @redis.set_gtfs_stop_times(stop_id, parsed_line, @data_provider_id)
-        stop_counter += 1
+        stop_time_counter += 1
       end
-
-      p "Found #{stop_counter} stops in stop_times.txt"
+      p "Found #{stop_time_counter} stops in stop_times.txt"
     end
 
     # select all stops from stops.txt
     def parse_stops(zip_file)
       p "Parsing stops.txt"
+      stop_counter = 0
       parse_file_of_zip(zip_file, "stops.txt") do |parsed_line|
         poi_stop_id = parsed_line["stop_id"].to_i
         next if @whitelist.present? && @whitelist.any? && !@whitelist.include?(poi_stop_id)
@@ -168,9 +173,11 @@ class PublicTransportation::ImportService
         point_of_interest.payload = parsed_line.to_h
         point_of_interest.save
         @pois[poi_stop_id] = point_of_interest.id
-
         p "Updating POI id: #{point_of_interest.id}, poi_stop_id: #{poi_stop_id}"
+
+        stop_counter += 1
       end
+      p "Found #{stop_counter} stops in stops.txt"
     end
 
     # method to pars a csv file from a zip file with a given file name
