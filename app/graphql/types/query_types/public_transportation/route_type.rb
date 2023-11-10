@@ -8,5 +8,6 @@ module Types
     field :route_short_name, String, null: true
     field :route_text_color, String, null: true
     field :route_type, String, null: true
+    field :route_id, String, null: true
   end
 end

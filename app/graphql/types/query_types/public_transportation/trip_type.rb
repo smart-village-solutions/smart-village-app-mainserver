@@ -6,6 +6,9 @@ module Types
     field :direction_id, String, null: true
     field :trip_headsign, String, null: true
     field :trip_short_name, String, null: true
+    field :trip_id, String, null: true
     field :wheelchair_accessible, String, null: true
+    field :route_id, String, null: true
+    field :service_id, String, null: true
   end
 end

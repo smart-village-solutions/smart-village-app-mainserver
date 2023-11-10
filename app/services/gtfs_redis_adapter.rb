@@ -61,6 +61,13 @@ class GtfsRedisAdapter
     redis.rpush("#{namespace}:gtfs:#{data_provider_id}:stop:#{stop_id}:stop_times", stop_times.to_json)
   end
 
+  # delete all key starting with stop
+  def delete_all_stop_times(data_provider_id)
+    redis.scan_each(match: "#{namespace}:gtfs:#{data_provider_id}:stop:*") do |key|
+      redis.del(key)
+    end
+  end
+
   # Trip Data
   def get_gtfs_trip(trip_id, data_provider_id)
     trip_data = redis.get("#{namespace}:gtfs:#{data_provider_id}:trip:#{trip_id}")

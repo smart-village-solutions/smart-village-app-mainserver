@@ -147,6 +147,10 @@ class PublicTransportation::ImportService
     def parse_stop_times(zip_file)
       p "Parsing stop_times.txt"
       stop_time_counter = 0
+
+      # cleanup stop_times bevor import
+      # @redis.delete_all_stop_times(@data_provider_id)
+
       parse_file_of_zip(zip_file, "stop_times.txt") do |parsed_line|
         stop_id = parsed_line["stop_id"].to_i
         next unless @pois.keys.include?(stop_id)

@@ -112,6 +112,7 @@ class PublicTransportation::TravelTime
       route_data = @redis.get_gtfs_route(route_id, @data_provider_id)
 
       {
+        route_id: route_data["route_id"],
         route_short_name: route_data["route_short_name"],
         route_long_name: route_data["route_long_name"],
         route_type: route_data["route_type"],
@@ -123,16 +124,21 @@ class PublicTransportation::TravelTime
 
     def gtfs_trip_data(trip)
       {
+        trip_id: trip["trip_id"],
         trip_headsign: trip["trip_headsign"],
         trip_short_name: trip["trip_short_name"],
         direction_id: trip["direction_id"],
         wheelchair_accessible: trip["wheelchair_accessible"],
-        bikes_allowed: trip["bikes_allowed"]
+        bikes_allowed: trip["bikes_allowed"],
+        route_id: trip["route_id"],
+        service_id: trip["service_id"]
       }
     end
 
     def gtfs_stop_time_data(stop_time)
       {
+        trip_id: stop_time["trip_id"],
+        stop_id: stop_time["stop_id"],
         stop_sequence: stop_time["stop_sequence"],
         stop_headsign: stop_time["stop_headsign"],
         pickup_type: stop_time["pickup_type"],

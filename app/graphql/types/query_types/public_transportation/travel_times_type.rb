@@ -7,8 +7,10 @@ module Types
     field :drop_off_type, String, null: true
     field :pickup_type, String, null: true
     field :route, QueryTypes::PublicTransportation::RouteType, null: true
+    field :stop_id, String, null: true
     field :stop_headsign, String, null: true
     field :stop_sequence, String, null: true
     field :trip, QueryTypes::PublicTransportation::TripType, null: true
+    field :trip_id, String, null: true
   end
 end
