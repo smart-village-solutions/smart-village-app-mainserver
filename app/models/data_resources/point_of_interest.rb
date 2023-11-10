@@ -40,13 +40,22 @@ class PointOfInterest < Attraction
   #
   # @param [String] date "2023-09-18T12:00"
   def gtfs_travel_times(date:, sort_by: "arrival_time", sort_order: "asc")
-    current_travel_times = PublicTransportation::TravelTime.new(date: date, external_id: external_id, data_provider_id: data_provider_id).travel_times
+    current_travel_times = PublicTransportation::TravelTime.new(
+      date: date,
+      external_id: external_id,
+      data_provider_id: data_provider_id
+    ).travel_times
+
     return [] if current_travel_times.blank?
 
     current_travel_times.sort_by! { |tt| tt[sort_by.to_sym] }
     current_travel_times.reverse! if sort_order == "desc"
 
     current_travel_times
+  end
+
+  def has_travel_times?
+    payload.present? && payload["has_travel_times"].present?
   end
 end
 

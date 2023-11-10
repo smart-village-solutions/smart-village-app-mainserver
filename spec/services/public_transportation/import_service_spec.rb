@@ -29,7 +29,6 @@ RSpec.describe PublicTransportation::ImportService, type: :service do
   end
 
   let(:data_provider) { create(:data_provider) }
-  let(:zip_file_path) { "doc/gtfs/gtfs-pois-with-stops.zip" }
 
   describe "#initialize" do
     it "should initialize" do

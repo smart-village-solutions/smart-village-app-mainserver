@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class DataProviderController < ApplicationController
-
   layout "doorkeeper/admin"
 
   before_action :authenticate_user!, except: [:show]
