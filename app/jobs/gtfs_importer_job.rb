@@ -15,7 +15,7 @@ class GtfsImporterJob < ApplicationJob
   #     }
   #   ]
   # }
-  def perform(feed_name: nil, data_provider_id: nil, municipality_id: municipality_id)
+  def perform(feed_name: nil, data_provider_id: nil, municipality_id: nil)
     MunicipalityService.municipality_id = municipality_id
     gtfs_config = StaticContent.find_by(name: "gtfsConfig").try(:content)
     return unless gtfs_config.present?

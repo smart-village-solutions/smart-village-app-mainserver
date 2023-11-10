@@ -176,6 +176,7 @@ class PublicTransportation::ImportService
         point_of_interest.data_provider_id = @data_provider_id
         point_of_interest.payload = parsed_line.to_h || {}
         point_of_interest.payload["has_travel_times"] = true
+        # TODO: store geo data
         point_of_interest.save
         @pois[poi_stop_id] = point_of_interest.id
         p "Updating POI id: #{point_of_interest.id}, poi_stop_id: #{poi_stop_id}"
