@@ -39,7 +39,7 @@ class PointOfInterest < Attraction
   # get travel times for a specific date
   #
   # @param [String] date "2023-09-18T12:00"
-  def gtfs_travel_times(date:, sort_by: "arrival_time", sort_order: "asc" )
+  def gtfs_travel_times(date:, sort_by: "arrival_time", sort_order: "asc")
     current_travel_times = PublicTransportation::TravelTime.new(date: date, external_id: external_id, data_provider_id: data_provider_id).travel_times
     return [] if current_travel_times.blank?
 

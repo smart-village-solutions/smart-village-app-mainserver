@@ -122,7 +122,6 @@ class PublicTransportation::TravelTime
   end
 
   def gtfs_stop_time_data(stop_time)
-
     {
       stop_sequence: stop_time["stop_sequence"],
       stop_headsign: stop_time["stop_headsign"],
