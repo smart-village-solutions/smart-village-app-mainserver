@@ -71,7 +71,7 @@ class PublicTransportation::TravelTime
   private
 
   def gtfs_calendar(stop_time, service_id)
-    gtfs_cal_data = RedisAdapter.get_gtfs_calendar(service_id, @data_provider_id)
+    gtfs_cal_data = @redis.get_gtfs_calendar(service_id, @data_provider_id)
     traveling = gtfs_cal_data[@weekday_name].to_i
     exception = @redis.get_gtfs_calendar_dates(service_id, @calendar_exception_date, @data_provider_id) || nil
 
