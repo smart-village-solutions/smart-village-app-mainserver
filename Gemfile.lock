@@ -283,6 +283,8 @@ GEM
     puma (3.12.6)
     racc (1.5.2)
     rack (2.2.3)
+    rack-cors (2.0.1)
+      rack (>= 2.0.0)
     rack-protection (2.1.0)
       rack
     rack-test (1.1.0)
@@ -371,6 +373,7 @@ GEM
     ruby-progressbar (1.10.0)
     ruby2_keywords (0.0.4)
     ruby_dep (1.5.0)
+    rubyzip (2.3.2)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -500,6 +503,7 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   puma (~> 3.12)
+  rack-cors
   rails (~> 5.2.4, >= 5.2.4.3)
   rails-controller-testing
   rb-readline
@@ -508,6 +512,7 @@ DEPENDENCIES
   rollbar
   rspec-rails
   ruby-debug-ide
+  rubyzip
   sass-rails (~> 5.0, >= 5.0.7)
   search_object
   search_object_graphql (= 0.3.2)

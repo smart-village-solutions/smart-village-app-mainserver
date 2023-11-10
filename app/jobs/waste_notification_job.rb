@@ -10,7 +10,7 @@ class WasteNotificationJob
     return if registration_to_check.blank?
 
     device = registration_to_check.notification_device
-    return unless device.present?
+    return if device.blank?
 
     static_content = StaticContent.find_by(name: "wasteTypes")
     return if static_content.blank?

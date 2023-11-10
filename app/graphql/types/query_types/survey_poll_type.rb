@@ -13,8 +13,8 @@ module Types
     field :response_options, [QueryTypes::SurveyResponseOptionsType], null: true
     field :data_provider, QueryTypes::DataProviderType, null: true
     field :visible, Boolean, null: true
-    field :canComment, Boolean, null: true
-    field :isMultilingual, Boolean, null: true
+    field :can_comment, Boolean, null: true
+    field :is_multilingual, Boolean, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
 

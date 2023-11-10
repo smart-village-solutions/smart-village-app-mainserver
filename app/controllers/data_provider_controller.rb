@@ -1,5 +1,6 @@
-class DataProviderController < ApplicationController
+# frozen_string_literal: true
 
+class DataProviderController < ApplicationController
   layout "doorkeeper/admin"
 
   before_action :authenticate_user!, except: [:show]
@@ -51,7 +52,7 @@ class DataProviderController < ApplicationController
 
     # Find the user that owns the access token
     def current_resource_owner
-      User.find(doorkeeper_token.try(:application).try(:owner_id)) if doorkeeper_token
+      User.find_by(id: doorkeeper_token.try(:application).try(:owner_id)) if doorkeeper_token
     end
 
     def provider_params
@@ -62,6 +63,6 @@ class DataProviderController < ApplicationController
     end
 
     def init_data_provider
-      @data_provider = current_user.data_provider || current_user.build_data_provider
+      @data_provider = current_user.data_provider.presence || current_user.build_data_provider
     end
 end
