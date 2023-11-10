@@ -29,6 +29,7 @@ module Types
       argument :sort_by, String, required: false
       argument :sort_order, String, required: false
     end
+    field :has_travel_times, Boolean, null: true
     field :lunches, [QueryTypes::LunchType], null: true
     field :payload, GraphQL::Types::JSON, null: true
     field :updated_at, String, null: true
@@ -38,6 +39,10 @@ module Types
       return [] if date.blank?
 
       object.gtfs_travel_times(date: date, sort_by: sort_by, sort_order: sort_order)
+    end
+
+    def has_travel_times
+      object.has_travel_times?
     end
   end
 end

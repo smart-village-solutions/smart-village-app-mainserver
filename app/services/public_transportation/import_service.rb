@@ -37,7 +37,7 @@ class PublicTransportation::ImportService
         output_file.write(response.body)
       end
     else
-      puts "Ein Fehler ist aufgetreten: #{response.message}"
+      p "Ein Fehler ist aufgetreten: #{response.message}"
     end
 
     # abbrechen wenn die Temp Datei nicht existiert oder leer ist
@@ -49,37 +49,37 @@ class PublicTransportation::ImportService
       benchmark = Benchmark.measure do
         parse_calendar(zip_file)
       end
-      puts "Zeit für die Ausführung Calendar: #{benchmark.real} Sekunden"
+      p "Zeit für die Ausführung Calendar: #{benchmark.real} Sekunden"
 
       # parse stops.txt
       benchmark = Benchmark.measure do
         parse_stops(zip_file)
       end
-      puts "Zeit für die Ausführung POI Import: #{benchmark.real} Sekunden"
+      p "Zeit für die Ausführung POI Import: #{benchmark.real} Sekunden"
 
       # parse stop_times.txt
       benchmark = Benchmark.measure do
         parse_stop_times(zip_file)
       end
-      puts "Zeit für die Ausführung StopTimes: #{benchmark.real} Sekunden"
+      p "Zeit für die Ausführung StopTimes: #{benchmark.real} Sekunden"
 
       # parse trips.txt
       benchmark = Benchmark.measure do
         parse_trips(zip_file)
       end
-      puts "Zeit für die Ausführung Trips: #{benchmark.real} Sekunden"
+      p "Zeit für die Ausführung Trips: #{benchmark.real} Sekunden"
 
       # parse routes.txt
       benchmark = Benchmark.measure do
         parse_routes(zip_file)
       end
-      puts "Zeit für die Ausführung Routes: #{benchmark.real} Sekunden"
+      p "Zeit für die Ausführung Routes: #{benchmark.real} Sekunden"
 
       # parse calendar_dates.txt
       benchmark = Benchmark.measure do
         parse_calendar_dates(zip_file)
       end
-      puts "Zeit für die Ausführung CalendarDates: #{benchmark.real} Sekunden"
+      p "Zeit für die Ausführung CalendarDates: #{benchmark.real} Sekunden"
     end
 
     # delete temp file
@@ -170,7 +170,8 @@ class PublicTransportation::ImportService
         point_of_interest = PointOfInterest.where(external_id: poi_stop_id.to_s).first_or_initialize
         point_of_interest.name = parsed_line["stop_name"].force_encoding("UTF-8")
         point_of_interest.data_provider_id = @data_provider_id
-        point_of_interest.payload = parsed_line.to_h
+        point_of_interest.payload = parsed_line.to_h || {}
+        point_of_interest.payload["has_travel_times"] = true
         point_of_interest.save
         @pois[poi_stop_id] = point_of_interest.id
         p "Updating POI id: #{point_of_interest.id}, poi_stop_id: #{poi_stop_id}"

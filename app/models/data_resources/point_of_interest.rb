@@ -53,6 +53,10 @@ class PointOfInterest < Attraction
 
     current_travel_times
   end
+
+  def has_travel_times?
+    payload.present? && payload["has_travel_times"].present?
+  end
 end
 
 # == Schema Information

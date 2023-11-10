@@ -15,7 +15,7 @@ module Mutations
       end
 
       OpenStruct.new(
-        id: data_provider_id,
+        id: nil,
         status: status,
         status_code: status_code
       )

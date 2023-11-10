@@ -71,8 +71,16 @@ class PublicTransportation::TravelTime
 
     def gtfs_calendar(stop_time, service_id)
       gtfs_cal_data = @redis.get_gtfs_calendar(service_id, @data_provider_id)
+
+      # for a specific weekday: 1 = traveling, 0 = not traveling
       traveling = gtfs_cal_data[@weekday].to_i
-      exception = @redis.get_gtfs_calendar_dates(service_id, @calendar_exception_date, @data_provider_id) || nil
+
+      # for every calendar day there can be an exception: 1 = traveling added, 2 = traveling removed
+      exception = @redis.get_gtfs_calendar_dates(
+        service_id,
+        @calendar_exception_date,
+        @data_provider_id
+      )
 
       case exception.to_i
       when 1
@@ -81,11 +89,14 @@ class PublicTransportation::TravelTime
         traveling = 0
       end
 
+      # further checks based on start_date and end_date to check if outside of calendar range
       traveling = 0 if @calendar_exception_date.to_i < gtfs_cal_data["start_date"].to_i
       traveling = 0 if @calendar_exception_date.to_i > gtfs_cal_data["end_date"].to_i
 
-      # check if travel time is after departure time
-      # departure_time kann auch "24:14" sein
+      # check departure time
+      # 0 = travel time is after departure time
+      # 1 = travel time is before departure time
+      # HINT: departure_time can also be "24:12", "25:10", ... to indicate next days departures
       begin
         departure_time = Time.parse(stop_time["departure_time"])
         travel_time_from = Time.parse(@travel_time_from)
