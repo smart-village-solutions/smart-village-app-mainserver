@@ -4,8 +4,9 @@ class GtfsRedisAdapter
   attr_reader :redis, :namespace
 
   def initialize
-    @redis = Redis.new(driver: :hiredis, host: MunicipalityService.settings[:redis_host], timeout: 2)
-    @namespace = MunicipalityService.settings[:redis_namespace]
+    municipality_settings = MunicipalityService.settings
+    @redis = Redis.new(driver: :hiredis, host: municipality_settings[:redis_host], timeout: 10)
+    @namespace = municipality_settings[:redis_namespace]
   end
 
   #-- GTFS Data --#

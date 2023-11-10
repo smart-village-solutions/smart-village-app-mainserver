@@ -6,13 +6,11 @@ module Mutations
     type Types::StatusType
 
     def resolve(dataprovider_id:, feed:)
-      status, status_code = ["Import failed: No data provider found", 404] unless dataprovider_id.present?
+      status, status_code = ["Import failed: No data provider given", 404] unless dataprovider_id.present?
+      status, status_code = ["Import failed: No feed given", 404] unless feed.present?
 
-      if dataprovider_id.present?
-        # TODO: Implement feed parameter to start only given feed and not all feeds
-        #   - check if data_provider exists
-        #   - filter for feed parameter
-        GtfsImporterJob.perform_later
+      if dataprovider_id.present? && DataProvider.all.pluck(:id).include?(dataprovider_id.to_i)
+        GtfsImporterJob.perform_later(feed_name: feed, data_provider_id: dataprovider_id)
         status, status_code = ["Import started", 200]
       end
 

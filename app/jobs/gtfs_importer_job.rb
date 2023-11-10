@@ -15,12 +15,17 @@ class GtfsImporterJob < ApplicationJob
   #     }
   #   ]
   # }
-  def perform
+  def perform(feed_name: nil, data_provider_id: nil)
     gtfs_config = StaticContent.find_by(name: "gtfsConfig").try(:content)
     return unless gtfs_config.present?
+    return if feed_name.blank?
+    return if data_provider_id.blank?
 
     gtfs_config = JSON.parse(gtfs_config)
     gtfs_config["feeds"].each do |gtfs_feed|
+      next if feed_name != gtfs_feed["name"]
+      next if data_provider_id.to_i != gtfs_feed["data_provider_id"].to_i
+
       data_provider = DataProvider.find_by(id: gtfs_feed["data_provider_id"])
       next unless data_provider.present?
 
