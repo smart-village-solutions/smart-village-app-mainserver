@@ -10,7 +10,11 @@ module Mutations
       status, status_code = ["Import failed: No feed given", 404] unless feed.present?
 
       if data_provider_id.present? && DataProvider.all.pluck(:id).include?(data_provider_id.to_i)
-        GtfsImporterJob.perform_later(feed_name: feed, data_provider_id: data_provider_id)
+        GtfsImporterJob.perform_later(
+          feed_name: feed,
+          data_provider_id: data_provider_id,
+          municipality_id: MunicipalityService.municipality_id
+        )
         status, status_code = ["Import started", 200]
       end
 
