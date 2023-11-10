@@ -21,7 +21,6 @@ module Types
     field :event_record, QueryTypes::EventRecordType, null: false do
       argument :id, ID, required: true
     end
-
     field :event_records_addresses, [QueryTypes::AddressType], null: false do
       description "Adresses for upcoming events"
     end

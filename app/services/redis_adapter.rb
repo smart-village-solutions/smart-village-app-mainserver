@@ -2,6 +2,8 @@
 
 module RedisAdapter
   class << self
+    #-- Event List Date --#
+    #---------------------#
 
     def set_event_list_date(event_id, list_date)
       expires_in = Time.zone.now.end_of_day.to_i - Time.zone.now.to_i
@@ -44,7 +46,7 @@ module RedisAdapter
     end
 
     #-- Basic connection and namespace --#
-    # ---------------------------------- #
+    #------------------------------------#
 
     def redis
       @redis ||= Redis.new(driver: :hiredis, host: Rails.application.credentials.redis[:host], timeout: 2)

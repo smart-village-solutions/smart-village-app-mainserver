@@ -35,6 +35,24 @@ class PointOfInterest < Attraction
 
     generate_checksum(fields + address_fields + opening_hour_fields.flatten)
   end
+
+  # get travel times for a specific date
+  #
+  # @param [String] date "2023-09-18T12:00"
+  def gtfs_travel_times(date:, sort_by: "arrival_time", sort_order: "asc")
+    current_travel_times = PublicTransportation::TravelTime.new(
+      date: date,
+      external_id: external_id,
+      data_provider_id: data_provider_id
+    ).travel_times
+
+    return [] if current_travel_times.blank?
+
+    current_travel_times.sort_by! { |tt| tt[sort_by.to_sym] }
+    current_travel_times.reverse! if sort_order == "desc"
+
+    current_travel_times
+  end
 end
 
 # == Schema Information

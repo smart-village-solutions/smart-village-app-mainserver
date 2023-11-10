@@ -38,7 +38,7 @@ class GraphqlController < ApplicationController
 
     def current_resource_owner
       owner_id = doorkeeper_token.try(:application).try(:owner_id) if doorkeeper_token
-      User.find(owner_id) if owner_id
+      User.find_by(id: owner_id) if owner_id.present?
     end
 
     def log_graphql_execution_error(result, query)

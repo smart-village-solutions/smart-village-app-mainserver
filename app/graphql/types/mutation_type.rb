@@ -19,6 +19,7 @@ module Types
     field :send_push_notification, mutation: Mutations::SendPushNotification
     field :schedule_push_notification, mutation: Mutations::SchedulePushNotification
     field :create_generic_item_message, mutation: Mutations::CreateGenericItemMessage
+    field :import_gtfs_feeds, mutation: Mutations::ImportGtfsFeeds
 
     # destroys
     field :destroy_record, mutation: Mutations::DestroyRecord

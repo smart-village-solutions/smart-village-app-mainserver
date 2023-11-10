@@ -24,9 +24,20 @@ module Types
     field :certificates, [QueryTypes::CertificateType], null: true
     field :accessibility_information, QueryTypes::AccessibilityInformationType, null: true
     field :tag_list, [String], null: true
+    field :travel_times, [GraphQL::Types::JSON], null: true do
+      argument :date, String, required: false
+      argument :sort_by, String, required: false
+      argument :sort_order, String, required: false
+    end
     field :lunches, [QueryTypes::LunchType], null: true
     field :payload, GraphQL::Types::JSON, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
+
+    def travel_times(date: "", sort_by: "arrival_time", sort_order: "asc")
+      return [] if date.blank?
+
+      object.gtfs_travel_times(date: date, sort_by: sort_by, sort_order: sort_order)
+    end
   end
 end
