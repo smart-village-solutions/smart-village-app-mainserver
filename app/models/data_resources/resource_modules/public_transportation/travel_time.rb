@@ -52,11 +52,11 @@ class PublicTransportation::TravelTime
         stop_time_data = gtfs_stop_time_data(stop_time)
         trip = @redis.get_gtfs_trip(stop_time["trip_id"], @data_provider_id)
         if trip.present?
-        stop_time_data["trip"] = gtfs_trip_data(trip)
-        stop_time_data["route"] = gtfs_route(trip["route_id"])
+          stop_time_data["trip"] = gtfs_trip_data(trip)
+          stop_time_data["route"] = gtfs_route(trip["route_id"])
 
-        traveling = gtfs_calendar(stop_time, trip["service_id"])
-        @calculated_travel_times << stop_time_data if traveling
+          traveling = gtfs_calendar(stop_time, trip["service_id"])
+          @calculated_travel_times << stop_time_data if traveling
         end
       rescue => e
         p "Error: #{e.message}, #{e.backtrace.first}"
