@@ -16,6 +16,13 @@ class GtfsRedisAdapter
     redis.set("#{namespace}:gtfs:#{data_provider_id}:calendar_dates:#{service_id}:#{date}", exception_type)
   end
 
+  # delete all key starting with calendar_dates
+  def delete_all_gtfs_calendar_dates(data_provider_id)
+    redis.scan_each(match: "#{namespace}:gtfs:#{data_provider_id}:calendar_dates:*") do |key|
+      redis.del(key)
+    end
+  end
+
   # get service
   def get_gtfs_calendar(service_id, data_provider_id)
     service_data = redis.get("#{namespace}:gtfs:#{data_provider_id}:calendar:#{service_id}")
@@ -25,6 +32,12 @@ class GtfsRedisAdapter
   # set service
   def set_gtfs_calendar(service_id, service_data, data_provider_id)
     redis.set("#{namespace}:gtfs:#{data_provider_id}:calendar:#{service_id}", service_data.to_json)
+  end
+
+  def delete_all_gtfs_calendar(data_provider_id)
+    redis.scan_each(match: "#{namespace}:gtfs:#{data_provider_id}:calendar:*") do |key|
+      redis.del(key)
+    end
   end
 
   # get route data
@@ -55,6 +68,13 @@ class GtfsRedisAdapter
 
   def set_gtfs_stop_times(stop_id, stop_times, data_provider_id)
     redis.rpush("#{namespace}:gtfs:#{data_provider_id}:stop:#{stop_id}:stop_times", stop_times.to_json)
+  end
+
+  # delete all key starting with stop
+  def delete_all_stop_times(data_provider_id)
+    redis.scan_each(match: "#{namespace}:gtfs:#{data_provider_id}:stop:*") do |key|
+      redis.del(key)
+    end
   end
 
   # Trip Data

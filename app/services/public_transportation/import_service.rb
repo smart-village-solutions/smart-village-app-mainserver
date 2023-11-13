@@ -26,6 +26,7 @@ class PublicTransportation::ImportService
     @whitelist = whitelist_poi.map(&:to_i) if whitelist_poi.present?
     @pois = {}
     @redis = GtfsRedisAdapter.new
+    @import_from_calender_date = (Date.today - (1.day)).strftime("%Y%m%d")
   end
 
   def call
@@ -93,7 +94,13 @@ class PublicTransportation::ImportService
     def parse_calendar_dates(zip_file)
       p "Parsing calendar_dates.txt"
       calendar_dates_counter = 0
+
+      # cleanup calendar_dates before import
+      @redis.delete_all_gtfs_calendar_dates(@data_provider_id)
+
       parse_file_of_zip(zip_file, "calendar_dates.txt") do |parsed_line|
+        next if parsed_line["date"].to_i < @import_from_calender_date.to_i
+
         @redis.set_gtfs_calendar_dates(
           parsed_line["service_id"],
           parsed_line["date"],
@@ -108,6 +115,10 @@ class PublicTransportation::ImportService
     def parse_calendar(zip_file)
       p "Parsing calendar.txt"
       calendar_counter = 0
+
+      # cleanup calendar before import
+      @redis.delete_all_gtfs_calendar(@data_provider_id)
+
       parse_file_of_zip(zip_file, "calendar.txt") do |parsed_line|
         @redis.set_gtfs_calendar(parsed_line["service_id"], parsed_line, @data_provider_id)
         calendar_counter += 1
@@ -147,6 +158,10 @@ class PublicTransportation::ImportService
     def parse_stop_times(zip_file)
       p "Parsing stop_times.txt"
       stop_time_counter = 0
+
+      # cleanup stop_times before import
+      @redis.delete_all_stop_times(@data_provider_id)
+
       parse_file_of_zip(zip_file, "stop_times.txt") do |parsed_line|
         stop_id = parsed_line["stop_id"].to_i
         next unless @pois.keys.include?(stop_id)
