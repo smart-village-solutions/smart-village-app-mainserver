@@ -187,7 +187,12 @@ class PublicTransportation::ImportService
         point_of_interest.data_provider_id = @data_provider_id
         point_of_interest.payload = parsed_line.to_h || {}
         point_of_interest.payload["has_travel_times"] = true
-        # TODO: store geo data
+        if parsed_line["stop_lat"].present? && parsed_line["stop_lon"].present?
+          address = point_of_interest.addresses.first || point_of_interest.addresses.build
+          geo_location = address.geo_location || address.build_geo_location
+          geo_location.latitude = parsed_line["stop_lat"]
+          geo_location.longitude = parsed_line["stop_lon"]
+        end
         point_of_interest.save
         @pois[poi_stop_id] = point_of_interest.id
         p "Updating POI id: #{point_of_interest.id}, poi_stop_id: #{poi_stop_id}"
