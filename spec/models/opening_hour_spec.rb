@@ -18,7 +18,7 @@ end
 #  time_to          :time
 #  sort_number      :integer
 #  open             :boolean
-#  description      :string(255)
+#  description      :text(65535)
 #  openingable_type :string(255)
 #  openingable_id   :bigint
 #  created_at       :datetime         not null

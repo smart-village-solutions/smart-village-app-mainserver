@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_20_135847) do
+ActiveRecord::Schema.define(version: 2023_11_15_101929) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -472,7 +472,7 @@ ActiveRecord::Schema.define(version: 2023_09_20_135847) do
     t.time "time_to"
     t.integer "sort_number"
     t.boolean "open"
-    t.string "description"
+    t.text "description"
     t.string "openingable_type"
     t.bigint "openingable_id"
     t.datetime "created_at", null: false
