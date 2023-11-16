@@ -13,7 +13,7 @@ class ResourceService
     @params = params
 
     # Erlaube nur ein Anlegen von Daten wenn der Nutzer nicht ReadOnly ist.
-    raise "Access not permitted" if @data_provider.user.read_only_role?
+    return GraphQL::ExecutionError.new("Access not permitted!") if @data_provider.user.read_only_role?
 
     # cleanup params for given :id
     @old_resource_id = @params.delete(:id)
@@ -29,10 +29,19 @@ class ResourceService
     @resource = resource_class.new(@params)
     @resource.data_provider = @data_provider
 
-    # skip create if record already exists and new record has the same attribute values as the new
-    # record and the record is not marked as 'always_recreate'
+    # get old resource
     @external_resource = find_external_resource
     @old_resource = find_old_resource
+
+    # Refuse to update data,
+    # if the user has the role extended_user
+    # and is not the owner of the data.
+    if @old_resource_id.present? && @data_provider.user.extended_user_role? && @old_resource.data_provider.user != @data_provider.user
+      return GraphQL::ExecutionError.new("Access not permitted!")
+    end
+
+    # skip create if record already exists and new record has the same attribute values as the new
+    # record and the record is not marked as 'always_recreate'
     if @external_resource.present? && unchanged_attributes? && !always_recreate?
       # we update the the `updated_at` of the resource anyways, even if no data is changed,
       # because the records date needs to be up to date regarding cleanup processes

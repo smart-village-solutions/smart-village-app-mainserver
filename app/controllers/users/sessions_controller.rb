@@ -56,7 +56,8 @@ class Users::SessionsController < Devise::SessionsController
             methods: %i[uid secret owner_id owner_type]
           ),
           roles: resource.try(:data_provider).try(:roles),
-          minio: minio_config
+          minio: minio_config,
+          data_provider_id: resource.try(:data_provider).try(:id)
         }
       end
     end
