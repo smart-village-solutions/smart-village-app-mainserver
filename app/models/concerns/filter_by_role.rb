@@ -15,15 +15,15 @@ module FilterByRole
       # wenn es keinen current_user gibt (bsp.: EventItem.none)
       return none if current_user.blank?
 
-      return by_data_provider.all if current_user.admin_role?
+      return by_data_provider.all if current_user.admin_role? || current_user.extended_user_role?
       return by_data_provider.visible if current_user.app_role?
       return by_data_provider.visible if current_user.read_only_role?
 
+      # if current_user has role editor
       if current_user.editor_role?
         data_provider_ids = [current_user.data_provider_id] + User.restricted_role.map(&:data_provider_id)
         return where(data_provider_id: data_provider_ids.compact.flatten)
       end
-
       where(data_provider_id: current_user.data_provider_id)
     }
   end
