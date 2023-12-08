@@ -10,8 +10,12 @@ class PointOfInterest < Attraction
   has_many :opening_hours, as: :openingable, dependent: :destroy
   has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
   has_many :lunches, dependent: :destroy
+  has_many :vouchers, -> { where(generic_itemable_type: "PointOfInterest", generic_type: "Voucher") },
+           foreign_key: :generic_itemable_id,
+           class_name: "GenericItem",
+           dependent: :destroy
 
-  accepts_nested_attributes_for :price_informations, :opening_hours, :lunches
+  accepts_nested_attributes_for :price_informations, :opening_hours, :lunches, :vouchers
 
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "PointOfInterest").first.try(:settings)

@@ -67,6 +67,12 @@ module Mutations
              as: :lunches_attributes,
              prepare: ->(lunches, _ctx) { lunches.map(&:to_h) }
 
+    argument :vouchers,
+             [Types::InputTypes::GenericItemInput],
+             required: false,
+             as: :vouchers_attributes,
+             prepare: ->(vouchers, _ctx) { vouchers.map(&:to_h) }
+
     field :point_of_interest, Types::QueryTypes::PointOfInterestType, null: false
 
     type Types::QueryTypes::PointOfInterestType

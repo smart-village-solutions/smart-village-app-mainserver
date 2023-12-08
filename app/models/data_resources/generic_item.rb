@@ -9,7 +9,8 @@ class GenericItem < ApplicationRecord
     job: "Job",
     offer: "Offer",
     construction_site: "ConstructionSite",
-    noticeboard: "Noticeboard"
+    noticeboard: "Noticeboard",
+    voucher: "Voucher"
   }.freeze
 
   attr_accessor :force_create
@@ -22,7 +23,8 @@ class GenericItem < ApplicationRecord
   validates_presence_of :generic_type
   store :payload, coder: JSON
 
-  belongs_to :data_provider
+  belongs_to :data_provider, optional: true
+  belongs_to :generic_itemable, polymorphic: true, optional: true
   has_one :external_reference, as: :external, dependent: :destroy
   has_many :accessibility_informations, as: :accessable, dependent: :destroy
   has_many :addresses, as: :addressable, dependent: :destroy

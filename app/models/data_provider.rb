@@ -22,6 +22,7 @@ class DataProvider < ApplicationRecord
           role_deadlines
           role_noticeboard
           role_defect_report
+          role_voucher
         ],
         coder: JSON
   enum data_type: { general_importer: 0, business_account: 1 }, _suffix: :role
