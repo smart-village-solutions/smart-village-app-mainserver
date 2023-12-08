@@ -80,6 +80,31 @@ class ApiRequestService
     http.request(request)
   end
 
+  def form_post_request
+    url = Addressable::URI.parse(@uri.strip).normalize
+    http = Net::HTTP.new(url.host, url.port || 80)
+
+    if @uri.include?("https://")
+      http = Net::HTTP.new(url.hostname, url.port || 443)
+      http.use_ssl = true
+      http.ssl_version = :SSLv23
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    end
+
+    @request = Net::HTTP::Post.new(
+      url.path,
+      "Content-Type" => headers.fetch(:content_type, "application/json")
+    )
+
+    @request.set_form_data(@params)
+
+    @headers.each do |key, value|
+      @request.add_field key, value
+    end
+
+    http.request(request)
+  end
+
   def delete_request
     url = Addressable::URI.parse(@uri.strip).normalize
     http = Net::HTTP.new(url.host, url.port || 80)
