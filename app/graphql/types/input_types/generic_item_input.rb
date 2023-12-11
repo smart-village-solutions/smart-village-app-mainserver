@@ -6,6 +6,7 @@ module Types
     argument :push_notification, GraphQL::Types::Boolean, required: false
     argument :author, String, required: false
     argument :title, String, required: false
+    argument :teaser, String, required: false
     argument :generic_type, String, required: false
     argument :external_id, String, required: false
     argument :publication_date, String, required: false
@@ -15,6 +16,16 @@ module Types
     argument :contacts, [Types::InputTypes::ContactInput],
              required: false, as: :contacts_attributes,
              prepare: ->(contacts, _ctx) { contacts.map(&:to_h) }
+    argument :discount_type, Types::InputTypes::DiscountTypeInput, required: false,
+                                                                    as: :discount_type_attributes,
+                                                                    prepare: lambda { |discount_type, _ctx|
+                                                                      discount_type.to_h
+                                                                    }
+    argument :quota, Types::InputTypes::QuotaInput, required: false,
+                                                    as: :quota_attributes,
+                                                    prepare: lambda { |quota, _ctx|
+                                                      quota.to_h
+                                                    }
     argument :generic_items, [Types::InputTypes::GenericItemInput], required: false,
                                                                     as: :generic_items_attributes,
                                                                     prepare: lambda { |generic_items, _ctx|

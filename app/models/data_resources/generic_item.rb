@@ -26,6 +26,8 @@ class GenericItem < ApplicationRecord
   belongs_to :data_provider, optional: true
   belongs_to :generic_itemable, polymorphic: true, optional: true
   has_one :external_reference, as: :external, dependent: :destroy
+  has_one :discount_type, as: :discountable, dependent: :destroy
+  has_one :quota, as: :quotaable, dependent: :destroy
   has_many :accessibility_informations, as: :accessable, dependent: :destroy
   has_many :addresses, as: :addressable, dependent: :destroy
   has_many :data_resource_categories, as: :data_resource
@@ -60,7 +62,7 @@ class GenericItem < ApplicationRecord
   accepts_nested_attributes_for :web_urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :content_blocks, :data_provider, :price_informations, :opening_hours,
                                 :media_contents, :accessibility_informations, :addresses, :contacts,
-                                :companies, :locations, :dates, :push_notifications
+                                :companies, :locations, :dates, :push_notifications, :discount_type, :quota
 
   def generic_items
     children

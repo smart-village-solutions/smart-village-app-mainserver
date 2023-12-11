@@ -14,3 +14,8 @@
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym 'RESTful'
 # end
+
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  # Plural von quota ist leider quota in Rails auch wenn deepl.com das anders sieht
+  inflect.irregular 'quota', 'quotas'
+end
