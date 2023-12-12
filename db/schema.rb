@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_11_142729) do
+ActiveRecord::Schema.define(version: 2023_12_11_164846) do
 
   create_table "accessibility_informations", charset: "utf8", force: :cascade do |t|
     t.text "description"
@@ -377,6 +377,13 @@ ActiveRecord::Schema.define(version: 2023_12_11_142729) do
     t.index ["mediaable_type", "mediaable_id"], name: "index_media_contents_on_type_and_id"
   end
 
+  create_table "members", charset: "utf8", force: :cascade do |t|
+    t.string "keycloak_id"
+    t.integer "municipality_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "municipalities", charset: "utf8", force: :cascade do |t|
     t.string "slug"
     t.string "title"
@@ -411,6 +418,7 @@ ActiveRecord::Schema.define(version: 2023_12_11_142729) do
     t.datetime "updated_at", null: false
     t.integer "municipality_id"
     t.text "exclude_data_provider_ids"
+    t.integer "member_id"
     t.index ["token"], name: "index_notification_devices_on_token", unique: true
   end
 
@@ -546,6 +554,15 @@ ActiveRecord::Schema.define(version: 2023_12_11_142729) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["quotaable_type", "quotaable_id"], name: "index_quotas_on_quotaable_type_and_quotaable_id"
+  end
+
+  create_table "redemptions", charset: "utf8", force: :cascade do |t|
+    t.integer "member_id"
+    t.string "redemable_type"
+    t.bigint "redemable_id"
+    t.integer "quantity"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "regions", charset: "utf8", force: :cascade do |t|
