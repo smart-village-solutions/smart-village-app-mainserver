@@ -2,7 +2,7 @@
 
 set -e
 
-dockerize -wait tcp://saas-database-mysql:3306 -timeout 30s
+dockerize -wait tcp://saas-database-mysql-staging:3306 -timeout 30s
 
 # npm set audit false
 bundle exec rake db:migrate

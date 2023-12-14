@@ -2,9 +2,9 @@ version: '3.7'
 
 services:
   delayed_job:
-    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas-staging
     networks:
-      - saas-smart-village
+      - saas-smart-village-staging
       - sva-redis-server
     environment:
       RAILS_ENV: production
@@ -16,9 +16,9 @@ services:
           - node.hostname == ${NODENAME}
 
   cron_job:
-    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas-staging
     networks:
-      - saas-smart-village
+      - saas-smart-village-staging
       - sva-redis-server
     environment:
       RAILS_ENV: production
@@ -39,10 +39,10 @@ services:
         max_attempts: 1
 
   app:
-    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas
+    image: registry.gitlab.tpwd.de/ikusei/smart-village-app-mainserver:saas-staging
     networks:
       - public
-      - saas-smart-village
+      - saas-smart-village-staging
       - sva-redis-server
     environment:
       RAILS_ENV: production
@@ -56,13 +56,13 @@ services:
         traefik.enable: "true"
         traefik.port: 80
         traefik.docker.network: public
-        traefik.community.frontend.rule: HostRegexp:{subdomain:[a-zA-Z-_]+}.server.smart-village.app
-        traefik.admin.frontend.rule: Host:server.smart-village.app
+        traefik.community.frontend.rule: HostRegexp:{subdomain:[a-zA-Z-_]+}.staging-server.smart-village.app
+        traefik.admin.frontend.rule: Host:staging-server.smart-village.app
 
 networks:
   adminer:
     external: true
   public:
     external: true
-  saas-smart-village:
+  saas-smart-village-staging:
     external: true

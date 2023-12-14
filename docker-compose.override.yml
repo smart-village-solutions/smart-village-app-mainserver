@@ -21,4 +21,4 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=public
-      - traefik.frontend.rule=Host:server.smart-village.docker.localhost
+      - traefik.frontend.rule=Host:staging-server.smart-village.docker.localhost

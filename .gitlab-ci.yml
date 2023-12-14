@@ -22,12 +22,12 @@ docker-build:
   stage: build
   allow_failure: false
   script:
-    - docker pull $IMAGE:saas || true
-    - docker build --cache-from $IMAGE:saas --tag $IMAGE:$CI_COMMIT_SHA --tag $IMAGE:saas -f $DOCKERFILE .
+    - docker pull $IMAGE:saas-staging || true
+    - docker build --cache-from $IMAGE:saas-staging --tag $IMAGE:$CI_COMMIT_SHA --tag $IMAGE:saas-staging -f $DOCKERFILE .
     - docker push $IMAGE:$CI_COMMIT_SHA
-    - docker push $IMAGE:saas
+    - docker push $IMAGE:saas-staging
   only:
-    - saas
+    - staging
 
 .docker_build_release:
   stage: build_release
@@ -43,7 +43,7 @@ docker-build:
   allow_failure: false
   when: on_success
   only:
-    - saas
+    - staging
 
 .deploy_release:
   stage: deploy_release
@@ -53,12 +53,12 @@ docker-build:
     key: "${CI_PIPELINE_ID}-${PROJECT}"
     paths: [quantum.yml]
   script:
-    - quantum-cli stack update --create --stack $PROJECT$SERVICENAME --wait
+    - quantum-cli stack update --create --stack saas-mainserver-staging --wait
   tags: [v2]
   allow_failure: false
   when: on_success
   only:
-    - saas
+    - staging
 
 #
 # List of releases to build
@@ -67,7 +67,7 @@ docker-build:
 saas-build:
   extends: .docker_build_release
   variables:
-    PROJECT: saas
+    PROJECT: saas-staging
     NODENAME: node-004.sva
 
 #
@@ -79,5 +79,5 @@ saas-deploy:
   needs: ["saas-build"]
   variables:
     SERVICENAME: "-mainserver"
-    PROJECT: saas
+    PROJECT: saas-staging
     QUANTUM_ENDPOINT: sva

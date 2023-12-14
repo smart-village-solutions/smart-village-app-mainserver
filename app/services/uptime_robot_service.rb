@@ -12,10 +12,10 @@ class UptimeRobotService
 
   # /newMonitor
   def create_monitors
-    create_single_monitor("SVA - #{@slug} Mainserver", "https://#{@slug}.server.smart-village.app", MONITOR_TYPES[:http])
-    create_single_monitor("SVA - #{@slug} CMS", "https://cms.#{@slug}.smart-village.app", MONITOR_TYPES[:http])
-    create_single_monitor("SVA - #{@slug} Json2Graphql", "https://json.#{@slug}.json.smart-village.app/status", MONITOR_TYPES[:http])
-    create_single_monitor("SVA - #{@slug} Json2Graphql", "https://#{@slug}.json.smart-village.app/status", MONITOR_TYPES[:keyword], '<span class="state">OK</span>')
+    create_single_monitor("SVA Staging - #{@slug} Mainserver", "https://#{@slug}.staging-server.smart-village.app", MONITOR_TYPES[:http])
+    create_single_monitor("SVA Staging - #{@slug} CMS", "https://staging.cms.#{@slug}.smart-village.app", MONITOR_TYPES[:http])
+    create_single_monitor("SVA Staging - #{@slug} Json2Graphql", "https://staging.json.#{@slug}.json.smart-village.app/status", MONITOR_TYPES[:http])
+    create_single_monitor("SVA Staging - #{@slug} Json2Graphql", "https://staging.#{@slug}.json.smart-village.app/status", MONITOR_TYPES[:keyword], '<span class="state">OK</span>')
   end
 
   # curl -X POST
