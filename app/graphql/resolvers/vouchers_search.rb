@@ -9,21 +9,6 @@ class Resolvers::VouchersSearch < GraphQL::Schema::Resolver
 
   type types[Types::QueryTypes::GenericItemType]
 
-  class GenericItemOrder < ::Types::BaseEnum
-    value "createdAt_DESC"
-    value "createdAt_ASC"
-    value "updatedAt_DESC"
-    value "updatedAt_ASC"
-    value "publishedAt_DESC"
-    value "publishedAt_ASC"
-    value "publicationDate_DESC"
-    value "publicationDate_ASC"
-    value "id_DESC"
-    value "id_ASC"
-    value "title_DESC"
-    value "title_ASC"
-  end
-
   option :category_id, type: GraphQL::Types::ID, with: :apply_category_id
   option :data_provider, type: GraphQL::Types::String, with: :apply_data_provider
   option :data_provider_id, type: GraphQL::Types::ID, with: :apply_data_provider_id
@@ -31,7 +16,7 @@ class Resolvers::VouchersSearch < GraphQL::Schema::Resolver
   option :generic_type, type: GraphQL::Types::String, with: :apply_generic_type
   option :ids, type: types[GraphQL::Types::ID], with: :apply_ids
   option :limit, type: GraphQL::Types::Int, with: :apply_limit
-  option :order, type: GenericItemOrder, default: "createdAt_DESC"
+  option :order, type: Resolvers::GenericItemSearch::GenericItemOrder, default: "createdAt_DESC"
   option :skip, type: GraphQL::Types::Int, with: :apply_skip
   option :location, type: GraphQL::Types::String, with: :apply_location
 
