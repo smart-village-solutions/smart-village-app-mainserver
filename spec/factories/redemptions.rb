@@ -1,6 +1,8 @@
 FactoryBot.define do
   factory :redemption do
     member_id { 1 }
+    quantity { 1 }
+    redemable { nil }
   end
 end
 

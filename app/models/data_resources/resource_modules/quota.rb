@@ -26,7 +26,7 @@ class Quota < ApplicationRecord
       # Anzahl der Einlösungen eines konkreten Members im gegebenen Zeitraum je nach Einlösefrequenz
       member_redemptions_count = current_redemptions_for_frequency.where(member_id: member_id).count
       return 0 if member_redemptions_count >= max_per_person.to_i
-      return 0 if current_available_quantity <= member_redemptions_count
+      return 0 if current_available_quantity < member_redemptions_count
 
       # Theoretisch maximale Anzahl an Einlösungen minus der Anzahl der Einlösungen des Members im gegebenen Zeitraum
       # bsp. 10 Sind verfügbar, Max 2 Pro member und Member hat 1 bisher verwendet => 1 ist verfügbar
