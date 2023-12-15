@@ -100,5 +100,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   ADMIN_URL = "staging-server.smart-village.app"
-  CMS_URL = "staging.cms.smart-village.app"
+  CMS_URL = "staging-cms.smart-village.app"
 end
