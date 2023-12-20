@@ -37,13 +37,13 @@ Rails.application.routes.draw do
     controllers applications: "oauth/applications"
   end
 
-  devise_for :users, controllers: {
-    sessions: "users/sessions"
-  }
+  devise_for :members, controllers: { omniauth_callbacks: 'members/omniauth_callbacks' }
+  devise_for :users, controllers: { sessions: "users/sessions" }
   devise_for :admins
   authenticate :admin do
     match "/background" => BetterDelayedJobWeb, anchor: false, via: %i[get post]
   end
+
 
   get "user" => "users/status#show"
   post "/graphql", to: "graphql#execute"

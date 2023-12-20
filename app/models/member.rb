@@ -1,4 +1,9 @@
 class Member < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable,
+  # :database_authenticatable, :omniauthable, :recoverable, :rememberable
+  devise :registerable, :validatable, :omniauthable
+
   has_many :redemptions, dependent: :destroy
   has_many :notification_devices, class_name: "Notification::Device", dependent: :destroy
 end

@@ -66,6 +66,7 @@ GEM
       activerecord (>= 6.0, < 7.1)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    aes_key_wrap (1.1.0)
     ancestry (4.2.0)
       activerecord (>= 5.2.6)
     annotate (3.2.0)
@@ -95,6 +96,7 @@ GEM
       activerecord (> 3.0.0)
       delayed_job (> 2.0.3)
       sinatra (>= 1.4.4)
+    bindata (2.4.15)
     bindex (0.8.1)
     bootsnap (1.15.0)
       msgpack (~> 1.2)
@@ -149,6 +151,8 @@ GEM
     faraday (2.7.1)
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
+    faraday-follow_redirects (0.3.0)
+      faraday (>= 1, < 3)
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
     faraday-net_http (3.0.2)
@@ -174,6 +178,7 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    hashie (5.0.0)
     hiredis-client (0.11.2)
       redis-client (= 0.11.2)
     http-accept (1.7.0)
@@ -194,8 +199,15 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (2.6.3)
+    json-jwt (1.16.3)
+      activesupport (>= 4.2)
+      aes_key_wrap
+      bindata
+      faraday (~> 2.0)
+      faraday-follow_redirects
     jsoneditor-rails (1.0.4)
       railties (>= 3.0)
+    jwt (2.7.1)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -253,6 +265,7 @@ GEM
     mini_mime (1.1.2)
     minitest (5.16.3)
     msgpack (1.6.0)
+    multi_xml (0.6.0)
     multipart-post (2.2.3)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
@@ -274,6 +287,25 @@ GEM
     notiffany (0.1.3)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oauth2 (2.0.9)
+      faraday (>= 0.17.3, < 3.0)
+      jwt (>= 1.0, < 3.0)
+      multi_xml (~> 0.5)
+      rack (>= 1.2, < 4)
+      snaky_hash (~> 2.0)
+      version_gem (~> 1.1)
+    omniauth (2.1.2)
+      hashie (>= 3.4.6)
+      rack (>= 2.2.3)
+      rack-protection
+    omniauth-keycloak (1.5.1)
+      faraday
+      json-jwt (> 1.13.0)
+      omniauth (>= 2.0)
+      omniauth-oauth2 (~> 1.7.1)
+    omniauth-oauth2 (1.7.3)
+      oauth2 (>= 1.4, < 3)
+      omniauth (>= 1.9, < 3)
     order_as_specified (1.7)
       activerecord (>= 5.0.0)
     orm_adapter (0.5.0)
@@ -432,6 +464,9 @@ GEM
       rack (~> 2.2, >= 2.2.4)
       rack-protection (= 3.0.4)
       tilt (~> 2.0)
+    snaky_hash (2.0.1)
+      hashie
+      version_gem (~> 1.1, >= 1.1.1)
     solargraph (0.49.0)
       backport (~> 1.2)
       benchmark
@@ -477,6 +512,7 @@ GEM
     unicorn (6.1.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
+    version_gem (1.1.3)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.0)
@@ -532,6 +568,8 @@ DEPENDENCIES
   mimemagic (>= 0.3.10)
   mini_magick (~> 4.8)
   mysql2 (= 0.5.4)
+  omniauth-keycloak
+  omniauth-oauth2
   order_as_specified
   pry-byebug
   pry-rails
