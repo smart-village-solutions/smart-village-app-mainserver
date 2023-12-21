@@ -39,7 +39,7 @@ gem "remove_emoji"
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use ActiveStorage variant
-gem 'mini_magick', '~> 4.8'
+gem "mini_magick", "~> 4.8"
 
 # Facebook Library to Access GraphAPI
 gem "koala"
@@ -56,12 +56,12 @@ gem "ancestry"
 gem "devise"
 gem "devise-token_authenticatable"
 gem "doorkeeper"
-gem "omniauth-oauth2"
-gem "omniauth-keycloak"
 gem "jquery-rails"
 gem "jsoneditor-rails"
 gem "mailjet"
 gem "mimemagic", ">= 0.3.10"
+gem "omniauth-keycloak"
+gem "omniauth-oauth2"
 
 gem "order_as_specified"
 
@@ -86,8 +86,8 @@ gem "daemons"
 gem "delayed_job_active_record"
 
 # Redis Server and Connection
-gem "redis"
 gem "hiredis-client"
+gem "redis"
 
 # Pagination
 gem "bootstrap4-kaminari-views"
@@ -115,6 +115,7 @@ group :development, :test do
   gem "guard"
   gem "guard-rspec"
   gem "rubocop", require: false
+  gem "rubocop-rspec", require: false
   gem "shoulda-matchers"
   gem "simplecov"
   gem "solargraph"
