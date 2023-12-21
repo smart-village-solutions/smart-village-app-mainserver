@@ -570,6 +570,7 @@ DEPENDENCIES
   mimemagic (>= 0.3.10)
   mini_magick (~> 4.8)
   mysql2 (= 0.5.4)
+  omniauth
   omniauth-keycloak
   omniauth-oauth2
   order_as_specified

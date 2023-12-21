@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_11_164846) do
+ActiveRecord::Schema.define(version: 2023_12_20_160939) do
 
   create_table "accessibility_informations", charset: "utf8", force: :cascade do |t|
     t.text "description"
@@ -382,6 +382,11 @@ ActiveRecord::Schema.define(version: 2023_12_11_164846) do
     t.integer "municipality_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.text "authentication_token"
+    t.datetime "authentication_token_created_at"
+    t.index ["email"], name: "index_members_on_email", unique: true
   end
 
   create_table "municipalities", charset: "utf8", force: :cascade do |t|

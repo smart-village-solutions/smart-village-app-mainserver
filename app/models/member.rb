@@ -1,8 +1,10 @@
 class Member < ApplicationRecord
+  include MunicipalityScope
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable,
   # :database_authenticatable, :omniauthable, :recoverable, :rememberable
-  devise :registerable, :validatable, :omniauthable
+  devise :database_authenticatable, :registerable, :validatable, :omniauthable, :token_authenticatable
 
   has_many :redemptions, dependent: :destroy
   has_many :notification_devices, class_name: "Notification::Device", dependent: :destroy

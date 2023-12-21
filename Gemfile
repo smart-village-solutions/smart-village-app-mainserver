@@ -60,6 +60,7 @@ gem "jquery-rails"
 gem "jsoneditor-rails"
 gem "mailjet"
 gem "mimemagic", ">= 0.3.10"
+gem "omniauth"
 gem "omniauth-keycloak"
 gem "omniauth-oauth2"
 
