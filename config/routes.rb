@@ -45,7 +45,6 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     match "/background" => BetterDelayedJobWeb, anchor: false, via: %i[get post]
   end
 
-
   get "user" => "users/status#show"
   get "member" => "members/status#show"
   post "/graphql", to: "graphql#execute"
