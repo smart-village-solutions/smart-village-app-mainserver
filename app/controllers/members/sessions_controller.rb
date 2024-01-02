@@ -9,20 +9,20 @@ class Members::SessionsController < Devise::SessionsController
   skip_before_action :verify_authenticity_token
 
   # GET /resource/sign_in
-  # def new # rubocop:disable Metrics/MethodLength
-  #   resource = resource_class.new(sign_in_params)
-  #   clean_up_passwords(resource)
+  def new # rubocop:disable Metrics/MethodLength
+    resource = resource_class.new(sign_in_params)
+    clean_up_passwords(resource)
 
-  #   respond_to do |format|
-  #     format.html { super }
-  #     format.json do
-  #       return render json: {
-  #         success: resource.id ? false : true,
-  #         member: resource.id ? resource : nil
-  #       }
-  #     end
-  #   end
-  # end
+    respond_to do |format|
+      format.html { super }
+      format.json do
+        return render json: {
+          success: resource.id ? false : true,
+          member: resource.id ? resource : nil
+        }
+      end
+    end
+  end
 
   # POST /resource/sign_in
   def create # rubocop:disable Metrics/MethodLength
