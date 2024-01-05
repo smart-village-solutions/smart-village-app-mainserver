@@ -29,6 +29,10 @@ class MunicipalityService
     Municipality.find_by(id: Thread.current[:municipality_id]).try(:settings) || {}
   end
 
+  def self.slug
+    Municipality.find_by(id: Thread.current[:municipality_id]).slug.presence
+  end
+
 
   def initialize(subdomains:)
     @subdomains = subdomains

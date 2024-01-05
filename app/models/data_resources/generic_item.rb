@@ -1,4 +1,4 @@
-class GenericItem < ApplicationRecord
+class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include FilterByRole
 
   has_ancestry orphan_strategy: :destroy

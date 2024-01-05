@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Rails.application.routes.draw do
+Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   resources :municipalities
   namespace :notification do
     resources :wastes
@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   end
 
   get "user" => "users/status#show"
+  get "member" => "members/status#show"
   post "/graphql", to: "graphql#execute"
   get "import_feeds", to: "import_feeds#index"
 

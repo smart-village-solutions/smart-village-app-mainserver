@@ -8,6 +8,10 @@ class Members::SessionsController < Devise::SessionsController
 
   skip_before_action :verify_authenticity_token
 
+  def show
+    @member = current_member
+  end
+
   # GET /resource/sign_in
   def new # rubocop:disable Metrics/MethodLength
     resource = resource_class.new(sign_in_params)

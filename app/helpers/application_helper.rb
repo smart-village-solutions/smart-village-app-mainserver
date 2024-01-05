@@ -1,4 +1,13 @@
 module ApplicationHelper
+
+  def key_and_secret_login_available?
+    MunicipalityService.settings["member_auth_types"].include?("key_and_secret") == true
+  end
+
+  def keycloak_login_available?
+    MunicipalityService.settings["member_auth_types"].include?("keycloak") == true
+  end
+
   def render_selectable_categories(categories, form)
     category_tags = ""
     base_element = "user[data_provider_attributes][data_resource_settings_attributes][#{form.options[:child_index]}][default_category_ids][]"

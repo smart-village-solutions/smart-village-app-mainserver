@@ -62,6 +62,7 @@ gem "mailjet"
 gem "mimemagic", ">= 0.3.10"
 gem "omniauth"
 gem "omniauth-keycloak"
+# todo: https://github.com/looorent/keycloak-api-rails
 gem "omniauth-oauth2"
 
 gem "order_as_specified"
