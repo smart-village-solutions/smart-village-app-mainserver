@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class QueryType < Types::BaseObject
+  class QueryType < Types::BaseObject # rubocop:disable Metrics/ClassLength
     field :generic_items, [QueryTypes::GenericItemType], resolver: Resolvers::GenericItemSearch
     field :generic_item, QueryTypes::GenericItemType, null: false do
       argument :id, GraphQL::Types::ID, required: true
@@ -199,6 +199,10 @@ module Types
     # @return [Object] object with the contents of the file, if it exists - otherwise with {}
     def public_json_file(name:, version: nil)
       static_content_with_data_type("json", name, version)
+    end
+
+    def voucher(id:)
+      GenericItem.where(generic_type: "Voucher").find_by(id: id)
     end
 
     private
