@@ -34,7 +34,7 @@ class MunicipalityService
   end
 
   def self.data_resource_redis_adapter
-    Thread.current[:data_resource_redis_adapter]
+    Thread.current[:data_resource_redis_adapter] ||= RedisAdapters::DataResource.new
   end
 
   def initialize(subdomains:)
