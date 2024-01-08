@@ -25,6 +25,7 @@ module MunicipalityAuthorization
 
   def scope_current_tenant
     MunicipalityService.municipality_id = @current_municipality.id
+    MunicipalityService.set_data_resource_redis_adapter
     s3_service.set_bucket(@current_municipality) if @current_municipality.minio_config_valid?
     yield
   ensure

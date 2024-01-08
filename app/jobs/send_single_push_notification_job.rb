@@ -25,14 +25,14 @@ class SendSinglePushNotificationJob < ApplicationJob
       feedback = client.send_messages(messages)
       payload = feedback.try(:response).try(:body)
 
-      RedisAdapter.add_push_log(
+      RedisAdapters::PushLog.add_push_log(
         device_token,
         message_options.merge(date: DateTime.now, payload: payload)
       )
 
       cleanup_if_unregistered_device(device_token, payload)
     rescue StandardError => e
-      RedisAdapter.add_push_log(
+      RedisAdapters::PushLog.add_push_log(
         device_token,
         message_options.merge(rescue_error: "push notification", error: e, date: DateTime.now)
       )
@@ -49,14 +49,14 @@ class SendSinglePushNotificationJob < ApplicationJob
       feedback = client.send_messages(messages)
       payload = feedback.try(:response).try(:body)
 
-      RedisAdapter.add_push_log(
+      RedisAdapters::PushLog.add_push_log(
         device_token,
         message_options.merge(date: DateTime.now, payload: payload)
       )
 
       cleanup_if_unregistered_device(device_token, payload)
     rescue StandardError => e
-      RedisAdapter.add_push_log(
+      RedisAdapters::PushLog.add_push_log(
         device_token,
         message_options.merge(rescue_error: "push notification", error: e, date: DateTime.now)
       )

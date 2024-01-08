@@ -40,7 +40,7 @@ class PublicTransportation::TravelTime
     @travel_time_from = travel_date.strftime("%H:%M:%S")
 
     @calculated_travel_times = []
-    @redis = GtfsRedisAdapter.new
+    @redis = RedisAdapters::Gtfs.new
   end
 
   def travel_times
