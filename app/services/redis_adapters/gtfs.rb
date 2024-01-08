@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class GtfsRedisAdapter
+class RedisAdapters::Gtfs
   attr_reader :redis, :namespace
 
   def initialize

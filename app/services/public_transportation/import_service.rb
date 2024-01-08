@@ -25,7 +25,7 @@ class PublicTransportation::ImportService
     @gtfs_config = JSON.parse(@gtfs_config) if @gtfs_config.present?
     @whitelist = whitelist_poi.map(&:to_i) if whitelist_poi.present?
     @pois = {}
-    @redis = GtfsRedisAdapter.new
+    @redis = RedisAdapters::Gtfs.new
     @import_from_calender_date = (Date.today - (1.day)).strftime("%Y%m%d")
   end
 

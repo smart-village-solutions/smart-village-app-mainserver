@@ -29,6 +29,13 @@ class MunicipalityService
     Municipality.find_by(id: Thread.current[:municipality_id]).try(:settings) || {}
   end
 
+  def self.set_data_resource_redis_adapter
+    Thread.current[:data_resource_redis_adapter] = RedisAdapters::DataResource.new
+  end
+
+  def self.data_resource_redis_adapter
+    Thread.current[:data_resource_redis_adapter]
+  end
 
   def initialize(subdomains:)
     @subdomains = subdomains

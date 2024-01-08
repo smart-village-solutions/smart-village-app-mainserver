@@ -140,9 +140,10 @@ class EventRecord < ApplicationRecord
 
   # @return [Date]
   def list_date
+    redis_adapter ||= MunicipalityService.data_resource_redis_adapter
     return in_date_range_start_date if in_date_range_start_date.present?
 
-    list_date_cached = RedisAdapter.get_event_list_date(id)
+    list_date_cached = redis_adapter.get_event_list_date(id)
     if list_date_cached.present?
       return list_date_cached.to_i.zero? ? nil : Time.zone.at(list_date_cached.to_i).to_date
     end
@@ -153,7 +154,7 @@ class EventRecord < ApplicationRecord
     dates_count = event_dates.size
 
     if dates_count.zero?
-      RedisAdapter.set_event_list_date(id, 0)
+      redis_adapter.set_event_list_date(id, 0)
       return nil
     end
 
@@ -179,22 +180,22 @@ class EventRecord < ApplicationRecord
       calculated_list_date = event_start_dates.first
 
       if calculated_list_date.blank?
-        RedisAdapter.set_event_list_date(id, 0)
+        redis_adapter.set_event_list_date(id, 0)
         return nil
       end
 
-      RedisAdapter.set_event_list_date(id, calculated_list_date.try(:to_time).to_i)
+      redis_adapter.set_event_list_date(id, calculated_list_date.try(:to_time).to_i)
       return calculated_list_date
     end
 
     if future_dates.present?
       calculated_list_date = future_dates.first.try(:date_start)
-      RedisAdapter.set_event_list_date(id, calculated_list_date.try(:to_time).to_i)
+      redis_adapter.set_event_list_date(id, calculated_list_date.try(:to_time).to_i)
       return calculated_list_date
     end
 
     calculated_list_date = event_dates.last.try(:date_start)
-    RedisAdapter.set_event_list_date(id, calculated_list_date.try(:to_time).to_i)
+    redis_adapter.set_event_list_date(id, calculated_list_date.try(:to_time).to_i)
     calculated_list_date
   end
 

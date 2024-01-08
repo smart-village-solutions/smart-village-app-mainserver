@@ -8,6 +8,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+# MunicipalityService.municipality_id = 6
+
 user = User.create(
   email: "tim@test.de",
   password: "kBzWAvNCWqn2rJxG",
@@ -95,26 +97,26 @@ def create_price(name = Faker::Commerce.product_name, _x = 1)
   prices = []
   prices << Price.create(
     name: name,
-    amount: Faker::Commerce.price(range = 0..20.0),
-    group_price: Faker::Boolean.boolean(0.2),
-    age_from: Faker::Number.within(2..5),
-    age_to: Faker::Number.within(10..18),
-    min_adult_count: Faker::Number.within(1..10),
-    max_adult_count: Faker::Number.within(10..20),
-    min_children_count: Faker::Number.within(1..5),
-    max_children_count: Faker::Number.within(5..10),
+    amount: Faker::Commerce.price(range: 0..20.0),
+    group_price: Faker::Boolean.boolean(true_ratio: 0.2),
+    age_from: Faker::Number.within(range: 2..5),
+    age_to: Faker::Number.within(range: 10..18),
+    min_adult_count: Faker::Number.within(range: 1..10),
+    max_adult_count: Faker::Number.within(range: 10..20),
+    min_children_count: Faker::Number.within(range: 1..5),
+    max_children_count: Faker::Number.within(range: 5..10),
     description: Faker::Lorem.sentence
   )
 end
 
 def create_opening_hour
   OpeningHour.create(
-    weekday: Faker::Date.between(2000.days.ago, Date.today).strftime("%A"),
+    weekday: Faker::Date.between(from: 2000.days.ago, to: Date.today).strftime("%A"),
     date_from: Faker::Date.backward,
     date_to: Faker::Date.forward,
     time_from: Faker::Time.backward,
     time_to: Faker::Time.forward,
-    sort_number: Faker::Number.within(1..1_000_000),
+    sort_number: Faker::Number.within(range: 1..1_000_000),
     open: Faker::Boolean.boolean,
     description: Faker::Lorem.sentence
   )
@@ -138,8 +140,8 @@ def create_media_content
   media_content = MediaContent.create(
     caption_text: Faker::Lorem.sentence,
     copyright: Faker::Name.name,
-    height: Faker::Number.number(3),
-    width: Faker::Number.number(3),
+    height: Faker::Number.number(digits: 3),
+    width: Faker::Number.number(digits: 3),
     content_type: "image"
   )
   media_content.source_url = create_web_url
@@ -165,13 +167,13 @@ end
 
 def create_date
   FixedDate.create(
-    weekday: Faker::Date.between(2000.days.ago, Date.today).strftime("%A"),
-    date_start: Faker::Date.backward.strftime("%d.%m.%Y"),
-    date_end: Faker::Date.forward.strftime("%d.%m.%Y"),
+    weekday: Faker::Date.between(from: 2000.days.ago, to: Date.today).strftime("%A"),
+    date_start: Faker::Date.between(from: Date.today - 35, to: Date.today + 500).strftime("%d.%m.%Y"),
+    date_end: Faker::Date.between(from: Date.today, to: Date.today + 365).strftime("%d.%m.%Y"),
     time_start: Faker::Time.backward.strftime("%H:%M"),
     time_end: Faker::Time.forward.strftime("%H:%M"),
     time_description: Faker::Lorem.paragraph,
-    use_only_time_description: Faker::Boolean.boolean(0.8)
+    use_only_time_description: Faker::Boolean.boolean(true_ratio: 0.8)
   )
 end
 
@@ -222,8 +224,8 @@ end
     mobile_description: Faker::Lorem.paragraph,
     active: true,
     category_name: "Schöne Fahrradrouten",
-    length_km: Faker::Number.within(50..250),
-    means_of_transportation: Faker::Number.within(0..2)
+    length_km: Faker::Number.within(range: 50..250),
+    means_of_transportation: rand(0..2)
   )
   tour.addresses << create_address
   tour.contact = create_contact
@@ -240,15 +242,15 @@ end
   tour.save
 end
 
-10.times do |n|
+1000.times do |n|
   event = EventRecord.create(
     title: "Konzert #{n}",
     description: Faker::Lorem.paragraph,
-    repeat: Faker::Boolean.boolean(0.3),
+    repeat: Faker::Boolean.boolean(true_ratio: 0.3),
     repeat_duration: RepeatDuration.create(
       start_date: Faker::Date.backward.strftime("%d.%m.%y"),
       end_date: Faker::Date.forward.strftime("%d.%m.%y"),
-      every_year: Faker::Boolean.boolean(0.3)
+      every_year: Faker::Boolean.boolean(true_ratio: 0.3)
     ),
     category_name: "Konzerte",
     region: create_region
@@ -267,6 +269,7 @@ end
   event.location = create_location
   event.tag_list.add("Highlight des Jahres")
   event.save
+  puts "Event #{n} created"
 end
 
 10.times do
