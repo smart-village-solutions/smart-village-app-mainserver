@@ -5,6 +5,8 @@ require "search_object/plugin/graphql"
 class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
+  description "Searches for event records"
+
   scope {
     event_records = EventRecord.upcoming(context[:current_user])
 
@@ -133,14 +135,10 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   end
 
   def apply_order_with_list_date_desc(scope)
-    ordered_ids = scope.select(&:list_date).sort_by(&:list_date).reverse.map(&:id)
-
-    scope.order_as_specified(id: ordered_ids)
+    scope.order("event_records.sort_date DESC")
   end
 
   def apply_order_with_list_date_asc(scope)
-    ordered_ids = scope.select(&:list_date).sort_by(&:list_date).map(&:id)
-
-    scope.order_as_specified(id: ordered_ids)
+    scope.order("event_records.sort_date ASC")
   end
 end

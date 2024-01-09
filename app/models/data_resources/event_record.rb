@@ -13,11 +13,12 @@ class EventRecord < ApplicationRecord
 
   before_save :remove_emojis
   before_save :handle_recurring_dates
+  before_save :set_sort_date
   after_save :find_or_create_category
   before_validation :find_or_create_region
 
   belongs_to :region, optional: true
-  belongs_to :data_provider
+  belongs_to :data_provider, optional: true
 
   has_many :data_resource_categories, as: :data_resource
   has_many :categories, through: :data_resource_categories
@@ -257,6 +258,12 @@ class EventRecord < ApplicationRecord
     def remove_emojis
       self.title = RemoveEmoji::Sanitize.call(title) if title.present?
       self.description = RemoveEmoji::Sanitize.call(description) if description.present?
+    end
+
+    # For better performance store the calculated list date in db to be able to sort by db field.
+    # a cronjob is regenerating the sort_dates every night and will by regenerated on update
+    def set_sort_date
+      self.sort_date = list_date
     end
 
     # Check if `recurring` is true and if so, handle recurring dates following the given pattern.

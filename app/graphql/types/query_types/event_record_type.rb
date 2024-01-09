@@ -11,6 +11,7 @@ module Types
     field :title, String, null: true
     field :dates, [QueryTypes::DateType], null: true
     field :list_date, String, null: true
+    field :sort_date, String, null: true
     field :repeat, GraphQL::Types::Boolean, null: true
     field :repeat_duration, QueryTypes::RepeatDurationType, null: true
     field :category, QueryTypes::CategoryType, null: true
@@ -33,5 +34,9 @@ module Types
     field :recurring_interval, Integer, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
+
+    def list_date
+      object.sort_date.strftime("%Y-%m-%d")
+    end
   end
 end
