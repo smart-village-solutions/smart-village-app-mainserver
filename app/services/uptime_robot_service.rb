@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class UptimeRobotService
-
   UPTIME_ROBOT_API_URL = "https://api.uptimerobot.com/v2"
   MONITOR_TYPES = { http: 1, keyword: 2, ping: 3 }
 
