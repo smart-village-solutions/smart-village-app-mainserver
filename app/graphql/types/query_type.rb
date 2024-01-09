@@ -77,11 +77,6 @@ module Types
 
     field :surveys, [QueryTypes::SurveyPollType], resolver: Resolvers::SurveyPollsSearch
 
-    field :vouchers, [QueryTypes::GenericItemType], resolver: Resolvers::VouchersSearch
-    field :voucher, QueryTypes::GenericItemType, null: false do
-      argument :id, GraphQL::Types::ID, required: true
-    end
-
     # PASS THROUGH FOR DIRECTUS ENDPOINT
     field :directus, GraphQL::Types::JSON, null: false do
       argument :query, String, required: false
@@ -199,10 +194,6 @@ module Types
     # @return [Object] object with the contents of the file, if it exists - otherwise with {}
     def public_json_file(name:, version: nil)
       static_content_with_data_type("json", name, version)
-    end
-
-    def voucher(id:)
-      GenericItem.where(generic_type: "Voucher").find_by(id: id)
     end
 
     private
