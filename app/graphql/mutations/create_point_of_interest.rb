@@ -77,6 +77,11 @@ module Mutations
     type Types::QueryTypes::PointOfInterestType
 
     def resolve(**params)
+      # pass all vouchers elements a data provider to be created with the right relation
+      params[:vouchers_attributes].each do |voucher|
+        voucher[:data_provider_id] = context[:current_user][:data_provider_id]
+      end
+
       ResourceService.new(data_provider: context[:current_user].try(:data_provider))
         .perform(PointOfInterest, params)
     end
