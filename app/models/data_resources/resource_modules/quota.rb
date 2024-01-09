@@ -54,7 +54,7 @@ class Quota < ApplicationRecord
     false
   end
 
-  def redeme!(member_id, quantity)
+  def redeem!(member_id, quantity)
     redemptions.create!(member_id: member_id, quantity: quantity)
   end
 

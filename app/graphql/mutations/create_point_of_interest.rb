@@ -66,7 +66,6 @@ module Mutations
              required: false,
              as: :lunches_attributes,
              prepare: ->(lunches, _ctx) { lunches.map(&:to_h) }
-
     argument :vouchers,
              [Types::InputTypes::GenericItemInput],
              required: false,

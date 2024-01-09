@@ -1,7 +1,7 @@
 # frozen_string_literal: false
 
 module Mutations
-  class RedemeQuotaOfVoucher < BaseMutation
+  class RedeemQuotaOfVoucher < BaseMutation
     argument :voucher_id, GraphQL::Types::ID, required: true
     argument :member_id, GraphQL::Types::ID, required: true
     argument :device_token, String, required: true
@@ -37,8 +37,8 @@ module Mutations
       end
 
       begin
-        quota.redeme!(member_id, quantity)
-        OpenStruct.new(id: 1, status: "Redemed #{quantity} Quota successfully", status_code: 200)
+        quota.redeem!(member_id, quantity)
+        OpenStruct.new(id: 1, status: "Redeemd #{quantity} Quota successfully", status_code: 200)
       rescue => e
         error_status("Error on redemption: #{e}", 500)
       end
