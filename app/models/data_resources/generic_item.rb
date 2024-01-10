@@ -74,6 +74,8 @@ class GenericItem < ApplicationRecord
 
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "GenericItem").first.try(:settings)
+  rescue
+    nil
   end
 
   def content_for_facebook
