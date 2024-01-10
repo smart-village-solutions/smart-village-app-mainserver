@@ -11,7 +11,7 @@ class CleanUpService
   def initialize
     @data_resource_types = DataResourceSetting::DATA_RESOURCES
     accounts = User.includes(:data_provider).all
-    @data_providers = accounts.map(&:data_provider) if accounts.present? && accounts.any?
+    @data_providers = accounts.map(&:data_provider).compact if accounts.present? && accounts.any?
   end
 
   def perform
