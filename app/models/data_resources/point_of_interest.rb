@@ -15,6 +15,8 @@ class PointOfInterest < Attraction
 
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "PointOfInterest").first.try(:settings)
+  rescue
+    nil
   end
 
   def unique_id
