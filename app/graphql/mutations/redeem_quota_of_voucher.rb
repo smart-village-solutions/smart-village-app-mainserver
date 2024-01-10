@@ -40,7 +40,7 @@ module Mutations
 
       begin
         quota.redeem!(member_id, quantity)
-        OpenStruct.new(id: 1, status: "Redeemd #{quantity} Quota successfully", status_code: 200)
+        OpenStruct.new(id: 1, status: "#{quantity} contingent successfully redeemed", status_code: 200)
       rescue => e
         error_status("Error on redemption: #{e}", 500)
       end
