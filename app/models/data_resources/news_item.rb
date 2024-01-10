@@ -43,6 +43,8 @@ class NewsItem < ApplicationRecord
 
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "NewsItem").first.try(:settings)
+  rescue
+    nil
   end
 
   # Sicherstellung der Abwärtskompatibilität seit 09/2020
