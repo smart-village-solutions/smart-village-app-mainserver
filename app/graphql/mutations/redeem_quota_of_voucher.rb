@@ -4,12 +4,12 @@ module Mutations
   class RedeemQuotaOfVoucher < BaseMutation
     argument :voucher_id, GraphQL::Types::ID, required: true
     argument :member_id, GraphQL::Types::ID, required: true
-    argument :device_token, String, required: true
+    argument :device_token, String, required: false
     argument :quantity, Integer, required: true
 
     type Types::StatusType
 
-    def resolve(voucher_id:, member_id:, device_token:, quantity:)
+    def resolve(voucher_id:, member_id:, device_token: nil, quantity:)
       return error_status("Quantity must be greater than 0", 405) if quantity <= 0
 
       voucher = GenericItem.where(generic_type: "Voucher").find_by(id: voucher_id)
@@ -32,9 +32,11 @@ module Mutations
       member = Member.find_by(id: member_id)
       return error_status("Member not found", 404) unless member.present?
 
-      if member.notification_devices.where(token: device_token).blank?
-        return error_status("Member has no device with given token", 403)
-      end
+      # Deaktiviert bis klar ist, wie wir mit Membern umgehen wollen,
+      # die keine PushNotifications haben wollen
+      # if member.notification_devices.where(token: device_token).blank?
+      #   return error_status("Member has no device with given token", 403)
+      # end
 
       begin
         quota.redeem!(member_id, quantity)
