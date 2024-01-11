@@ -32,6 +32,7 @@ module Types
     field :has_travel_times, Boolean, null: true
     field :lunches, [QueryTypes::LunchType], null: true
     field :payload, GraphQL::Types::JSON, null: true
+    field :vouchers, [QueryTypes::GenericItemType], null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
 

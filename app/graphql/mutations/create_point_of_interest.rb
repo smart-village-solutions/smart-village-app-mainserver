@@ -66,12 +66,22 @@ module Mutations
              required: false,
              as: :lunches_attributes,
              prepare: ->(lunches, _ctx) { lunches.map(&:to_h) }
+    argument :vouchers,
+             [Types::InputTypes::GenericItemInput],
+             required: false,
+             as: :vouchers_attributes,
+             prepare: ->(vouchers, _ctx) { vouchers.map(&:to_h) }
 
     field :point_of_interest, Types::QueryTypes::PointOfInterestType, null: false
 
     type Types::QueryTypes::PointOfInterestType
 
     def resolve(**params)
+      # pass all vouchers elements a data provider to be created with the right relation
+      params[:vouchers_attributes].each do |voucher|
+        voucher[:data_provider_id] = context[:current_user][:data_provider_id]
+      end
+
       ResourceService.new(data_provider: context[:current_user].try(:data_provider))
         .perform(PointOfInterest, params)
     end

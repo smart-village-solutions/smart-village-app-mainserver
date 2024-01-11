@@ -8,6 +8,7 @@ class Notification::Device < ApplicationRecord
   enum device_type: { undefined: 0, ios: 1, android: 2 }
 
   belongs_to :municipality
+  belongs_to :member, optional: true
 
   has_many :waste_registrations,
            class_name: "Waste::DeviceRegistration",
@@ -28,10 +29,17 @@ class Notification::Device < ApplicationRecord
   sortable_on :device_type, :token
   searchable_on :token
 
-
   # Zusätzlich zu der Validierung hier existiert auch ein unique Index auf das Feld 'token'
   validates_uniqueness_of :token, on: :create, message: "must be unique"
   validates_presence_of :token, on: :create, message: "can't be blank"
+
+  after_create :check_for_member
+
+  def check_for_member
+    return if member_id.present?
+
+    update_columns(member_id: Member.create.id)
+  end
 end
 
 # == Schema Information

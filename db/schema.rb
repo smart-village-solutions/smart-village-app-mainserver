@@ -387,7 +387,7 @@ ActiveRecord::Schema.define(version: 2024_01_09_171756) do
     t.string "encrypted_password", default: "", null: false
     t.text "authentication_token"
     t.datetime "authentication_token_created_at"
-    t.index ["email"], name: "index_members_on_email", unique: true
+    t.index ["email", "municipality_id"], name: "index_members_email_on_municipality_id"
   end
 
   create_table "municipalities", charset: "utf8", force: :cascade do |t|
