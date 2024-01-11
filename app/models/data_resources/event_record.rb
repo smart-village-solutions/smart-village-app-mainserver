@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # this model describes the data for an event e.g. a concert or a reading.
+# rubocop:disable all
 class EventRecord < ApplicationRecord
   include FilterByRole
   extend OrderAsSpecified
@@ -141,23 +142,14 @@ class EventRecord < ApplicationRecord
 
   # @return [Date]
   def list_date
-    redis_adapter ||= MunicipalityService.data_resource_redis_adapter
     return in_date_range_start_date if in_date_range_start_date.present?
-
-    list_date_cached = redis_adapter.get_event_list_date(id)
-    if list_date_cached.present?
-      return list_date_cached.to_i.zero? ? nil : Time.zone.at(list_date_cached.to_i).to_date
-    end
 
     event_dates = dates.order(date_start: :asc)
     # ignore the first date if recurring, because it is the original date object with a time span
     event_dates = event_dates[1..-1] if recurring?
     dates_count = event_dates.size
 
-    if dates_count.zero?
-      redis_adapter.set_event_list_date(id, 0)
-      return nil
-    end
+    return nil if dates_count.zero?
 
     future_dates = event_dates.select do |date|
       date.date_start.try(:to_time).to_i > Time.zone.now.beginning_of_day.to_i
@@ -180,23 +172,16 @@ class EventRecord < ApplicationRecord
 
       calculated_list_date = event_start_dates.first
 
-      if calculated_list_date.blank?
-        redis_adapter.set_event_list_date(id, 0)
-        return nil
-      end
-
-      redis_adapter.set_event_list_date(id, calculated_list_date.try(:to_time).to_i)
+      return nil if calculated_list_date.blank?
       return calculated_list_date
     end
 
     if future_dates.present?
       calculated_list_date = future_dates.first.try(:date_start)
-      redis_adapter.set_event_list_date(id, calculated_list_date.try(:to_time).to_i)
       return calculated_list_date
     end
 
     calculated_list_date = event_dates.last.try(:date_start)
-    redis_adapter.set_event_list_date(id, calculated_list_date.try(:to_time).to_i)
     calculated_list_date
   end
 
