@@ -36,7 +36,7 @@ module Types
     field :created_at, String, null: true
 
     def list_date
-      object.sort_date.strftime("%Y-%m-%d")
+      object.try(:sort_date).try(:strftime, "%Y-%m-%d")
     end
   end
 end
