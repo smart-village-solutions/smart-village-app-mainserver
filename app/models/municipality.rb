@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Municipality < ApplicationRecord
+class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
   validates_uniqueness_of :slug
   validates_uniqueness_of :title
 
@@ -15,6 +15,8 @@ class Municipality < ApplicationRecord
   # after_create :create_uptime_robot_monitor
   after_create :create_category_and_static_content
 
+  MEMBER_AUTH_TYPES = ["keycloak", "key_and_secret"]
+
   store :settings,
         accessors: [
           :mailjet_api_key, :mailjet_api_secret, :mailjet_default_from,
@@ -25,7 +27,8 @@ class Municipality < ApplicationRecord
           :cms_url,
           :rollbar_access_token,
           :redis_host, :redis_namespace,
-          :uptime_robot_api_key, :uptime_robot_alert_contacts
+          :uptime_robot_api_key, :uptime_robot_alert_contacts,
+          :member_auth_types, :member_keycloak_url, :member_keycloak_realm, :member_keycloak_client_id, :member_keycloak_client_secret
         ],
         coder: JSON
 
@@ -48,7 +51,14 @@ class Municipality < ApplicationRecord
   # Setup defaults from saas/credentials.yml
   #
   # checking for "nil?" and not for "blank?" to enable manual empty values
-  def setup_defaults
+  def setup_defaults # rubocop:disable all
+    # Member Auth Settings
+    self.member_auth_types = Municipality::MEMBER_AUTH_TYPES if self.member_auth_types.nil?
+    self.member_keycloak_url = Settings.member_auth[:keycloak_url] if self.member_keycloak_url.nil?
+    self.member_keycloak_realm = slug if self.member_keycloak_realm.nil?
+    self.member_keycloak_client_id = Settings.member_auth[:keycloak_client_id] if self.member_keycloak_client_id.nil?
+    self.member_keycloak_client_secret = Settings.member_auth[:keycloak_client_secret] if self.member_keycloak_client_secret.nil?
+
     # Uptime Robot
     self.uptime_robot_api_key = Settings.uptime_robot[:api_key] if self.uptime_robot_api_key.nil?
     self.uptime_robot_alert_contacts = Settings.uptime_robot[:alert_contacts] if self.uptime_robot_alert_contacts.nil?

@@ -41,4 +41,5 @@ end
 #  role                            :integer          default("user")
 #  authentication_token            :text(65535)
 #  authentication_token_created_at :datetime
+#  municipality_id                 :integer
 #

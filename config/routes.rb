@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Rails.application.routes.draw do
+Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   resources :municipalities
   namespace :notification do
     resources :wastes
@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     post "push_device_assignments/add" => "push_device_assignments#add", defaults: { format: "json" }
     delete "push_device_assignments/remove" => "push_device_assignments#remove", defaults: { format: "json" }
   end
+
   resources :categories
   resources :app_user_contents
   resources :static_contents
@@ -37,15 +38,15 @@ Rails.application.routes.draw do
     controllers applications: "oauth/applications"
   end
 
-  devise_for :users, controllers: {
-    sessions: "users/sessions"
-  }
+  devise_for :members, controllers: { omniauth_callbacks: "members/omniauth_callbacks", sessions: "members/sessions" }
+  devise_for :users, controllers: { sessions: "users/sessions" }
   devise_for :admins
   authenticate :admin do
     match "/background" => BetterDelayedJobWeb, anchor: false, via: %i[get post]
   end
 
   get "user" => "users/status#show"
+  get "member" => "members/status#show"
   post "/graphql", to: "graphql#execute"
   get "import_feeds", to: "import_feeds#index"
 

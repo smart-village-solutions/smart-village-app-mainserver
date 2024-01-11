@@ -39,7 +39,12 @@ module MunicipalityAuthorization
     service
   end
 
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:key, :secret])
+  end
+
   included do
+    before_action :configure_permitted_parameters, if: :devise_controller?
     before_action :determine_municipality
     around_action :scope_current_tenant
   end

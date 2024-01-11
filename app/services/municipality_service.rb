@@ -29,6 +29,10 @@ class MunicipalityService
     Municipality.find_by(id: Thread.current[:municipality_id]).try(:settings) || {}
   end
 
+  def self.slug
+    Municipality.find_by(id: Thread.current[:municipality_id]).slug.presence
+  end
+
   def self.set_data_resource_redis_adapter
     Thread.current[:data_resource_redis_adapter] = RedisAdapters::DataResource.new
   end
