@@ -16,6 +16,7 @@ default: &default
   username: saas-sva-app
   password: saas-sva-app
   host: saas-database-mysql
+  reconnect: true
 
 
 development:

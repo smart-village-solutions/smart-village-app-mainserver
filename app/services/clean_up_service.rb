@@ -33,7 +33,7 @@ class CleanUpService
     end
   end
 
-  def cleanup_records_for(data_provider, data_resource_type)
+  def cleanup_records_for(data_provider, data_resource_type) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     external_references = ExternalReference.where(data_provider_id: data_provider.id, external_type: data_resource_type.to_s)
 
     return if external_references.blank? || external_references.count.zero?
@@ -52,6 +52,10 @@ class CleanUpService
     return if external_references.count == resource_ids.count
 
     data_resource_type.where(id: resource_ids).destroy_all
+  rescue # rubocop:disable Style/RescueStandardError
+    unless ActiveRecord::Base.connection.active?
+      ActiveRecord::Base.clear_active_connections!
+      ActiveRecord::Base.establish_connection
+    end
   end
-
 end
