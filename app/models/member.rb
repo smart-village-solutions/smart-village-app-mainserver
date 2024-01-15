@@ -13,7 +13,8 @@ class Member < ApplicationRecord
     return nil if session_state.blank?
     return nil if session_code.blank?
 
-    access_token, refresh_token = get_keycloak_tokens(session_code)
+    keycloak_tokens = get_keycloak_tokens(session_code)
+    access_token = keycloak_tokens["access_token"]
     return nil if access_token.blank?
 
     keycloak_member_data = get_keycloak_member_data(access_token)
@@ -27,7 +28,13 @@ class Member < ApplicationRecord
       password: Devise.friendly_token[0, 20]
     )
 
-    # Todo: store keycloak access_token and refresh_token
+    # store keycloak access_token and refresh_token
+    member.update(
+      keycloak_access_token: access_token,
+      keycloak_access_token_expires_at: Time.zone.at(Time.zone.now.to_i + keycloak_tokens["expires_in"].to_i),
+      keycloak_refresh_token: keycloak_tokens["refresh_token"],
+      keycloak_refresh_token_expires_at: Time.zone.at(Time.zone.now.to_i + keycloak_tokens["refresh_expires_in"].to_i)
+    )
 
     member
   end
@@ -67,12 +74,10 @@ class Member < ApplicationRecord
     return nil unless response.code == "200"
     return nil if response.body.blank?
 
-    result = JSON.parse(response.body)
-    [result["access_token"], result["refresh_token"]]
+    JSON.parse(response.body)
   end
 
   def self.redirect_uri
-
     "http://#{MunicipalityService.slug}.server.smart-village.local:4000/members/auth/keycloak_openid/callback"
   end
 
