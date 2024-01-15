@@ -31,6 +31,7 @@ class CleanUpService
         # die Ressourcen vom aktuellen data_provider und data_resource_type sollen bereinigt werden
         p "Cleanup records for data_provider #{data_provider.id} and #{data_resource_type}"
         cleanup_records_for(data_provider, data_resource_type)
+        sleep(10)
       end
     end
   end
