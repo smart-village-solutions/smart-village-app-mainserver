@@ -2,8 +2,10 @@
 
 class CleanUpService
   def self.perform
+    p "CleanUpService started at #{Time.zone.now}"
     Municipality.all.each do |municipality|
       MunicipalityService.municipality_id = municipality.id
+      p "CleanUpService for municipality #{municipality.id}"
       CleanUpService.new.perform
     end
   end
@@ -52,7 +54,8 @@ class CleanUpService
     return if external_references.count == resource_ids.count
 
     data_resource_type.where(id: resource_ids).destroy_all
-  rescue # rubocop:disable Style/RescueStandardError
+  rescue => e
+    p "Error in CleanUpService: #{e.message}"
     unless ActiveRecord::Base.connection.active?
       ActiveRecord::Base.clear_active_connections!
       ActiveRecord::Base.establish_connection

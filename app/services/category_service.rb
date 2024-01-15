@@ -2,8 +2,10 @@
 
 class CategoryService
   def self.update_all_defaults
+    p "CategoryService started at #{Time.zone.now}"
     Municipality.all.each do |municipality|
       MunicipalityService.municipality_id = municipality.id
+      p "CategoryService for municipality #{municipality.id}"
       CategoryService.new.update_all_defaults
     end
   end

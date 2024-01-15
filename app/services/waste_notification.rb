@@ -4,8 +4,10 @@ class WasteNotification
   attr_accessor :client, :message_options, :check_date, :waste_types
 
   def self.perform
+    p "WasteNotificationJob started at #{Time.zone.now}"
     Municipality.all.each do |municipality|
       MunicipalityService.municipality_id = municipality.id
+      p "WasteNotificationJob for municipality #{municipality.id}"
       WasteNotification.new.send_notifications
     end
   end

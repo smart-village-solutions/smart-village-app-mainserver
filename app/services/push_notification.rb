@@ -35,8 +35,10 @@ class PushNotification
   end
 
   def self.perform_schedule
+    p "PushNotificationJob started at #{Time.zone.now}"
     Municipality.all.each do |municipality|
       MunicipalityService.municipality_id = municipality.id
+      p "PushNotificationJob for municipality #{municipality.id}"
       PushNotification.new.schedule_notifications
     end
   end
