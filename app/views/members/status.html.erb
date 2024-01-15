@@ -1,2 +1,10 @@
-ID: <%= @member.id %> <br>
-Keycloak ID: <%= @member.keycloak_id %>
+ID: <%= @member.email %>
+<div style="display:none">
+  <div id="auth-token"><%= @member.authentication_token %></div>
+  <div id="member-id"><%= @member.id %></div>
+  <div id="keycloak-id"><%= @member.keycloak_id %></div>
+  <div id="keycloak-access-token"><%= @member.keycloak_access_token %></div>
+  <div id="keycloak-access-token-expires-at"><%= @member.keycloak_access_token_expires_at %></div>
+  <div id="keycloak-refresh-token"><%= @member.keycloak_refresh_token %></div>
+  <div id="keycloak-refresh-token-expires-at"><%= @member.keycloak_refresh_token_expires_at %></div>
+</div>
