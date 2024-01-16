@@ -14,8 +14,8 @@ class EventRecord < ApplicationRecord
 
   before_save :remove_emojis
   before_save :handle_recurring_dates
-  before_save :set_sort_date
   after_save :find_or_create_category
+  after_save :set_sort_date
   before_validation :find_or_create_region
 
   belongs_to :region, optional: true
@@ -250,7 +250,7 @@ class EventRecord < ApplicationRecord
     # For better performance store the calculated list date in db to be able to sort by db field.
     # a cronjob is regenerating the sort_dates every night and will by regenerated on update
     def set_sort_date
-      self.sort_date = list_date
+      update_column(:sort_date, list_date)
     end
 
     # Check if `recurring` is true and if so, handle recurring dates following the given pattern.
