@@ -4,5 +4,5 @@
 # smart-village-app-mainserver
 Repo for the main server
 
-Mehr Infos unter https://github.com/ikuseiGmbH/smart-village-app
-Änderungen an dem release/xy branch werden nun über einen Hook an den Deploymentserver weitergereicht.
+More information can be found at https://github.com/ikuseiGmbH/smart-village-app.
+Changes to the release/xy branch are now forwarded to the deployment server via a hook.
