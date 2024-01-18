@@ -2,8 +2,6 @@ Rollbar.configure do |config|
   # Without configuration, Rollbar is enabled in all environments.
   # To disable in specific environments, set config.enabled=false.
 
-  config.access_token = MunicipalityService.settings[:rollbar_access_token]
-
   # Here we'll disable in 'test':
   if Rails.env.test? || Rails.env.development?
     config.enabled = false
@@ -22,12 +20,12 @@ Rollbar.configure do |config|
   # If you want to attach custom data to all exception and message reports,
   # provide a lambda like the following. It should return a hash.
   # config.custom_data_method = lambda { {:some_key => "some_value" } }
-  config.custom_data_method = lambda {
-    {
-      municipality_id: MunicipalityService.municipality_id,
-      minio_bucket: MunicipalityService.settings[:minio_bucket]
-    }
-  }
+  # config.custom_data_method = lambda {
+  #   {
+  #     municipality_id: MunicipalityService.municipality_id,
+  #     minio_bucket: MunicipalityService.settings[:minio_bucket]
+  #   }
+  # }
 
   # Add exception class names to the exception_level_filters hash to
   # change the level that exception is reported at. Note that if an exception
