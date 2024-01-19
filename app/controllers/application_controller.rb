@@ -2,7 +2,6 @@
 
 class ApplicationController < ActionController::Base
   include MunicipalityAuthorization
-  include RollbarInitializer
 
   layout "doorkeeper/application"
 
