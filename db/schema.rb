@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_09_171756) do
+ActiveRecord::Schema.define(version: 2024_01_15_132403) do
 
   create_table "accessibility_informations", charset: "utf8", force: :cascade do |t|
     t.text "description"
@@ -387,7 +387,11 @@ ActiveRecord::Schema.define(version: 2024_01_09_171756) do
     t.string "encrypted_password", default: "", null: false
     t.text "authentication_token"
     t.datetime "authentication_token_created_at"
-    t.index ["email", "municipality_id"], name: "index_member_email_on_municipality_id"
+    t.text "keycloak_access_token"
+    t.datetime "keycloak_access_token_expires_at"
+    t.text "keycloak_refresh_token"
+    t.datetime "keycloak_refresh_token_expires_at"
+    t.index ["email"], name: "index_members_on_email", unique: true
   end
 
   create_table "municipalities", charset: "utf8", force: :cascade do |t|
