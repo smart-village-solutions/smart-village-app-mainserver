@@ -72,8 +72,7 @@ class Member < ApplicationRecord
   end
 
   def self.redirect_uri
-
-    "http://#{MunicipalityService.slug}.server.smart-village.local:4000/members/auth/keycloak_openid/callback"
+    "https://#{MunicipalityService.slug}.#{ADMIN_URL}/members/auth/keycloak_openid/callback"
   end
 
   # todo: refresh access_token
