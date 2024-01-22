@@ -46,6 +46,5 @@ module MunicipalityAuthorization
     before_action :configure_permitted_parameters, if: :devise_controller?
     before_action :determine_municipality
     around_action :scope_current_tenant
-    include RollbarInitializer
   end
 end

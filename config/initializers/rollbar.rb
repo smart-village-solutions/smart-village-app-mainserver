@@ -2,7 +2,7 @@ Rollbar.configure do |config|
   # Without configuration, Rollbar is enabled in all environments.
   # To disable in specific environments, set config.enabled=false.
 
-  # The access_token is set in app/controllers/concerns/rollbar_initializer.rb because we need to set it dynamically.
+  # The access_token is set in app/services/municipality_service.rb because we need to set it dynamically.
 
   # Here we'll disable in 'test':
   if Rails.env.test? || Rails.env.development?
@@ -23,7 +23,7 @@ Rollbar.configure do |config|
   # provide a lambda like the following. It should return a hash.
   # config.custom_data_method = lambda { {:some_key => "some_value" } }
   
-  # we use this and payload_options in app/controllers/concerns/rollbar_initializer.rb 
+  # we use this and payload_options in app/services/municipality_service.rb 
   # config.custom_data_method = lambda {
   #   {
   #     municipality_id: MunicipalityService.municipality_id,
