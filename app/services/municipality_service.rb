@@ -17,7 +17,7 @@ class MunicipalityService
   # die ID für die Dauer des Threads gespeichert in einer Klassenvariable
   def self.municipality_id=(id)
     Thread.current[:municipality_id] = id
-    self.rollbar_initializer(id)
+    rollbar_initializer(id)
     id
   end
 
