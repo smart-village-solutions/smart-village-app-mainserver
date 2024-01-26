@@ -57,14 +57,24 @@ class Members::SessionsController < Devise::SessionsController
     @resource.save # recreates authentication_token after sign in
   end
 
-  def keycloak_login
-    return false
+  def keycloak_login # rubocop:disable Metrics/AbcSize
+    realm = MunicipalityService.settings[:member_keycloak_realm]
+    client_id = MunicipalityService.settings[:member_keycloak_client_id]
+    client_secret = MunicipalityService.settings[:member_keycloak_client_secret]
+    keycloak_service = Keycloak::RealmsService.new(realm, MunicipalityService.municipality_id, client_id, client_secret)
+    result = keycloak_service.login_user(member_params)
+    return false if result.blank?
+    return false if result["error"].present?
+
+    @resource = Member.where(municipality_id: MunicipalityService.municipality_id, email: member_params[:email]).first
+    sign_in(resource_name, @resource)
+    @resource.save # recreates authentication_token after sign in
   end
 
   def key_and_secret_login
     return false if validate_key_and_secret == :error
 
-    @resource = Member.where(email: member_email_by_key(member_params[:key])).first_or_create do |member|
+    @resource = Member.where(municipality_id: MunicipalityService.municipality_id, email: member_email_by_key(member_params[:key])).first_or_create do |member|
       member_password = SecureRandom.alphanumeric
       member.municipality_id = MunicipalityService.municipality_id
       member.password = member_password

@@ -19,7 +19,10 @@ class Member < ApplicationRecord
 
     keycloak_member_data = get_keycloak_member_data(access_token)
 
-    member = Member.where(keycloak_id: keycloak_member_data["sub"]).first
+    member = Member.where(
+      municipality_id: MunicipalityService.municipality_id,
+      keycloak_id: keycloak_member_data["sub"]
+    ).first
 
     member ||= Member.create(
       municipality_id: MunicipalityService.municipality_id,

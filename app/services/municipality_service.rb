@@ -44,22 +44,22 @@ class MunicipalityService
     return true if @subdomains.length == 0
 
     # wenn Anzahl der Subdomains 1 dann wird das Admin UI ausgewählt, sofern die Subdomain "server" ist
-    # http://server.smart-village.local
-    # http://server.smart-village.app
-    return true if @subdomains.length == 1 && @subdomains.last == "server"
+    # http://staging-server.smart-village.local
+    # http://staging-server.smart-village.app
+    return true if @subdomains.length == 1 && @subdomains.last == SUBDOMAIN_NAMESPACE
   end
 
   def subdomain_valid?
     # wenn Anzahl der Subdomains 1 und die Subdomain nicht "server" ist
     # dann sollte diese Domain nicht auf diese Applikation zeigen
-    raise "municipality error: subdomain not assigned" if @subdomains.length == 1 && @subdomains.last != "server"
+    raise "municipality error: subdomain not assigned" if @subdomains.length == 1 && @subdomains.last != SUBDOMAIN_NAMESPACE
 
     # wenn Anzahl der Subdomains größer 2 ist, dann wird ein Fehler geworfen
-    # http://bad-belzig.foo.server.smart-village.de
+    # http://bad-belzig.foo.staging-server.smart-village.de
     raise "municipality error: subdomain size to high" if @subdomains.count > 2
 
     # Wenn Anzahl der Subdomains stimmt, aber die letzte Subdomain nicht mit "server" endet, dann wird ein Fehler geworfen
-    raise "municipality error: subdomain order failed" unless @subdomains.last == "server"
+    raise "municipality error: subdomain order failed" unless @subdomains.last == SUBDOMAIN_NAMESPACE
 
     true
   end
