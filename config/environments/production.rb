@@ -99,6 +99,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  SUBDOMAIN_NAMESPACE = "staging-server"
   ADMIN_URL = "staging-server.smart-village.app"
   CMS_URL = "staging-cms.smart-village.app"
 end

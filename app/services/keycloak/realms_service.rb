@@ -21,17 +21,35 @@ class Keycloak::RealmsService
   end
 
   def index
-    token_params = token_from_keycloak
-    auth_headers = { "Authorization": "Bearer #{token_params["access_token"]}"}
     request = ApiRequestService.new([uri,"/admin/realms"].join, nil, nil, nil, auth_headers)
     result = request.get_request
     JSON.parse(result.body) if result.code == "200"
   end
 
-  def create
+  def create_realm
   end
 
-  def update
+  def update_realm
+  end
+
+  def create_user(member_params) # rubocop:disable Metrics/MethodLength
+    keycloak_user_params = {
+      username: member_params[:email],
+      email: member_params[:email],
+      enabled: true,
+      firstName: member_params[:first_name],
+      lastName: member_params[:last_name],
+      credentials: [
+        {
+          type: "password",
+          value: member_params[:password],
+          temporary: false
+        }
+      ]
+    }
+    request = ApiRequestService.new([uri,"/admin/realms/#{realm}/users"].join, nil, nil, keycloak_user_params, auth_headers)
+    result = request.post_request
+    JSON.parse(result.body)
   end
 
   private
@@ -48,5 +66,9 @@ class Keycloak::RealmsService
       result = request.form_post_request
 
       JSON.parse(result.body) if result.code == "200"
+    end
+
+    def auth_headers
+      { "Authorization": "Bearer #{token_from_keycloak["access_token"]}"}
     end
 end
