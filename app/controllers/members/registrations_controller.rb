@@ -15,11 +15,29 @@ class Members::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  def create
-    realm = MunicipalityService.settings[:member_keycloak_realm]
-    keycloak_service = Keycloak::RealmsService.new(realm)
-    result = keycloak_service.create_user(member_params)
-    render json: result
+  def create # rubocop:disable Metrics/MethodLength
+    case login_type
+    when :devise
+      super
+    when :keycloak
+      member_params_valid, errors = validate_member_params
+      if member_params_valid
+        realm = MunicipalityService.settings[:member_keycloak_realm]
+        keycloak_service = Keycloak::RealmsService.new(realm, MunicipalityService.municipality_id)
+        result = keycloak_service.create_user(member_params)
+      else
+        result = { status: errors }
+      end
+    when :key_and_secret
+      super
+    end
+
+    respond_to do |format|
+      format.html { super }
+      format.json do
+        render json: result
+      end
+    end
   end
 
   # GET /resource/edit
@@ -50,6 +68,21 @@ class Members::RegistrationsController < Devise::RegistrationsController
 
   def member_params
     params.permit![:member]
+  end
+
+  def validate_member_params
+    return [false, "email missing"] if member_params[:email].blank?
+    return [false, "password missing"] if member_params[:password].blank?
+    return [false, "password confirmation missing"] if member_params[:password_confirmation].blank?
+    return [false, "password and password confirmation do not match"] if member_params[:password] != member_params[:password_confirmation]
+
+    [true, nil]
+  end
+
+  def login_type
+    return :key_and_secret if member_params[:key].present? && member_params[:secret].present?
+
+    :keycloak
   end
 
   # If you have extra params to permit, append them to the sanitizer.
