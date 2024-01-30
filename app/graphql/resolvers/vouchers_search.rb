@@ -16,7 +16,7 @@ class Resolvers::VouchersSearch < GraphQL::Schema::Resolver
   option :generic_type, type: GraphQL::Types::String, with: :apply_generic_type
   option :ids, type: types[GraphQL::Types::ID], with: :apply_ids
   option :limit, type: GraphQL::Types::Int, with: :apply_limit
-  option :order, type: GenericItemOrder, default: "createdAt_DESC"
+  option :order, type: Resolvers::GenericItemSearch::GenericItemOrder, default: "createdAt_DESC"
   option :skip, type: GraphQL::Types::Int, with: :apply_skip
   option :location, type: GraphQL::Types::String, with: :apply_location
 
