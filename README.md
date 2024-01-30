@@ -64,7 +64,7 @@ test:
 rake db:create db:migrate
 ```
 
-#### Import SQL dump (see below) or use
+#### Import a SQL dump or use
 
 ```bash
 rake db:seed
