@@ -56,12 +56,20 @@ class Keycloak::RealmsService
     result = request.post_request
 
     if result.code == "201"
+      keycloak_id = result.fetch("Location", "").split("/").last
       @resource = Member.where(municipality_id: municipality_id, email: member_params[:email]).first_or_create do |member|
         member_password = SecureRandom.alphanumeric
         member.municipality_id = municipality_id
         member.password = member_password
         member.password_confirmation = member_password
       end
+
+      @resource.update(keycloak_id: keycloak_id)
+
+      # Sende E-Mail an den Benutzer mit dem Link zum Bestätigen der E-Mail-Adresse
+      request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{keycloak_id}/execute-actions-email"].join, nil, nil, ["VERIFY_EMAIL"], auth_headers)
+      request.put_request
+
       return { status: "created" }
     end
 
