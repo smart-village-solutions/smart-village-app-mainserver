@@ -3,8 +3,7 @@ class Admin < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :rememberable, :validatable
 
-  # Diese Methode wird von Devise verwendet um einen User in der Datenbank zu finden
-  # und wird hiermit überschrieben mit einem Filter auf eine Kommune.
+  # This method is used by Devise to find a admin in the database
   #
   # @param [Hash] warden_conditions {:email=>"admin@smart-village.app", :subdomain=>"bad-belzig.server"}
   #

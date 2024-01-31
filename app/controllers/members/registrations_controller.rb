@@ -22,8 +22,7 @@ class Members::RegistrationsController < Devise::RegistrationsController
     when :keycloak
       member_params_valid, errors = validate_member_params
       if member_params_valid
-        realm = MunicipalityService.settings[:member_keycloak_realm]
-        keycloak_service = Keycloak::RealmsService.new(realm, MunicipalityService.municipality_id)
+        keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
         result = keycloak_service.create_user(member_params)
       else
         result = { status: errors }

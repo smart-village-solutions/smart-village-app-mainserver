@@ -58,10 +58,7 @@ class Members::SessionsController < Devise::SessionsController
   end
 
   def keycloak_login # rubocop:disable Metrics/AbcSize
-    realm = MunicipalityService.settings[:member_keycloak_realm]
-    client_id = MunicipalityService.settings[:member_keycloak_client_id]
-    client_secret = MunicipalityService.settings[:member_keycloak_client_secret]
-    keycloak_service = Keycloak::RealmsService.new(realm, MunicipalityService.municipality_id, client_id, client_secret)
+    keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
     result = keycloak_service.login_user(member_params)
     return false if result.blank?
     return false if result["error"].present?

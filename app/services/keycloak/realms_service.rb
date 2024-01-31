@@ -7,22 +7,26 @@
 # https://keycloak.smart-village.app/realms/sva-saas/account/#/
 # https://keycloak.smart-village.app/realms/sva-saas/protocol/openid-connect/auth?client_id=account-console&redirect_uri=https%3A%2F%2Fkeycloak.smart-village.app%2Frealms%2FSVA-SaaS%2Faccount%2F%23%2Fsecurity%2Fdevice-activity&state=8684b22e-d037-42ea-bc0d-019633b3c001&response_mode=fragment&response_type=code&scope=openid&nonce=d580c775-6dc2-4b21-83a9-d28c8c85c428&code_challenge=x6Vx7qzwsABR5rVdVxZs6AOasRIRnLlN5gcj8BQeFb0&code_challenge_method=S256
 
-class Keycloak::RealmsService
-  attr_accessor :realm, :uri, :master_token_path, :admin_username, :admin_password, :client_id, :client_secret, :municipality_id
+class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
+  attr_accessor :realm, :uri, :master_token_path, :admin_username,
+                :admin_password, :client_id, :client_secret, :municipality_id,
+                :municipality_settings
 
   # Konfiguration ist hier zu finden:
   # https://keycloak.smart-village.app/realms/master/.well-known/openid-configuration
-  def initialize(realm, municipality_id, client_id = nil, client_secret = nil)
-    @realm = realm
-    @client_id = client_id
-    @client_secret = client_secret
+  def initialize(municipality_id)
     @municipality_id = municipality_id
-    @uri = "https://keycloak.smart-village.app"
+    @municipality_settings = Municipality.find_by(id: @municipality_id).try(:settings) || {}
+    @client_id = @municipality_settings[:member_keycloak_client_id]
+    @client_secret = @municipality_settings[:member_keycloak_client_secret]
+    @realm = @municipality_settings[:member_keycloak_realm]
+    @uri = @municipality_settings[:member_keycloak_url]
     @master_token_path = "/realms/master/protocol/openid-connect/token"
-    @admin_username = "it+keycloak@tpwd.de"
-    @admin_password = "Ffa97RLnZdZxq7hQQKtEKMh8F6UPPzZB"
+    @admin_username = @municipality_settings[:member_keycloak_admin_username]
+    @admin_password = @municipality_settings[:member_keycloak_admin_password]
   end
 
+  # List of all realms in Keycloak
   def index
     request = ApiRequestService.new([uri, "/admin/realms"].join, nil, nil, nil, auth_headers)
     result = request.get_request
@@ -83,11 +87,43 @@ class Keycloak::RealmsService
       client_secret: client_secret,
       username: member_params[:email],
       password: member_params[:password]
-  }
+    }
     request = ApiRequestService.new([uri, "/realms/#{realm}/protocol/openid-connect/token"].join, nil, nil, keycloak_user_params, {content_type: "application/x-www-form-urlencoded" })
     result = request.form_post_request
 
     JSON.parse(result.body)
+  end
+
+  def get_keycloak_tokens(session_code) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+    data = {
+      grant_type: "authorization_code",
+      client_id: client_id,
+      client_secret: client_secret,
+      code: session_code,
+      redirect_uri: Member.redirect_uri
+    }
+    uri = "#{uri}/realms/#{realm}/protocol/openid-connect/token"
+    request_service = ApiRequestService.new(uri, nil, nil, data)
+    response = request_service.form_post_request
+
+    return nil if response.blank?
+    return nil unless response.code == "200"
+    return nil if response.body.blank?
+
+    JSON.parse(response.body)
+  end
+
+  def get_keycloak_member_data(access_token)
+    uri = "#{uri}/realms/#{realm}/protocol/openid-connect/userinfo"
+    headers = { Authorization: "Bearer #{access_token}" }
+    request_service = ApiRequestService.new(uri, nil, nil, nil, headers)
+    response = request_service.get_request
+
+    return nil if response.blank?
+    return nil unless response.code == "200"
+    return nil if response.body.blank?
+
+    JSON.parse(response.body)
   end
 
   private

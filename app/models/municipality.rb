@@ -28,7 +28,9 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
           :rollbar_access_token,
           :redis_host, :redis_namespace,
           :uptime_robot_api_key, :uptime_robot_alert_contacts,
-          :member_auth_types, :member_keycloak_url, :member_keycloak_realm, :member_keycloak_client_id, :member_keycloak_client_secret
+          :member_auth_types,
+          :member_keycloak_url, :member_keycloak_realm, :member_keycloak_client_id, :member_keycloak_client_secret,
+          :member_keycloak_admin_username, :member_keycloak_admin_password
         ],
         coder: JSON
 
@@ -58,6 +60,8 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
     self.member_keycloak_realm = slug if self.member_keycloak_realm.nil?
     self.member_keycloak_client_id = Settings.member_auth[:keycloak_client_id] if self.member_keycloak_client_id.nil?
     self.member_keycloak_client_secret = Settings.member_auth[:keycloak_client_secret] if self.member_keycloak_client_secret.nil?
+    self.member_keycloak_admin_username = Settings.member_auth[:keycloak_admin_username] if self.member_keycloak_admin_username.nil?
+    self.member_keycloak_admin_password = Settings.member_auth[:keycloak_admin_password] if self.member_keycloak_admin_password.nil?
 
     # Uptime Robot
     self.uptime_robot_api_key = Settings.uptime_robot[:api_key] if self.uptime_robot_api_key.nil?
