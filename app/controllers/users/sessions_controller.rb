@@ -9,7 +9,7 @@ class Users::SessionsController < Devise::SessionsController
   skip_before_action :verify_authenticity_token
 
   # GET /resource/sign_in
-  def new
+  def new # rubocop:disable Metrics/MethodLength
     resource = resource_class.new(sign_in_params)
     clean_up_passwords(resource)
 
@@ -31,7 +31,7 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   # POST /resource/sign_in
-  def create
+  def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     resource = warden.authenticate!(auth_options)
     set_flash_message(:notice, :signed_in) if is_flashing_format?
     sign_in(resource_name, resource)

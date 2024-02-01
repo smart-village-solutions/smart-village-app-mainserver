@@ -53,15 +53,16 @@ class User < ApplicationRecord
   # @param [Hash] warden_conditions {:email=>"admin@smart-village.app", :subdomain=>"bad-belzig.server"}
   #
   # @return [Scope] User.where...
-  def self.find_for_authentication(warden_conditions)
+  def self.find_for_authentication(warden_conditions) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     subdomains = Array(warden_conditions.fetch(:subdomain, "").to_s.try(:split, "."))
 
     municipality_service = MunicipalityService.new(subdomains: subdomains)
     @current_municipality = municipality_service.municipality if municipality_service.subdomain_valid?
+    MunicipalityService.municipality_id = @current_municipality.id if @current_municipality.present?
 
     if @current_municipality.present?
-      params = { municipality_id: @current_municipality.id }
-      params.merge!(email: warden_conditions[:email]) if warden_conditions[:email].present?
+      # params = { municipality_id: @current_municipality.id }
+      params = warden_conditions[:email].present? ? { email: warden_conditions[:email] } : {}
       if warden_conditions[:authentication_token].present?
         params.merge!(authentication_token: warden_conditions[:authentication_token])
       end
