@@ -58,8 +58,8 @@ class Members::RegistrationsController < Devise::RegistrationsController
     when :keycloak
       keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
       @resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-      @resource.update(member_params.except(*MEMBER_EXCEPT_ATTRIBUTES))
-      result = keycloak_service.update_user(member_params.delete(:email))
+      @resource.update(member_update_params.except(*MEMBER_EXCEPT_ATTRIBUTES))
+      result = keycloak_service.update_user(member_update_params.delete(:email))
     when :key_and_secret
       super
     end
@@ -89,6 +89,10 @@ class Members::RegistrationsController < Devise::RegistrationsController
   protected
 
   def member_params
+    params.permit![:member]
+  end
+
+  def member_update_params
     preference_accessors = Member.stored_attributes[:preferences]
     allowed_parameters = [] + preference_accessors
     params.permit![:member].permit(*allowed_parameters)
