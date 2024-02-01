@@ -17,6 +17,8 @@ class MunicipalityService
   # die ID für die Dauer des Threads gespeichert in einer Klassenvariable
   def self.municipality_id=(id)
     Thread.current[:municipality_id] = id
+    rollbar_initializer(id) if id && Municipality.exists?(id)
+    id
   end
 
   def self.municipality_id
@@ -67,4 +69,15 @@ class MunicipalityService
   def municipality
     Municipality.find_by(slug: slug_name)
   end
+
+  private 
+
+  def self.rollbar_initializer(id)
+    Rollbar.configuration.access_token = settings[:rollbar_access_token]
+    Rollbar.configuration.payload_options = {
+      municipality_id: id,
+      minio_bucket: settings[:minio_bucket]
+    }
+  end
+
 end
