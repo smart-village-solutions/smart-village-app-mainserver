@@ -6,6 +6,13 @@ class Member < ApplicationRecord
   # :database_authenticatable, :omniauthable, :recoverable, :rememberable
   devise :database_authenticatable, :registerable, :validatable, :token_authenticatable, :omniauthable, omniauth_providers: [:keycloak_openid]
 
+  store :preferences,
+        accessors: [
+          :membership_start_date, :membership_level,
+          :birthday
+        ],
+        coder: JSON
+
   has_many :redemptions, dependent: :destroy
   has_many :notification_devices, class_name: "Notification::Device", dependent: :destroy
 
@@ -33,18 +40,43 @@ class Member < ApplicationRecord
     )
 
     # store keycloak access_token and refresh_token
-    member.update(
-      keycloak_access_token: access_token,
-      keycloak_access_token_expires_at: Time.zone.at(Time.zone.now.to_i + keycloak_tokens["expires_in"].to_i),
-      keycloak_refresh_token: keycloak_tokens["refresh_token"],
-      keycloak_refresh_token_expires_at: Time.zone.at(Time.zone.now.to_i + keycloak_tokens["refresh_expires_in"].to_i)
-    )
+    member.update_keycloak_tokens(access_token: access_token, keycloak_tokens: keycloak_tokens)
 
     member
   end
 
+  def update_keycloak_tokens(keycloak_tokens: {}, access_token: nil) # rubocop:disable Metrics/AbcSize
+    update_columns(keycloak_access_token: access_token) if access_token.present?
+    if keycloak_tokens.present?
+      update_columns(
+        keycloak_access_token_expires_at: Time.zone.at(Time.zone.now.to_i + keycloak_tokens["expires_in"].to_i),
+        keycloak_refresh_token: keycloak_tokens["refresh_token"],
+        keycloak_refresh_token_expires_at: Time.zone.at(Time.zone.now.to_i + keycloak_tokens["refresh_expires_in"].to_i)
+      )
+    end
+  end
+
   def self.redirect_uri
     "https://#{MunicipalityService.slug}.#{ADMIN_URL}/members/auth/keycloak_openid/callback"
+  end
+
+  def self.find_for_authentication(warden_conditions) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    subdomains = Array(warden_conditions.fetch(:subdomain, "").to_s.try(:split, "."))
+
+    municipality_service = MunicipalityService.new(subdomains: subdomains)
+    @current_municipality = municipality_service.municipality if municipality_service.subdomain_valid?
+    MunicipalityService.municipality_id = @current_municipality.id if @current_municipality.present?
+
+    if @current_municipality.present?
+      params = warden_conditions[:email].present? ? { email: warden_conditions[:email] } : {}
+      if warden_conditions[:authentication_token].present?
+        params.merge!(authentication_token: warden_conditions[:authentication_token])
+      end
+
+      return where(params).first
+    end
+
+    where("1 == 0")
   end
 end
 

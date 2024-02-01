@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_15_132403) do
+ActiveRecord::Schema.define(version: 2024_01_31_144451) do
 
   create_table "accessibility_informations", charset: "utf8", force: :cascade do |t|
     t.text "description"
@@ -391,6 +391,7 @@ ActiveRecord::Schema.define(version: 2024_01_15_132403) do
     t.datetime "keycloak_access_token_expires_at"
     t.text "keycloak_refresh_token"
     t.datetime "keycloak_refresh_token_expires_at"
+    t.text "preferences"
     t.index ["email"], name: "index_members_on_email", unique: true
   end
 

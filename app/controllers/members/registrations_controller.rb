@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class Members::RegistrationsController < Devise::RegistrationsController
+  MEMBER_EXCEPT_ATTRIBUTES = %i[
+    email id password password_confirmation key
+    secret authentication_token authentication_token_expires_at
+    keycloak_id keycloak_access_token keycloak_access_token_expires_at
+    keycloak_refresh_token keycloak_refresh_token_expires_at
+  ].freeze
   include MunicipalityAuthorization
   respond_to :json, :html
 
@@ -45,9 +51,26 @@ class Members::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  def update # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+    case login_type
+    when :devise
+      super
+    when :keycloak
+      keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
+      @resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+      @resource.update(member_params.except(*MEMBER_EXCEPT_ATTRIBUTES))
+      result = keycloak_service.update_user(member_params.delete(:email))
+    when :key_and_secret
+      super
+    end
+
+    respond_to do |format|
+      format.html { super }
+      format.json do
+        render json: result
+      end
+    end
+  end
 
   # DELETE /resource
   # def destroy
@@ -66,7 +89,9 @@ class Members::RegistrationsController < Devise::RegistrationsController
   protected
 
   def member_params
-    params.permit![:member]
+    preference_accessors = Member.stored_attributes[:preferences]
+    allowed_parameters = [] + preference_accessors
+    params.permit![:member].permit(*allowed_parameters)
   end
 
   def validate_member_params

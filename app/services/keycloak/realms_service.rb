@@ -61,6 +61,7 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
 
     if result.code == "201"
       keycloak_id = result.fetch("Location", "").split("/").last
+      # Create local Member if not exists synced with Keycloak user
       @resource = Member.where(municipality_id: municipality_id, email: member_params[:email]).first_or_create do |member|
         member_password = SecureRandom.alphanumeric
         member.municipality_id = municipality_id
@@ -78,6 +79,10 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
     end
 
     JSON.parse(result.body)
+  end
+
+  def update_user(member_params)
+    # todo update user in keycloak
   end
 
   def login_user(member_params) # rubocop:disable Metrics/MethodLength

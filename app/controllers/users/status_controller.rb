@@ -4,7 +4,7 @@ class Users::StatusController < ApplicationController
   include MunicipalityAuthorization
   before_action :authenticate_user!
 
-  def show
+  def show # rubocop:disable Metrics/MethodLength
     respond_to do |format|
       format.json do
         return render json: {

@@ -64,6 +64,7 @@ class Members::SessionsController < Devise::SessionsController
     return false if result["error"].present?
 
     @resource = Member.where(municipality_id: MunicipalityService.municipality_id, email: member_params[:email]).first
+    @resource.update_keycloak_tokens(keycloak_tokens: result, access_token: result["access_token"])
     sign_in(resource_name, @resource)
     @resource.save # recreates authentication_token after sign in
   end
