@@ -1,15 +1,22 @@
+# frozen_string_literal: true
+
 class Member < ApplicationRecord
   include MunicipalityScope
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable,
   # :database_authenticatable, :omniauthable, :recoverable, :rememberable
-  devise :database_authenticatable, :registerable, :validatable, :token_authenticatable, :omniauthable, omniauth_providers: [:keycloak_openid]
+  devise :database_authenticatable, :registerable, :validatable, :token_authenticatable, :omniauthable,
+         omniauth_providers: [:keycloak_openid]
 
   store :preferences,
-        accessors: [
-          :membership_start_date, :membership_level,
-          :birthday
+        accessors: %i[
+          membership_start_date
+          membership_level
+          gender
+          first_name
+          last_name
+          birthday
         ],
         coder: JSON
 
@@ -47,13 +54,13 @@ class Member < ApplicationRecord
 
   def update_keycloak_tokens(keycloak_tokens: {}, access_token: nil) # rubocop:disable Metrics/AbcSize
     update_columns(keycloak_access_token: access_token) if access_token.present?
-    if keycloak_tokens.present?
-      update_columns(
-        keycloak_access_token_expires_at: Time.zone.at(Time.zone.now.to_i + keycloak_tokens["expires_in"].to_i),
-        keycloak_refresh_token: keycloak_tokens["refresh_token"],
-        keycloak_refresh_token_expires_at: Time.zone.at(Time.zone.now.to_i + keycloak_tokens["refresh_expires_in"].to_i)
-      )
-    end
+    return unless keycloak_tokens.present?
+
+    update_columns(
+      keycloak_access_token_expires_at: Time.zone.at(Time.zone.now.to_i + keycloak_tokens["expires_in"].to_i),
+      keycloak_refresh_token: keycloak_tokens["refresh_token"],
+      keycloak_refresh_token_expires_at: Time.zone.at(Time.zone.now.to_i + keycloak_tokens["refresh_expires_in"].to_i)
+    )
   end
 
   def self.redirect_uri
