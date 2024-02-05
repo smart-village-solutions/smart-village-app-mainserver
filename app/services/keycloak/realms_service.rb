@@ -78,7 +78,7 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
       return @resource
     end
 
-    result.body
+    JSON.parse(result.body)
   end
 
   def update_user(member_params)
