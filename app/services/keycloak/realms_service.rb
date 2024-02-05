@@ -75,7 +75,7 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
       request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{keycloak_id}/execute-actions-email"].join, nil, nil, ["VERIFY_EMAIL"], auth_headers)
       request.put_request
 
-      return { status: "created" }
+      return @resource
     end
 
     JSON.parse(result.body)

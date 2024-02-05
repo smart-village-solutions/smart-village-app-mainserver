@@ -21,7 +21,7 @@ class Members::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  def create # rubocop:disable Metrics/MethodLength
+  def create # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     case login_type
     when :devise
       super
@@ -38,16 +38,16 @@ class Members::RegistrationsController < Devise::RegistrationsController
     respond_to do |format|
       format.html { super }
       format.json do
-        if member_params_valid
+        if member_params_valid && result.present? && result.errors.blank?
           return render json: {
             success: true,
             member: result
-          }, status: 200
+          }, status: 201
         end
 
         render json: {
           success: false,
-          errors: errors
+          errors: errors || result&.errors&.full_messages
         }, status: 403
       end
     end
