@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Overide the Devise SessionController to enable login via json
+# Override the Devise SessionController to enable login via json
 # and return a json success message
-class Members::SessionsController < Devise::SessionsController
+class Members::SessionsController < Devise::SessionsController # rubocop:disable Metrics/ClassLength
   include MunicipalityAuthorization
   respond_to :json, :html
 
@@ -20,10 +20,17 @@ class Members::SessionsController < Devise::SessionsController
     respond_to do |format|
       format.html { super }
       format.json do
-        return render json: {
-          success: resource.id ? false : true,
-          member: resource.id ? resource : nil
-        }
+        if resource.id
+          return render json: {
+            success: true,
+            member: resource
+          }, status: 200
+        end
+
+        render json: {
+          success: false,
+          errors: resource.errors.full_messages
+        }, status: 401
       end
     end
   end
@@ -42,10 +49,17 @@ class Members::SessionsController < Devise::SessionsController
     respond_to do |format|
       format.html { super }
       format.json do
+        if @resource.present?
+          return render json: {
+            success: true,
+            member: @resource
+          }, status: 200
+        end
+
         render json: {
-          success: @resource.present?,
-          member: @resource
-        }
+          success: false,
+          errors: @resource.errors.full_messages
+        }, status: 401
       end
     end
   end
@@ -57,22 +71,28 @@ class Members::SessionsController < Devise::SessionsController
     @resource.save # recreates authentication_token after sign in
   end
 
-  def keycloak_login # rubocop:disable Metrics/AbcSize
+  def keycloak_login # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
     result = keycloak_service.login_user(member_params)
     return false if result.blank?
     return false if result["error"].present?
 
-    @resource = Member.where(municipality_id: MunicipalityService.municipality_id, email: member_params[:email]).first
+    @resource = Member.where(
+      municipality_id: MunicipalityService.municipality_id,
+      email: member_params[:email]
+    ).first
     @resource.update_keycloak_tokens(keycloak_tokens: result, access_token: result["access_token"])
     sign_in(resource_name, @resource)
     @resource.save # recreates authentication_token after sign in
   end
 
-  def key_and_secret_login
+  def key_and_secret_login # rubocop:disable Metrics/MethodLength
     return false if validate_key_and_secret == :error
 
-    @resource = Member.where(municipality_id: MunicipalityService.municipality_id, email: member_email_by_key(member_params[:key])).first_or_create do |member|
+    @resource = Member.where(
+      municipality_id: MunicipalityService.municipality_id,
+      email: member_email_by_key(member_params[:key])
+    ).first_or_create do |member|
       member_password = SecureRandom.alphanumeric
       member.municipality_id = MunicipalityService.municipality_id
       member.password = member_password
@@ -92,7 +112,7 @@ class Members::SessionsController < Devise::SessionsController
     params.permit![:member]
   end
 
-  # todo: Auslagern in Keycloak oder Service
+  # TODO: Auslagern in Keycloak oder Service
   def validate_key_and_secret # rubocop:disable Metrics/MethodLength
     uri = "https://node-red.bad-belzig.smart-village.app/saas/auth/sign_in"
     data = {

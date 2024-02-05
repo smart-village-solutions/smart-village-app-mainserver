@@ -5,7 +5,7 @@ class Members::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   include MunicipalityAuthorization
 
   # GET|POST /member/auth/keycloak_openid
-  def keycloak_openid # rubocop:disable Metrics/AbcSize
+  def keycloak_openid
     @member = Member.from_omniauth(session_state: params["session_state"], session_code: params["code"])
 
     if @member.present? && @member.persisted?
