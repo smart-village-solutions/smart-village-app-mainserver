@@ -29,14 +29,14 @@ class Members::SessionsController < Devise::SessionsController # rubocop:disable
 
         render json: {
           success: false,
-          errors: resource.errors.full_messages
+          errors: resource&.errors&.full_messages
         }, status: 401
       end
     end
   end
 
   # POST /resource/sign_in
-  def create # rubocop:disable Metrics/MethodLength
+  def create # rubocop:disable Metrics/MethodLength,Metrics/CyclomaticComplexity
     case login_type
     when :devise
       devise_login
@@ -49,7 +49,7 @@ class Members::SessionsController < Devise::SessionsController # rubocop:disable
     respond_to do |format|
       format.html { super }
       format.json do
-        if @resource.present?
+        if @resource.present? && @resource.errors.blank?
           return render json: {
             success: true,
             member: @resource
@@ -58,7 +58,7 @@ class Members::SessionsController < Devise::SessionsController # rubocop:disable
 
         render json: {
           success: false,
-          errors: @resource.errors.full_messages
+          errors: @resource&.errors&.full_messages
         }, status: 401
       end
     end
