@@ -30,8 +30,6 @@ class Members::RegistrationsController < Devise::RegistrationsController
       if member_params_valid
         keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
         result = keycloak_service.create_user(member_params)
-      else
-        result = { status: errors }
       end
     when :key_and_secret
       super
@@ -40,7 +38,17 @@ class Members::RegistrationsController < Devise::RegistrationsController
     respond_to do |format|
       format.html { super }
       format.json do
-        render json: result
+        if member_params_valid
+          return render json: {
+            success: true,
+            member: result
+          }, status: 200
+        end
+
+        render json: {
+          success: false,
+          errors: errors
+        }, status: 403
       end
     end
   end
@@ -67,7 +75,17 @@ class Members::RegistrationsController < Devise::RegistrationsController
     respond_to do |format|
       format.html { super }
       format.json do
-        render json: result
+        unless result.errors.present?
+          return render json: {
+            success: true,
+            member: result
+          }, status: 200
+        end
+
+        render json: {
+          success: false,
+          errors: result.errors.full_messages
+        }, status: 403
       end
     end
   end
@@ -88,30 +106,33 @@ class Members::RegistrationsController < Devise::RegistrationsController
 
   protected
 
-  def member_params
-    params.permit![:member]
-  end
+    def member_params
+      params.permit![:member]
+    end
 
-  def member_update_params
-    preference_accessors = Member.stored_attributes[:preferences]
-    allowed_parameters = [] + preference_accessors
-    params.permit![:member].permit(*allowed_parameters)
-  end
+    def member_update_params
+      preference_accessors = Member.stored_attributes[:preferences]
+      allowed_parameters = [] + preference_accessors
+      params.permit![:member].permit(*allowed_parameters)
+    end
 
-  def validate_member_params
-    return [false, "email missing"] if member_params[:email].blank?
-    return [false, "password missing"] if member_params[:password].blank?
-    return [false, "password confirmation missing"] if member_params[:password_confirmation].blank?
-    return [false, "password and password confirmation do not match"] if member_params[:password] != member_params[:password_confirmation]
+    def validate_member_params
+      return [false, "email missing"] if member_params[:email].blank?
+      return [false, "password missing"] if member_params[:password].blank?
+      return [false, "password confirmation missing"] if member_params[:password_confirmation].blank?
 
-    [true, nil]
-  end
+      if member_params[:password] != member_params[:password_confirmation]
+        return [false, "password and password confirmation do not match"]
+      end
 
-  def login_type
-    return :key_and_secret if member_params[:key].present? && member_params[:secret].present?
+      [true, nil]
+    end
 
-    :keycloak
-  end
+    def login_type
+      return :key_and_secret if member_params[:key].present? && member_params[:secret].present?
+
+      :keycloak
+    end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_up_params
