@@ -38,7 +38,7 @@ class Members::RegistrationsController < Devise::RegistrationsController
     respond_to do |format|
       format.html { super }
       format.json do
-        if member_params_valid && result.present? && (result["errorMessage"].blank? || result.errors.blank?)
+        if member_params_valid && result.present? && result["errorMessage"].blank? && result["errors"].blank?
           return render json: {
             success: true,
             member: result
