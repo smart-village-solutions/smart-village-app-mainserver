@@ -98,6 +98,9 @@ gem "kaminari"
 # Rake assets precompile without DB
 gem "activerecord-nulldb-adapter"
 
+# Swagger-based DSL for describing and testing API operations.
+gem 'rswag'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
