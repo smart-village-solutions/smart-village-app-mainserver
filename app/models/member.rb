@@ -14,8 +14,6 @@ class Member < ApplicationRecord
           membership_start_date
           membership_level
           gender
-          first_name
-          last_name
           birthday
         ],
         coder: JSON
