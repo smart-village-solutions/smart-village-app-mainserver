@@ -11,6 +11,11 @@
       <ul class="navbar-nav mr-auto">
 
         <% if current_user.admin_role? %>
+          <% if keycloak_login_available? %>
+            <li class="nav-item">
+              <%= link_to "Members", "#{@current_municipality.try(:settings).fetch("member_keycloak_url", "#")}", class: "nav-link", target: "_blank" %>
+            </li>
+          <% end %>
           <li class="nav-item">
             <%= link_to "Accounts", accounts_path, class: "nav-link" %>
           </li>

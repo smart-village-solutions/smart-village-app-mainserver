@@ -71,9 +71,7 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
 
       @resource.update(keycloak_id: keycloak_id)
 
-      # Sende E-Mail an den Benutzer mit dem Link zum Bestätigen der E-Mail-Adresse
-      request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{keycloak_id}/execute-actions-email"].join, nil, nil, ["VERIFY_EMAIL"], auth_headers)
-      request.put_request
+      send_verification_email(keycloak_id)
 
       return @resource
     end
@@ -81,8 +79,22 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
     JSON.parse(result.body)
   end
 
-  def update_user(member_params)
-    # todo update user in keycloak
+  def update_user(new_member_params, member)
+    return nil if member.blank?
+    return nil if member.keycloak_id.blank?
+
+    new_member_params = map_member_params_to_keycloak_user_attributes(new_member_params)
+    old_keycloak_user_data = get_keycloak_member_data(member.keycloak_access_token)
+
+    request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{member.keycloak_id}"].join, nil, nil, new_member_params, auth_headers)
+    result = request.put_request
+
+    if email_changed?(new_member_params, member, old_keycloak_user_data)
+      send_verification_email(member.keycloak_id)
+      member.update_columns(email: new_member_params["email"])
+    end
+
+    { errors: nil, success: true } if result.code == "204"
   end
 
   def login_user(member_params) # rubocop:disable Metrics/MethodLength
@@ -91,11 +103,11 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
       client_id: client_id,
       client_secret: client_secret,
       username: member_params[:email],
-      password: member_params[:password]
+      password: member_params[:password],
+      scope: "openid profile email"
     }
     request = ApiRequestService.new([uri, "/realms/#{realm}/protocol/openid-connect/token"].join, nil, nil, keycloak_user_params, {content_type: "application/x-www-form-urlencoded" })
     result = request.form_post_request
-
     JSON.parse(result.body)
   end
 
@@ -105,10 +117,10 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
       client_id: client_id,
       client_secret: client_secret,
       code: session_code,
-      redirect_uri: Member.redirect_uri
+      redirect_uri: Member.redirect_uri,
+      scope: "openid profile email"
     }
-    uri = "#{uri}/realms/#{realm}/protocol/openid-connect/token"
-    request_service = ApiRequestService.new(uri, nil, nil, data)
+    request_service = ApiRequestService.new("#{uri}/realms/#{realm}/protocol/openid-connect/token", nil, nil, data)
     response = request_service.form_post_request
 
     return nil if response.blank?
@@ -119,9 +131,9 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
   end
 
   def get_keycloak_member_data(access_token)
-    uri = "#{uri}/realms/#{realm}/protocol/openid-connect/userinfo"
     headers = { Authorization: "Bearer #{access_token}" }
-    request_service = ApiRequestService.new(uri, nil, nil, nil, headers)
+    p access_token
+    request_service = ApiRequestService.new("#{uri}/realms/#{realm}/protocol/openid-connect/userinfo", nil, nil, nil, headers)
     response = request_service.get_request
 
     return nil if response.blank?
@@ -132,6 +144,63 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
   end
 
   private
+
+    # Helper Method to validate token access
+    def introspect_token(token)
+      data = {
+        grant_type: "refresh_token",
+        client_id: client_id,
+        client_secret: client_secret,
+        token: token
+      }
+      request_service = ApiRequestService.new("#{uri}/realms/#{realm}/protocol/openid-connect/token/introspect", nil, {}, data)
+      response = request_service.form_post_request
+      JSON.parse(response.body)
+    end
+
+    # curl -X POST \
+    # http://keycloak-server/auth/realms/{realm}/protocol/openid-connect/token \
+    # -H 'Content-Type: application/x-www-form-urlencoded' \
+    # -d 'client_id=deine-client-id&refresh_token=dein-refresh-token&grant_type=refresh_token&client_secret=dein-client-secret'
+    def refresh_user_token(refresh_token)
+      data = {
+        grant_type: "refresh_token",
+        client_id: client_id,
+        client_secret: client_secret,
+        refresh_token: refresh_token,
+        scope: "openid profile email"
+      }
+      request_service = ApiRequestService.new("#{uri}/realms/#{realm}/protocol/openid-connect/token", nil, {}, data)
+      response = request_service.form_post_request
+      JSON.parse(response.body)
+    end
+
+    # 2 Sources of emails are possible: keycloak and local member
+    # All 3 emails have to be checked: new_member_params, member.email and keycloak["email"]
+    def email_changed?(new_member_params, member, old_keycloak_user_data)
+      return false if new_member_params.blank?
+      return false if member.blank?
+      return false if new_member_params["email"].blank?
+      return false if member.email.blank?
+
+      new_member_params["email"] != member.email || new_member_params["email"] != old_keycloak_user_data.fetch("email", "")
+    end
+
+    # Sende E-Mail an den Benutzer mit dem Link zum Bestätigen der E-Mail-Adresse
+    def send_verification_email(keycloak_id)
+      request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{keycloak_id}/execute-actions-email"].join, nil, nil, ["VERIFY_EMAIL"], auth_headers)
+      request.put_request
+    end
+
+    def map_member_params_to_keycloak_user_attributes(member_params)
+      # rewrite key of new_member_params first_name to firstName
+      member_params["firstName"] = member_params.delete("first_name")
+
+      # rewrite key of new_member_params last_name to lastName
+      member_params["lastName"] = member_params.delete("last_name")
+
+      member_params
+    end
 
     def token_from_keycloak
       auth_params = {

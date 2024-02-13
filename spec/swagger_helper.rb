@@ -6,7 +6,7 @@ RSpec.configure do |config|
   # Specify a root folder where Swagger JSON files are generated
   # NOTE: If you're using the rswag-api to serve API descriptions, you'll need
   # to ensure that it's configured to serve Swagger from the same folder
-  config.openapi_root = Rails.root.join('swagger').to_s
+  config.openapi_root = Rails.root.join('api-docs').to_s
 
   # Define one or more Swagger documents and provide global metadata for each one
   # When you run the 'rswag:specs:swaggerize' rake task, the complete Swagger will
@@ -22,12 +22,21 @@ RSpec.configure do |config|
         version: 'v1'
       },
       paths: {},
+      securityDefinitions: {
+        Bearer: {
+          description: '...',
+          type: :apiKey,
+          name: 'Authorization',
+          in: :header
+        }
+      },
       servers: [
         {
-          url: 'https://{defaultHost}',
+          url: '{defaultHost}',
           variables: {
             defaultHost: {
-              default: 'www.example.com'
+              # default: 'YOUR-DOMAIN.server.smart-village.app'
+              default: 'http://ni-wittingen.server.smart-village.local:4000'
             }
           }
         }

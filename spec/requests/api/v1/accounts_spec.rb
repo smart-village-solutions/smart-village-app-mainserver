@@ -1,3 +1,7 @@
+# disable all cops for this file
+# rubocop:disable all
+
+require "rails_helper"
 require "swagger_helper"
 
 RSpec.describe "api/v1/accounts", type: :request do

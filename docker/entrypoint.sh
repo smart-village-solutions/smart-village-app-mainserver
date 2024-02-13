@@ -8,6 +8,7 @@ dockerize -wait tcp://saas-database-mysql:3306 -timeout 30s
 bundle exec rake db:migrate
 # bundle exec rake assets:precompile
 bundle exec rake graphql:schema:dump
+bundle exec rake rswag:specs:swaggerize
 cp -r /app/public/* /assets/
 rm -f /unicorn.pid
 
