@@ -50,6 +50,12 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   post "/graphql", to: "graphql#execute"
   get "import_feeds", to: "import_feeds#index"
 
+  namespace :api do
+    namespace :v1 do
+      resources :accounts
+    end
+  end
+
   constraints(->(request) { MunicipalityConstraint.authorized?(request) }) do
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
   end
