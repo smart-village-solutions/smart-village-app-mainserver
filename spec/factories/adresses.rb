@@ -5,6 +5,9 @@ FactoryBot.define do
     street { "MyString" }
     zip { "MyString" }
     geo_location { nil }
+    trait :for_data_provider do
+      association(:addressable, factory: :data_provider)
+    end
   end
 end
 
