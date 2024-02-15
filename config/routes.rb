@@ -55,7 +55,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   end
 
   get "/generate_204", to: "application#generate_204", status: 204
-
+  get "/health-check" => "health_check#show"
   get "*not_found", to: "application#not_found_404", status: 404
 
   root to: redirect("accounts")
