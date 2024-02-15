@@ -44,7 +44,7 @@ COPY docker/unicorn.rb /app/config/unicorn.rb
 RUN bundle config set --local without 'development test'
 RUN bundle install
 
-# RUN bundle exec rake DATABASE_URL=nulldb://user:pass@127.0.0.1/dbname assets:precompile
+RUN bundle exec rake DATABASE_URL=nulldb://user:pass@127.0.0.1/dbname assets:precompile
 
 COPY docker/database.yml /app/config/database.yml
 
