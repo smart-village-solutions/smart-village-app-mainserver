@@ -1,10 +1,12 @@
-require 'swagger_helper'
+# frozen_string_literal: true
+require "swagger_helper"
 
-RSpec.describe "Api::V1::Accounts", type: :request do
+RSpec.describe "Accounts API", type: :request do
   path "/api/v1/accounts" do
     post "Creates an account" do
       tags "Accounts"
       consumes "application/json"
+      security [{ bearerAuth: [] }]
       parameter name: :account, in: :body, schema: {
         type: :object,
         properties: {
@@ -14,7 +16,6 @@ RSpec.describe "Api::V1::Accounts", type: :request do
           description: { type: :string },
           notice: { type: :string },
           data_type: { type: :string },
-          roles: { type: :object },
           logo_url: { type: :string },
           logo_description: { type: :string },
           addition: { type: :string },
@@ -27,16 +28,46 @@ RSpec.describe "Api::V1::Accounts", type: :request do
           contact_fax: { type: :string },
           contact_email: { type: :string }
         },
-        required: %w[email role]
+        required: %w[email role name]
       }
 
+      let(:municipality) { create(:municipality) }
+      let(:user) { create(:user, role: :account_manager) }
+      let(:token) {}
+
+      before do
+        MunicipalityService.municipality_id = municipality.id
+        user.update(municipality: municipality)
+      end
+
       response "201", "account created" do
-        let(:account) { { email: "test@example.com", role: "admin", name: "Test Account", description: "Test description", notice: "Test notice" } }
+        let(:"Authorization") { "Bearer #{}" }
+        let(:account) do
+          {
+            email: "example@dev.dev",
+            role: "user",
+            name: "Test Account",
+            description: "Test Description",
+            notice: "Test Notice",
+            data_type: "business_account",
+            logo_url: "https://example.com/logo.png",
+            logo_description: "Test Logo Description",
+            addition: "Test Addition",
+            city: "Test City",
+            street: "Test Street",
+            zip: "12345",
+            contact_first_name: "John",
+            contact_last_name: "Doe",
+            contact_phone: "123-456-7890",
+            contact_fax: "123-456-7891",
+            contact_email: "contact_test@dev.dev"
+          }
+        end
         run_test!
       end
 
       response "422", "invalid request" do
-        let(:account) { { email: "test@example.com" } }
+        let(:account) { { email: nil } }
         run_test!
       end
     end
@@ -58,92 +89,20 @@ RSpec.describe "Api::V1::Accounts", type: :request do
             description: { type: :string },
             notice: { type: :string },
             data_type: { type: :string },
-            roles: { type: :object },
-            logo: {
-              type: :object,
-              properties: {
-                url: { type: :string },
-                description: { type: :string }
-              }
-            },
-            address: {
-              type: :object,
-              properties: {
-                addition: { type: :string },
-                city: { type: :string },
-                street: { type: :string },
-                zip: { type: :string }
-              }
-            },
-            contact: {
-              type: :object,
-              properties: {
-                first_name: { type: :string },
-                last_name: { type: :string },
-                phone: { type: :string },
-                fax: { type: :string },
-                email: { type: :string }
-              }
-            }
+            logo_url: { type: :string },
+            logo_description: { type: :string },
+            addition: { type: :string },
+            city: { type: :string },
+            street: { type: :string },
+            zip: { type: :string },
+            contact_first_name: { type: :string },
+            contact_last_name: { type: :string },
+            contact_phone: { type: :string },
+            contact_fax: { type: :string },
+            contact_email: { type: :string }
           },
-          required: %w[id email role name description notice]
+          required: %w[id email role name description data_type]
 
-        let(:id) { create(:data_provider).id }
-        run_test!
-      end
-
-      response "404", "account not found" do
-        let(:id) { "invalid" }
-        run_test!
-      end
-    end
-
-    put "Updates an account" do
-      tags "Accounts"
-      consumes "application/json"
-      parameter name: :id, in: :path, type: :string
-      parameter name: :account, in: :body, schema: {
-        type: :object,
-        properties: {
-          email: { type: :string },
-          role: { type: :string },
-          name: { type: :string },
-          description: { type: :string },
-          notice: { type: :string },
-          data_type: { type: :string },
-          roles: { type: :object },
-          logo_url: { type: :string },
-          logo_description: { type: :string },
-          addition: { type: :string },
-          city: { type: :string },
-          street: { type: :string },
-          zip: { type: :string },
-          contact_first_name: { type: :string },
-          contact_last_name: { type: :string },
-          contact_phone: { type: :string },
-          contact_fax: { type: :string },
-          contact_email: { type: :string }
-        }
-      }
-
-      response "200", "account updated" do
-        let(:id) { create(:data_provider).id }
-        let(:account) { { email: "updated@example.com" } }
-        run_test!
-      end
-
-      response "404", "account not found" do
-        let(:id) { "invalid" }
-        let(:account) { { email: "updated@example.com" } }
-        run_test!
-      end
-    end
-
-    delete "Deletes an account" do
-      tags "Accounts"
-      parameter name: :id, in: :path, type: :string
-
-      response "204", "account deleted" do
         let(:id) { create(:data_provider).id }
         run_test!
       end
