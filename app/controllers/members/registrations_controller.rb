@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 class Members::RegistrationsController < Devise::RegistrationsController
+  skip_before_action :verify_authenticity_token
+  include MunicipalityAuthorization
+  respond_to :json, :html
+
   MEMBER_EXCEPT_ATTRIBUTES = %i[
     id password password_confirmation key
     secret authentication_token authentication_token_expires_at
     keycloak_id keycloak_access_token keycloak_access_token_expires_at
     keycloak_refresh_token keycloak_refresh_token_expires_at
   ].freeze
-  include MunicipalityAuthorization
-  respond_to :json, :html
-
-  skip_before_action :verify_authenticity_token
 
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]

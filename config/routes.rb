@@ -38,7 +38,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     controllers applications: "oauth/applications"
   end
 
-  devise_for :members, module: "members", only: [:omniauth_callbacks, :registrations, :sessions]
+  devise_for :members, module: "members", only: [:omniauth_callbacks, :registrations, :sessions, :passwords]
   devise_for :users, controllers: { sessions: "users/sessions" }
   devise_for :admins
   authenticate :admin do

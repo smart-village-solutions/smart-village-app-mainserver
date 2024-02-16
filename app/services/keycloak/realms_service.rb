@@ -186,9 +186,15 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
       new_member_params["email"] != member.email || new_member_params["email"] != old_keycloak_user_data.fetch("email", "")
     end
 
-    # Sende E-Mail an den Benutzer mit dem Link zum Bestätigen der E-Mail-Adresse
+    # Send email to the user with the link to confirm the new email address
     def send_verification_email(keycloak_id)
       request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{keycloak_id}/execute-actions-email"].join, nil, nil, ["VERIFY_EMAIL"], auth_headers)
+      request.put_request
+    end
+
+    # Send email to the user with the link to reset the password
+    def send_password_reset_email(keycloak_id)
+      request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{keycloak_id}/execute-actions-email"].join, nil, nil, ["UPDATE_PASSWORD"], auth_headers)
       request.put_request
     end
 
