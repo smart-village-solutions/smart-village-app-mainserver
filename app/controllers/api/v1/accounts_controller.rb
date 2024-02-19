@@ -13,7 +13,6 @@ class Api::V1::AccountsController < Api::BaseController
     description
     notice
     data_type
-    roles
     logo_url
     logo_description
     addition
@@ -27,7 +26,7 @@ class Api::V1::AccountsController < Api::BaseController
     contact_email
   ].freeze
 
-  PARAMS = USER_PARAMS + DATA_PROVIDER_PARAMS + [{ roles: {} }]
+  PARAMS = USER_PARAMS + DATA_PROVIDER_PARAMS
 
   def show
     render_account_response(@data_provider)
