@@ -1,19 +1,156 @@
-# frozen_string_literal: true
-require "swagger_helper"
+# rubocop:disable all
+require 'swagger_helper'
 
-RSpec.describe "Accounts API", type: :request do
-  path "/api/v1/accounts" do
-    post "Creates an account" do
-      tags "Accounts"
-      consumes "application/json"
-      security [{ bearerAuth: [] }]
+RSpec.describe 'Accounts API', type: :request do
+  include_context "common setup for accounts API(account_manager user role)"
+
+  path '/api/v1/accounts/{id}' do
+    get 'Retrieves an account' do
+      include_examples "an unauthorized request"
+
+      tags 'Accounts'
+      produces 'application/json'
+      security [ bearerAuth: [] ]
+      parameter name: :id, in: :path, type: :string, description: 'ID of the account to retrieve'
+
+      response '200', 'account found' do
+        schema type: :object,
+               properties: {
+                 account: {
+                   type: :object,
+                   properties: {
+                     id: { type: :integer },
+                     name: { type: :string, nullable: true },
+                     description: { type: :string, nullable: true },
+                     roles: { type: :object },
+                     data_type: { type: :string },
+                     notice: { type: :string, nullable: true },
+                     user: {
+                        type: :object,
+                        properties: {
+                          email: { type: :string },
+                          role: { type: :string }
+                        }
+                      },
+                      logo: {
+                        type: :object,
+                        properties: {
+                          url: { type: :string },
+                          description: { type: :string, nullable: true }
+                        }
+                      },
+                      address: {
+                        type: :object,
+                        properties: {
+                          addition: { type: :string, nullable: true },
+                          city: { type: :string, nullable: true },
+                          street: { type: :string, nullable: true },
+                          zip: { type: :string, nullable: true }
+                        }
+                      },
+                      contact: {
+                        type: :object,
+                        properties: {
+                          first_name: { type: :string, nullable: true },
+                          last_name: { type: :string, nullable: true },
+                          phone: { type: :string, nullable: true },
+                          fax: { type: :string, nullable: true },
+                          email: { type: :string, nullable: true }
+                        }
+                      }
+                   },
+                   required: ['id', 'name', 'description', 'roles', 'data_type', 'notice', 'user', 'logo', 'address', 'contact']
+                 }
+               },
+               required: ['account']
+
+        run_test!
+      end
+
+      response '404', 'account not found' do
+        let(:id) { 'invalid' }
+
+        run_test!
+      end
+    end
+  end
+
+  path '/api/v1/accounts' do
+    post 'Creates an account' do
+      tags 'Accounts'
+      consumes 'application/json'
+      produces 'application/json'
+      security [bearerAuth: []]
+  
       parameter name: :account, in: :body, schema: {
         type: :object,
         properties: {
-          email: { type: :string },
-          role: { type: :string },
+          email: { type: :string, example: 'user@example.com' },
+          role: { type: :string, example: 'user or restricted' },
+          name: { type: :string, example: 'DataProvider Name' },
+          description: { type: :string, example: 'Description of the DataProvider' },
+          notice: { type: :string, example: 'Notice text' },
+          data_type: { type: :string, example: "Data type description('business_account by default')" },
+          logo_url: { type: :string, example: 'http://example.com/logo.png' },
+          logo_description: { type: :string, example: 'Logo description' },
+          addition: { type: :string, example: 'Additional info' },
+          city: { type: :string, example: 'City Name' },
+          street: { type: :string, example: 'Street Name' },
+          zip: { type: :string, example: 'ZIP Code' },
+          contact_first_name: { type: :string, example: 'First Name' },
+          contact_last_name: { type: :string, example: 'Last Name' },
+          contact_phone: { type: :string, example: 'Phone Number' },
+          contact_fax: { type: :string, example: 'Fax Number' },
+          contact_email: { type: :string, example: 'contact@example.com' }
+        },
+        required: ['email', 'role', 'name']
+      }
+  
+      response '201', 'account created' do
+        let(:account) do
+          {
+            email: 'new_user@example.com',
+            role: 'restricted',
+            name: 'New DataProvider',
+            description: 'This is a description of the new DataProvider'
+          }
+        end
+  
+        run_test! do |response|
+          expect_attribute_value(response, ['account', 'name'], 'New DataProvider')
+          expect_attribute_value(response, ['account', 'user', 'role'], 'restricted')
+          expect_attribute_value(response, ['account', 'user', 'email'], 'new_user@example.com')
+        end
+      end
+  
+      response '422', 'unprocessable entity' do
+        let(:account) do
+          {
+            email: 'new_user@example.com',
+            role: 'admin'
+          }
+        end
+        run_test! do |response|
+          expect_error_message(response, "Role not allowed")
+        end
+      end
+    end
+  end
+
+  path '/api/v1/accounts/{id}' do
+    put 'Updates an account' do
+      tags 'Accounts'
+      consumes 'application/json'
+      produces 'application/json'
+      security [bearerAuth: []]
+      parameter name: :id, in: :path, type: :string, description: 'ID of the account to update'
+      parameter name: :account, in: :body, schema: {
+        type: :object,
+        properties: {
           name: { type: :string },
           description: { type: :string },
+          email: { type: :string }, 
+          role: { type: :string },
           notice: { type: :string },
           data_type: { type: :string },
           logo_url: { type: :string },
@@ -26,90 +163,35 @@ RSpec.describe "Accounts API", type: :request do
           contact_last_name: { type: :string },
           contact_phone: { type: :string },
           contact_fax: { type: :string },
-          contact_email: { type: :string }
+          contact_email: { type: :string },
         },
-        required: %w[email role name]
+        required: ['name']
       }
 
-      let(:municipality) { create(:municipality) }
-      let(:user) { create(:user, role: :account_manager) }
-      let(:token) {}
-
-      before do
-        MunicipalityService.municipality_id = municipality.id
-        user.update(municipality: municipality)
+      let(:id) { data_provider.id }
+      let(:account) do
+        {
+          name: 'Updated DataProvider',
+          description: 'Updated description',
+          email: 'updated@examle.com',
+          role: 'restricted',
+          logo_url: 'http://example.com/updated_logo.png',
+          city: 'Updated City',
+          contact_first_name: 'Updated First Name'
+        }
       end
 
-      response "201", "account created" do
-        let(:"Authorization") { "Bearer #{}" }
-        let(:account) do
-          {
-            email: "example@dev.dev",
-            role: "user",
-            name: "Test Account",
-            description: "Test Description",
-            notice: "Test Notice",
-            data_type: "business_account",
-            logo_url: "https://example.com/logo.png",
-            logo_description: "Test Logo Description",
-            addition: "Test Addition",
-            city: "Test City",
-            street: "Test Street",
-            zip: "12345",
-            contact_first_name: "John",
-            contact_last_name: "Doe",
-            contact_phone: "123-456-7890",
-            contact_fax: "123-456-7891",
-            contact_email: "contact_test@dev.dev"
-          }
+      response '200', 'account updated' do
+        let(:Authorization) { "Bearer #{auth_token.token}" }
+        run_test! do |response|
+          expect_attribute_value(response, ['account', 'name'], 'Updated DataProvider')
+          expect_attribute_value(response, ['account', 'description'], 'Updated description')
+          expect_attribute_value(response, ['account', 'user', 'email'], 'updated@examle.com')
+          expect_attribute_value(response, ['account', 'user', 'role'], 'restricted')
+          expect_attribute_value(response, ['account', 'logo', 'url'], 'http://example.com/updated_logo.png')
+          expect_attribute_value(response, ['account', 'address', 'city'], 'Updated City')
+          expect_attribute_value(response, ['account', 'contact', 'first_name'], 'Updated First Name')
         end
-        run_test!
-      end
-
-      response "422", "invalid request" do
-        let(:account) { { email: nil } }
-        run_test!
-      end
-    end
-  end
-
-  path "/api/v1/accounts/{id}" do
-    get "Retrieves an account" do
-      tags "Accounts"
-      produces "application/json"
-      parameter name: :id, in: :path, type: :string
-
-      response "200", "account found" do
-        schema type: :object,
-          properties: {
-            id: { type: :integer },
-            email: { type: :string },
-            role: { type: :string },
-            name: { type: :string },
-            description: { type: :string },
-            notice: { type: :string },
-            data_type: { type: :string },
-            logo_url: { type: :string },
-            logo_description: { type: :string },
-            addition: { type: :string },
-            city: { type: :string },
-            street: { type: :string },
-            zip: { type: :string },
-            contact_first_name: { type: :string },
-            contact_last_name: { type: :string },
-            contact_phone: { type: :string },
-            contact_fax: { type: :string },
-            contact_email: { type: :string }
-          },
-          required: %w[id email role name description data_type]
-
-        let(:id) { create(:data_provider).id }
-        run_test!
-      end
-
-      response "404", "account not found" do
-        let(:id) { "invalid" }
-        run_test!
       end
     end
   end
