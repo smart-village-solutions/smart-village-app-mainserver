@@ -29,6 +29,6 @@ class Api::BaseController < ApplicationController
   end
 
   def current_user
-    @current_user ||= User.find_by(id: doorkeeper_token&.application&.owner_id)
+    @current_user ||= User.find_by(id: doorkeeper_token.try(:application).try(:owner_id))
   end
 end
