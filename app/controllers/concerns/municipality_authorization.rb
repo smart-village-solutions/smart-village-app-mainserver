@@ -33,6 +33,7 @@ module MunicipalityAuthorization
 
   def s3_service
     service = ActiveStorage::Blob.service
+    return service if Rails.env.test?
     return unless service.class.to_s == "ActiveStorage::Service::MultiBucketService"
 
     service
