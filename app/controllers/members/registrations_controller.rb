@@ -30,6 +30,8 @@ class Members::RegistrationsController < Devise::RegistrationsController
       if member_params_valid
         keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
         result = keycloak_service.create_user(member_params)
+      else
+        # Todo: Anything missing here?
       end
     when :key_and_secret
       super

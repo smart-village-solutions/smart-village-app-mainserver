@@ -39,6 +39,11 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
   def update_realm
   end
 
+  def reset_password(email)
+    keycloak_id = Member.find_by(email: email).try(:keycloak_id)
+    send_password_reset_email(keycloak_id) if keycloak_id.present?
+  end
+
   def create_user(member_params) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     keycloak_user_params = {
       username: member_params[:email],
@@ -79,7 +84,7 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
     JSON.parse(result.body)
   end
 
-  def update_user(new_member_params, member)
+  def update_user(new_member_params, member) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     return nil if member.blank?
     return nil if member.keycloak_id.blank?
 
