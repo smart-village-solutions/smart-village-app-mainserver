@@ -11,9 +11,26 @@ class Members::PasswordsController < Devise::PasswordsController
   # end
 
   # POST /resource/password
-  def create
-    byebug
-    super
+  def create # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/PerceivedComplexity
+    case login_type
+    when :devise
+      super
+    when :keycloak
+      keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
+      keycloak_service.reset_password(params[:member][:email])
+    when :key_and_secret
+      super
+    end
+
+    respond_to do |format|
+      format.html { super }
+      format.json do
+        return render json: {
+          success: true,
+          errors: nil
+        }, status: 200
+      end
+    end
   end
 
   # GET /resource/password/edit?reset_password_token=abcdef
@@ -26,7 +43,17 @@ class Members::PasswordsController < Devise::PasswordsController
   #   super
   # end
 
-  # protected
+  protected
+
+    def login_type
+      return :key_and_secret if member_params[:key].present? && member_params[:secret].present?
+
+      :keycloak
+    end
+
+    def member_params
+      params.permit![:member].permit!
+    end
 
   # def after_resetting_password_path_for(resource)
   #   super(resource)

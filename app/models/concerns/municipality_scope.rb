@@ -6,5 +6,4 @@ module MunicipalityScope
   included do
     default_scope(all_queries: true) { where(municipality_id: MunicipalityService.municipality_id) }
   end
-
 end
