@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::AccountsController < Api::BaseController
-  before_action :set_data_provider, only: %i[show update destroy]
+  before_action :set_data_provider, only: %i[show update]
 
   USER_PARAMS = %i[
     email
@@ -48,11 +48,6 @@ class Api::V1::AccountsController < Api::BaseController
     ).update_account
 
     render_account_response(account)
-  end
-
-  def destroy
-    account = Accounts::DestroyAccountService.new(data_provider_id: @data_provider.id).destroy_account
-    render_account_response(account, :no_content)
   end
 
   private

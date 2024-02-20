@@ -55,7 +55,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   namespace :api do
     namespace :v1 do
-      resources :accounts
+      resources :accounts, only: %i[show create update]
     end
   end
 
