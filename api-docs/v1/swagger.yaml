@@ -1,0 +1,526 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/accounts/{id}":
+    get:
+      summary: Retrieves an account
+      tags:
+      - Accounts
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: ID of the account to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        '401':
+          description: unauthorized
+        '200':
+          description: account found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                        nullable: true
+                      description:
+                        type: string
+                        nullable: true
+                      roles:
+                        type: object
+                      data_type:
+                        type: string
+                      notice:
+                        type: string
+                        nullable: true
+                      user:
+                        type: object
+                        properties:
+                          email:
+                            type: string
+                          role:
+                            type: string
+                      logo:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                          description:
+                            type: string
+                            nullable: true
+                      address:
+                        type: object
+                        properties:
+                          addition:
+                            type: string
+                            nullable: true
+                          city:
+                            type: string
+                            nullable: true
+                          street:
+                            type: string
+                            nullable: true
+                          zip:
+                            type: string
+                            nullable: true
+                      contact:
+                        type: object
+                        properties:
+                          first_name:
+                            type: string
+                            nullable: true
+                          last_name:
+                            type: string
+                            nullable: true
+                          phone:
+                            type: string
+                            nullable: true
+                          fax:
+                            type: string
+                            nullable: true
+                          email:
+                            type: string
+                            nullable: true
+                    required:
+                    - id
+                    - name
+                    - description
+                    - roles
+                    - data_type
+                    - notice
+                    - user
+                    - logo
+                    - address
+                    - contact
+                required:
+                - account
+        '404':
+          description: account not found
+    put:
+      summary: Updates an account
+      tags:
+      - Accounts
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: ID of the account to update
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: account updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                email:
+                  type: string
+                role:
+                  type: string
+                notice:
+                  type: string
+                data_type:
+                  type: string
+                logo_url:
+                  type: string
+                logo_description:
+                  type: string
+                addition:
+                  type: string
+                city:
+                  type: string
+                street:
+                  type: string
+                zip:
+                  type: string
+                contact_first_name:
+                  type: string
+                contact_last_name:
+                  type: string
+                contact_phone:
+                  type: string
+                contact_fax:
+                  type: string
+                contact_email:
+                  type: string
+              required:
+              - name
+  "/api/v1/accounts":
+    post:
+      summary: Creates an account
+      tags:
+      - Accounts
+      security:
+      - bearerAuth: []
+      parameters: []
+      responses:
+        '201':
+          description: account created
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+                role:
+                  type: string
+                  example: user or restricted
+                name:
+                  type: string
+                  example: DataProvider Name
+                description:
+                  type: string
+                  example: Description of the DataProvider
+                notice:
+                  type: string
+                  example: Notice text
+                data_type:
+                  type: string
+                  example: Data type description('business_account by default')
+                logo_url:
+                  type: string
+                  example: http://example.com/logo.png
+                logo_description:
+                  type: string
+                  example: Logo description
+                addition:
+                  type: string
+                  example: Additional info
+                city:
+                  type: string
+                  example: City Name
+                street:
+                  type: string
+                  example: Street Name
+                zip:
+                  type: string
+                  example: ZIP Code
+                contact_first_name:
+                  type: string
+                  example: First Name
+                contact_last_name:
+                  type: string
+                  example: Last Name
+                contact_phone:
+                  type: string
+                  example: Phone Number
+                contact_fax:
+                  type: string
+                  example: Fax Number
+                contact_email:
+                  type: string
+                  example: contact@example.com
+              required:
+              - email
+              - role
+              - name
+  "/members/password":
+    post:
+      summary: Send password reset mail to member
+      tags:
+      - Members
+      parameters: []
+      responses:
+        '200':
+          description: member created
+          content:
+            application/json:
+              examples:
+                member:
+                  value:
+                    success: true
+                    errors:
+        '403':
+          description: invalid request
+          content:
+            application/json:
+              examples:
+                auth_error:
+                  value:
+                    success: false
+                    errors: Some Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                member:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      format: email
+              required:
+              - email
+              - password
+              - password_confirmation
+  "/members.json":
+    post:
+      summary: Creates a member
+      tags:
+      - Members
+      parameters: []
+      responses:
+        '200':
+          description: member created
+          content:
+            application/json:
+              examples:
+                member:
+                  value:
+                    success: true
+                    member:
+                      id: 10
+                      keycloak_id: 52cfe927-d8f3-48d6-82c7-6d5e67655e55
+                      municipality_id: 6
+                      created_at: '2024-02-14T11:04:55.638+01:00'
+                      updated_at: '2024-02-14T11:04:55.649+01:00'
+                      email: user@example.com
+                      authentication_token: MQffbe7avPxJsKvEL8sn
+                      authentication_token_created_at: '2024-02-14T11:04:55.000+01:00'
+                      keycloak_access_token:
+                      keycloak_access_token_expires_at:
+                      keycloak_refresh_token:
+                      keycloak_refresh_token_expires_at:
+                      preferences: {}
+        '403':
+          description: invalid request
+          content:
+            application/json:
+              examples:
+                user_already_exists:
+                  value:
+                    success: false
+                    errors: User exists with same username
+                password_does_not_match:
+                  value:
+                    success: false
+                    errors: Passwort does not match
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                member:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      format: email
+                    password:
+                      type: string
+                    password_confirmation:
+                      type: string
+              required:
+              - email
+              - password
+              - password_confirmation
+    put:
+      summary: Updates a member
+      tags:
+      - Members
+      security:
+      - Bearer: {}
+      parameters: []
+      responses:
+        '200':
+          description: member updated
+          content:
+            application/json:
+              examples:
+                member:
+                  value:
+                    success: true
+                    member:
+                      id: 10
+                      keycloak_id: 52cfe927-d8f3-48d6-82c7-6d5e67655e55
+                      municipality_id: 6
+                      created_at: '2024-02-14T11:04:55.638+01:00'
+                      updated_at: '2024-02-14T11:04:55.649+01:00'
+                      email: user@example.com
+                      authentication_token: MQffbe7avPxJsKvEL8sn
+                      authentication_token_created_at: '2024-02-14T11:04:55.000+01:00'
+                      keycloak_access_token:
+                      keycloak_access_token_expires_at:
+                      keycloak_refresh_token:
+                      keycloak_refresh_token_expires_at:
+                      preferences: {}
+        '403':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                auth_token:
+                  type: string
+                member:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      format: email
+                    password:
+                      type: string
+                    password_confirmation:
+                      type: string
+                    membership_start_date:
+                      type: string
+                      format: date
+                    membership_level:
+                      type: string
+                    gender:
+                      type: string
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    birthday:
+                      type: string
+                      format: date
+  "/members/sign_in":
+    post:
+      summary: Sign In a member
+      tags:
+      - Members
+      parameters: []
+      responses:
+        '200':
+          description: member created
+          content:
+            application/json:
+              examples:
+                member:
+                  value:
+                    success: true
+                    member:
+                      id: 10
+                      keycloak_id: 52cfe927-d8f3-48d6-82c7-6d5e67655e55
+                      municipality_id: 6
+                      created_at: '2024-02-14T11:04:55.638+01:00'
+                      updated_at: '2024-02-14T11:04:55.649+01:00'
+                      email: user@example.com
+                      authentication_token: MQffbe7avPxJsKvEL8sn
+                      authentication_token_created_at: '2024-02-14T11:04:55.000+01:00'
+                      keycloak_access_token:
+                      keycloak_access_token_expires_at:
+                      keycloak_refresh_token:
+                      keycloak_refresh_token_expires_at:
+                      preferences: {}
+        '403':
+          description: invalid request
+          content:
+            application/json:
+              examples:
+                auth_error:
+                  value:
+                    success: false
+                    errors: Some Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                member:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      format: email
+                    password:
+                      type: string
+              required:
+              - email
+              - password
+              - password_confirmation
+  "/member":
+    get:
+      summary: Get member infos
+      tags:
+      - Members
+      security:
+      - Bearer: {}
+      responses:
+        '200':
+          description: member created
+          content:
+            application/json:
+              examples:
+                member:
+                  value:
+                    success: true
+                    member:
+                      id: 10
+                      keycloak_id: 52cfe927-d8f3-48d6-82c7-6d5e67655e55
+                      municipality_id: 6
+                      created_at: '2024-02-14T11:04:55.638+01:00'
+                      updated_at: '2024-02-14T11:04:55.649+01:00'
+                      email: user@example.com
+                      authentication_token: MQffbe7avPxJsKvEL8sn
+                      authentication_token_created_at: '2024-02-14T11:04:55.000+01:00'
+                      keycloak_access_token:
+                      keycloak_access_token_expires_at:
+                      keycloak_refresh_token:
+                      keycloak_refresh_token_expires_at:
+                      preferences: {}
+        '403':
+          description: invalid request
+          content:
+            application/json:
+              examples:
+                user_already_exists:
+                  value:
+                    success: false
+                    errors: User exists with same username
+                password_does_not_match:
+                  value:
+                    success: false
+                    errors: Passwort does not match
+securityDefinitions:
+  Bearer:
+    description: "..."
+    type: apiKey
+    name: Authorization
+    in: header
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: server.smart-village.test
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
