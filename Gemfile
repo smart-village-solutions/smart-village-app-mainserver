@@ -118,7 +118,7 @@ group :development, :test do
   gem "ruby-debug-ide"
   # Autorun rspec files on changes
   gem "annotate"
-  # gem "faker", git: "https://github.com/stympy/faker.git", branch: "master"
+  gem "faker"
   gem "guard"
   gem "guard-rspec"
   gem "rubocop", require: false

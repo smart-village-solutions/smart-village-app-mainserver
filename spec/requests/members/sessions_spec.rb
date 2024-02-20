@@ -1,7 +1,5 @@
-# disable all cops for this file
 # rubocop:disable all
 
-require "rails_helper"
 require "swagger_helper"
 
 RSpec.describe "members/sessions", type: :request do

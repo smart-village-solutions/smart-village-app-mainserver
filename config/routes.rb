@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
+  mount Rswag::Ui::Engine => "/api-docs"
+  mount Rswag::Api::Engine => "/api-docs"
+
   resources :municipalities
   namespace :notification do
     resources :wastes
@@ -52,7 +55,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   namespace :api do
     namespace :v1 do
-      resources :accounts
+      resources :accounts, only: %i[show create update]
     end
   end
 
@@ -62,8 +65,6 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   get "/generate_204", to: "application#generate_204", status: 204
 
-  mount Rswag::Api::Engine => "api-docs"
-  mount Rswag::Ui::Engine => "api-docs"
   get "/health-check" => "health_check#show"
   get "*not_found", to: "application#not_found_404", status: 404
 

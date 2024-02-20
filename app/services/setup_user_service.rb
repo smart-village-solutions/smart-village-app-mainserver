@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SetupUserService
+  include WebUrlCreationMixin
+
   REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob"
 
   def initialize(
@@ -45,11 +47,4 @@ class SetupUserService
       )
     end
   end
-
-  private
-
-    def create_web_url(logo_url)
-      logo_url = "https://smart-village.solutions/wp-content/uploads/2020/09/Logo-Smart-Village-Solutions-SVS.png" if logo_url.blank?
-      WebUrl.create(url: logo_url)
-    end
 end
