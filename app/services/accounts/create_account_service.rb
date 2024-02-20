@@ -2,6 +2,7 @@
 
 class Accounts::CreateAccountService
   include Accounts::RoleValidatorMixin
+  include WebUrlCreationMixin
 
   DEFAULT_ROLES = {
     role_point_of_interest: true,
@@ -68,11 +69,6 @@ class Accounts::CreateAccountService
         contact: create_contact,
         **DEFAULT_ROLES
       )
-    end
-
-    def create_web_url(logo_url, logo_description = "")
-      logo_url = "https://smart-village.solutions/wp-content/uploads/2020/09/Logo-Smart-Village-Solutions-SVS.png" if logo_url.blank?
-      WebUrl.create(url: logo_url, description: logo_description)
     end
 
     def create_address
