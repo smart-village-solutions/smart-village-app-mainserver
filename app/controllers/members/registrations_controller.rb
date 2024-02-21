@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# todo: rewrite Error handling to streamline errors of model and keycloak
+
 class Members::RegistrationsController < Devise::RegistrationsController
   skip_before_action :verify_authenticity_token
   include MunicipalityAuthorization
