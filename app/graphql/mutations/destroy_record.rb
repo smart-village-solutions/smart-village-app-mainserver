@@ -2,6 +2,8 @@
 
 module Mutations
   class DestroyRecord < BaseMutation
+    include RecordDestruction
+
     argument :id, GraphQL::Types::ID, required: false
     argument :record_type, String, required: true
     argument :external_id, Integer, required: false
@@ -20,6 +22,7 @@ module Mutations
       "Address"
     ].freeze
 
+    # method destroy_record comes from RecordDestruction concern and return a builded response object
     def resolve(id: nil, record_type:, external_id: nil)
       raise "Access not permitted" if context[:current_user].read_only_role?
       return error_status unless RECORD_WHITELIST.include?(record_type)
@@ -46,20 +49,6 @@ module Mutations
           .filtered_for_current_user(context[:current_user])
           .where(search_hash)
           .first
-      end
-
-      def destroy_record(record)
-        if record.present?
-          record.destroy
-
-          if record.destroyed?
-            { status: "Record destroyed", status_code: 200 }
-          else
-            { status: record.errors.full_messages.join(", "), status_code: 500 }
-          end
-        else
-          { status: "Record not found", status_code: 404 }
-        end
       end
   end
 end
