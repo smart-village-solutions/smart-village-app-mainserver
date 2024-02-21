@@ -47,8 +47,14 @@
           <%= link_to "Data Provider", edit_data_provider_path, class: "nav-link" %>
         </li>
 
-        <li class="nav-item">
-          <%= link_to "GraphQL API", "/graphiql", class: "nav-link" %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            APIs
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <%= link_to "GraphQL API", "/graphiql", class: "dropdown-item", target: "_blank" %>
+            <%= link_to "Swagger API", "/api-docs", class: "dropdown-item", target: "_blank" %>
+          </div>
         </li>
 
         <li class="nav-item">
