@@ -32,10 +32,13 @@ RSpec.configure do |config| # rubocop:disable Metrics/BlockLength
       },
       servers: [
         {
-          url: "http://{defaultHost}",
+          url: "{defaultScheme}{defaultHost}",
           variables: {
             defaultHost: {
               default: ADMIN_URL
+            },
+            defaultScheme: {
+              default: "https://"
             }
           }
         }

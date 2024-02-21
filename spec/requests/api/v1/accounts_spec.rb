@@ -90,7 +90,7 @@ RSpec.describe 'Accounts API', type: :request do
           name: { type: :string, example: 'DataProvider Name' },
           description: { type: :string, example: 'Description of the DataProvider' },
           notice: { type: :string, example: 'Notice text' },
-          data_type: { type: :string, example: "Data type description('business_account by default')" },
+          data_type: { type: :string, example: "Data type description('general_importer or business_account, business_account by default')" },
           logo_url: { type: :string, example: 'http://example.com/logo.png' },
           logo_description: { type: :string, example: 'Logo description' },
           addition: { type: :string, example: 'Additional info' },

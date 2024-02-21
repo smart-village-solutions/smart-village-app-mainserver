@@ -25,7 +25,7 @@ class Api::BaseController < ApplicationController
   end
 
   def authenticate_user_role
-    render_unauthorized unless current_user&.account_manager_role?
+    render_unauthorized unless current_user&.account_manager_role? || current_user&.admin_role?
   end
 
   def current_user
