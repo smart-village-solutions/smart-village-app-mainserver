@@ -1,10 +1,14 @@
 module ApplicationHelper
 
   def key_and_secret_login_available?
+    return false if MunicipalityService.settings["member_auth_types"].present?
+
     MunicipalityService.settings["member_auth_types"].include?("key_and_secret") == true
   end
 
   def keycloak_login_available?
+    return false if MunicipalityService.settings["member_auth_types"].blank?
+
     MunicipalityService.settings["member_auth_types"].include?("keycloak") == true
   end
 
