@@ -52,3 +52,7 @@ yarn.lock
 
 # Ignore graphql schema files as they were built on server, see entrypoint.sh
 public/schema.*
+
+# until there is a better to generate swaggerfile during ci/cd
+# Ignore swagger api docs because they are built on server during deployment
+# /api-docs/

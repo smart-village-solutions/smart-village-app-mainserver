@@ -6,7 +6,7 @@ class Member < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable,
   # :database_authenticatable, :omniauthable, :recoverable, :rememberable
-  devise :database_authenticatable, :registerable, :validatable, :token_authenticatable, :omniauthable,
+  devise :database_authenticatable, :registerable, :validatable, :token_authenticatable, :omniauthable, :recoverable,
          omniauth_providers: [:keycloak_openid]
 
   store :preferences,

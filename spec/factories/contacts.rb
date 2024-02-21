@@ -8,6 +8,9 @@ FactoryBot.define do
     trait :for_operating_company do
       association(:contactable, factory: %i[operating_company for_poi])
     end
+    trait :for_data_provider do
+      association(:contactable, factory: :data_provider)
+    end
   end
 end
 

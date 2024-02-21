@@ -44,6 +44,7 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
+  SUBDOMAIN_NAMESPACE = "server"
   ADMIN_URL = "server.smart-village.test"
   CMS_URL = "cms.smart-village.test"
 end

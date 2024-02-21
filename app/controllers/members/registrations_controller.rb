@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 class Members::RegistrationsController < Devise::RegistrationsController
+  skip_before_action :verify_authenticity_token
+  include MunicipalityAuthorization
+  respond_to :json, :html
+
   MEMBER_EXCEPT_ATTRIBUTES = %i[
-    email id password password_confirmation key
+    id password password_confirmation key
     secret authentication_token authentication_token_expires_at
     keycloak_id keycloak_access_token keycloak_access_token_expires_at
     keycloak_refresh_token keycloak_refresh_token_expires_at
   ].freeze
-  include MunicipalityAuthorization
-  respond_to :json, :html
-
-  skip_before_action :verify_authenticity_token
 
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
@@ -30,6 +30,8 @@ class Members::RegistrationsController < Devise::RegistrationsController
       if member_params_valid
         keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
         result = keycloak_service.create_user(member_params)
+      else
+        # Todo: Anything missing here?
       end
     when :key_and_secret
       super
@@ -66,8 +68,8 @@ class Members::RegistrationsController < Devise::RegistrationsController
     when :keycloak
       keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
       @resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-      @resource.update(member_update_params.except(*MEMBER_EXCEPT_ATTRIBUTES))
-      result = keycloak_service.update_user(member_update_params.delete(:email))
+      result = @resource.update(member_update_params.except(*MEMBER_EXCEPT_ATTRIBUTES))
+      keycloak_service.update_user(member_params.except(*Member.stored_attributes[:preferences]), @resource) if result && @resource.errors.blank?
     when :key_and_secret
       super
     end
@@ -75,7 +77,7 @@ class Members::RegistrationsController < Devise::RegistrationsController
     respond_to do |format|
       format.html { super }
       format.json do
-        if result.present? && result.errors.blank?
+        if result.present? && @resource.errors.blank?
           return render json: {
             success: true,
             member: result
@@ -107,7 +109,7 @@ class Members::RegistrationsController < Devise::RegistrationsController
   protected
 
     def member_params
-      params.permit![:member]
+      params.permit![:member].permit!
     end
 
     def member_update_params

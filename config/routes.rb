@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
+  mount Rswag::Ui::Engine => "/api-docs"
+  mount Rswag::Api::Engine => "/api-docs"
+
   resources :municipalities
   namespace :notification do
     resources :wastes
@@ -38,7 +41,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     controllers applications: "oauth/applications"
   end
 
-  devise_for :members, module: "members", only: [:omniauth_callbacks, :registrations, :sessions]
+  devise_for :members, module: "members", only: [:omniauth_callbacks, :registrations, :sessions, :passwords]
   devise_for :users, controllers: { sessions: "users/sessions" }
   devise_for :admins
   authenticate :admin do
@@ -50,11 +53,18 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   post "/graphql", to: "graphql#execute"
   get "import_feeds", to: "import_feeds#index"
 
+  namespace :api do
+    namespace :v1 do
+      resources :accounts, only: %i[show create update]
+    end
+  end
+
   constraints(->(request) { MunicipalityConstraint.authorized?(request) }) do
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
   end
 
   get "/generate_204", to: "application#generate_204", status: 204
+
   get "/health-check" => "health_check#show"
   get "*not_found", to: "application#not_found_404", status: 404
 
