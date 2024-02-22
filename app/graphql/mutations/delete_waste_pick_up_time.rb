@@ -37,22 +37,3 @@ module Mutations
       end
   end
 end
-
-
-# query example
-# mutation {
-#   deleteWastePickUpTime(
-#     pickupDate: "02.01.2021",
-#     wasteLocationType: {
-#       wasteType: "paper",
-#       address: {
-#         street: "Gounodstrasse",
-#         zip: "13088"
-#       }
-#     }
-#   ) {
-#     id
-#     status
-#     statusCode
-#   }
-# }
