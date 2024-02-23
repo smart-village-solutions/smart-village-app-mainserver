@@ -3,10 +3,12 @@
 require "swagger_helper"
 
 RSpec.describe "members/registrations", type: :request do
+
   path "/members.json" do
     post "Creates a member", json: true do
       tags "Members"
       consumes "application/json"
+      produces 'application/json'
       parameter name: :member, in: :body, schema: {
         type: :object,
         properties: {
@@ -70,11 +72,11 @@ RSpec.describe "members/registrations", type: :request do
     put "Updates a member", json: true do
       tags "Members"
       consumes "application/json"
-      security [Bearer: {}]
+      produces 'application/json'
+      security [ bearerAuth: [] ]
       parameter name: :member, in: :body, schema: {
         type: :object,
         properties: {
-          auth_token: { type: :string },
           member: {
             type: :object,
             properties: {

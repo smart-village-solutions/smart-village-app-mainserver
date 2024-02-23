@@ -350,7 +350,7 @@ paths:
       tags:
       - Members
       security:
-      - Bearer: {}
+      - bearerAuth: []
       parameters: []
       responses:
         '200':
@@ -383,8 +383,6 @@ paths:
             schema:
               type: object
               properties:
-                auth_token:
-                  type: string
                 member:
                   type: object
                   properties:
