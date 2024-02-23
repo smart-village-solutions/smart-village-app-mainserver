@@ -111,7 +111,7 @@ class Members::RegistrationsController < Devise::RegistrationsController
   protected
 
     def member_params
-      params.permit![:member].permit!
+      params.permit![:member].permit! if params.present? && params.permit![:member].present?
     end
 
     def member_update_params
