@@ -86,7 +86,10 @@ RSpec.describe "members/registrations", type: :request do
               gender: { type: :string },
               first_name: { type: :string },
               last_name: { type: :string },
-              birthday: { type: :string, format: :date }
+              birthday: { type: :string, format: :date },
+              city: { type: :string },
+              postal_code: { type: :string },
+              street: { type: :string }
             }
           }
         }

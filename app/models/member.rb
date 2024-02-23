@@ -15,6 +15,9 @@ class Member < ApplicationRecord
           membership_level
           gender
           birthday
+          city
+          postal_code
+          street
         ],
         coder: JSON
 
