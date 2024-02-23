@@ -121,6 +121,8 @@ class Member < ApplicationRecord
     # Get Keycloak Attributes from keycloak Server if keycloak Server is used
     KEYCLOAK_ATTRIBUTES.each do |local_method_name, keycloak_attribute_name|
       define_method(local_method_name) do
+        return nil if keycloak_member_data.blank?
+
         keycloak_member_data.fetch(keycloak_attribute_name, nil)
       end
     end
