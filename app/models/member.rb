@@ -3,6 +3,11 @@
 class Member < ApplicationRecord
   include MunicipalityScope
 
+  KEYCLOAK_ATTRIBUTES = {
+    first_name: "given_name",
+    last_name: "family_name",
+  }
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable,
   # :database_authenticatable, :omniauthable, :recoverable, :rememberable
@@ -54,7 +59,8 @@ class Member < ApplicationRecord
   end
 
   def update_keycloak_tokens(keycloak_tokens: {}, access_token: nil) # rubocop:disable Metrics/AbcSize
-    update_columns(keycloak_access_token: access_token) if access_token.present?
+    new_access_token = access_token.presence || keycloak_tokens["access_token"]
+    update_columns(keycloak_access_token: new_access_token) if new_access_token.present?
     return unless keycloak_tokens.present?
 
     update_columns(
@@ -86,19 +92,59 @@ class Member < ApplicationRecord
 
     where("1 == 0")
   end
+
+  # Override the default JSON serializer and add the Keycloak attributes
+  def as_json(options = {})
+    super(options.merge(methods: KEYCLOAK_ATTRIBUTES.keys))
+  end
+
+  private
+
+    def keycloak_member_data
+      return @keycloak_member_data if @keycloak_member_data.present?
+
+      return {} if MunicipalityService.settings["member_auth_types"].blank?
+      return {} unless MunicipalityService.settings["member_auth_types"].include?("keycloak") == true
+
+      refresh_user_tokens if keycloak_access_token_expires_at.present? && keycloak_access_token_expires_at < Time.zone.now
+
+      keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
+      @keycloak_member_data = keycloak_service.get_keycloak_member_data(keycloak_access_token)
+    end
+
+    def refresh_user_tokens
+      keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
+      new_tokens = keycloak_service.refresh_user_token(keycloak_refresh_token)
+      update_keycloak_tokens(keycloak_tokens: new_tokens)
+    end
+
+    # Get Keycloak Attributes from keycloak Server if keycloak Server is used
+    KEYCLOAK_ATTRIBUTES.each do |local_method_name, keycloak_attribute_name|
+      define_method(local_method_name) do
+        keycloak_member_data.fetch(keycloak_attribute_name, nil)
+      end
+    end
 end
 
 # == Schema Information
 #
 # Table name: members
 #
-#  id                              :bigint           not null, primary key
-#  keycloak_id                     :string(255)
-#  municipality_id                 :integer
-#  created_at                      :datetime         not null
-#  updated_at                      :datetime         not null
-#  email                           :string(255)      default(""), not null
-#  encrypted_password              :string(255)      default(""), not null
-#  authentication_token            :text(65535)
-#  authentication_token_created_at :datetime
+#  id                                :bigint           not null, primary key
+#  keycloak_id                       :string(255)
+#  municipality_id                   :integer
+#  created_at                        :datetime         not null
+#  updated_at                        :datetime         not null
+#  email                             :string(255)      default(""), not null
+#  encrypted_password                :string(255)      default(""), not null
+#  authentication_token              :text(65535)
+#  authentication_token_created_at   :datetime
+#  keycloak_access_token             :text(65535)
+#  keycloak_access_token_expires_at  :datetime
+#  keycloak_refresh_token            :text(65535)
+#  keycloak_refresh_token_expires_at :datetime
+#  preferences                       :text(65535)
+#  reset_password_token              :string(255)
+#  reset_password_sent_at            :datetime
+#  unlock_token                      :string(255)
 #
