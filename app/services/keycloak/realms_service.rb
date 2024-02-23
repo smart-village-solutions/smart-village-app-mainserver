@@ -148,6 +148,23 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
     JSON.parse(response.body)
   end
 
+  # curl -X POST \
+  # http://keycloak-server/auth/realms/{realm}/protocol/openid-connect/token \
+  # -H 'Content-Type: application/x-www-form-urlencoded' \
+  # -d 'client_id=deine-client-id&refresh_token=dein-refresh-token&grant_type=refresh_token&client_secret=dein-client-secret'
+  def refresh_user_token(refresh_token)
+    data = {
+      grant_type: "refresh_token",
+      client_id: client_id,
+      client_secret: client_secret,
+      refresh_token: refresh_token,
+      scope: "openid profile email"
+    }
+    request_service = ApiRequestService.new("#{uri}/realms/#{realm}/protocol/openid-connect/token", nil, {}, data)
+    response = request_service.form_post_request
+    JSON.parse(response.body)
+  end
+
   private
 
     # Helper Method to validate token access
@@ -159,23 +176,6 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
         token: token
       }
       request_service = ApiRequestService.new("#{uri}/realms/#{realm}/protocol/openid-connect/token/introspect", nil, {}, data)
-      response = request_service.form_post_request
-      JSON.parse(response.body)
-    end
-
-    # curl -X POST \
-    # http://keycloak-server/auth/realms/{realm}/protocol/openid-connect/token \
-    # -H 'Content-Type: application/x-www-form-urlencoded' \
-    # -d 'client_id=deine-client-id&refresh_token=dein-refresh-token&grant_type=refresh_token&client_secret=dein-client-secret'
-    def refresh_user_token(refresh_token)
-      data = {
-        grant_type: "refresh_token",
-        client_id: client_id,
-        client_secret: client_secret,
-        refresh_token: refresh_token,
-        scope: "openid profile email"
-      }
-      request_service = ApiRequestService.new("#{uri}/realms/#{realm}/protocol/openid-connect/token", nil, {}, data)
       response = request_service.form_post_request
       JSON.parse(response.body)
     end
