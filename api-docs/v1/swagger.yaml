@@ -203,7 +203,8 @@ paths:
                   example: Notice text
                 data_type:
                   type: string
-                  example: Data type description('business_account by default')
+                  example: Data type description('general_importer or business_account,
+                    business_account by default')
                 logo_url:
                   type: string
                   example: http://example.com/logo.png
@@ -349,7 +350,7 @@ paths:
       tags:
       - Members
       security:
-      - Bearer: {}
+      - bearerAuth: []
       parameters: []
       responses:
         '200':
@@ -382,8 +383,6 @@ paths:
             schema:
               type: object
               properties:
-                auth_token:
-                  type: string
                 member:
                   type: object
                   properties:
@@ -408,6 +407,12 @@ paths:
                     birthday:
                       type: string
                       format: date
+                    city:
+                      type: string
+                    postal_code:
+                      type: string
+                    street:
+                      type: string
   "/members/sign_in":
     post:
       summary: Sign In a member
@@ -514,10 +519,12 @@ securityDefinitions:
     name: Authorization
     in: header
 servers:
-- url: http://{defaultHost}
+- url: "{defaultScheme}{defaultHost}"
   variables:
     defaultHost:
       default: server.smart-village.test
+    defaultScheme:
+      default: https://
 components:
   securitySchemes:
     bearerAuth:
