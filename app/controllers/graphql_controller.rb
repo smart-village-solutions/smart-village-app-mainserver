@@ -3,16 +3,18 @@
 class GraphqlController < ApplicationController
   # To activate access control by doorkeeper, uncomment next line - comment to deactivate doorkeeper
   before_action :doorkeeper_authorize!
+  before_action :member_by_token
 
   skip_before_action :verify_authenticity_token
 
-  def execute
+  def execute # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     variables = ensure_hash(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
     context = {
       # Query context goes here, for example:
       current_user: current_resource_owner,
+      current_member: @current_member,
       extras: { lookahead: GraphQL::Query.new(SmartVillageAppMainserverSchema, query).lookahead }
 
       # NOTE: if we want to have more data, we can add the `request` here, for example:
@@ -36,6 +38,13 @@ class GraphqlController < ApplicationController
 
   private
 
+    def member_by_token
+      member_token = request.env["HTTP_AUTH_TOKEN"]
+      return if member_token.blank?
+
+      @current_member = Member.find_by(municipality_id: MunicipalityService.municipality_id, authentication_token: member_token)
+    end
+
     def current_resource_owner
       owner_id = doorkeeper_token.try(:application).try(:owner_id) if doorkeeper_token
       User.find_by(id: owner_id) if owner_id.present?
@@ -50,7 +59,7 @@ class GraphqlController < ApplicationController
     end
 
     # Handle form data, JSON body, or a blank value
-    def ensure_hash(ambiguous_param)
+    def ensure_hash(ambiguous_param) # rubocop:disable Metrics/MethodLength
       case ambiguous_param
       when String
         if ambiguous_param.present?

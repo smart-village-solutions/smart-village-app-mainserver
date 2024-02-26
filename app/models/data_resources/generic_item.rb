@@ -25,6 +25,8 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   belongs_to :data_provider, optional: true
   belongs_to :generic_itemable, polymorphic: true, optional: true
+  belongs_to :member, optional: true
+
   has_one :external_reference, as: :external, dependent: :destroy
   has_one :discount_type, as: :discountable, dependent: :destroy
   has_one :quota, as: :quotaable, dependent: :destroy

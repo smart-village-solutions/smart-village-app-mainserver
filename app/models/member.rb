@@ -28,6 +28,7 @@ class Member < ApplicationRecord
 
   has_many :redemptions, dependent: :destroy
   has_many :notification_devices, class_name: "Notification::Device", dependent: :destroy
+  has_many :generic_items, class_name: "GenericItem"
 
   def self.from_omniauth(session_state:, session_code:) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     return nil if session_state.blank?
