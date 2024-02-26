@@ -130,4 +130,32 @@ describe Mutations::DeleteWastePickUpTime do
       )
     end
   end
+
+  context "with only street provided" do
+    let(:variables) {
+      { 
+        wasteLocationType: {
+          address: {
+            street: "Gounodstrasse"
+          }
+        }
+      }
+    }
+
+    it do
+      is_expected.to eq(
+        'id' => nil,
+        'status' => '1 records destroyed',
+        'statusCode' => 200
+      )
+    end
+  end
+
+  context "user without admin role" do
+    let(:user) { create(:user, role: :user, municipality: municipality) }
+
+    it do
+      expect { subject }.to raise_error(RuntimeError, "Access not permitted")
+    end
+  end
 end
