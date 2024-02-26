@@ -24,7 +24,7 @@ module Types
 
     # destroys
     field :destroy_record, mutation: Mutations::DestroyRecord
-    field :delete_waste_pick_up_time, mutation: Mutations::DeleteWastePickUpTime
+    field :destroy_waste_pick_up_time, mutation: Mutations::DestroyWastePickUpTime
 
     # actions
     field :change_visibility, mutation: Mutations::ChangeVisibility

@@ -2,14 +2,14 @@
 require "rails_helper"
 
 # rubocop:disable all
-describe Mutations::DeleteWastePickUpTime do
+describe Mutations::DestroyWastePickUpTime do
   include_context "with graphql"
 
-  subject { data['deleteWastePickUpTime'] }
+  subject { data['destroyWastePickUpTime'] }
   let(:query_string) do
     <<~GQL
       mutation($pickupDate: String, $wasteLocationType: WasteLocationTypeInput) {
-        deleteWastePickUpTime(
+        destroyWastePickUpTime(
           pickupDate: $pickupDate,
           wasteLocationType: $wasteLocationType
         ) {
@@ -20,7 +20,7 @@ describe Mutations::DeleteWastePickUpTime do
       }
     GQL
   end
-  
+
   let(:municipality) { create(:municipality, slug: 'test', title: 'test') }
   let(:user) { create(:user, role: :admin, municipality: municipality) }
   let(:context) { { current_user: user } }
@@ -110,7 +110,7 @@ describe Mutations::DeleteWastePickUpTime do
 
   context "with only zip code provided" do
     let(:variables) {
-      { 
+      {
         wasteLocationType: {
           address: {
             zip: "13088"
@@ -133,7 +133,7 @@ describe Mutations::DeleteWastePickUpTime do
 
   context "with only street provided" do
     let(:variables) {
-      { 
+      {
         wasteLocationType: {
           address: {
             street: "Gounodstrasse"
