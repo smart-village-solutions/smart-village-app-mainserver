@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # rubocop:disable all
 module Mutations
-  class DeleteWastePickUpTime < BaseMutation
+  class DestroyWastePickUpTime < BaseMutation
     include RecordDestruction
 
     argument :ids, [ID], required: false
