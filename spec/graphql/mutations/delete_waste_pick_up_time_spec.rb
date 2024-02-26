@@ -53,6 +53,12 @@ describe Mutations::DeleteWastePickUpTime do
     Waste::PickUpTime.create!(pickup_date: date, waste_location_type_id: wl2.id, municipality_id: municipality.id)
     Waste::PickUpTime.create!(pickup_date: 1.days.ago, waste_location_type_id: wl3.id, municipality_id: municipality.id)
     Waste::PickUpTime.create!(pickup_date: 1.days.ago, waste_location_type_id: wl4.id, municipality_id: municipality.id)
+
+    # second municipality
+    second_municipality = create(:municipality, slug: 'second', title: 'second')
+    addr_sec = Address.create!(street: 'Fake street', zip: '00123')
+    wl_sec = Waste::LocationType.create!(waste_type: 'residual', address: addr_sec, municipality_id: second_municipality.id)
+    Waste::PickUpTime.create!(pickup_date: 1.days.ago, waste_location_type_id: wl_sec.id, municipality_id: second_municipality.id)
   end
 
   context "with all variables sent" do
@@ -69,6 +75,9 @@ describe Mutations::DeleteWastePickUpTime do
     let(:variables) { {} }
 
     it do
+      # Check that we have 5 records in the database at all
+      expect(Waste::PickUpTime.unscoped.count).to eq(5)
+
       is_expected.to eq(
         'id' => nil,
         'status' => '4 records destroyed',
@@ -87,10 +96,33 @@ describe Mutations::DeleteWastePickUpTime do
     end
   end
 
-  context "with only waste type" do
+  context "with only waste type provided" do
     let(:variables) { { wasteLocationType: { wasteType: "paper" } } }
 
     it do
+      is_expected.to eq(
+        'id' => nil,
+        'status' => '2 records destroyed',
+        'statusCode' => 200
+      )
+    end
+  end
+
+  context "with only zip code provided" do
+    let(:variables) {
+      { 
+        wasteLocationType: {
+          address: {
+            zip: "13088"
+          }
+        }
+      }
+    }
+
+    it do
+      # Check that we have 5 records in the database at all
+      expect(Waste::PickUpTime.unscoped.count).to eq(5)
+
       is_expected.to eq(
         'id' => nil,
         'status' => '2 records destroyed',

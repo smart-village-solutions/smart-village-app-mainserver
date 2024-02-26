@@ -37,12 +37,19 @@ class WastePickUpTimeQuery
     def filter_by_waste_location_type(scope, waste_location_type_params)
       return scope unless waste_location_type_params.present?
 
-      scope = scope.joins(:waste_location_type)
-                   .where(waste_location_types: { waste_type: waste_location_type_params[:waste_type] })
+      scope = filter_by_waste_type(scope, waste_location_type_params[:waste_type])
+      filter_by_address(scope, waste_location_type_params[:address_attributes])
+    end
 
-      if waste_location_type_params[:address_attributes].present?
-        scope = scope.joins(waste_location_type: :address).where(addresses: waste_location_type_params[:address_attributes])
-      end
-      scope
+    def filter_by_waste_type(scope, waste_type)
+      return scope unless waste_type.present?
+
+      scope.joins(:waste_location_type).where(waste_location_types: { waste_type: waste_type })
+    end
+
+    def filter_by_address(scope, address)
+      return scope unless address.present?
+
+      scope.joins(waste_location_type: :address).where(addresses: address.to_h)
     end
 end
