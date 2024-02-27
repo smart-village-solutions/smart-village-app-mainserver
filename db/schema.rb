@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_16_083536) do
+ActiveRecord::Schema.define(version: 2024_02_26_153033) do
 
   create_table "accessibility_informations", charset: "utf8", force: :cascade do |t|
     t.text "description"
@@ -316,6 +316,7 @@ ActiveRecord::Schema.define(version: 2024_02_16_083536) do
     t.datetime "updated_at", null: false
     t.string "generic_itemable_type"
     t.integer "generic_itemable_id"
+    t.integer "member_id"
     t.index ["data_provider_id"], name: "index_generic_items_on_data_provider_id"
   end
 
