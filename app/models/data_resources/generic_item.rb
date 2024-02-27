@@ -25,6 +25,8 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   belongs_to :data_provider, optional: true
   belongs_to :generic_itemable, polymorphic: true, optional: true
+  belongs_to :member, optional: true
+
   has_one :external_reference, as: :external, dependent: :destroy
   has_one :discount_type, as: :discountable, dependent: :destroy
   has_one :quota, as: :quotaable, dependent: :destroy
@@ -143,19 +145,22 @@ end
 #
 # Table name: generic_items
 #
-#  id               :bigint           not null, primary key
-#  generic_type     :string(255)
-#  author           :text(65535)
-#  publication_date :datetime
-#  published_at     :datetime
-#  external_id      :text(65535)
-#  visible          :boolean          default(TRUE)
-#  title            :text(65535)
-#  teaser           :text(65535)
-#  description      :text(65535)
-#  data_provider_id :integer
-#  payload          :text(65535)
-#  ancestry         :string(255)
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id                    :bigint           not null, primary key
+#  generic_type          :string(255)
+#  author                :text(65535)
+#  publication_date      :datetime
+#  published_at          :datetime
+#  external_id           :text(65535)
+#  visible               :boolean          default(TRUE)
+#  title                 :text(65535)
+#  teaser                :text(65535)
+#  description           :text(65535)
+#  data_provider_id      :integer
+#  payload               :text(65535)
+#  ancestry              :string(255)
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  generic_itemable_type :string(255)
+#  generic_itemable_id   :integer
+#  member_id             :integer
 #

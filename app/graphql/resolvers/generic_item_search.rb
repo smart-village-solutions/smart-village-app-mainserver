@@ -34,6 +34,16 @@ class Resolvers::GenericItemSearch < GraphQL::Schema::Resolver
   option :order, type: GenericItemOrder, default: "createdAt_DESC"
   option :skip, type: GraphQL::Types::Int, with: :apply_skip
   option :location, type: GraphQL::Types::String, with: :apply_location
+  option :current_member, type: GraphQL::Types::Boolean, default: false, with: :apply_current_member
+
+  # filter all GenericItems by current_member authorized by auth_token
+  def apply_current_member(scope, value)
+    return scope unless value == true
+    return scope if context[:current_member].blank?
+    return scope if context[:current_member].try(:id).blank?
+
+    scope.where(member_id: context[:current_member].try(:id))
+  end
 
   def apply_limit(scope, value)
     scope.limit(value)

@@ -74,21 +74,22 @@ module Mutations
     type Types::QueryTypes::GenericItemType
 
     def resolve(**params)
-      generic_item = create_generic_item_node(params, nil)
+      generic_item = create_generic_item_node(params, nil, context[:current_member].try(:id))
       generic_item.perform_callbacks
 
       generic_item
     end
 
-    def create_generic_item_node(params, parent_id)
+    def create_generic_item_node(params, parent_id, member_id)
       nested_params = params.delete(:generic_items_attributes)
-      parent = ResourceService.new(data_provider: context[:current_user].try(:data_provider))
-                 .perform(GenericItem, params.merge(parent_id: parent_id))
+      parent = ResourceService.new(data_provider: context[:current_user]
+                              .try(:data_provider))
+                              .perform(GenericItem, params.merge(parent_id: parent_id, member_id: member_id))
 
       return parent if nested_params.blank?
 
       nested_params.each do |nested_param|
-        create_generic_item_node(nested_param, parent.id)
+        create_generic_item_node(nested_param, parent.id, nil)
       end
 
       parent

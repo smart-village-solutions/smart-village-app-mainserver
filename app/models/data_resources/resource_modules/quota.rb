@@ -8,15 +8,15 @@ class Quota < ApplicationRecord
   # Einlösefrequenz: einmalig, wöchentlich, monatlich, jährlich
   enum frequency: { once: 0, daily: 1, weekly: 2, monthly: 3, quarterly: 4, yearly: 5 }, _prefix: true
 
-  # Anzahl der maximalen Einlösungen
+  # Number of maximum redemptions
   #
-  # max_quantity minus "Anzahl der Einlösungen" im gegebenen Zeitraum
-  # je nach Einlösefrequenz
+  # max_quantity minus "Number of redemptions" within the given time period
+  # depending on the redemption frequency
   def available_quantity
     max_quantity.to_i - current_redemptions_for_frequency.count.to_i
   end
 
-  def available_quantity_for_member(member_id:)
+  def available_quantity_for_member(member_id:) # rubocop:disable Metrics/MethodLength
     # gibt es insgesamt noch Quota?
     current_available_quantity = available_quantity
     return 0 if current_available_quantity <= 0
@@ -60,7 +60,7 @@ class Quota < ApplicationRecord
 
   private
 
-    def current_redemptions_for_frequency
+    def current_redemptions_for_frequency # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
       case frequency
       when "once"
         redemptions.all
