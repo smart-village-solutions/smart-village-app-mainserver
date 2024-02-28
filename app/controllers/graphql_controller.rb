@@ -39,7 +39,7 @@ class GraphqlController < ApplicationController
   private
 
     def member_by_token
-      member_token = request.env["HTTP_AUTH_TOKEN"]
+      member_token = request.env["HTTP_X_AUTHORIZATION"]
       return if member_token.blank?
 
       @current_member = Member.find_by(municipality_id: MunicipalityService.municipality_id, authentication_token: member_token)
