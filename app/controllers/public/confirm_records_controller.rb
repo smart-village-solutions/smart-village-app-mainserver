@@ -8,8 +8,13 @@ class Public::ConfirmRecordsController < PublicController
     @confirmation_token = params[:token]
   end
 
+  # Set visible to false if record supports it
   def destroy
-    @record.destroy
+    if @record.respond_to?(:visible)
+      @record.update(visible: false)
+    else
+      @record.destroy
+    end
 
     flash[:notice] = "Der Eintrag wurde erfolgreich gelöscht."
 
