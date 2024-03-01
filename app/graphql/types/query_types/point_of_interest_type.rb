@@ -45,5 +45,10 @@ module Types
     def has_travel_times
       object.has_travel_times?
     end
+
+    def vouchers
+      object.vouchers.filtered_for_current_user(context[:current_user])
+    end
+
   end
 end
