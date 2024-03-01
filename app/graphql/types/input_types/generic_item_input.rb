@@ -2,6 +2,7 @@
 
 module Types
   class InputTypes::GenericItemInput < BaseInputObject
+    argument :visible, GraphQL::Types::Boolean, required: false
     argument :force_create, GraphQL::Types::Boolean, required: false
     argument :push_notification, GraphQL::Types::Boolean, required: false
     argument :author, String, required: false
