@@ -48,6 +48,7 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
            as: :notification_pushable,
            class_name: "Notification::Push",
            dependent: :destroy
+  has_many :conversations, as: :conversationable
 
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
