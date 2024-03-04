@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_04_130317) do
+ActiveRecord::Schema.define(version: 2024_03_04_170107) do
 
   create_table "accessibility_informations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -179,6 +179,17 @@ ActiveRecord::Schema.define(version: 2024_03_04_130317) do
     t.datetime "updated_at", null: false
     t.index ["content_blockable_type", "content_blockable_id"], name: "index_content_blocks_on_content_blockable_type_and_id"
     t.index ["content_blockable_type", "content_blockable_id"], name: "index_content_blocks_on_type_and_id"
+  end
+
+  create_table "conversation_participants", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "conversation_id", null: false
+    t.bigint "member_id", null: false
+    t.boolean "email_notification_enabled", default: true
+    t.boolean "push_notification_enabled", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["conversation_id"], name: "index_conversation_participants_on_conversation_id"
+    t.index ["member_id"], name: "index_conversation_participants_on_member_id"
   end
 
   create_table "conversations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -769,6 +780,8 @@ ActiveRecord::Schema.define(version: 2024_03_04_130317) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "conversation_participants", "conversations"
+  add_foreign_key "conversation_participants", "members"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
