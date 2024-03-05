@@ -6,3 +6,14 @@ class Messaging::Conversation < ApplicationRecord
   has_many :conversation_participants, class_name: "Messaging::ConversationParticipants"
   has_many :members, through: :conversation_participants
 end
+
+# == Schema Information
+#
+# Table name: conversations
+#
+#  id                    :bigint           not null, primary key
+#  conversationable_type :string(255)      not null
+#  conversationable_id   :bigint           not null
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#

@@ -1,5 +1,15 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: conversations
+#
+#  id                    :bigint           not null, primary key
+#  conversationable_type :string(255)      not null
+#  conversationable_id   :bigint           not null
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#
 require 'rails_helper'
 
 RSpec.describe Messaging::Conversation, type: :model do
