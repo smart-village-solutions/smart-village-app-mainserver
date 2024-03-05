@@ -15,6 +15,6 @@
 require 'rails_helper'
 
 RSpec.describe Messaging::ConversationParticipant, type: :model do
-  it { is_expected.to belong_to(:conversation) }
-  it { is_expected.to belong_to(:member) }
+  it { is_expected.to belong_to(:conversation).class_name("Messaging::Conversation") }
+  it { is_expected.to belong_to(:member).class_name("Member") }
 end

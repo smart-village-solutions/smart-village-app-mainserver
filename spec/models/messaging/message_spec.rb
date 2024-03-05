@@ -12,5 +12,6 @@
 require 'rails_helper'
 
 RSpec.describe Messaging::Message, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { is_expected.to belong_to(:conversation).class_name("Messaging::Conversation") }
+  it { is_expected.to belong_to(:member) }
 end

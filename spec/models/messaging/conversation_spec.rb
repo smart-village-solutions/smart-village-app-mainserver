@@ -14,6 +14,7 @@ require 'rails_helper'
 
 RSpec.describe Messaging::Conversation, type: :model do
   it { is_expected.to belong_to(:conversationable) }
-  it { is_expected.to have_many(:conversation_participants) }
-  it { is_expected.to have_many(:members).through(:conversation_participants) }
+  it { is_expected.to have_many(:messages).class_name("Messaging::Message") }
+  it { is_expected.to have_many(:conversation_participants).class_name("Messaging::ConversationParticipant") }
+  it { is_expected.to have_many(:members).through(:conversation_participants).class_name("Member") }
 end
