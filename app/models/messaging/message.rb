@@ -11,8 +11,8 @@ end
 #
 #  id              :bigint           not null, primary key
 #  conversation_id :bigint           not null
-#  member_id       :bigint           not null
 #  message_text    :text(65535)
+#  sender_id       :bigint           not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

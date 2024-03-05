@@ -18,4 +18,5 @@ end
 #  conversationable_id   :bigint           not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  owner_id              :bigint           not null
 #
