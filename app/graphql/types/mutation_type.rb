@@ -33,5 +33,8 @@ module Types
           deprecation_reason: "Use `votesForSurvey` instead."
     field :votes_for_survey, mutation: Mutations::VotesForSurvey
     field :comment_survey, mutation: Mutations::CommentSurvey
+
+    # messaging
+    field :create_message, mutation: Mutations::CreateMessage
   end
 end
