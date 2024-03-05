@@ -2,7 +2,7 @@
 
 class Messaging::Message < ApplicationRecord
   belongs_to :conversation, class_name: "Messaging::Conversation"
-  belongs_to :member
+  belongs_to :sender, class_name: "Member", foreign_key: "sender_id"
 end
 
 # == Schema Information

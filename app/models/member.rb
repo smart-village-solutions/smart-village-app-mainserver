@@ -29,7 +29,10 @@ class Member < ApplicationRecord
   has_many :redemptions, dependent: :destroy
   has_many :notification_devices, class_name: "Notification::Device", dependent: :destroy
   has_many :generic_items, class_name: "GenericItem"
+
+  # Messaging
   has_many :direct_chats, as: :conversationable, class_name: "Messaging::Conversation"
+  has_many :owned_conversations, foreign_key: "owner_id", class_name: "Messaging::Conversation"
   has_many :conversation_participants,
            class_name: "Messaging::ConversationParticipant"
   has_many :conversations,
