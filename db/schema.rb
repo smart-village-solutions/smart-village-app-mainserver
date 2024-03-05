@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_04_170107) do
+ActiveRecord::Schema.define(version: 2024_03_04_171030) do
 
   create_table "accessibility_informations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -420,6 +420,16 @@ ActiveRecord::Schema.define(version: 2024_03_04_170107) do
     t.index ["reset_password_token"], name: "index_members_on_reset_password_token", unique: true
   end
 
+  create_table "messages", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "conversation_id", null: false
+    t.bigint "member_id", null: false
+    t.text "message_text"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["member_id"], name: "index_messages_on_member_id"
+  end
+
   create_table "municipalities", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "slug"
     t.string "title"
@@ -782,6 +792,8 @@ ActiveRecord::Schema.define(version: 2024_03_04_170107) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "conversation_participants", "conversations"
   add_foreign_key "conversation_participants", "members"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "members"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
