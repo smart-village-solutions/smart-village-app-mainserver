@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# This class work with messaging flow, once you send all needed data
-# It will automatically create a conversation and return conversation data
-# rubocop:disable all
 module Mutations
   module Conversations
     class CreateMessage < BaseMutation
@@ -13,27 +10,12 @@ module Mutations
 
       type Types::StatusType
 
+      # Messaging::CreateMessageService check if the conversation_id is present
+      # If yes it will create a new message and add it to existing conversation
+      # Else it will create a new conversation and add the message to it(and add participants).
       def resolve(**params)
         Messaging::CreateMessageService.new(params, context[:current_member]).call
       end
     end
   end
 end
-
-
-# Query example
-# mutation(
-#   $conversationableId: ID!,
-#   $conversationableType: String!,
-#   $messageText: String!
-# ) {
-#   createMessage(
-#     conversationableId: $conversationableId,
-#     conversationableType: $conversationableType,
-#     messageText: $messageText
-#   ) {
-#     id
-#     status
-#     statusCode
-#   }
-# }
