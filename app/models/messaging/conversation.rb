@@ -2,7 +2,6 @@
 
 class Messaging::Conversation < ApplicationRecord
   belongs_to :conversationable, polymorphic: true
-  belongs_to :owner, class_name: "Member", foreign_key: "owner_id"
 
   has_many :messages, class_name: "Messaging::Message", dependent: :destroy
   has_many :conversation_participants, class_name: "Messaging::ConversationParticipant", dependent: :destroy
