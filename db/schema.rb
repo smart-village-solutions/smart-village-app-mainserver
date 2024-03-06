@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_05_195756) do
+ActiveRecord::Schema.define(version: 2024_03_06_102927) do
 
   create_table "accessibility_informations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -197,9 +197,7 @@ ActiveRecord::Schema.define(version: 2024_03_05_195756) do
     t.bigint "conversationable_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "owner_id", null: false
     t.index ["conversationable_type", "conversationable_id"], name: "index_conversations_on_conversationable"
-    t.index ["owner_id"], name: "index_conversations_on_owner_id"
   end
 
   create_table "data_providers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -794,7 +792,6 @@ ActiveRecord::Schema.define(version: 2024_03_05_195756) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "conversation_participants", "conversations"
   add_foreign_key "conversation_participants", "members"
-  add_foreign_key "conversations", "members", column: "owner_id"
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "members", column: "sender_id"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
