@@ -36,5 +36,6 @@ module Types
 
     # messaging
     field :create_message, mutation: Mutations::Conversations::CreateMessage
+    field :update_notification_settings, mutation: Mutations::Conversations::UpdateNotificationSettings
   end
 end

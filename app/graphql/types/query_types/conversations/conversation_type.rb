@@ -5,10 +5,10 @@ module Types
     field :id, GraphQL::Types::ID, null: true
     field :conversationable_id, ID, null: true
     field :conversationable_type, String, null: true
-    field :messages_count, Integer, null: true
+    field :total_messages_count, Integer, null: true
     field :participants_count, Integer, null: true
 
-    def messages_count
+    def total_messages_count
       object.messages.count
     end
 
