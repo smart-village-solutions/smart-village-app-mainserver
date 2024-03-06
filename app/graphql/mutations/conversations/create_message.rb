@@ -4,16 +4,18 @@
 # It will automatically create a conversation and return conversation data
 # rubocop:disable all
 module Mutations
-  class CreateMessage < BaseMutation
-    argument :conversationable_id, ID, required: false
-    argument :conversationable_type, String, required: false
-    argument :message_text, String, required: true
-    argument :conversation_id, ID, required: false
+  module Conversations
+    class CreateMessage < BaseMutation
+      argument :conversationable_id, ID, required: false
+      argument :conversationable_type, String, required: false
+      argument :message_text, String, required: true
+      argument :conversation_id, ID, required: false
 
-    type Types::StatusType
+      type Types::StatusType
 
-    def resolve(**params)
-      Messaging::CreateMessageService.new(params, context[:current_member]).call
+      def resolve(**params)
+        Messaging::CreateMessageService.new(params, context[:current_member]).call
+      end
     end
   end
 end

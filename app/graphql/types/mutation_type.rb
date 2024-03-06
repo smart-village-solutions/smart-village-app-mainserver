@@ -35,6 +35,6 @@ module Types
     field :comment_survey, mutation: Mutations::CommentSurvey
 
     # messaging
-    field :create_message, mutation: Mutations::CreateMessage
+    field :create_message, mutation: Mutations::Conversations::CreateMessage
   end
 end

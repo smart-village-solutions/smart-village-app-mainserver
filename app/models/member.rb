@@ -32,12 +32,11 @@ class Member < ApplicationRecord
 
   # Messaging
   has_many :direct_chats, as: :conversationable, class_name: "Messaging::Conversation"
-  has_many :owned_conversations, foreign_key: "owner_id", class_name: "Messaging::Conversation"
   has_many :conversation_participants,
            class_name: "Messaging::ConversationParticipant"
   has_many :conversations,
            through: :conversation_participants,
-           class_name: "Messaging::ConversationParticipant"
+           class_name: "Messaging::Conversation"
 
   def self.from_omniauth(session_state:, session_code:) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     return nil if session_state.blank?

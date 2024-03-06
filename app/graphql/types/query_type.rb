@@ -82,6 +82,8 @@ module Types
       argument :query, String, required: false
     end
 
+    field :get_messages, [QueryTypes::Conversations::MessageType], resolver: Resolvers::Conversations::GetMessages
+    field :get_conversations, [QueryTypes::Conversations::ConversationType], resolver: Resolvers::Conversations::GetConversations
 
     def waste_tours
       Waste::Tour.all
