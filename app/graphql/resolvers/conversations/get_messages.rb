@@ -9,7 +9,10 @@ module Resolvers
 
       def resolve(conversation_id:)
         conversation = Messaging::Conversation.find_by(id: conversation_id)
-        return conversation.messages if conversation&.participants&.include?(context[:current_member])
+
+        if conversation&.participants&.include?(context[:current_member])
+          return conversation.messages.order(created_at: :desc)
+        end
 
         Messaging::Message.none
       end

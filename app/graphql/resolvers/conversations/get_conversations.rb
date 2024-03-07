@@ -7,15 +7,16 @@ module Resolvers
     class GetConversations < GraphQL::Schema::Resolver
       include SearchObject.module(:graphql)
 
-      scope { context[:current_member].conversations }
+      scope do
+        context[:current_member]
+          .conversations
+          .joins(:messages)
+          .select("conversations.*, MAX(messages.created_at) as last_message_created_at")
+          .group("conversations.id")
+          .order("last_message_created_at DESC")
+      end
 
       type [Types::QueryTypes::Conversations::ConversationType]
-
-      option :ids, type: types[GraphQL::Types::ID], with: :apply_ids_filter
-
-      def apply_ids_filter(scope, value)
-        scope.where(id: value)
-      end
     end
   end
 end

@@ -6,6 +6,14 @@ class Messaging::Conversation < ApplicationRecord
   has_many :messages, class_name: "Messaging::Message", dependent: :destroy
   has_many :conversation_participants, class_name: "Messaging::ConversationParticipant", dependent: :destroy
   has_many :participants, through: :conversation_participants, source: :member
+
+  def unread_messages_count(member)
+    Messaging::Receipt
+      .joins(:message)
+      .where(messages: { conversation_id: id })
+      .where(member: member, read: false)
+      .count
+  end
 end
 
 # == Schema Information

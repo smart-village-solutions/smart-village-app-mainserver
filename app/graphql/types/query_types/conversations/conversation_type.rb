@@ -7,6 +7,7 @@ module Types
     field :conversationable_type, String, null: true
     field :total_messages_count, Integer, null: true
     field :participants_count, Integer, null: true
+    field :unread_messages_count, Integer, null: true
 
     def total_messages_count
       object.messages.count
@@ -14,6 +15,10 @@ module Types
 
     def participants_count
       object.participants.count
+    end
+
+    def unread_messages_count
+      object.unread_messages_count(context[:current_member])
     end
   end
 end

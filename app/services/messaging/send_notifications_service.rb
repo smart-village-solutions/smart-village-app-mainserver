@@ -17,7 +17,6 @@ module Messaging
     end
 
     def self.send_push_notification(participant, municipality_id)
-      p "Sending push notification to #{participant.email}"
       message_options = {
         title: "New message",
         body: "You have a new unread message"
@@ -29,7 +28,6 @@ module Messaging
     end
 
     def self.send_email_notification(receiver_id, municipality_id)
-      p "Sending email notification to #{receiver_id}"
       NotificationMailer.new_message_notification(receiver_id, municipality_id).deliver_later
     end
   end
