@@ -1,5 +1,16 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: receipts
+#
+#  id         :bigint           not null, primary key
+#  message_id :bigint           not null
+#  member_id  :bigint           not null
+#  read       :boolean          default(FALSE)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 class Messaging::Receipt < ApplicationRecord
   belongs_to :message, class_name: "Messaging::Message"
   belongs_to :member
