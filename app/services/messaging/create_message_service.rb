@@ -2,6 +2,7 @@
 
 # This class handle message and conversation creation
 # In the create_message method we are creating a message and sending notifications to the participants of the conversation
+# In the create_message_receipts method we are creating a receipt for each participant of the conversation
 module Messaging
   class CreateMessageService
     def initialize(params, current_member)
@@ -27,18 +28,25 @@ module Messaging
         conversation = find_conversation
         return error_response("Conversation does not exist") unless conversation
 
-        message = create_message(conversation)
-        message ? success_response(conversation) : error_response("Failed to create message")
+        message = create_message!(conversation)
+
+        if message
+          create_message_receipts!(message, conversation)
+          success_response(conversation)
+        else
+          error_response("Failed to create message")
+        end
       end
 
       def handle_new_conversation
         conversation = create_new_conversation
         return error_response("Resource owner does not exist") unless resource_author_id
 
-        message = create_message(conversation)
+        message = create_message!(conversation)
         return error_response("Failed to create message") unless message
 
-        add_participants(conversation)
+        add_participants!(conversation)
+        create_message_receipts!(message, conversation)
         success_response(conversation)
       end
 
@@ -54,14 +62,23 @@ module Messaging
         Messaging::Conversation.create!(conversation_params)
       end
 
-      def create_message(conversation)
+      def create_message!(conversation)
         message = Messaging::Message.create!(
           conversation_id: conversation.id,
           message_text: params[:message_text],
           sender_id: current_member.id
         )
 
-        Messaging::SendNotificationsService.notify_new_message(message.id).deliver_later
+        Messaging::SendNotificationsService.notify_new_message(message.id)
+
+        message
+      end
+
+      def create_message_receipts!(message, conversation)
+        conversation.participants.each do |participant|
+          read_status = participant.id == current_member.id
+          Receipt.create!(message: message, member: participant, read: read_status)
+        end
       end
 
       def resource_author_id
@@ -69,7 +86,7 @@ module Messaging
         klass.find_by(id: params[:conversationable_id]).try(:member_id)
       end
 
-      def add_participants(conversation)
+      def add_participants!(conversation)
         [resource_author_id, current_member.id].each do |member_id|
           Messaging::ConversationParticipant.find_or_create_by!(conversation_id: conversation.id, member_id: member_id)
         end

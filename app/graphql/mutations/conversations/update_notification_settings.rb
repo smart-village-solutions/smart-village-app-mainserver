@@ -10,6 +10,8 @@ module Mutations
       type Types::StatusType
 
       def resolve(**params)
+        return error_status("Access not permitted") unless context[:current_member]
+
         notification_settings = params.except(:conversation_id)
         relation_to_update = context[:current_member]&.conversation_participants&.find_by(conversation_id: params[:conversation_id])
 
