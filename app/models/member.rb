@@ -37,6 +37,8 @@ class Member < ApplicationRecord
   has_many :conversations,
            through: :conversation_participants,
            class_name: "Messaging::Conversation"
+  has_many :receipts, class_name: "Messaging::Receipt"
+  has_many :messages, through: :receipts, class_name: "Messaging::Message"
 
   def self.from_omniauth(session_state:, session_code:) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     return nil if session_state.blank?

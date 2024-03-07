@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_06_102927) do
+ActiveRecord::Schema.define(version: 2024_03_07_112454) do
 
   create_table "accessibility_informations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -602,6 +602,16 @@ ActiveRecord::Schema.define(version: 2024_03_06_102927) do
     t.index ["quotaable_type", "quotaable_id"], name: "index_quotas_on_quotaable_type_and_quotaable_id"
   end
 
+  create_table "receipts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "message_id", null: false
+    t.bigint "member_id", null: false
+    t.boolean "read", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["member_id"], name: "index_receipts_on_member_id"
+    t.index ["message_id"], name: "index_receipts_on_message_id"
+  end
+
   create_table "redemptions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "member_id"
     t.string "redemable_type"
@@ -798,4 +808,6 @@ ActiveRecord::Schema.define(version: 2024_03_06_102927) do
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
+  add_foreign_key "receipts", "members"
+  add_foreign_key "receipts", "messages"
 end

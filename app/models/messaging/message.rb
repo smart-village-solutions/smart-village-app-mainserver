@@ -3,6 +3,9 @@
 class Messaging::Message < ApplicationRecord
   belongs_to :conversation, class_name: "Messaging::Conversation"
   belongs_to :sender, class_name: "Member", foreign_key: "sender_id"
+
+  has_many :receipts, class_name: "Messaging::Receipt", dependent: :destroy
+  has_many :members, through: :receipts
 end
 
 # == Schema Information
