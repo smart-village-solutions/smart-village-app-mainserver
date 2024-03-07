@@ -5,3 +5,5 @@ en:
         subject: "[Smart Village App] Form created"
       survey_commented:
         subject: "[Smart Village App] Survey commented"
+      new_message:
+        subject: "[Smart Village App] New message"

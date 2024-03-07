@@ -5,3 +5,5 @@ de:
         subject: "[Smart Village App] Formular wurde erstellt"
       survey_commented:
         subject: "[Smart Village App] Umfrage wurde kommentiert"
+      new_message:
+        subject: "[Smart Village App] Neue Nachricht"

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# This class handle message and conversation creation
+# In the create_message method we are creating a message and sending notifications to the participants of the conversation
 module Messaging
   class CreateMessageService
     def initialize(params, current_member)
@@ -53,11 +55,13 @@ module Messaging
       end
 
       def create_message(conversation)
-        Messaging::Message.create!(
+        message = Messaging::Message.create!(
           conversation_id: conversation.id,
           message_text: params[:message_text],
           sender_id: current_member.id
         )
+
+        Messaging::SendNotificationsService.notify_new_message(message.id).deliver_later
       end
 
       def resource_author_id

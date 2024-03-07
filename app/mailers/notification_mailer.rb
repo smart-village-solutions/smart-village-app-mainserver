@@ -35,6 +35,21 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
+  def new_message_notification(receiver_id, municipality_id)
+    municipality = Municipality.find_by(id: municipality_id)
+    set_delivery_options(municipality)
+
+    member = Member.find_by(id: receiver_id)
+
+    return unless member&.email.present?
+
+    mail(
+      to: member.email,
+      from: municipality.settings[:mailjet_default_from],
+      subject: t("mailers.notification.new_message.subject")
+    )
+  end
+
   def set_delivery_options(municipality)
     Mailjet.config.api_key = municipality.settings[:mailjet_api_key]
     Mailjet.config.secret_key = municipality.settings[:mailjet_api_secret]
