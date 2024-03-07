@@ -10,9 +10,9 @@
 #  updated_at      :datetime         not null
 #
 FactoryBot.define do
-  factory :message do
-    conversation { nil }
-    member { nil }
-    message_text { "MyText" }
+  factory :messaging_message, class: "Messaging::Message" do
+    association :conversation, factory: :messaging_conversation
+    association :sender, factory: :member
+    message_text { Faker::Lorem.sentence }
   end
 end

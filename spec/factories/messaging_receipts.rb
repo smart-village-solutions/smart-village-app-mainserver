@@ -10,10 +10,9 @@
 #  updated_at :datetime         not null
 #
 FactoryBot.define do
-  factory :receipt do
-    message { nil }
-    member { nil }
+  factory :messaging_receipt, class: "Messaging::Receipt" do
+    association :message, factory: :messaging_message
+    member
     read { false }
-    default { "" }
   end
 end

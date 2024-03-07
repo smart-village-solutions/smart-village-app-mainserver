@@ -2,7 +2,6 @@
 
 FactoryBot.define do
   factory :generic_item do
-    id { 1 }
     generic_type { "RandomType" }
     title { "MyString" }
     description { "MyText" }

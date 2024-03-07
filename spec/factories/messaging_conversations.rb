@@ -9,7 +9,7 @@
 #  updated_at            :datetime         not null
 #
 FactoryBot.define do
-  factory :conversation do
-    conversationable { nil }
+  factory :messaging_conversation, class: "Messaging::Conversation" do
+    association :conversationable, factory: :generic_item
   end
 end

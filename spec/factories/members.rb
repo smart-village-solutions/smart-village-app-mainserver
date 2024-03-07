@@ -1,9 +1,11 @@
 FactoryBot.define do
   factory :member do
-    keycloak_id { "MyString" }
+    keycloak_id { Faker::Internet.uuid }
+    municipality
+    email { Faker::Internet.email }
+    password { "MyP@ssw0rd!" }
   end
 end
-
 # == Schema Information
 #
 # Table name: members

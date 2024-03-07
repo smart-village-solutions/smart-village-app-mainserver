@@ -10,7 +10,7 @@ module Mutations
       type Types::StatusType
 
       def resolve(message_id: nil, conversation_id: nil, update_all_messages: false)
-        return error_status("Access not permitted") unless context[:current_member]
+        return error_status("Access not permitted", 403) unless context[:current_member]
 
         return mark_message_as_read(message_id) if message_id
 

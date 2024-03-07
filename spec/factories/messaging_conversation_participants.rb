@@ -11,10 +11,10 @@
 #  updated_at                 :datetime         not null
 #
 FactoryBot.define do
-  factory :conversation_participant do
-    conversation { nil }
-    member { nil }
-    email_notification_enabled { false }
-    push_notification_enabled { false }
+  factory :messaging_conversation_participant, class: "Messaging::ConversationParticipant" do
+    association :conversation, factory: :messaging_conversation
+    member
+    email_notification_enabled { true }
+    push_notification_enabled { true }
   end
 end

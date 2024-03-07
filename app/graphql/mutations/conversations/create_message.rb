@@ -22,7 +22,7 @@ module Mutations
       private
 
         def unauthorized_status
-          OpenStruct.new(id: nil, status: "Access not permitted", status_code: 401)
+          OpenStruct.new(id: nil, status: "Access not permitted", status_code: 403)
         end
     end
   end

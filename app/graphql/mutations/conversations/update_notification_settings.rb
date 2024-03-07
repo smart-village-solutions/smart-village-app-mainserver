@@ -10,7 +10,7 @@ module Mutations
       type Types::StatusType
 
       def resolve(**params)
-        return error_status("Access not permitted") unless context[:current_member]
+        return error_status("Access not permitted", 403) unless context[:current_member]
 
         notification_settings = params.except(:conversation_id)
         relation_to_update = context[:current_member]&.conversation_participants&.find_by(conversation_id: params[:conversation_id])
@@ -19,7 +19,7 @@ module Mutations
 
         begin
           relation_to_update.update!(notification_settings)
-          OpenStruct.new(id: nil, status: "Notification settings successfully updated", status_code: 200)
+          OpenStruct.new(id: relation_to_update.id, status: "Notification settings successfully updated", status_code: 200)
         rescue => e
           error_status("Error during notification settings update: #{e}", 500)
         end
