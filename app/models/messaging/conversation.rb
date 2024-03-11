@@ -10,7 +10,7 @@ class Messaging::Conversation < ApplicationRecord
   def unread_messages_count(member)
     Messaging::Receipt
       .joins(:message)
-      .where(messages: { conversation_id: id })
+      .where(messaging_messages: { conversation_id: id })
       .where(member: member, read: false)
       .count
   end

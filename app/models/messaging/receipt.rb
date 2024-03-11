@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+class Messaging::Receipt < ApplicationRecord
+  belongs_to :message, class_name: "Messaging::Message"
+  belongs_to :member
+end
+
+
 # == Schema Information
 #
 # Table name: messaging_receipts
@@ -11,7 +17,3 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-class Messaging::Receipt < ApplicationRecord
-  belongs_to :message, class_name: "Messaging::Message"
-  belongs_to :member
-end

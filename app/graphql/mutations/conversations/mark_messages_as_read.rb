@@ -37,7 +37,7 @@ module Mutations
 
           receipts = Messaging::Receipt
                      .joins(:message)
-                     .where(messages: { conversation_id: conversation_id }, member: context[:current_member], read: false)
+                     .where(messaging_messages: { conversation_id: conversation.id }, member: context[:current_member], read: false)
 
           if receipts.update_all(read: true)
             success_status(id: conversation_id)

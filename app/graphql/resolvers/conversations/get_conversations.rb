@@ -11,8 +11,8 @@ module Resolvers
         context[:current_member]
           .conversations
           .joins(:messages)
-          .select("conversations.*, MAX(messages.created_at) as last_message_created_at")
-          .group("conversations.id")
+          .select("messaging_conversations.*, MAX(messaging_messages.created_at) as last_message_created_at")
+          .group("messaging_conversations.id")
           .order("last_message_created_at DESC")
       end
 
