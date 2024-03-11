@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_07_112454) do
+ActiveRecord::Schema.define(version: 2024_03_11_132953) do
 
   create_table "accessibility_informations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -179,25 +179,6 @@ ActiveRecord::Schema.define(version: 2024_03_07_112454) do
     t.datetime "updated_at", null: false
     t.index ["content_blockable_type", "content_blockable_id"], name: "index_content_blocks_on_content_blockable_type_and_id"
     t.index ["content_blockable_type", "content_blockable_id"], name: "index_content_blocks_on_type_and_id"
-  end
-
-  create_table "conversation_participants", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "conversation_id", null: false
-    t.bigint "member_id", null: false
-    t.boolean "email_notification_enabled", default: true
-    t.boolean "push_notification_enabled", default: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["conversation_id"], name: "index_conversation_participants_on_conversation_id"
-    t.index ["member_id"], name: "index_conversation_participants_on_member_id"
-  end
-
-  create_table "conversations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "conversationable_type", null: false
-    t.bigint "conversationable_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["conversationable_type", "conversationable_id"], name: "index_conversations_on_conversationable"
   end
 
   create_table "data_providers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -420,14 +401,43 @@ ActiveRecord::Schema.define(version: 2024_03_07_112454) do
     t.index ["reset_password_token"], name: "index_members_on_reset_password_token", unique: true
   end
 
-  create_table "messages", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "messaging_conversation_participants", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "conversation_id", null: false
+    t.bigint "member_id", null: false
+    t.boolean "email_notification_enabled", default: true
+    t.boolean "push_notification_enabled", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["conversation_id"], name: "index_messaging_conversation_participants_on_conversation_id"
+    t.index ["member_id"], name: "index_messaging_conversation_participants_on_member_id"
+  end
+
+  create_table "messaging_conversations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "conversationable_type", null: false
+    t.bigint "conversationable_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["conversationable_type", "conversationable_id"], name: "index_conversations_on_conversationable"
+  end
+
+  create_table "messaging_messages", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "conversation_id", null: false
     t.text "message_text"
     t.bigint "sender_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["conversation_id"], name: "index_messaging_messages_on_conversation_id"
     t.index ["sender_id"], name: "fk_rails_b8f26a382d"
+  end
+
+  create_table "messaging_receipts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "message_id", null: false
+    t.bigint "member_id", null: false
+    t.boolean "read", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["member_id"], name: "index_messaging_receipts_on_member_id"
+    t.index ["message_id"], name: "index_messaging_receipts_on_message_id"
   end
 
   create_table "municipalities", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -600,16 +610,6 @@ ActiveRecord::Schema.define(version: 2024_03_07_112454) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["quotaable_type", "quotaable_id"], name: "index_quotas_on_quotaable_type_and_quotaable_id"
-  end
-
-  create_table "receipts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "message_id", null: false
-    t.bigint "member_id", null: false
-    t.boolean "read", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["member_id"], name: "index_receipts_on_member_id"
-    t.index ["message_id"], name: "index_receipts_on_message_id"
   end
 
   create_table "redemptions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -800,14 +800,14 @@ ActiveRecord::Schema.define(version: 2024_03_07_112454) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "conversation_participants", "conversations"
-  add_foreign_key "conversation_participants", "members"
-  add_foreign_key "messages", "conversations"
-  add_foreign_key "messages", "members", column: "sender_id"
+  add_foreign_key "messaging_conversation_participants", "members"
+  add_foreign_key "messaging_conversation_participants", "messaging_conversations", column: "conversation_id"
+  add_foreign_key "messaging_messages", "members", column: "sender_id"
+  add_foreign_key "messaging_messages", "messaging_conversations", column: "conversation_id"
+  add_foreign_key "messaging_receipts", "members"
+  add_foreign_key "messaging_receipts", "messaging_messages", column: "message_id"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
-  add_foreign_key "receipts", "members"
-  add_foreign_key "receipts", "messages"
 end
