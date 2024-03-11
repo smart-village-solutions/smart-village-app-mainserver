@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: receipts
+# Table name: messaging_receipts
 #
 #  id         :bigint           not null, primary key
 #  message_id :bigint           not null

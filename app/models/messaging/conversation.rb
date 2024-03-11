@@ -18,7 +18,7 @@ end
 
 # == Schema Information
 #
-# Table name: conversations
+# Table name: messaging_conversations
 #
 #  id                    :bigint           not null, primary key
 #  conversationable_type :string(255)      not null

@@ -9,7 +9,7 @@ end
 
 # == Schema Information
 #
-# Table name: conversation_participants
+# Table name: messaging_conversation_participants
 #
 #  id                         :bigint           not null, primary key
 #  conversation_id            :bigint           not null
