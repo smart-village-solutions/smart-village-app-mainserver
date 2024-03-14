@@ -18,17 +18,22 @@ class MinioService
 
   def set_bucket_policy(bucket_name)
     policy = {
-      "Version":"2012-10-17",
-      "Statement":[
+      "Version" => "2012-10-17",
+      "Statement" => [
         {
-          "Principal":"*",
-          "Effect":"Allow",
-          "Action":[
-            "s3:GetObject"
+          "Effect" => "Allow",
+          "Principal" => { "AWS" => "*" },
+          "Action" => [
+            "s3:GetBucketLocation",
+            "s3:ListBucket"
           ],
-          "Resource":[
-            "arn:aws:s3:::#{bucket_name}/*"
-          ]
+          "Resource" => "arn:aws:s3:::#{bucket_name}"
+        },
+        {
+          "Effect" => "Allow",
+          "Principal" => { "AWS" => "*" },
+          "Action" => "s3:GetObject",
+          "Resource" => "arn:aws:s3:::#{bucket_name}/*"
         }
       ]
     }
@@ -37,6 +42,13 @@ class MinioService
       bucket: bucket_name,
       policy: policy.to_json
     })
+  end
+
+  def get_bucket_policy(bucket_name)
+    response = aws_client.get_bucket_policy(bucket: bucket_name)
+    JSON.parse(response.policy.string)
+  rescue Aws::S3::Errors::NoSuchBucketPolicy
+    "Keine Policy gefunden"
   end
 
   def bucket_exists?(bucket_name)
