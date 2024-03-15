@@ -38,6 +38,7 @@ class DataProvider < ApplicationRecord
   has_one :address, as: :addressable
   has_one :contact, as: :contactable
   has_one :logo, as: :web_urlable, class_name: "WebUrl"
+  has_one :external_service, as: :external_service, dependent: :destroy
 
   before_save :parse_role_values
 
