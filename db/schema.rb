@@ -278,11 +278,9 @@ ActiveRecord::Schema.define(version: 2024_04_18_153949) do
     t.string "name"
     t.string "base_uri"
     t.text "resource_config"
-    t.text "auth_config"
+    t.integer "municipality_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "data_provider_id"
-    t.integer "municipality_id"
   end
 
   create_table "fixed_dates", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

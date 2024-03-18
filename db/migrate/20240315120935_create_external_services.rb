@@ -4,7 +4,7 @@ class CreateExternalServices < ActiveRecord::Migration[6.1]
       t.string :name
       t.string :base_uri
       t.text :resource_config
-      t.text :auth_config
+      t.integer :municipality_id
 
       t.timestamps
     end

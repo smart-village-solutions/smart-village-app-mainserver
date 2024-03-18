@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col">
+    <h1>External Services</h1>
+
+    <p><%= link_to "New External Service", new_external_service_path, class: 'btn btn-success' %></p>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Base URI</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @external_services.each do |external_service| %>
+          <tr>
+            <td class="align-middle"><%= external_service.name %></td>
+            <td class="align-middle"><%= external_service.base_uri %></td>
+            <td class="align-middle" style="width: 70px"><%= link_to t('doorkeeper.applications.buttons.edit'), edit_external_service_path(external_service), class: 'btn btn-sm btn-outline-secondary' %></td>
+            <td class="align-middle" style="width: 70px"><%= link_to 'Destroy', external_service, method: :delete,class: 'btn btn-sm btn-outline-danger', data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
