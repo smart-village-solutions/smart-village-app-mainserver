@@ -10,4 +10,5 @@ class ExternalService < ApplicationRecord
         ], coder: JSON
 
   belongs_to :municipality
+  has_one :external_service_credential, dependent: :destroy
 end
