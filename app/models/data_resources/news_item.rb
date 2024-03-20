@@ -69,22 +69,18 @@ class NewsItem < ApplicationRecord
 
   private
 
-    def find_or_create_category
-      # für Abwärtskompatibilität, wenn nur ein einiger Kategorienamen angegeben wird
-      # ist der attr_accessor :category_name befüllt
-      if category_name.present?
+    # für Abwärtskompatibilität, wenn nur ein einiger Kategorienamen angegeben wird
+    # ist der attr_accessor :category_name befüllt:
+    # category_name = "foobar"
+    # und wenn mehrere Kategorien auf einmal gesetzt werden, ist der attr_accessor :category_names befüllt:
+    # category_names = [{name: "foo"}, {name: "bar"}]
+    def find_or_create_category # rubocop:disable Metrics/AbcSize
+      category_names_to_add = Array(category_names).map { |a| a.fetch(:name, nil) } + Array(category_name)
+      category_names_to_add = category_names_to_add.compact.uniq.delete_if(&:blank?)
+
+      category_names_to_add.each do |category_name|
         category_to_add = Category.where(name: category_name).first_or_create
         categories << category_to_add unless categories.include?(category_to_add)
-      end
-
-      # Wenn mehrere Kategorien auf einmal gesetzt werden
-      # ist der attr_accessor :category_names befüllt
-      if category_names.present?
-        category_names.each do |category|
-          next unless category[:name].present?
-          category_to_add = Category.where(name: category[:name]).first_or_create
-          categories << category_to_add unless categories.include?(category_to_add)
-        end
       end
     end
 
