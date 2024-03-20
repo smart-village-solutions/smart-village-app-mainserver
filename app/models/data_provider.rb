@@ -43,7 +43,7 @@ class DataProvider < ApplicationRecord
 
   before_save :parse_role_values
 
-  accepts_nested_attributes_for :address, :contact, :logo, :data_resource_settings
+  accepts_nested_attributes_for :address, :contact, :logo, :data_resource_settings, :external_service_credential
 
   def parse_role_values
     roles.each do |key, value|

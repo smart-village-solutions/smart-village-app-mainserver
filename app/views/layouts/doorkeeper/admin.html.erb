@@ -35,6 +35,10 @@
           <li class="nav-item">
             <%= link_to "Categories", categories_path, class: "nav-link" %>
           </li>
+
+          <li class="nav-item">
+            <%= link_to "External Services", external_services_path, class: "nav-link" %>
+          </li>
         <% end %>
 
         <% if current_user && current_user.try(:data_provider).try(:role_push_notification) %>
@@ -55,10 +59,6 @@
             <%= link_to "GraphQL API", "/graphiql", class: "dropdown-item", target: "_blank" %>
             <%= link_to "Swagger API", "/api-docs", class: "dropdown-item", target: "_blank" %>
           </div>
-        </li>
-
-        <li class="nav-item">
-          <%= link_to "External Services", external_services_path, class: "nav-link" %>
         </li>
 
         <li class="nav-item">

@@ -92,6 +92,29 @@
         </div>
       <% end %>
 
+      <h2>External Service</h2>
+        <div class="form-group">
+          <%= label_tag :external_service_id, 'Select External Service' %>
+          <%= select_tag 'data_provider[external_service_credential_attributes][external_service_id]', 
+              options_from_collection_for_select(
+                ExternalService.all, :id, :name, @data_provider.external_service_credential.try(:external_service_id)
+              ),
+              include_blank: true, class: "form-control" 
+          %>
+        </div>
+
+        <%= f.fields_for :external_service_credential do |cred_fields| %>
+          <div class="form-group">
+            <%= cred_fields.label :client_key %>
+            <%= cred_fields.text_field :client_key, class: "form-control" %>
+          </div>
+
+          <div class="form-group">
+            <%= cred_fields.label :client_secret %>
+            <%= cred_fields.text_field :client_secret, class: "form-control" %>
+          </div>
+        <% end %>
+
       <p>
         <%= f.submit class: "btn btn-primary" %>
       </p>
