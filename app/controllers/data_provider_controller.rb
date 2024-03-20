@@ -40,24 +40,6 @@ class DataProviderController < ApplicationController
     end
   end
 
-  # def update
-  #   if @data_provider.update(provider_params)
-  #     flash[:notice] = "Data Provider Updated successfully."
-  #     current_user.data_provider = @data_provider unless current_user.data_provider == @data_provider
-  #     current_user.save if current_user.changed?
-  #   else
-  #     flash.now[:alert] = @data_provider.errors.full_messages.to_sentence
-  #   end
-
-  #   respond_to do |format|
-  #     format.json { render json: @data_provider, status: :ok, include: [:logo, :address, :contact] }
-  #     format.html { redirect_to action: :edit }
-  #   end
-  # rescue => e
-  #   flash.now[:alert] = "An error occurred: #{e.message}"
-  #   render :edit
-  # end
-
   def update
     @data_provider.update(provider_params)
     current_user.data_provider = @data_provider
