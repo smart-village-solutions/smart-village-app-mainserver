@@ -4,17 +4,18 @@
 # rubocop:disable all
 class EventRecord < ApplicationRecord
   include FilterByRole
+  include Categorizable
   extend OrderAsSpecified
 
-  attr_accessor :category_name
-  attr_accessor :category_names
-  attr_accessor :region_name
-  attr_accessor :force_create
-  attr_accessor :in_date_range_start_date
+  attr_accessor :category_name,
+                :category_names,
+                :region_name,
+                :force_create,
+                :in_date_range_start_date
 
   before_save :remove_emojis
   before_save :handle_recurring_dates
-  after_save :find_or_create_category
+  after_save :find_or_create_category # This is defined in the Categorizable module
   after_save :set_sort_date
   before_validation :find_or_create_region
 
@@ -205,26 +206,6 @@ class EventRecord < ApplicationRecord
   end
 
   private
-
-    def find_or_create_category
-      # für Abwärtskompatibilität, wenn nur ein einiger Kategorienamen angegeben wird
-      # ist der attr_accessor :category_name befüllt
-      if category_name.present?
-        category_to_add = Category.where(name: category_name).first_or_create
-        categories << category_to_add unless categories.include?(category_to_add)
-      end
-
-      # Wenn mehrere Kategorien auf einmal gesetzt werden
-      # ist der attr_accessor :category_names befüllt
-      if category_names.present?
-        category_names.each do |category|
-          next unless category[:name].present?
-
-          category_to_add = Category.where(name: category[:name]).first_or_create
-          categories << category_to_add unless categories.include?(category_to_add)
-        end
-      end
-    end
 
     # if a start and end date describes a larger time range, "today" needs to be returned until end
     # is reached.

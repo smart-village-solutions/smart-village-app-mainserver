@@ -4,14 +4,15 @@
 # from an old school news article to a whole story structured in chapters
 class NewsItem < ApplicationRecord
   include FilterByRole
+  include Categorizable
 
-  attr_accessor :force_create
-  attr_accessor :category_name
-  attr_accessor :category_names
-  attr_accessor :push_notification
+  attr_accessor :force_create,
+                :category_name,
+                :category_names,
+                :push_notification
 
   before_save :remove_emojis
-  after_save :find_or_create_category
+  after_save :find_or_create_category # This is defined in the Categorizable module
   after_save :send_push_notification
 
   belongs_to :data_provider
@@ -68,21 +69,6 @@ class NewsItem < ApplicationRecord
   end
 
   private
-
-    # für Abwärtskompatibilität, wenn nur ein einiger Kategorienamen angegeben wird
-    # ist der attr_accessor :category_name befüllt:
-    # category_name = "foobar"
-    # und wenn mehrere Kategorien auf einmal gesetzt werden, ist der attr_accessor :category_names befüllt:
-    # category_names = [{name: "foo"}, {name: "bar"}]
-    def find_or_create_category # rubocop:disable Metrics/AbcSize
-      category_names_to_add = Array(category_names).map { |a| a.fetch(:name, nil) } + Array(category_name)
-      category_names_to_add = category_names_to_add.compact.uniq.delete_if(&:blank?)
-
-      category_names_to_add.each do |category_name|
-        category_to_add = Category.where(name: category_name).first_or_create
-        categories << category_to_add unless categories.include?(category_to_add)
-      end
-    end
 
     def send_push_notification
       # do not send push notifications, if not explicitly requested
