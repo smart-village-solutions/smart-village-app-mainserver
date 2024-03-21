@@ -7,9 +7,9 @@ class Attraction < ApplicationRecord
   include FilterByRole
   include Categorizable
 
-  attr_accessor :force_create
-  attr_accessor :category_name
-  attr_accessor :category_names
+  attr_accessor :force_create,
+                :category_name,
+                :category_names
 
   before_save :remove_emojis
   after_save :find_or_create_category # This is defined in the Categorizable module
