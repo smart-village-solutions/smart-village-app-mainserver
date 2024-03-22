@@ -289,8 +289,8 @@ ActiveRecord::Schema.define(version: 2024_04_18_153949) do
   end
 
   create_table "external_services", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "name"
-    t.string "base_uri"
+    t.text "name"
+    t.text "base_uri"
     t.text "resource_config"
     t.integer "municipality_id"
     t.datetime "created_at", precision: 6, null: false
