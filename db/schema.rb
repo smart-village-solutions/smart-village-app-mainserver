@@ -275,11 +275,11 @@ ActiveRecord::Schema.define(version: 2024_04_18_153949) do
   end
 
   create_table "external_service_credentials", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "client_key"
-    t.string "client_secret"
+    t.text "client_key"
+    t.text "client_secret"
     t.string "scopes"
     t.string "auth_type"
-    t.string "external_id"
+    t.text "external_id"
     t.bigint "external_service_id", null: false
     t.bigint "data_provider_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -289,8 +289,8 @@ ActiveRecord::Schema.define(version: 2024_04_18_153949) do
   end
 
   create_table "external_services", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.text "name"
-    t.text "base_uri"
+    t.string "name"
+    t.string "base_uri"
     t.text "resource_config"
     t.integer "municipality_id"
     t.datetime "created_at", precision: 6, null: false
