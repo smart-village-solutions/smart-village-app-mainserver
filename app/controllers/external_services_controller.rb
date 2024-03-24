@@ -5,12 +5,8 @@ class ExternalServicesController < ApplicationController
   layout "doorkeeper/admin"
 
   before_action :authenticate_user!
-  before_action :authenticate_user_role
+  before_action :authenticate_admin_role
   before_action :set_external_service, only: %i[show edit update destroy]
-
-  def authenticate_user_role
-    render inline: "not allowed", status: 404 unless current_user.admin_role?
-  end
 
   def index
     @external_services = ExternalService.all
@@ -23,46 +19,42 @@ class ExternalServicesController < ApplicationController
     @external_service = ExternalService.new
   end
 
-  def edit; end
+  def edit
+  end
 
   def create
     @external_service = ExternalService.new(external_service_params)
 
-    respond_to do |format|
-      if @external_service.save
-        format.html { redirect_to external_services_path, notice: "External service was successfully created." }
-        format.json { render :show, status: :created, location: @external_service }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @external_service.errors, status: :unprocessable_entity }
-      end
+    if @external_service.save
+      redirect_to external_services_path, notice: "External service was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    @external_service = ExternalService.find(params[:id])
-
-    respond_to do |format|
-      if @external_service.update(external_service_params)
-        format.html { redirect_to external_services_path, notice: "External service was successfully updated." }
-        format.json { render :show, status: :ok, location: @external_service }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @external_service.errors, status: :unprocessable_entity }
-      end
+    if @external_service.update(external_service_params)
+      redirect_to external_services_path, notice: "External service was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @external_service = ExternalService.find(params[:id])
-    @external_service.destroy
-    respond_to do |format|
-      format.html { redirect_to external_services_url, notice: "External service was successfully destroyed." }
-      format.json { head :no_content }
+    if @external_service.data_providers.any?
+      data_provider_names = @external_service.data_providers.pluck(:name)
+      redirect_to external_services_url, alert: "Failed to destroy external service: Can't delete External Service as it is associated with DataProviders: #{data_provider_names}."
+    else
+      @external_service.destroy
+      redirect_to external_services_url, notice: "External service was successfully destroyed."
     end
   end
 
   private
+
+    def authenticate_admin_role
+      redirect_to root_path, alert: "Not allowed" unless current_user.admin_role?
+    end
 
     def set_external_service
       @external_service = ExternalService.find(params[:id])

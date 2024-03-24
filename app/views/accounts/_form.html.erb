@@ -164,6 +164,8 @@
     </div>
   <% end %>
 
+  <%= render partial: 'external_services/external_service_fields', locals: { f: d, use_account_form: true } %>
+
   <h2>Optionen für Ressourcen</h2>
   <nav>
     <div class="nav nav-tabs" id="resource-nav-tab" role="tablist">
