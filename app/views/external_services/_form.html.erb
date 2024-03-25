@@ -50,7 +50,7 @@
     }
     var editor = new JSONEditor(container, options)
 
-    <% config = external_service.resource_config.to_json.html_safe %>
+    <% config = external_service.resource_config.to_s.html_safe %>
     <% if config.present? %>
       editor.set(<%= config %>);
     <% else %>
