@@ -60,11 +60,14 @@ class DataProviderController < ApplicationController
     end
 
     def provider_params
-      params.require(:data_provider).permit(:name, :description, :notice,
-        address_attributes: [:addition, :city, :street, :zip, :id],
-        contact_attributes: [:first_name, :last_name, :phone, :fax, :email, :id],
-        logo_attributes: [:url, :description, :id],
-        external_service_credential_attributes: [:id, :client_key, :client_secret, :external_service_id])
+      params.require(:data_provider)
+            .permit(
+              :name, :description, :notice,
+              address_attributes: %i[addition city street zip id],
+              contact_attributes: %i[first_name last_name phone fax email id],
+              logo_attributes: %i[url description id],
+              external_service_credential_attributes: %i[id client_key client_secret external_service_id organization_id]
+            )
     end
 
     def init_data_provider

@@ -284,6 +284,7 @@ ActiveRecord::Schema.define(version: 2024_04_18_153949) do
     t.bigint "data_provider_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "additional_params"
     t.index ["data_provider_id"], name: "index_external_service_credentials_on_data_provider_id"
     t.index ["external_service_id"], name: "index_external_service_credentials_on_external_service_id"
   end
