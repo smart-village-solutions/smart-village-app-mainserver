@@ -33,7 +33,10 @@ class ExternalServicesController < ApplicationController
   end
 
   def update
-    if @external_service.update(external_service_params)
+    @external_service.assign_attributes(external_service_params.except(:resource_config))
+    @external_service.resource_config = JSON.parse(external_service_params[:resource_config])
+
+    if @external_service.save
       redirect_to external_services_path, notice: "External service was successfully updated."
     else
       render :edit, status: :unprocessable_entity

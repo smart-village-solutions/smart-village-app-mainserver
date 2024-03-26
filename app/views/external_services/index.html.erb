@@ -17,7 +17,7 @@
       <tbody>
         <% @external_services.each do |external_service| %>
           <tr>
-            <td class="align-middle"><%= external_service.name %></td>
+            <td class="align-middle"><%= link_to external_service.name, external_service_path(external_service) %></td>
             <td class="align-middle"><%= external_service.base_uri %></td>
             <td class="align-middle"><%= external_service.data_providers.count %></td>
             <td class="align-middle" style="width: 70px"><%= link_to t('doorkeeper.applications.buttons.edit'), edit_external_service_path(external_service), class: 'btn btn-sm btn-outline-secondary' %></td>

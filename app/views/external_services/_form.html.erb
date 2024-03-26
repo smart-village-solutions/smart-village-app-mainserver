@@ -27,7 +27,16 @@
 
       <div class="form-group">
         <%= form.label :resource_config %>
-        <div id="code_editor" style="height: 400px;"></div>
+        <% config = external_service.resource_config.to_json.html_safe %>
+        <% valid_json_content = JSON.parse(config) rescue nil %>
+        <% if valid_json_content %>
+          <div id="code_editor" style="height: 400px;"></div>
+        <% else %>
+          <div>
+            <p class="text-danger"><small><em>JSON format is not valid!</em></small></p>
+            <%= form.text_area :resource_config, class: "form-control", style: "height: 400px;" %>
+          </div>
+        <% end %>
       </div>
 
       <div class="form-group">
@@ -50,7 +59,7 @@
     }
     var editor = new JSONEditor(container, options)
 
-    <% config = external_service.resource_config.to_s.html_safe %>
+    <% config = external_service.resource_config.to_json.html_safe %>
     <% if config.present? %>
       editor.set(<%= config %>);
     <% else %>
