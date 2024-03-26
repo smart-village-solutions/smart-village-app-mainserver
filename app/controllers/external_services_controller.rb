@@ -64,6 +64,6 @@ class ExternalServicesController < ApplicationController
     end
 
     def external_service_params
-      params.require(:external_service).permit(:name, :base_uri, :resource_config)
+      params.require(:external_service).permit(:name, :base_uri, :auth_path, :resource_config)
     end
 end

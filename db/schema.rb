@@ -296,6 +296,7 @@ ActiveRecord::Schema.define(version: 2024_04_18_153949) do
     t.integer "municipality_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "auth_path"
   end
 
   create_table "fixed_dates", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
