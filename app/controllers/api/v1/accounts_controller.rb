@@ -71,7 +71,14 @@ class Api::V1::AccountsController < Api::BaseController
 
     def serialize_account(account)
       account.as_json(include: {
-        user: { only: %i[email role] },
+        user: {
+          only: %i[email role],
+          include: {
+            oauth_applications: {
+              only: %i[uid secret]
+            }
+          }
+        },
         logo: { only: %i[url description] },
         address: { only: %i[addition street city zip] },
         contact: { only: %i[first_name last_name phone fax email] }

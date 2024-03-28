@@ -38,6 +38,7 @@ class Accounts::CreateAccountService
       data_provider = create_data_provider
       user.data_provider = data_provider
       user.save!
+      create_oauth_application!(user)
       data_provider
     end
   end
@@ -55,6 +56,14 @@ class Accounts::CreateAccountService
         password_confirmation: user_password,
         role: account_params[:role],
         municipality_id: municipality_id
+      )
+    end
+
+    def create_oauth_application!(user)
+      user.oauth_applications.create(
+        name: "Zugriff per CMS",
+        redirect_uri: "urn:ietf:wg:oauth:2.0:oob",
+        confidential: true
       )
     end
 
