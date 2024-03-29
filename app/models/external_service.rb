@@ -8,6 +8,9 @@ class ExternalService < ApplicationRecord
   belongs_to :municipality
   has_one :external_service_credential, dependent: :restrict_with_error
   has_many :data_providers, through: :external_service_credential
+  has_many :external_service_categories, dependent: :restrict_with_error
+
+  accepts_nested_attributes_for :external_service_categories
 end
 
 # == Schema Information

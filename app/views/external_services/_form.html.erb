@@ -3,12 +3,11 @@
     <%= form_with(model: external_service, local: true) do |form| %>
       <%= form.hidden_field :resource_config, value: external_service.resource_config.to_json.html_safe %>
 
-      <% if external_service.errors.any? %>
+      <% if external_service.errors[:base].any? %>
         <div id="error_explanation">
-          <h2><%= pluralize(external_service.errors.count, "error") %> prohibited this external service from being saved:</h2>
-
+          <h2><%= pluralize(external_service.errors[:base].count, "error") %> prohibited this external service from being saved:</h2>
           <ul>
-            <% external_service.errors.full_messages.each do |message| %>
+            <% external_service.errors[:base].each do |message| %>
               <li><%= message %></li>
             <% end %>
           </ul>
@@ -43,6 +42,30 @@
           </div>
         <% end %>
       </div>
+
+      <h3>Category Mappings</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>External ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= form.fields_for :external_service_categories do |category_fields| %>
+            <tr class="nested-fields">
+              <td>
+                <%= category_fields.object.category.try(:name) %>
+                <%= category_fields.hidden_field :id %>
+                <%= category_fields.hidden_field :category_id %>
+              </td>
+              <td>
+                <%= category_fields.text_field :external_id, class: 'form-control' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
 
       <div class="form-group">
         <%= form.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primary" %>

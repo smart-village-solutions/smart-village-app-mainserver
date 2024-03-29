@@ -16,6 +16,7 @@ class Category < ApplicationRecord
   has_many :news_items, source: :data_resource, source_type: "NewsItem", through: :data_resource_categories
   has_many :generic_items, source: :data_resource, source_type: "GenericItem", through: :data_resource_categories
   has_one :contact, as: :contactable, dependent: :destroy
+  has_many :external_service_categories, dependent: :destroy
 
   after_destroy :cleanup_data_resource_settings
 

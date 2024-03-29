@@ -6,7 +6,7 @@ class ExternalServicesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :authenticate_admin_role
-  before_action :set_external_service, only: %i[show edit update destroy]
+  before_action :set_external_service, only: %i[show update destroy]
 
   def index
     @external_services = ExternalService.all
@@ -17,17 +17,21 @@ class ExternalServicesController < ApplicationController
 
   def new
     @external_service = ExternalService.new
+    Category.all.each { |category| @external_service.external_service_categories.build(category: category) }
   end
 
   def edit
+    @external_service = ExternalService.includes(external_service_categories: :category).find(params[:id])
   end
 
   def create
-    @external_service = ExternalService.new(external_service_params)
+    @external_service = ExternalService.new(external_service_params.except(:resource_config))
+    @external_service.resource_config = JSON.parse(external_service_params[:resource_config])
 
     if @external_service.save
       redirect_to external_services_path, notice: "External service was successfully created."
     else
+      @external_service.external_service_categories.build if @external_service.external_service_categories.empty?
       render :new, status: :unprocessable_entity
     end
   end
@@ -54,7 +58,6 @@ class ExternalServicesController < ApplicationController
   end
 
   private
-
     def authenticate_admin_role
       redirect_to root_path, alert: "Not allowed" unless current_user.admin_role?
     end
@@ -64,6 +67,9 @@ class ExternalServicesController < ApplicationController
     end
 
     def external_service_params
-      params.require(:external_service).permit(:name, :base_uri, :auth_path, :resource_config)
+      params.require(:external_service).permit(
+        :name, :base_uri, :auth_path, :resource_config,
+        external_service_categories_attributes: %i[id category_id external_id]
+      )
     end
 end
