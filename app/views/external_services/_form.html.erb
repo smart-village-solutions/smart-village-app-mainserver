@@ -3,11 +3,12 @@
     <%= form_with(model: external_service, local: true) do |form| %>
       <%= form.hidden_field :resource_config, value: external_service.resource_config.to_json.html_safe %>
 
-      <% if external_service.errors[:base].any? %>
+      <% if external_service.errors.any? %>
         <div id="error_explanation">
-          <h2><%= pluralize(external_service.errors[:base].count, "error") %> prohibited this external service from being saved:</h2>
+          <h2><%= pluralize(external_service.errors.count, "error") %> prohibited this external service from being saved:</h2>
+
           <ul>
-            <% external_service.errors[:base].each do |message| %>
+            <% external_service.errors.full_messages.each do |message| %>
               <li><%= message %></li>
             <% end %>
           </ul>
