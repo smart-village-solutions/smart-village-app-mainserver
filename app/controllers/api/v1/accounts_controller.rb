@@ -26,7 +26,14 @@ class Api::V1::AccountsController < Api::BaseController
     contact_email
   ].freeze
 
-  PARAMS = USER_PARAMS + DATA_PROVIDER_PARAMS
+  EXTERNAL_SERVICE_PARAMS = %i[
+    external_service_id
+    organization_id
+    client_key
+    client_secret
+  ].freeze
+
+  PARAMS = USER_PARAMS + DATA_PROVIDER_PARAMS + EXTERNAL_SERVICE_PARAMS
 
   def show
     render_account_response(@data_provider)
@@ -71,6 +78,7 @@ class Api::V1::AccountsController < Api::BaseController
 
     def serialize_account(account)
       account.as_json(include: {
+        external_service: { only: %i[id name] },
         user: {
           only: %i[email role],
           include: {
