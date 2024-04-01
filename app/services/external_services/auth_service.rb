@@ -7,7 +7,7 @@ class ExternalServices::AuthService
   end
 
   def obtain_access_token
-    uri = URI("#{@base_uri}/oauth/token")
+    uri = URI("#{@base_uri}#{@auth_path}")
     response = Net::HTTP.post_form(uri, request_params)
     response_body = JSON.parse(response.body, symbolize_names: true)
 
@@ -36,5 +36,6 @@ class ExternalServices::AuthService
       @base_uri = credentials.external_service.base_uri
       @client_key = credentials.client_key
       @client_secret = credentials.client_secret
+      @auth_path = credentials.external_service.auth_path
     end
 end

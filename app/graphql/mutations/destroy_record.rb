@@ -35,6 +35,11 @@ module Mutations
       result = destroy_record(record)
       id ||= record.try(:id)
 
+      # Delete event from external service if record is an EventRecord
+      if record_type == "EventRecord"
+        ExternalServices::EventRecords::EventSyncService.new(current_user, record).delete_event
+      end
+
       OpenStruct.new(id: id, status: result[:status], status_code: result[:status_code])
     end
 
