@@ -384,6 +384,7 @@ ActiveRecord::Schema.define(version: 2023_11_15_101929) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "exclude_data_provider_ids"
+    t.text "exclude_mowas_regional_keys"
     t.index ["token"], name: "index_notification_devices_on_token", unique: true
   end
 

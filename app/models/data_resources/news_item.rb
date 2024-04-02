@@ -23,6 +23,8 @@ class NewsItem < ApplicationRecord
   has_many :categories, through: :data_resource_categories
   has_many :content_blocks, as: :content_blockable, dependent: :destroy
 
+  store :payload, coder: JSON
+
   scope :by_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
   }
@@ -95,6 +97,11 @@ class NewsItem < ApplicationRecord
       push_title = title.presence || content_blocks.try(:first).try(:title).presence || "Neue Nachricht"
       push_body = content_blocks.try(:first).try(:intro).presence || push_title
       push_body = ActionView::Base.full_sanitizer.sanitize(push_body)
+      if payload.present?
+        payload_with_underscore_keys = payload.transform_keys { |key| key.to_s.underscore }
+        mowas_regional_keys = payload_with_underscore_keys.fetch(:regional_keys, [])
+        mowas_regional_keys = mowas_regional_keys.map { |key| key.to_i }
+      end
 
       options = {
         title: push_title,
@@ -102,7 +109,8 @@ class NewsItem < ApplicationRecord
         data: {
           id: id,
           query_type: self.class.to_s,
-          data_provider_id: data_provider.id
+          data_provider_id: data_provider.id,
+          mowas_regional_keys: mowas_regional_keys
         }
       }
 
