@@ -28,7 +28,7 @@ class Resolvers::NewsItemsSearch
   option :dataProvider, type: types.String, with: :apply_data_provider
   option :dataProviderId, type: types.ID, with: :apply_data_provider_id
   option :excludeDataProviderIds, type: types[types.ID], with: :apply_exclude_data_provider_ids
-  option :excludeMowasRegionalKeys, type: types.String, with: :apply_exclude_mowas_regional_keys
+  option :excludeMowasRegionalKeys, type: types[types.String], with: :apply_exclude_mowas_regional_keys
   option :categoryId, type: types.ID, with: :apply_category_id
   option :categoryIds, type: types[types.ID], with: :apply_category_ids
 
@@ -63,7 +63,7 @@ class Resolvers::NewsItemsSearch
   def apply_exclude_mowas_regional_keys(scope, value)
     scope = scope.where(payload: nil).or(scope.where.not("payload LIKE ?", "%regionalKeys%"))
 
-    value.split(",").map(&:strip).each do |regional_key|
+    value.each do |regional_key|
       next if regional_key.blank?
 
       scope = scope.or(scope.where.not("payload LIKE ?", "%#{regional_key}%"))
