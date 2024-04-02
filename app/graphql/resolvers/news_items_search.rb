@@ -65,7 +65,7 @@ class Resolvers::NewsItemsSearch
       next if regional_key.blank?
 
       scope = scope.where(
-        "payload IS NULL OR (payload NOT LIKE ? AND payload NOT LIKE ?)",
+        "payload IS NULL OR (payload LIKE ? AND payload NOT LIKE ?)",
         "%regionalKeys%",
         "%#{regional_key}%"
       )
