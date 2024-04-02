@@ -61,12 +61,12 @@ class Resolvers::NewsItemsSearch
   end
 
   def apply_exclude_mowas_regional_keys(scope, value)
-    scope = scope.where(payload: nil).or(scope.where.not("payload LIKE ?", "%regionalKeys%"))
+    scope = scope.where(payload: nil)
 
     value.each do |regional_key|
       next if regional_key.blank?
 
-      scope = scope.or(scope.where.not("payload LIKE ?", "%#{regional_key}%"))
+      scope = scope.or(scope.where("payload LIKE ? AND payload NOT LIKE ?", "%regionalKeys%", "%#{regional_key}%"))
     end
 
     scope
