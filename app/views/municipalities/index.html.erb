@@ -12,6 +12,7 @@
       <th>ID</th>
       <th>Slug</th>
       <th>Title</th>
+      <th>Created at</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -22,6 +23,7 @@
         <td><%= municipality.id %></td>
         <td><%= municipality.slug %></td>
         <td><%= municipality.title %></td>
+        <td><%= municipality.created_at.strftime(t('doorkeeper.authorized_applications.index.date_format')) %></td>
         <td><%= link_to 'Mainserver', municipality.url, target: "_blank" %></td>
         <td><%= link_to 'CMS', municipality.cms_url, target: "_blank" %></td>
         <td><%= link_to 'Edit', edit_municipality_path(municipality) %></td>
