@@ -129,7 +129,8 @@ class Notification::DevicesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def notification_device_params
       params.require(:notification_device).permit(
-        :token, :device_type, :member_id, exclude_data_provider_ids: []
+        :token, :device_type, :member_id, exclude_data_provider_ids: [],
+        exclude_mowas_regional_keys: []
       )
     end
 end

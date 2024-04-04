@@ -27,6 +27,7 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   option :data_provider, type: GraphQL::Types::String, with: :apply_data_provider
   option :data_provider_id, type: GraphQL::Types::ID, with: :apply_data_provider_id
   option :exclude_data_provider_ids, type: types[GraphQL::Types::ID], with: :apply_exclude_data_provider_ids
+  option :exclude_mowas_regional_keys, type: types[types.String], with: :apply_exclude_mowas_regional_keys
   option :category_id, type: GraphQL::Types::ID, with: :apply_category_id
   option :category_ids, type: types[GraphQL::Types::ID], with: :apply_category_ids
 
@@ -56,6 +57,20 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
 
   def apply_exclude_data_provider_ids(scope, value)
     scope.where.not(data_provider_id: value)
+  end
+
+  def apply_exclude_mowas_regional_keys(scope, value)
+    value.each do |regional_key|
+      next if regional_key.blank?
+
+      scope = scope.where(
+        "payload IS NULL OR (payload LIKE ? AND payload NOT LIKE ?)",
+        "%regionalKeys%",
+        "%#{regional_key}%"
+      )
+    end
+
+    scope
   end
 
   def apply_category_id(scope, value)

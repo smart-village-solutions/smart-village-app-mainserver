@@ -12,9 +12,33 @@
 
 user = User.create(
   email: "tim@test.de",
-  password: "kBzWAvNCWqn2rJxG",
-  password_confirmation: "kBzWAvNCWqn2rJxG"
+  password: "kBzWAvNCWqn2rJxG", 
+  password_confirmation: "kBzWAvNCWqn2rJxG",
+  role: "admin"
 )
+
+data_provider = user.build_data_provider
+roles_to_assign = {
+  role_tour: true,
+  role_point_of_interest: true,
+  role_news_item: true,
+  role_event_record: true,
+  role_push_notification: true,
+  role_survey: true,
+  role_static_contents: true,
+  role_deadlines: true,
+  role_defect_report: true,
+  role_lunch: true,
+  role_waste_calendar: true,
+  role_job: true,
+  role_offer: true,
+  role_construction_site: true,
+  role_encounter_support: true,
+  role_tour_stops: true,
+  role_noticeboard: true,
+}
+data_provider.update(roles: roles_to_assign)
+
 doorkeeper_app = Doorkeeper::Application.new name: "XML-Importer", redirect_uri: "http://localhost:3000/oauth/confirm_access"
 doorkeeper_app.owner = user
 doorkeeper_app.save

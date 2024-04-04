@@ -6,7 +6,8 @@
 #   data: {
 #     id: id,
 #     query_type: self.class.to_s,
-#     data_provider_id: data_provider.id
+#     data_provider_id: data_provider.id,
+#     payload: payload
 #   }
 # }
 class PushNotification
@@ -19,13 +20,26 @@ class PushNotification
   def self.send_notifications(message_options = {}, municipality_id = nil)
     MunicipalityService.municipality_id = municipality_id
 
+    data = message_options[:data]
+
+    if data.present?
+      data_provider_id = data.fetch(:data_provider_id)
+      mowas_regional_keys = data.fetch(:mowas_regional_keys, [])
+    end
+
     notification_devices = Notification::Device.all
-    data_provider_id = message_options[:data_provider_id]
 
     if data_provider_id.present?
-      notification_devices = Notification::Device.where(
+      notification_devices = notification_devices.where(
         "exclude_data_provider_ids IS NULL OR exclude_data_provider_ids NOT LIKE '%- ?\n%'",
         data_provider_id
+      )
+    end
+
+    if mowas_regional_keys.present?
+      notification_devices = notification_devices.where(
+        "NOT (#{mowas_regional_keys.map { "exclude_mowas_regional_keys LIKE '%- ?\n%'" }.join(' AND ')}) OR exclude_mowas_regional_keys IS NULL",
+        *mowas_regional_keys
       )
     end
 

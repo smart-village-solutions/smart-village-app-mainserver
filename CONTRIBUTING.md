@@ -5,15 +5,15 @@ We love your work. We want to make it as easy as possible for you to contribute 
 ## Steps
 
 - Feature branches should be created from the 'saas' branch, based on the target deployment.
-- Use the convention `[feat/update/fix/]SVA-...`, aligning with the corresponding Jira ticket.
-- include `SVA-[Ticket-Number]` at the bottom of the commits message description.
+- Use the convention `[feat/update/fix/]SVA-...`, aligning with the corresponding Jira ticket, if existing.
+- include `SVA-[Ticket-Number]` at the bottom of the commits message description, if existing.
 - Pull Requests (PRs):
   - Description: Provide a detailed description, preferably with supporting images
     - when creating a merge request, the system automatically adds a comment such as “closes [ticket number]”. To maintain clarity and avoid redundancy, ensure this auto-generated comment is removed.
   - Assignees: Assign yourself as the PR owner
   - Reviewers: Add two colleagues for peer review
   - Labels: Attach the appropriate label to categorize the PR
-- Jira
+- Jira, if you have access
   - Assign the category (e.g., 'Internal Review') within Jira
   - Select a person for review
   - Set a due date

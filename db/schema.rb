@@ -475,6 +475,7 @@ ActiveRecord::Schema.define(version: 2024_03_11_132953) do
     t.integer "municipality_id"
     t.text "exclude_data_provider_ids"
     t.integer "member_id"
+    t.text "exclude_mowas_regional_keys"
     t.index ["token"], name: "index_notification_devices_on_token", unique: true
   end
 
