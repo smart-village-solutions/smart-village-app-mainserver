@@ -14,6 +14,8 @@ class PointOfInterest < Attraction
            foreign_key: :generic_itemable_id,
            class_name: "GenericItem",
            dependent: :destroy
+  has_many :event_records, dependent: :restrict_with_error
+  has_many :news_items, dependent: :restrict_with_error
 
   accepts_nested_attributes_for :price_informations, :opening_hours, :lunches, :vouchers
 

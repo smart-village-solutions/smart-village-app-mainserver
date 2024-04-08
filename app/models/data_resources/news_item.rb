@@ -16,6 +16,7 @@ class NewsItem < ApplicationRecord
   after_save :send_push_notification
 
   belongs_to :data_provider
+  belongs_to :point_of_interest, optional: true
 
   has_one :address, as: :addressable, dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy

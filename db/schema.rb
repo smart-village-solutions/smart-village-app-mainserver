@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_11_132953) do
+ActiveRecord::Schema.define(version: 2024_04_08_083421) do
 
   create_table "accessibility_informations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -256,6 +256,7 @@ ActiveRecord::Schema.define(version: 2024_03_11_132953) do
     t.integer "recurring_type"
     t.integer "recurring_interval"
     t.datetime "sort_date"
+    t.integer "point_of_interest_id"
     t.index ["data_provider_id"], name: "index_event_records_on_data_provider_id"
     t.index ["external_id"], name: "index_event_records_on_external_id"
     t.index ["region_id"], name: "index_event_records_on_region_id"
@@ -269,6 +270,41 @@ ActiveRecord::Schema.define(version: 2024_03_11_132953) do
     t.integer "external_id"
     t.string "external_type"
     t.index ["external_id", "external_type"], name: "index_external_references_on_id_and_type"
+  end
+
+  create_table "external_service_categories", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "external_id"
+    t.bigint "external_service_id", null: false
+    t.bigint "category_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_external_service_categories_on_category_id"
+    t.index ["external_service_id"], name: "index_external_service_categories_on_external_service_id"
+  end
+
+  create_table "external_service_credentials", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.text "client_key"
+    t.text "client_secret"
+    t.string "scopes"
+    t.string "auth_type"
+    t.text "external_id"
+    t.bigint "external_service_id", null: false
+    t.bigint "data_provider_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.text "additional_params"
+    t.index ["data_provider_id"], name: "index_external_service_credentials_on_data_provider_id"
+    t.index ["external_service_id"], name: "index_external_service_credentials_on_external_service_id"
+  end
+
+  create_table "external_services", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "base_uri"
+    t.text "resource_config"
+    t.integer "municipality_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "auth_path"
   end
 
   create_table "fixed_dates", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -464,6 +500,7 @@ ActiveRecord::Schema.define(version: 2024_03_11_132953) do
     t.boolean "visible", default: true
     t.datetime "push_notifications_sent_at"
     t.text "payload"
+    t.integer "point_of_interest_id"
     t.index ["data_provider_id"], name: "index_news_items_on_data_provider_id"
   end
 
@@ -801,6 +838,10 @@ ActiveRecord::Schema.define(version: 2024_03_11_132953) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "external_service_categories", "categories"
+  add_foreign_key "external_service_categories", "external_services"
+  add_foreign_key "external_service_credentials", "data_providers"
+  add_foreign_key "external_service_credentials", "external_services"
   add_foreign_key "messaging_conversation_participants", "members"
   add_foreign_key "messaging_conversation_participants", "messaging_conversations", column: "conversation_id"
   add_foreign_key "messaging_messages", "members", column: "sender_id"

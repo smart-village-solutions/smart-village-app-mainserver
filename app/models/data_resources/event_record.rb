@@ -21,6 +21,7 @@ class EventRecord < ApplicationRecord
 
   belongs_to :region, optional: true
   belongs_to :data_provider, optional: true
+  belongs_to :point_of_interest, optional: true
 
   has_many :data_resource_categories, as: :data_resource
   has_many :categories, through: :data_resource_categories
