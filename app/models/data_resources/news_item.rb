@@ -4,14 +4,15 @@
 # from an old school news article to a whole story structured in chapters
 class NewsItem < ApplicationRecord
   include FilterByRole
+  include Categorizable
 
-  attr_accessor :force_create
-  attr_accessor :category_name
-  attr_accessor :category_names
-  attr_accessor :push_notification
+  attr_accessor :force_create,
+                :category_name,
+                :category_names,
+                :push_notification
 
   before_save :remove_emojis
-  after_save :find_or_create_category
+  after_save :find_or_create_category # This is defined in the Categorizable module
   after_save :send_push_notification
 
   belongs_to :data_provider
@@ -70,25 +71,6 @@ class NewsItem < ApplicationRecord
   end
 
   private
-
-    def find_or_create_category
-      # für Abwärtskompatibilität, wenn nur ein einiger Kategorienamen angegeben wird
-      # ist der attr_accessor :category_name befüllt
-      if category_name.present?
-        category_to_add = Category.where(name: category_name).first_or_create
-        categories << category_to_add unless categories.include?(category_to_add)
-      end
-
-      # Wenn mehrere Kategorien auf einmal gesetzt werden
-      # ist der attr_accessor :category_names befüllt
-      if category_names.present?
-        category_names.each do |category|
-          next unless category[:name].present?
-          category_to_add = Category.where(name: category[:name]).first_or_create
-          categories << category_to_add unless categories.include?(category_to_add)
-        end
-      end
-    end
 
     def send_push_notification
       # do not send push notifications, if not explicitly requested

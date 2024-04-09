@@ -5,13 +5,14 @@
 #
 class Attraction < ApplicationRecord
   include FilterByRole
+  include Categorizable
 
-  attr_accessor :force_create
-  attr_accessor :category_name
-  attr_accessor :category_names
+  attr_accessor :force_create,
+                :category_name,
+                :category_names
 
   before_save :remove_emojis
-  after_save :find_or_create_category
+  after_save :find_or_create_category # This is defined in the Categorizable module
 
   store :payload, coder: JSON
 
@@ -62,29 +63,6 @@ class Attraction < ApplicationRecord
   end
 
   private
-
-    # callback function which enables setting of category by
-    # virtual attribute category name.
-    # ATTENTION: With this callback the setting of category is only possible with category_name.
-    #            PointOfInterest.create(category: Category.first) doesn't work anymore.
-    def find_or_create_category
-      # für Abwärtskompatibilität, wenn nur ein einiger Kategorienamen angegeben wird
-      # ist der attr_accessor :category_name befüllt
-      if category_name.present?
-        category_to_add = Category.where(name: category_name).first_or_create
-        categories << category_to_add unless categories.include?(category_to_add)
-      end
-
-      # Wenn mehrere Kategorien auf einmal gesetzt werden
-      # ist der attr_accessor :category_names befüllt
-      if category_names.present?
-        category_names.each do |category|
-          next unless category[:name].present?
-          category_to_add = Category.where(name: category[:name]).first_or_create
-          categories << category_to_add unless categories.include?(category_to_add)
-        end
-      end
-    end
 
     def remove_emojis
       self.name = RemoveEmoji::Sanitize.call(name) if name.present?
