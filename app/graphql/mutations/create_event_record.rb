@@ -64,6 +64,7 @@ module Mutations
     argument :recurring_weekdays, [String], required: false
     argument :recurring_type, String, required: false
     argument :recurring_interval, String, required: false
+    argument :point_of_interest_id, GraphQL::Types::ID, required: false
 
     field :event, Types::QueryTypes::EventRecordType, null: true
 

@@ -34,6 +34,7 @@ module Mutations
                                                           prepare: lambda { |content_blocks, _ctx|
                                                                      content_blocks.map(&:to_h)
                                                                    }
+    argument :point_of_interest_id, GraphQL::Types::ID, required: false
 
     field :news_item, Types::QueryTypes::NewsItemType, null: true
 
