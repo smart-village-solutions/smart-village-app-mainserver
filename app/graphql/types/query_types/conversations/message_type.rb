@@ -6,5 +6,6 @@ module Types
     field :message_text, String, null: true
     field :sender_id, ID, null: true
     field :conversation_id, ID, null: true
+    field :created_at, GraphQL::Types::ISO8601DateTime, null: true
   end
 end

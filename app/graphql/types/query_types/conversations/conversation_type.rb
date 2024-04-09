@@ -8,6 +8,7 @@ module Types
     field :total_messages_count, Integer, null: true
     field :participants_count, Integer, null: true
     field :unread_messages_count, Integer, null: true
+    field :latest_message, Types::QueryTypes::Conversations::MessageType, null: true
 
     def total_messages_count
       object.messages.count
@@ -20,5 +21,10 @@ module Types
     def unread_messages_count
       object.unread_messages_count(context[:current_member])
     end
+
+    def latest_message
+      object.messages.order(created_at: :desc).first
+    end
+
   end
 end
