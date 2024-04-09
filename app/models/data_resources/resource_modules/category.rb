@@ -22,24 +22,28 @@ class Category < ApplicationRecord
   accepts_nested_attributes_for :contact
 
   def points_of_interest_tree_count(args = nil)
-    if args.present? && args[:location].present?
-      return points_of_interest.visible.by_location(args[:location]).count +
-             descendants.map { |d| d.points_of_interest.visible.by_location(args[:location]).count }
-               .compact.sum
-    end
+    Rails.cache.fetch("#{MunicipalityService.municipality_id}/points_of_interest_tree_count/for_category_#{id}/#{args}", expires_in: 1.day) do
+      if args.present? && args[:location].present?
+        return points_of_interest.visible.by_location(args[:location]).count +
+               descendants.map { |d| d.points_of_interest.visible.by_location(args[:location]).count }
+                 .compact.sum
+      end
 
-    points_of_interest.visible.count +
-      descendants.map { |d| d.points_of_interest.visible.count }.compact.sum
+      points_of_interest.visible.count +
+        descendants.map { |d| d.points_of_interest.visible.count }.compact.sum
+    end
   end
 
   def tours_tree_count(args = nil)
-    if args.present? && args[:location].present?
-      return tours.visible.by_location(args[:location]).count +
-             descendants.map { |d| d.tours.visible.by_location(args[:location]).count }
-               .compact.sum
-    end
+    Rails.cache.fetch("#{MunicipalityService.municipality_id}/tours_tree_count/for_category_#{id}/#{args}", expires_in: 1.day) do
+      if args.present? && args[:location].present?
+        return tours.visible.by_location(args[:location]).count +
+              descendants.map { |d| d.tours.visible.by_location(args[:location]).count }
+                .compact.sum
+      end
 
-    tours.visible.count + descendants.map { |d| d.tours.visible.count }.compact.sum
+      tours.visible.count + descendants.map { |d| d.tours.visible.count }.compact.sum
+    end
   end
 
   def news_items_count
@@ -64,10 +68,12 @@ class Category < ApplicationRecord
     end
 
     define_method "#{item_source}_count_by_location" do |args = nil|
-      items = send("#{item_source}_by_location", args)
-      return 0 if items.blank?
+      Rails.cache.fetch("#{MunicipalityService.municipality_id}/#{item_source}_count_by_location/for_category_#{id}/#{args}", expires_in: 1.day) do
+        items = send("#{item_source}_by_location", args)
+        return 0 if items.blank?
 
-      items.count
+        items.count
+      end
     end
   end
 
