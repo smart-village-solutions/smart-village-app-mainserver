@@ -7,3 +7,12 @@ en:
   NewsItems: "News"
   EventRecord: "Event"
   EventRecords: "Events"
+  GenericItem:
+    GenericTypes:
+      Deadline: "Deadline"
+      DefectReport: "DefectReport"
+      Job: "Job"
+      Offer: "Offer"
+      ConstructionSite: "ConstructionSite"
+      Noticeboard: "Noticeboard"
+      Voucher: "Voucher"

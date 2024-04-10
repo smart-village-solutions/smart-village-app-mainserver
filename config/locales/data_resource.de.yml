@@ -7,3 +7,12 @@ de:
   NewsItems: "Nachrichten"
   EventRecord: "Veranstaltung"
   EventRecords: "Veranstaltungen"
+  GenericItem:
+    GenericTypes:
+      Deadline: "Frist"
+      DefectReport: "Fehlerbericht"
+      Job: "Job"
+      Offer: "Angebot"
+      ConstructionSite: "Baustellen"
+      Noticeboard: "Schwarzes Brett"
+      Voucher: "Gutschein"

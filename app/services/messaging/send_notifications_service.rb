@@ -11,15 +11,25 @@ module Messaging
 
         next if notification_receiver == message.sender
 
-        send_push_notification(notification_receiver, municipality_id) if participant.push_notification_enabled?
-        send_email_notification(notification_receiver.id, municipality_id) if participant.email_notification_enabled?
+        send_push_notification(notification_receiver, municipality_id, message) if participant.push_notification_enabled?
+
+        # not active for now
+        # send_email_notification(notification_receiver.id, municipality_id) if participant.email_notification_enabled?
       end
     end
 
-    def self.send_push_notification(participant, municipality_id)
+    def self.send_push_notification(participant, municipality_id, message)
+      translated_title = I18n.t("GenericItem.GenericTypes.#{message.conversation.conversationable.try(:generic_type)}")
+
       message_options = {
-        title: "New message",
-        body: "You have a new unread message"
+        title: translated_title,
+        body: "Neue Nachricht",
+        data: {
+          id: message.conversation_id,
+          query_type: "Messaging::Conversation",
+          conversationable_type: message.conversation.conversationable_type,
+          conversationable_category: message.conversation.conversationable.try(:generic_type)
+        }
       }
 
       participant.notification_devices.each do |device|
