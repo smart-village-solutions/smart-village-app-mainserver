@@ -74,7 +74,7 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
         member.password_confirmation = member_password
       end
 
-      @resource.update(keycloak_id: keycloak_id)
+      @resource.update(keycloak_id: keycloak_id, authentication_token_created_at: Time.zone.now)
 
       send_verification_email(keycloak_id)
 
@@ -96,7 +96,7 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
 
     if email_changed?(new_member_params, member, old_keycloak_user_data)
       send_verification_email(member.keycloak_id)
-      member.update_columns(email: new_member_params["email"])
+      member.update_columns(email: new_member_params["email"], authentication_token_created_at: Time.zone.now)
     end
 
     { errors: nil, success: true } if result.code == "204"

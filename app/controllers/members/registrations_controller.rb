@@ -71,6 +71,7 @@ class Members::RegistrationsController < Devise::RegistrationsController
       keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
       @resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
       result = @resource.update(member_update_params.except(*MEMBER_EXCEPT_ATTRIBUTES))
+      @resource.update_columns(authentication_token_created_at: Time.zone.now) if result && @resource.errors.blank?
       keycloak_service.update_user(member_params.except(*Member.stored_attributes[:preferences]), @resource) if result && @resource.errors.blank?
     when :key_and_secret
       super
