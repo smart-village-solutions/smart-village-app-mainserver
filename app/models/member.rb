@@ -40,6 +40,13 @@ class Member < ApplicationRecord
   has_many :receipts, class_name: "Messaging::Receipt"
   has_many :messages, through: :receipts, class_name: "Messaging::Message"
 
+  # There is a shortened version of the name for anonymous representation
+  # e.g.: "Max M." for "Max Mustermann"
+  def public_name
+    short_last_name = last_name.present? ? "#{last_name.to_s.first}." : ""
+    [first_name.to_s, short_last_name.to_s].join(" ")
+  end
+
   def self.from_omniauth(session_state:, session_code:) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     return nil if session_state.blank?
     return nil if session_code.blank?
