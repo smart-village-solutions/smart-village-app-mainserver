@@ -55,7 +55,6 @@ describe Resolvers::NewsItemsSearch do
 
   context "with all variables sent" do
     it do
-      binding.pry
       is_expected.to eq([
         { "title"=>"news_item 2" },
         { "title"=>"news_item 4" },
