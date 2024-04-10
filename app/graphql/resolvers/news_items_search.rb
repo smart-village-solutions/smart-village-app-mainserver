@@ -30,6 +30,7 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   option :exclude_mowas_regional_keys, type: types[GraphQL::Types::String], with: :apply_exclude_mowas_regional_keys
   option :category_id, type: GraphQL::Types::ID, with: :apply_category_id
   option :category_ids, type: types[GraphQL::Types::ID], with: :apply_category_ids
+  option :exclude_filter, type: GraphQL::Types::JSON, with: :apply_exclude_filter
 
   def apply_limit(scope, value)
     scope.limit(value)
@@ -108,5 +109,9 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
 
   def apply_order_with_id_asc(scope)
     scope.order("id ASC")
+  end
+
+  def apply_exclude_filter(scope, filter_value)
+    ResourceItemsFilterQuery.new(scope, filter_value).call
   end
 end
