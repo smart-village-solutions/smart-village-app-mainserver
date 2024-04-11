@@ -68,6 +68,7 @@ class Members::SessionsController < Devise::SessionsController # rubocop:disable
     @resource = warden.authenticate!(auth_options)
     set_flash_message(:notice, :signed_in) if is_flashing_format?
     sign_in(resource_name, resource)
+    @resource.authentication_token_created_at = Time.zone.now
     @resource.save # recreates authentication_token after sign in
   end
 
@@ -83,6 +84,7 @@ class Members::SessionsController < Devise::SessionsController # rubocop:disable
     ).first
     @resource.update_keycloak_tokens(keycloak_tokens: result, access_token: result["access_token"])
     sign_in(resource_name, @resource)
+    @resource.authentication_token_created_at = Time.zone.now
     @resource.save # recreates authentication_token after sign in
   end
 
@@ -99,6 +101,7 @@ class Members::SessionsController < Devise::SessionsController # rubocop:disable
       member.password_confirmation = member_password
     end
     sign_in(resource_name, @resource)
+    @resource.authentication_token_created_at = Time.zone.now
     @resource.save # recreates authentication_token after sign in
   end
 
