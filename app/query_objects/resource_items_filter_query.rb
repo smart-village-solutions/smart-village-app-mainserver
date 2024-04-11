@@ -29,6 +29,8 @@ class ResourceItemsFilterQuery
         klass.reflect_on_association(:point_of_interest).present?
     end
 
+    # This method is responsible for applying the filter criteria
+    # to the scope. It returns the scope with the applied filter
     def apply_filter_criteria
       criteria = JSON.parse(@filter_json)
       conditions = []
@@ -36,22 +38,34 @@ class ResourceItemsFilterQuery
       criteria.each do |category_ids, dp_poi_ids|
         category_ids = category_ids.to_s.split("_").map(&:to_i)
 
+        # Select all categories with their children
         with_descendant_ids = Category.where(id: category_ids).map(&:subtree_ids).flatten.uniq
+
+        next if with_descendant_ids.empty?
 
         dp_ids, poi_ids = extract_ids_from_exclusions(dp_poi_ids)
 
         creteria_conditions = []
-        arr = []
-        creteria_conditions << ActiveRecord::Base.sanitize_sql_array(["categories.id IN(?)", with_descendant_ids])
-        arr << ActiveRecord::Base.sanitize_sql_array(["(data_provider_id IN (?) AND data_provider_id IS NOT NULL)", dp_ids]) unless dp_ids.empty?
-        arr << ActiveRecord::Base.sanitize_sql_array(["(point_of_interest_id IN (?) AND point_of_interest_id IS NOT NULL)", poi_ids]) unless poi_ids.empty?
+        additional_filter = []
 
-        creteria_conditions << arr.join(" OR ") unless arr.empty?
+        # Prepare filter by categories ids
+        creteria_conditions << "categories.id IN(#{with_descendant_ids.join(",")})"
 
+        # Add additional filter by data provider or point of interest if ids present
+        additional_filter << "(data_provider_id IN (#{dp_ids.join(",")}) AND data_provider_id IS NOT NULL)" unless dp_ids.empty?
+        additional_filter << "(point_of_interest_id IN (#{poi_ids.join(",")}) AND point_of_interest_id IS NOT NULL)" unless poi_ids.empty?
+
+        # Add OR betweeen additional filters
+        creteria_conditions << additional_filter.join(" OR ") unless additional_filter.empty?
+
+        # Join categories conditions with additional filters by AND
         conditions << creteria_conditions.join(" AND ")
       end
 
-      @scope.joins(:categories).where.not("(#{conditions.join(") OR (")})")
+      return @scope if conditions.empty?
+
+      # Join all conditions by OR
+      @scope.joins(:categories).where.not(conditions.join(" OR "))
     end
 
     def extract_ids_from_exclusions(exclusions)

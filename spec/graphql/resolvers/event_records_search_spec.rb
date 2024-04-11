@@ -18,30 +18,33 @@ describe Resolvers::EventRecordsSearch do
 
   let(:municipality) { create(:municipality, slug: 'test', title: 'test') }
   let(:user) { create(:user, role: :admin, municipality: municipality) }
+
+  let(:category1) { create(:category, name: 'Category 1') }
+  let(:category2) { create(:category, name: 'Category 2') }
+  let(:category3) { create(:category, name: 'Category 3') }
+  let(:category4) { create(:category, name: 'Category 4') }
+
+  let(:data_provider1) { create(:data_provider, municipality: municipality, name: 'Data Provider 1') }
+  let(:data_provider2) { create(:data_provider, municipality: municipality, name: 'Data Provider 2') }
+
+  let(:poi) { create(:point_of_interest, data_provider_id: data_provider1.id, name: 'POI 1') }
+  let(:poi2) { create(:point_of_interest, data_provider_id: data_provider1.id, name: 'POI 2') }
+
+
   let(:context) { { current_user: user } }
   let(:variables) {
     {
       excludeFilter: {
-        "1": ["dp_1"],
-        "2": ["poi_2"],
-        "3": [],
-        "4": ["dp_1", "poi_2"]
+        category1.id.to_s => ["dp_#{data_provider1.id}"],
+        category2.id.to_s => ["poi_#{poi.id}"],
+        category3.id.to_s => [],
+        category4.id.to_s => ["dp_#{data_provider1.id}", "poi_#{poi2.id}"]
       }.to_json
     }
   }
 
   before do
     MunicipalityService.municipality_id = municipality.id
-
-    data_provider1 = create(:data_provider, id: 1, municipality: municipality, name: 'Data Provider 1')
-    data_provider2 = create(:data_provider, id: 2, municipality: municipality, name: 'Data Provider 2')
-
-    poi = create(:point_of_interest, id: 2, data_provider_id: data_provider1.id, name: 'POI 1')
-
-    category1 = create(:category, id: 1, name: 'Category 1')
-    category2 = create(:category, id: 2, name: 'Category 2')
-    category3 = create(:category, id: 3, name: 'Category 3')
-    category4 = create(:category, id: 4, name: 'Category 4')
 
     event1 = create(:event_record, title: 'Event 1', data_provider_id: data_provider1.id, categories: [category1])
     event2 = create(:event_record, title: 'Event 2', data_provider_id: data_provider1.id , categories: [category2])
@@ -57,7 +60,7 @@ describe Resolvers::EventRecordsSearch do
 
   context "with all variables sent" do
     it do
-      is_expected.to eq([
+      is_expected.to match_array([
         { "title"=>"Event 2" },
         { "title"=>"Event 4" },
       ])
