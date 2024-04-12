@@ -12,6 +12,8 @@ namespace :cleanup do
 
     puts "Gefunden #{orphaned_blobs.count} verwaiste Blobs."
 
+    total_deleted = 0
+
     # Durchlaufe alle verwaisten Blobs und lösche sie
     orphaned_blobs.find_each do |blob|
       # Springe zum nächsten Blob wenn dieser doch noch Anhänge hat
@@ -49,10 +51,12 @@ namespace :cleanup do
         # Lösche den Blob und die zugehörige Datei im S3
         blob.purge
         puts "Blob #{blob.id} und zugehörige Datei im S3 gelöscht."
+        total_deleted += 1
 
         # Springe zur nächsten Datei die gelöscht werden soll
         break
       end
     end
+    p "Insgesamt #{total_deleted} Blobs und Dateien im S3 gelöscht."
   end
 end
