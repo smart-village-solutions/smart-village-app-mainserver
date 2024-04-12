@@ -44,6 +44,8 @@ gem "mini_magick", "~> 4.8"
 # Facebook Library to Access GraphAPI
 gem "koala"
 
+gem "tty-progressbar"
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
