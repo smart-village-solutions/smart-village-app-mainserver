@@ -14,6 +14,9 @@ namespace :cleanup do
 
     # Durchlaufe alle verwaisten Blobs und lösche sie
     orphaned_blobs.find_each do |blob|
+      # Springe zum nächsten Blob wenn dieser doch noch Anhänge hat
+      next if blob.attachments.any?
+
       # Durchlaufe alle Gemeinden und versuche die Datei im S3 im richtigen Bucket zu finden
       Municipality.all.each do |municipality|
         bucket_name = municipality.settings[:minio_bucket]
