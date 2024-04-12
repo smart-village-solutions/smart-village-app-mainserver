@@ -13,9 +13,11 @@ namespace :cleanup do
     puts "Gefunden #{orphaned_blobs.count} verwaiste Blobs."
 
     total_deleted = 0
+    progressbar = TTY::ProgressBar.new("Checking [:bar] :percent", total: orphaned_blobs.count)
 
     # Durchlaufe alle verwaisten Blobs und lösche sie
     orphaned_blobs.find_each do |blob|
+      progressbar.advance(1)
       # Springe zum nächsten Blob wenn dieser doch noch Anhänge hat
       next if blob.attachments.any?
 
