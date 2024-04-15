@@ -19,6 +19,11 @@ class Resolvers::VouchersSearch < GraphQL::Schema::Resolver
   option :order, type: Resolvers::GenericItemSearch::GenericItemOrder, default: "createdAt_DESC"
   option :skip, type: GraphQL::Types::Int, with: :apply_skip
   option :location, type: GraphQL::Types::String, with: :apply_location
+  option :member_id, type: GraphQL::Types::ID, with: :apply_member_id
+
+  def apply_member_id(scope, value)
+    scope.joins(quota: :redemptions).where(redemptions: { member_id: value })
+  end
 
   def apply_limit(scope, value)
     scope.limit(value)
