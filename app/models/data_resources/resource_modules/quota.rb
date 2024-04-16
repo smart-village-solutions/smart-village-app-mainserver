@@ -16,7 +16,9 @@ class Quota < ApplicationRecord
     max_quantity.to_i - current_redemptions_for_frequency.count.to_i
   end
 
-  def available_quantity_for_member(member_id:) # rubocop:disable Metrics/MethodLength
+  def available_quantity_for_member(member_id: nil) # rubocop:disable Metrics/MethodLength
+    return nil if member_id.blank?
+
     # gibt es insgesamt noch Quota?
     current_available_quantity = available_quantity
     return 0 if current_available_quantity <= 0
@@ -49,6 +51,7 @@ class Quota < ApplicationRecord
   # @return [Boolean] true if member has available quota for redemption
   def available_quota_for_redemption_valid?(member_id, quantity)
     max_available_quota = available_quantity_for_member(member_id: member_id)
+    return false if max_available_quota.nil?
     return true if quantity <= max_available_quota
 
     false
