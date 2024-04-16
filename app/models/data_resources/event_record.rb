@@ -5,6 +5,7 @@
 class EventRecord < ApplicationRecord
   include FilterByRole
   include Categorizable
+  include FilterByDataProviderAndPoiScope
   extend OrderAsSpecified
 
   attr_accessor :category_name,

@@ -4,6 +4,7 @@ require "search_object/plugin/graphql"
 
 class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
+  include ExclusionFilter
 
   description "Searches for event records"
 
@@ -144,6 +145,6 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   end
 
   def apply_exclude_filter(scope, filter_value)
-    ResourceItemsFilterQuery.new(scope, filter_value).call
+    exclusion_filter_for_klass(EventRecord, scope, filter_value)
   end
 end

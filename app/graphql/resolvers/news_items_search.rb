@@ -4,6 +4,7 @@ require "search_object/plugin/graphql"
 
 class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
+  include ExclusionFilter
 
   scope { NewsItem.filtered_for_current_user(context[:current_user]) }
 
@@ -112,6 +113,6 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   end
 
   def apply_exclude_filter(scope, filter_value)
-    ResourceItemsFilterQuery.new(scope, filter_value).call
+    exclusion_filter_for_klass(NewsItem, scope, filter_value)
   end
 end

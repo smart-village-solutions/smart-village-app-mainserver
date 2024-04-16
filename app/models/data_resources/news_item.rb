@@ -5,6 +5,7 @@
 class NewsItem < ApplicationRecord
   include FilterByRole
   include Categorizable
+  include FilterByDataProviderAndPoiScope
 
   attr_accessor :force_create,
                 :category_name,
