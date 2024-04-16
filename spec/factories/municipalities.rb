@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :municipality do
-    slug { "test" }
-    title { "Test" }
+    slug { Faker::Internet.domain_word }
+    title { Faker::Name.unique.name }
     settings { {} }
   end
 end

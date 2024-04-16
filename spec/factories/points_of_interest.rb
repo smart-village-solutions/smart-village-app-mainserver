@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :point_of_interest do
     external_id { 1 }
     data_provider
-    name { "MyString" }
+    name { Faker::Name.unique.name }
     description { "MyString" }
     mobile_description { "MyString" }
     active { true }

@@ -49,7 +49,7 @@ class Quota < ApplicationRecord
   # @return [Boolean] true if member has available quota for redemption
   def available_quota_for_redemption_valid?(member_id, quantity)
     max_available_quota = available_quantity_for_member(member_id: member_id)
-    return true if quantity < max_available_quota
+    return true if quantity <= max_available_quota
 
     false
   end

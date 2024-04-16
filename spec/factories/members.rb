@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :member do
     keycloak_id { Faker::Internet.uuid }
-    municipality
+    municipality_id { create(:municipality).id }
     email { Faker::Internet.email }
     password { "MyP@ssw0rd!" }
   end
