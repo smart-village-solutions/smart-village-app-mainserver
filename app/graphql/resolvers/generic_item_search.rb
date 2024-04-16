@@ -35,6 +35,13 @@ class Resolvers::GenericItemSearch < GraphQL::Schema::Resolver
   option :skip, type: GraphQL::Types::Int, with: :apply_skip
   option :location, type: GraphQL::Types::String, with: :apply_location
   option :current_member, type: GraphQL::Types::Boolean, default: false, with: :apply_current_member
+  option :member_id, type: GraphQL::Types::ID, with: :apply_member_id
+
+  def apply_member_id(scope, value)
+    return scope if value.blank?
+
+    scope.where(member_id: value)
+  end
 
   # filter all GenericItems by current_member authorized by auth_token
   def apply_current_member(scope, value)
