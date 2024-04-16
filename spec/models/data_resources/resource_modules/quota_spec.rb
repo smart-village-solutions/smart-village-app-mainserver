@@ -14,6 +14,7 @@ RSpec.describe Quota, type: :model do
     let(:poi) { create(:point_of_interest) }
     let(:quota) { create(:quota, quotaable: poi ) }
     let(:member) { create(:member) }
+
     before { MunicipalityService.municipality_id = municipality.id }
 
     context "with no member and no redemption" do
