@@ -9,7 +9,7 @@ module Mutations
 
     type Types::StatusType
 
-    def resolve(voucher_id:, member_id:, _device_token: nil, quantity:) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity
+    def resolve(voucher_id:, member_id:, device_token: nil, quantity:) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity
       return error_status("Quantity must be greater than 0", 405) if quantity <= 0
 
       voucher = GenericItem.where(generic_type: "Voucher").find_by(id: voucher_id)
