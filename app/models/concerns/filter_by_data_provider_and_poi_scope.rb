@@ -4,6 +4,8 @@
 module FilterByDataProviderAndPoiScope
   extend ActiveSupport::Concern
 
+  # if we will not use none here - we will get unexpected results due to ignoring the query by Rails, so we can't return nil in scopes if we use OR
+  # because in that case Rails will ignore all conditions
   included do
     scope :for_data_provider, lambda { |data_provider|
       return none if data_provider.blank?
