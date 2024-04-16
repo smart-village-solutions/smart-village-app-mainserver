@@ -6,7 +6,7 @@ module Types
     field :max_per_person, Integer, null: true
     field :available_quantity, Integer, null: true
     field :available_quantity_for_member, Integer, null: true do
-      argument :member_id, Integer, required: true
+      argument :member_id, Integer, required: false
     end
   end
 end
