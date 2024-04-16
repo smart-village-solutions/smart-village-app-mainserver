@@ -1,0 +1,120 @@
+<!--
+# config.action_mailer.smtp_settings = {
+#     address: "smtp.example.com",
+#     port: 587,
+#     domain: "example.com",
+#     user_name: "your_username",
+#     password: "your_password",
+#     authentication: "plain",
+#     enable_starttls_auto: true
+#   }
+-->
+
+<h2>Mailer - Mailjet</h2>
+
+<div class="form-group">
+  <%= form.label :mailer_type, "Bitte wählen Sie die Versandart der E-Mails:" %>
+  <%= form.select :mailer_type, [["Mailjet (default)", "mailjet"],["SMTP", "smtp"]], class: "form-control" %>
+</div>
+
+<!-- Mailjet Settings -->
+<div class="form-group mailjet-settings">
+  <%= form.label :mailjet_api_key %>
+  <%= form.text_field :mailjet_api_key, class: "form-control" %>
+</div>
+
+<div class="form-group mailjet-settings">
+  <%= form.label :mailjet_api_secret %>
+  <%= form.text_field :mailjet_api_secret, class: "form-control" %>
+</div>
+
+<!-- SMTP Settings -->
+<div class="row">
+  <div class="col-sm-6">
+    <div class="form-group smtp-settings">
+      <%= form.label :smtp_address, "SMTP Adresse" %>
+      <%= form.text_field :smtp_address, class: "form-control" %>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="form-group smtp-settings">
+      <%= form.label :smtp_port, "Port" %>
+      <%= form.text_field :smtp_port, class: "form-control", placeholder: "465" %>
+    </div>
+  </div>
+</div>
+
+<div class="form-group smtp-settings">
+  <%= form.label :smtp_domain %>
+  <%= form.text_field :smtp_domain, class: "form-control", placeholder: "server.smart-village.app" %>
+</div>
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="form-group smtp-settings">
+      <%= form.label :smtp_user_name %>
+      <%= form.text_field :smtp_user_name, class: "form-control" %>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="form-group smtp-settings">
+      <%= form.label :smtp_password %>
+      <%= form.text_field :smtp_password, class: "form-control" %>
+    </div>
+  </div>
+</div>
+
+<div class="form-group smtp-settings">
+  <%= form.label :smtp_authentication %>
+  <%= form.text_field :smtp_authentication, class: "form-control", placeholder: "plain" %>
+</div>
+
+<div class="form-group smtp-settings">
+  <%= form.label :smtp_enable_starttls_auto %>
+  <%= form.text_field :smtp_enable_starttls_auto, class: "form-control", placeholder: "true" %>
+</div>
+
+<!-- Common Settings Settings -->
+<div class="form-group">
+  <%= form.label :mailjet_default_from, "Default from" %>
+  <%= form.text_field :mailjet_default_from, class: "form-control" %>
+</div>
+
+<div class="form-group">
+  <%= form.label :mailer_notify_admin_to %>
+  <%= form.text_field :mailer_notify_admin_to, class: "form-control" %>
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var mailerTypeSelect = document.getElementById("municipality_mailer_type");
+    var mailjetSettings = document.getElementsByClassName("mailjet-settings");
+    var smtpSettings = document.getElementsByClassName("smtp-settings");
+
+    function hideElements(elements) {
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].style.display = "none";
+      }
+    }
+
+    function showElements(elements) {
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].style.display = "";
+      }
+    }
+
+    function handleMailerTypeChange() {
+      if (mailerTypeSelect.value === "mailjet") {
+        hideElements(smtpSettings);
+        showElements(mailjetSettings);
+      } else if (mailerTypeSelect.value === "smtp") {
+        hideElements(mailjetSettings);
+        showElements(smtpSettings);
+      }
+    }
+
+    mailerTypeSelect.addEventListener("change", handleMailerTypeChange);
+    handleMailerTypeChange();
+  });
+</script>

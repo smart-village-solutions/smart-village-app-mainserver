@@ -1,0 +1,40 @@
+<h2>Authentifizierung und Autorisierung</h2>
+      <div class="form-group">
+        <%= form.hidden_field "member_auth_types[]" %>
+        <% Municipality::MEMBER_AUTH_TYPES.each do |auth_type| %>
+          <div class="form-check">
+            <%= form.check_box :member_auth_types, { multiple: true, class: "form-check-input", checked: municipality.member_auth_types.include?(auth_type) }, auth_type, nil %>
+            <%= form.label auth_type, class: "form-check-label" %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :member_keycloak_url %>
+        <%= form.text_field :member_keycloak_url, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :member_keycloak_realm %>
+        <%= form.text_field :member_keycloak_realm, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :member_keycloak_client_id %>
+        <%= form.text_field :member_keycloak_client_id, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :member_keycloak_client_secret %>
+        <%= form.text_field :member_keycloak_client_secret, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :member_keycloak_admin_username %>
+        <%= form.text_field :member_keycloak_admin_username, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :member_keycloak_admin_password %>
+        <%= form.text_field :member_keycloak_admin_password, class: "form-control" %>
+      </div>
