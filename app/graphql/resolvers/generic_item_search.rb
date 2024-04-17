@@ -25,6 +25,7 @@ class Resolvers::GenericItemSearch < GraphQL::Schema::Resolver
   end
 
   option :category_id, type: GraphQL::Types::ID, with: :apply_category_id
+  option :category_ids, type: types[GraphQL::Types::ID], with: :apply_category_ids
   option :data_provider, type: GraphQL::Types::String, with: :apply_data_provider
   option :data_provider_id, type: GraphQL::Types::ID, with: :apply_data_provider_id
   option :external_id, type: GraphQL::Types::ID, with: :apply_external_id
@@ -127,6 +128,7 @@ class Resolvers::GenericItemSearch < GraphQL::Schema::Resolver
   def apply_category_id(scope, value)
     scope.by_category(value)
   end
+  alias_method :apply_category_ids, :apply_category_id
 
   def apply_generic_type(scope, value)
     scope.where(generic_type: value)
