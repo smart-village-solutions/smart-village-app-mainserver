@@ -69,11 +69,6 @@ class Resolvers::PointsOfInterestSearch < GraphQL::Schema::Resolver
     scope.by_location(value)
   end
 
-  def apply_location(scope, value)
-    scope.by_location(value)
-  end
-  alias_method :apply_category_ids, :apply_category_id
-
   def apply_order_with_created_at_desc(scope)
     scope.order("created_at DESC")
   end
