@@ -2,7 +2,7 @@
 <% submit_text ||= "An Device senden" %>
 <% data_resources_for_select = DataResourceSetting::DATA_RESOURCES.map(&:to_s).sort %>
 <% data_providers_for_select = DataProvider.all.map { |dp| [dp.name, dp.id] }
-                                               .sort_by { |dp| dp[0].downcase } %>
+                                               .sort_by { |dp| dp[0]&.downcase.to_s } %>
 
 <%= form_tag(submit_path, method: :post) do  %>
   <div class="form-group">
