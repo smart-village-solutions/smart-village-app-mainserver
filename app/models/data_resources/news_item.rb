@@ -96,7 +96,10 @@ class NewsItem < ApplicationRecord
           id: id,
           query_type: self.class.to_s,
           data_provider_id: data_provider.id,
-          mowas_regional_keys: mowas_regional_keys
+          mowas_regional_keys: mowas_regional_keys,
+          categories_ids: category_ids,
+          poi_id: point_of_interest_id,
+          pn_config_klass: :news
         }
       }
 
