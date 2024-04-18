@@ -3,9 +3,11 @@
 class NoticeboardMailer < ApplicationMailer
   default template_path: "/mailers/noticeboard"
 
-  before_action :set_static_content_values
+  def notify_creator(generic_item, municipality_id)
+    municipality = Municipality.find_by(id: municipality_id)
+    set_delivery_options(municipality)
+    set_static_content_values
 
-  def notify_creator(generic_item)
     @name = generic_item.contacts.first.try(:first_name)
     @email = generic_item.contacts.first.try(:email)
     @category = generic_item.categories.first.try(:name)
@@ -18,13 +20,17 @@ class NoticeboardMailer < ApplicationMailer
     return unless valid_for_notify_creator?
 
     mail(
-      from: "#{@app_name} <#{default_params[:from]}>",
+      from: municipality.settings[:mailjet_default_from],
       to: "#{@name} <#{@email}>",
       subject: "Ihr Eintrag (#{@category}) für die #{@app_name} wurde freigeschaltet"
     )
   end
 
-  def new_message_for_entry(generic_item_message)
+  def new_message_for_entry(generic_item_message, municipality_id)
+    municipality = Municipality.find_by(id: municipality_id)
+    set_delivery_options(municipality)
+    set_static_content_values
+
     generic_item = generic_item_message.generic_item
 
     @name = generic_item.contacts.first.try(:first_name)
@@ -44,7 +50,7 @@ class NoticeboardMailer < ApplicationMailer
     return unless valid_for_new_message_for_entry?
 
     mail(
-      from: "#{@app_name} <#{default_params[:from]}>",
+      from: municipality.settings[:mailjet_default_from],
       reply_to: "#{@sender_name} <#{@sender_email}>",
       to: "#{@name} <#{@email}>",
       subject: "Sie haben eine Nachricht zu Ihrem Eintrag (#{@category}) in der #{@app_name} erhalten"

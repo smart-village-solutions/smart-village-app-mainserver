@@ -1,0 +1,21 @@
+<h2>Open Weathermap</h2>
+
+<div class="form-group">
+  <%= form.label :openweathermap_api_key %>
+  <%= form.text_field :openweathermap_api_key, class: "form-control" %>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <%= form.label :openweathermap_lat, "Latitude" %>
+      <%= form.text_field :openweathermap_lat, class: "form-control" %>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <%= form.label :openweathermap_lon, "Longitude" %>
+      <%= form.text_field :openweathermap_lon, class: "form-control" %>
+    </div>
+  </div>
+</div>

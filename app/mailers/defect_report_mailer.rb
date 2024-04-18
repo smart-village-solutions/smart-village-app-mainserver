@@ -5,7 +5,11 @@ class DefectReportMailer < ApplicationMailer
 
   before_action :set_static_content_values
 
-  def notify_for_category(generic_item)
+  def notify_for_category(generic_item, municipality_id)
+    municipality = Municipality.find_by(id: municipality_id)
+    set_delivery_options(municipality)
+    set_static_content_values
+
     @title = generic_item.content_blocks.first.try(:title)
     @body = generic_item.content_blocks.first.try(:body)
     @category = generic_item.categories.first.try(:name)
@@ -37,7 +41,7 @@ class DefectReportMailer < ApplicationMailer
     end
 
     mail(
-      from: "#{@app_name} <#{default_params[:from]}>",
+      from: municipality.settings[:mailjet_default_from],
       to: @category_email,
       subject: "[Mängelmelder] Neuer Eintrag in der Kategorie #{@category}"
     )
