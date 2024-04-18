@@ -5,12 +5,12 @@ class Notification::DevicesController < ApplicationController
 
   include SortableController
 
-  skip_before_action :verify_authenticity_token, only: [:create, :update, :destroy]
+  skip_before_action :verify_authenticity_token, only: %i[create update destroy]
 
-  before_action :auth_user_or_doorkeeper, only: [:create, :update, :destroy]
-  before_action :authenticate_user!, except: [:create, :update, :destroy]
-  before_action :authenticate_user_role, except: [:create, :update, :destroy]
-  before_action :set_notification_device, only: [:show, :edit, :update, :destroy, :send_notification]
+  before_action :auth_user_or_doorkeeper, only: %i[create update destroy]
+  before_action :authenticate_user!, except: %i[create update destroy]
+  before_action :authenticate_user_role, except: %i[create update destroy]
+  before_action :set_notification_device, only: %i[show edit update destroy send_notification]
 
   def authenticate_user_role
     render inline: "not allowed", status: 405 unless current_user.admin_role?
@@ -44,9 +44,9 @@ class Notification::DevicesController < ApplicationController
   # GET /notification/devices.json
   def index
     @notification_devices = Notification::Device
-      .sorted_for_params(params)
-      .where_token_contains(params[:query])
-      .page(params[:page])
+                            .sorted_for_params(params)
+                            .where_token_contains(params[:query])
+                            .page(params[:page])
 
     @push_logs = RedisAdapters::PushLog.get_push_logs
   end
@@ -123,14 +123,17 @@ class Notification::DevicesController < ApplicationController
     def set_notification_device
       token = notification_device_params[:token] if params[:notification_device].present?
       @notification_device = Notification::Device.find_by(token: token) and return if token.present?
+
       @notification_device = Notification::Device.find(params[:id]) if params[:id].present?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def notification_device_params
-      params.require(:notification_device).permit(
-        :token, :device_type, :member_id, exclude_data_provider_ids: [],
-        exclude_mowas_regional_keys: []
-      )
+      params.require(:notification_device)
+            .permit(
+              :token, :device_type, :member_id,
+              exclude_data_provider_ids: [],
+              exclude_mowas_regional_keys: []
+            )
     end
 end
