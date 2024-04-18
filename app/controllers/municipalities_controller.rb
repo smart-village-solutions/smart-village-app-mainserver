@@ -79,7 +79,7 @@ class MunicipalitiesController < AdminController
         :settings,
         :mailer_type, :mailer_notify_admin_to, :mailjet_default_from,
         :mailjet_api_key, :mailjet_api_secret,
-        :smtp_address, :smtp_port, :smtp_domain, :smtp_user_name, :smtp_password, :smtp_authentication, :smtp_enable_starttls_auto,
+        :smtp_address, :smtp_port, :smtp_domain, :smtp_user_name, :smtp_password, :smtp_authentication, :smtp_enable_starttls_auto, :smtp_ssl,
         :minio_endpoint, :minio_access_key, :minio_secret_key, :minio_bucket, :minio_region,
         :openweathermap_api_key, :openweathermap_lat, :openweathermap_lon,
         :cms_url,

@@ -8,7 +8,7 @@ class GenericItem::Message < ApplicationRecord
   private
 
     def new_message_for_entry
-      NoticeboardMailer.new_message_for_entry(self).deliver_later
+      NoticeboardMailer.new_message_for_entry(self, MunicipalityService.municipality_id).deliver_later
     end
 end
 

@@ -10,7 +10,7 @@
 #   }
 -->
 
-<h2>Mailer - Mailjet</h2>
+<h2>Mailer - Mailjet/SMTP</h2>
 
 <div class="form-group">
   <%= form.label :mailer_type, "Bitte wählen Sie die Versandart der E-Mails:" %>
@@ -45,20 +45,20 @@
 </div>
 
 <div class="form-group smtp-settings">
-  <%= form.label :smtp_domain %>
+  <%= form.label :smtp_domain, "Domain" %>
   <%= form.text_field :smtp_domain, class: "form-control", placeholder: "server.smart-village.app" %>
 </div>
 
 <div class="row">
   <div class="col-sm-6">
     <div class="form-group smtp-settings">
-      <%= form.label :smtp_user_name %>
+      <%= form.label :smtp_user_name, "User Name" %>
       <%= form.text_field :smtp_user_name, class: "form-control" %>
     </div>
   </div>
   <div class="col-sm-6">
     <div class="form-group smtp-settings">
-      <%= form.label :smtp_password %>
+      <%= form.label :smtp_password, "Password" %>
       <%= form.text_field :smtp_password, class: "form-control" %>
     </div>
   </div>
@@ -70,7 +70,12 @@
 </div>
 
 <div class="form-group smtp-settings">
-  <%= form.label :smtp_enable_starttls_auto %>
+  <%= form.label :smtp_ssl, "SSL" %>
+  <%= form.text_field :smtp_ssl, class: "form-control", placeholder: "true" %>
+</div>
+
+<div class="form-group smtp-settings">
+  <%= form.label :smtp_enable_starttls_auto, "enable starttls auto" %>
   <%= form.text_field :smtp_enable_starttls_auto, class: "form-control", placeholder: "true" %>
 </div>
 

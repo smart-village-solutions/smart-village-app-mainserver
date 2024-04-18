@@ -21,7 +21,8 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
         accessors: [
           :mailer_type, :mailjet_api_key, :mailjet_api_secret,
           :mailer_notify_admin_to, :mailjet_default_from,
-          :smtp_address, :smtp_port, :smtp_domain, :smtp_user_name, :smtp_password, :smtp_authentication, :smtp_enable_starttls_auto,
+          :smtp_address, :smtp_port, :smtp_domain, :smtp_user_name, :smtp_password,
+          :smtp_authentication, :smtp_enable_starttls_auto, :smtp_ssl,
           :directus_graphql_endpoint, :directus_graphql_access_token,
           :minio_endpoint, :minio_access_key, :minio_secret_key, :minio_bucket, :minio_region,
           :openweathermap_api_key, :openweathermap_lat, :openweathermap_lon,

@@ -49,10 +49,4 @@ class NotificationMailer < ApplicationMailer
       subject: t("mailers.notification.new_message.subject")
     )
   end
-
-  def set_delivery_options(municipality)
-    Mailjet.config.api_key = municipality.settings[:mailjet_api_key]
-    Mailjet.config.secret_key = municipality.settings[:mailjet_api_secret]
-    Mailjet.config.default_from = municipality.settings[:mailjet_default_from]
-  end
 end

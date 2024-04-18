@@ -106,7 +106,7 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
     # send an email to the creator if generic type is "Noticeboard"
     def noticeboard_notify_creator
-      NoticeboardMailer.notify_creator(self).deliver_later
+      NoticeboardMailer.notify_creator(self, MunicipalityService.municipality_id).deliver_later
     end
 
     def defect_report?
