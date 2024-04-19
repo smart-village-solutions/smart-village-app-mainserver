@@ -98,7 +98,7 @@ class ResourceService
           end
         end
 
-        cleanup_old_resources_if_exists
+        cleanup_old_resources_if_exists(@resource)
 
         @resource
       end
@@ -106,15 +106,15 @@ class ResourceService
 
     # cleanup old resources with the same external_id
     # and not linked to any external_reference
-    def cleanup_old_resources_if_exists
-      return if @resource.external_id.blank?
+    def cleanup_old_resources_if_exists(master_resource)
+      return if master_resource.external_id.blank?
       return if @data_provider.blank?
 
-      records_to_delete = @resource_class.where(data_provider_id: @data_provider.id, external_id: @resource.external_id)
-                                         .where.not(id: @resource.id)
+      records_to_delete = @resource_class.where(data_provider_id: @data_provider.id, external_id: master_resource.external_id)
+                                         .where.not(id: master_resource.id)
       records_to_delete.each do |record_to_delete|
         next if record_to_delete.external_reference.present?
-        next if record_to_delete.id == @resource.id
+        next if record_to_delete.id == master_resource.id
 
         record_to_delete.destroy
       end
@@ -167,6 +167,8 @@ class ResourceService
       )
 
       set_default_categories(@old_resource) if @old_resource.respond_to?(:categories)
+
+      cleanup_old_resources_if_exists(@old_resource)
 
       @old_resource
     end
