@@ -19,7 +19,6 @@ class Resolvers::CategoriesSearch
     value "id_ASC"
     value "name_DESC"
     value "name_ASC"
-
   end
 
   option :limit, type: types.Int, with: :apply_limit

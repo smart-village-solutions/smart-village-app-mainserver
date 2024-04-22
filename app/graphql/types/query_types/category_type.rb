@@ -52,6 +52,8 @@ module Types
       argument :location, String, required: false
     end
 
+    field :tag_list, String, null: true
+
     field :contact, QueryTypes::ContactType, null: true
   end
 end
