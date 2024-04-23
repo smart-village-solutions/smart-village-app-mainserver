@@ -30,7 +30,7 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
           :rollbar_access_token,
           :redis_host, :redis_namespace,
           :uptime_robot_api_key, :uptime_robot_alert_contacts,
-          :member_auth_types,
+          :member_auth_types, :member_auth_key_and_secret_url,
           :member_keycloak_url, :member_keycloak_realm, :member_keycloak_client_id, :member_keycloak_client_secret,
           :member_keycloak_admin_username, :member_keycloak_admin_password
         ],

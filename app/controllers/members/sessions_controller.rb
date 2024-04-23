@@ -117,7 +117,9 @@ class Members::SessionsController < Devise::SessionsController # rubocop:disable
 
   # TODO: Auslagern in Keycloak oder Service
   def validate_key_and_secret # rubocop:disable Metrics/MethodLength
-    uri = "https://node-red.bad-belzig.smart-village.app/saas/auth/sign_in"
+    uri = MunicipalityService.settings["member_auth_key_and_secret_url"]
+    return :error if uri.blank?
+
     data = {
       key: member_params[:key],
       secret: member_params[:secret],
