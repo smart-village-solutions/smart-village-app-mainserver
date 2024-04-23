@@ -1,40 +1,86 @@
 <h2>Authentifizierung und Autorisierung</h2>
-      <div class="form-group">
-        <%= form.hidden_field "member_auth_types[]" %>
-        <% Municipality::MEMBER_AUTH_TYPES.each do |auth_type| %>
-          <div class="form-check">
-            <%= form.check_box :member_auth_types, { multiple: true, class: "form-check-input", checked: municipality.member_auth_types.include?(auth_type) }, auth_type, nil %>
-            <%= form.label auth_type, class: "form-check-label" %>
-          </div>
-        <% end %>
-      </div>
+<div class="form-group">
+  <%= form.hidden_field "member_auth_types[]" %>
+  <% Municipality::MEMBER_AUTH_TYPES.each do |auth_type| %>
+    <div class="form-check">
+      <%= form.check_box :member_auth_types, { multiple: true, class: "form-check-input", checked: municipality.member_auth_types.include?(auth_type) }, auth_type, nil %>
+      <%= form.label auth_type, class: "form-check-label" %>
+    </div>
+  <% end %>
+</div>
 
-      <div class="form-group">
-        <%= form.label :member_keycloak_url %>
-        <%= form.text_field :member_keycloak_url, class: "form-control" %>
-      </div>
+<h3 class="key-secret-settings">Key And Secret Settings</h3>
+<div class="form-group key-secret-settings">
+  <%= form.label :member_auth_key_and_secret_url %>
+  <%= form.text_field :member_auth_key_and_secret_url, class: "form-control" %>
+</div>
 
-      <div class="form-group">
-        <%= form.label :member_keycloak_realm %>
-        <%= form.text_field :member_keycloak_realm, class: "form-control" %>
-      </div>
+<h3 class="keycloak-settings">Keycloak Settings</h3>
+<div class="form-group keycloak-settings">
+  <%= form.label :member_keycloak_url %>
+  <%= form.text_field :member_keycloak_url, class: "form-control" %>
+</div>
 
-      <div class="form-group">
-        <%= form.label :member_keycloak_client_id %>
-        <%= form.text_field :member_keycloak_client_id, class: "form-control" %>
-      </div>
+<div class="form-group keycloak-settings">
+  <%= form.label :member_keycloak_realm %>
+  <%= form.text_field :member_keycloak_realm, class: "form-control" %>
+</div>
 
-      <div class="form-group">
-        <%= form.label :member_keycloak_client_secret %>
-        <%= form.text_field :member_keycloak_client_secret, class: "form-control" %>
-      </div>
+<div class="form-group keycloak-settings">
+  <%= form.label :member_keycloak_client_id %>
+  <%= form.text_field :member_keycloak_client_id, class: "form-control" %>
+</div>
 
-      <div class="form-group">
-        <%= form.label :member_keycloak_admin_username %>
-        <%= form.text_field :member_keycloak_admin_username, class: "form-control" %>
-      </div>
+<div class="form-group keycloak-settings">
+  <%= form.label :member_keycloak_client_secret %>
+  <%= form.text_field :member_keycloak_client_secret, class: "form-control" %>
+</div>
 
-      <div class="form-group">
-        <%= form.label :member_keycloak_admin_password %>
-        <%= form.text_field :member_keycloak_admin_password, class: "form-control" %>
-      </div>
+<div class="form-group keycloak-settings">
+  <%= form.label :member_keycloak_admin_username %>
+  <%= form.text_field :member_keycloak_admin_username, class: "form-control" %>
+</div>
+
+<div class="form-group keycloak-settings">
+  <%= form.label :member_keycloak_admin_password %>
+  <%= form.text_field :member_keycloak_admin_password, class: "form-control" %>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var keycloakTypeSelect = document.getElementById("municipality_member_auth_types_keycloak");
+    var keySecretTypeSelect = document.getElementById("municipality_member_auth_types_key_and_secret");
+    var keySecretSettings = document.getElementsByClassName("key-secret-settings");
+    var keycloakSettings = document.getElementsByClassName("keycloak-settings");
+
+    function hideElements(elements) {
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].style.display = "none";
+      }
+    }
+
+    function showElements(elements) {
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].style.display = "";
+      }
+    }
+
+    function handleMailerTypeChange() {
+      if (keycloakTypeSelect.checked === true) {
+        showElements(keycloakSettings);
+      } else {
+        hideElements(keycloakSettings);
+      }
+
+      if (keySecretTypeSelect.checked === true) {
+        showElements(keySecretSettings);
+      } else {
+        hideElements(keySecretSettings);
+      }
+    }
+
+    keycloakTypeSelect.addEventListener("change", handleMailerTypeChange);
+    keySecretTypeSelect.addEventListener("change", handleMailerTypeChange);
+    handleMailerTypeChange();
+  });
+</script>
