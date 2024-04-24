@@ -17,6 +17,17 @@ module Resolvers
       end
 
       type [Types::QueryTypes::Conversations::ConversationType]
+
+      option :conversationable_id, type: GraphQL::Types::ID, with: :apply_conversationable_id
+      option :conversationable_type, type: GraphQL::Types::String, with: :apply_conversationable_type
+
+      def apply_conversationable_id(scope, value)
+        scope.where(conversationable_id: value)
+      end
+
+      def apply_conversationable_type(scope, value)
+        scope.where(conversationable_type: value)
+      end
     end
   end
 end
