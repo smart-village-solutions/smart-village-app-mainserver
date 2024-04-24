@@ -138,7 +138,11 @@ class Members::SessionsController < Devise::SessionsController # rubocop:disable
     # check if key is already an email
     return "key-secret-account-#{key}" if key.include?("@")
 
-    # make a default_email from key
-    "#{MunicipalityService.municipality_id}-key-secret-account-#{key}@smart-village.app"
+    # truncate and sanitized key for email
+    hash_email_part = "#{MunicipalityService.municipality_id}-ksa-#{key}"
+    hash_email_part = Digest::SHA256.hexdigest(hash_email_part)
+
+    # make a default_email from sanitized_key
+    "#{hash_email_part}@smart-village.app"
   end
 end
