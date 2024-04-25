@@ -5,12 +5,17 @@ class Notification::DevicesController < ApplicationController
 
   include SortableController
 
-  skip_before_action :verify_authenticity_token, only: %i[create update destroy]
+  skip_before_action :verify_authenticity_token, only: %i[create update destroy show_exclusion_config update_exclusion_config]
 
-  before_action :auth_user_or_doorkeeper, only: %i[create update destroy]
-  before_action :authenticate_user!, except: %i[create update destroy]
-  before_action :authenticate_user_role, except: %i[create update destroy]
-  before_action :set_notification_device, only: %i[show edit update destroy send_notification]
+  before_action :auth_user_or_doorkeeper, only: %i[create update destroy show_exclusion_config update_exclusion_config]
+  before_action :authenticate_user!, except: %i[create update destroy show_exclusion_config update_exclusion_config]
+  before_action :authenticate_user_role, except: %i[create update destroy show_exclusion_config update_exclusion_config]
+  before_action :set_notification_device, only: %i[
+    show edit update destroy
+    send_notification
+    show_exclusion_config
+    update_exclusion_config
+  ]
 
   def authenticate_user_role
     render inline: "not allowed", status: 405 unless current_user.admin_role?
@@ -117,6 +122,27 @@ class Notification::DevicesController < ApplicationController
     end
   end
 
+  # GET /notification/devices/exlusion_filter_config.json
+  def show_exclusion_config
+    respond_to do |format|
+      format.json { render :show, status: :ok, location: @notification_device }
+    end
+  end
+
+  # PATCH/PUT /notification/devices/exlusion_filter_config.json
+  def update_exclusion_config
+    current_config = @notification_device.exclude_notification_configuration || {}
+    new_config = current_config.merge(pn_config_params[:exclude_notification_configuration])
+
+    respond_to do |format|
+      if @notification_device.update(exclude_notification_configuration: new_config)
+        format.json { render :show, status: :ok, location: @notification_device }
+      else
+        format.json { render json: @notification_device.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
     # Use callbacks to share common setup or constraints between actions.
@@ -135,5 +161,9 @@ class Notification::DevicesController < ApplicationController
               exclude_data_provider_ids: [],
               exclude_mowas_regional_keys: []
             )
+    end
+
+    def pn_config_params
+      params.require(:notification_device).permit(exclude_notification_configuration: {})
     end
 end
