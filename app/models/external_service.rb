@@ -6,7 +6,8 @@ class ExternalService < ApplicationRecord
   store :resource_config, coder: JSON
 
   belongs_to :municipality
-  has_one :external_service_credential, dependent: :restrict_with_error
+
+  has_many :external_service_credential, dependent: :restrict_with_error
   has_many :data_providers, through: :external_service_credential
   has_many :external_service_categories, dependent: :restrict_with_error
 

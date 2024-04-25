@@ -135,6 +135,8 @@ class ResourceService
     #
     # @return [Object] Instance of @resource_class
     def create_or_update_external_service_resource
+      return @resource unless @data_provider.external_service.present?
+
       ExternalServices::EventRecords::EventSyncService.new(@data_provider.user, @resource).create_or_update_event
     end
 

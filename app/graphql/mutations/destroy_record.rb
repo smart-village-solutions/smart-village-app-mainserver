@@ -36,7 +36,7 @@ module Mutations
       id ||= record.try(:id)
 
       # Delete event from external service if record is an EventRecord
-      if record_type == "EventRecord"
+      if run_external_service_sync?(record, record_type)
         ExternalServices::EventRecords::EventSyncService.new(current_user, record).delete_event
       end
 
@@ -51,9 +51,15 @@ module Mutations
 
       def find_record(record_type, search_hash)
         record_type.constantize
-          .filtered_for_current_user(context[:current_user])
-          .where(search_hash)
-          .first
+                   .filtered_for_current_user(context[:current_user])
+                   .where(search_hash)
+                   .first
+      end
+
+      def run_external_service_sync?(record, record_type)
+        return false unless record.present? && record.respond_to?(:data_provider)
+
+        record_type == "EventRecord" && record.data_provider.external_service.present?
       end
   end
 end

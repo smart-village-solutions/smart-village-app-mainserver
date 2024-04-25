@@ -22,11 +22,15 @@ class ExternalServicesController < ApplicationController
 
   def edit
     @external_service = ExternalService.includes(external_service_categories: :category).find(params[:id])
+    existing_category_ids = @external_service.external_service_categories.map(&:category_id)
+    mapping_categories = Category.where.not(id: existing_category_ids)
+
+    mapping_categories.each { |cat| @external_service.external_service_categories.build(category: cat) }
   end
 
   def create
     @external_service = ExternalService.new(external_service_params.except(:resource_config))
-    @external_service.resource_config = JSON.parse(external_service_params[:resource_config])
+    @external_service.resource_config = parsed_resource_config
 
     if @external_service.save
       redirect_to external_services_path, notice: "External service was successfully created."
@@ -38,7 +42,7 @@ class ExternalServicesController < ApplicationController
 
   def update
     @external_service.assign_attributes(external_service_params.except(:resource_config))
-    @external_service.resource_config = JSON.parse(external_service_params[:resource_config])
+    @external_service.resource_config = parsed_resource_config
 
     if @external_service.save
       redirect_to external_services_path, notice: "External service was successfully updated."
@@ -58,6 +62,7 @@ class ExternalServicesController < ApplicationController
   end
 
   private
+
     def authenticate_admin_role
       redirect_to root_path, alert: "Not allowed" unless current_user.admin_role?
     end
@@ -71,5 +76,13 @@ class ExternalServicesController < ApplicationController
         :name, :base_uri, :auth_path, :resource_config,
         external_service_categories_attributes: %i[id category_id external_id]
       )
+    end
+
+    def parsed_resource_config
+      return nil unless external_service_params[:resource_config].present?
+
+      JSON.parse(external_service_params[:resource_config])
+    rescue JSON::ParserError
+      nil
     end
 end

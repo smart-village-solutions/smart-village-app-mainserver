@@ -36,6 +36,10 @@
         <% valid_json_content = JSON.parse(config) rescue nil %>
         <% if valid_json_content %>
           <div id="code_editor" style="height: 400px;"></div>
+          <small class="text-muted example-config">
+            <b>Example of config:</b>
+            <div id="example-config-container" style="white-space: pre-wrap;"></div>
+          </small>
         <% else %>
           <div>
             <p class="text-danger"><small><em>JSON format is not valid!</em></small></p>
@@ -87,6 +91,15 @@
       }
     };
     var editor = new JSONEditor(container, options);
+    var exampleConfig = {
+      "event_record": {
+        "create": "/api/v1/organizations/{organization_id}/events",
+        "update": "/api/v1/events/{event_id}",
+        "delete": "/api/v1/events/{event_id}"
+      }
+    };
+
+    document.getElementById('example-config-container').innerText = JSON.stringify(exampleConfig, null, 2);
 
     <% config = external_service.resource_config.to_json.html_safe %>;
     <% if config.present? %>
