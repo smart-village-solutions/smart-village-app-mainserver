@@ -12,7 +12,7 @@
 # }
 class PushNotification
   def self.send_notification(device, message_options = {}, municipality_id)
-    return unless Rails.env.production?
+    # return unless Rails.env.production?
 
     SendSinglePushNotificationJob.perform_later(device.token, message_options, municipality_id)
   end
@@ -49,7 +49,7 @@ class PushNotification
 
     if categories_ids.present? || point_of_interest_id.present? || data_provider_id.present?
       notification_devices = notification_devices.reject do |device|
-        check_pn_config(device, categories_ids, data_provider_id, point_of_interest_id, pn_config_klass)
+        check_device_pn_config(device, categories_ids, data_provider_id, point_of_interest_id, pn_config_klass)
       end
     end
 
@@ -59,8 +59,8 @@ class PushNotification
   end
 
   # rubocop:disable all
-  def check_pn_config(device, resource_categories_ids, resource_dp_id, resource_poi_id, resource_klass)
-    configs = device.pn_configuration[pn_config_klass]
+  def check_device_pn_config(device, resource_categories_ids, resource_dp_id, resource_poi_id, pn_config_klass)
+    configs = device.exclude_notification_configuration[pn_config_klass]
     return false if configs.blank?
 
     configs.any? do |category_ids, dp_poi_ids|
@@ -163,9 +163,5 @@ class PushNotification
       data_provider_ids = exclusions.filter_map { |e| e.delete_prefix("dp_").to_i if e.start_with?("dp_") }
       poi_ids = exclusions.filter_map { |e| e.delete_prefix("poi_").to_i if e.start_with?("poi_") }
       [data_provider_ids, poi_ids]
-    end
-
-    def resource_based_configuration(device, resource_klass)
-      device.exclude_notification_configuration[resource_klass.to_sym]
     end
 end

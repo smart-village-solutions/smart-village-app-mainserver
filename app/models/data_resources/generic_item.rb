@@ -16,10 +16,12 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   attr_accessor :force_create,
                 :category_name,
-                :category_names
+                :category_names,
+                :push_notification
 
   before_save :remove_emojis
   after_save :find_or_create_category # This is defined in the Categorizable module
+  after_save :send_push_notification
 
   validates_presence_of :generic_type
   store :payload, coder: JSON
@@ -121,6 +123,43 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
     def remove_emojis
       self.title = RemoveEmoji::Sanitize.call(title) if title.present?
       self.description = RemoveEmoji::Sanitize.call(description) if description.present?
+    end
+
+    def send_push_notification
+      # do not send push notifications, if not explicitly requested
+      return unless push_notification.to_s == "true"
+      # do not send push notification, if already sent
+      return if push_notifications_sent_at.present?
+
+      # do not send push notifications, if generic_type does not exists in GENERIC_TYPES
+      return unless GENERIC_TYPES.values.include? generic_type
+
+      push_title = title.presence || "Neue Nachricht"
+      push_body = teaser.presence || description.presence || push_title
+      push_body = ActionView::Base.full_sanitizer.sanitize(push_body)
+
+      options = {
+        title: push_title,
+        body: push_body,
+        data: {
+          id: id,
+          query_type: self.class.to_s,
+          data_provider_id: data_provider.id,
+          categories_ids: category_ids,
+          poi_id: nil,
+          pn_config_klass: generic_klass_for_pn_config # pn_config class builded by confirmed schema like generic_item_voucher ... generic_item_GENERIC_TYPE
+        }
+      }
+
+      PushNotification.delay.send_notifications(options, MunicipalityService.municipality_id)
+
+      touch(:push_notifications_sent_at)
+    end
+
+    def generic_klass_for_pn_config
+      return unless generic_type.present?
+
+      "generic_item_#{GENERIC_TYPES.key(generic_type)}".to_sym
     end
 end
 

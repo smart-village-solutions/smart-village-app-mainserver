@@ -4,6 +4,7 @@ module Mutations
   class CreateEventRecord < BaseMutation
     argument :id, GraphQL::Types::ID, required: false
     argument :force_create, GraphQL::Types::Boolean, required: false
+    argument :push_notification, GraphQL::Types::Boolean, required: false
     argument :parent_id, Integer, required: false
     argument :description, String, required: false
     argument :external_id, String, required: false
