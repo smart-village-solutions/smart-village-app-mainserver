@@ -4,7 +4,11 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Rswag::Ui::Engine => "/api-docs"
   mount Rswag::Api::Engine => "/api-docs"
 
-  resources :municipalities
+  resources :municipalities do
+    member do
+      get :confirm_destroy
+    end
+  end
   namespace :notification do
     resources :wastes
     resources :devices do

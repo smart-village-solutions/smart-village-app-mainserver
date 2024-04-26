@@ -27,7 +27,7 @@
         <td><%= link_to 'Mainserver', municipality.url, target: "_blank" %></td>
         <td><%= link_to 'CMS', municipality.cms_url, target: "_blank" %></td>
         <td><%= link_to 'Edit', edit_municipality_path(municipality) %></td>
-        <td><%= link_to 'Destroy', municipality, method: :delete, data: { confirm: 'Diese Funktion ist vorübergehend deaktiviert?' } %></td>
+        <td><%= link_to 'Destroy', confirm_destroy_municipality_path(municipality) %></td>
       </tr>
     <% end %>
   </tbody>

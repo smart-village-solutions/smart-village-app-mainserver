@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MunicipalitiesController < AdminController
-  before_action :set_municipality, only: %i[ show edit update destroy ]
+  before_action :set_municipality, only: %i[ show edit update confirm_destroy destroy ]
 
   # GET /municipalities or /municipalities.json
   def index
@@ -51,17 +51,20 @@ class MunicipalitiesController < AdminController
     end
   end
 
+  def confirm_destroy
+  end
+
   # DELETE /municipalities/1 or /municipalities/1.json
   def destroy
-    # Aus Sicherheitsgründen erst einmal deaktiviert
-    # Wenn eine Kommune gelöscht werden soll müssen vermutlich auch
-    # alle zugehörigen Einträge gelöscht werden
-    # @municipality.destroy
-
     respond_to do |format|
-      # format.html { redirect_to municipalities_url, notice: "Municipality was successfully destroyed." }
-      format.html { redirect_to municipalities_url }
-      format.json { head :no_content }
+      if params["confirm_slug"] == @municipality.slug
+        @municipality.destroy
+        format.html { redirect_to municipalities_url, notice: "Municipality was successfully destroyed." }
+        format.json { render json: { message: "Municipality was successfully destroyed." }, status: :ok }
+      else
+        format.html { redirect_to confirm_destroy_municipality_url(@municipality), notice: "Municipality was not destroyed. Please confirm the slug." }
+        format.json { render json: @municipality.errors, status: :unprocessable_entity }
+      end
     end
   end
 
