@@ -5,6 +5,16 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
   validates_uniqueness_of :title
 
   has_many :users, dependent: :destroy
+  has_many :members, dependent: :destroy
+  has_many :categories, dependent: :destroy
+  has_many :waste_location_types, class_name: "Waste::LocationType", dependent: :destroy
+  has_many :waste_pick_up_times, class_name: "Waste::PickUpTime", dependent: :destroy
+  has_many :waste_tours, class_name: "Waste::Tour", dependent: :destroy
+  has_many :open_weather_maps, dependent: :destroy
+  has_many :notification_devices, class_name: "Notification::Device", dependent: :destroy
+  has_many :static_contents, dependent: :destroy
+  has_many :app_user_contents, dependent: :destroy
+  has_many :data_providers, dependent: :destroy
 
   before_create :setup_defaults
   after_create :create_admin_user
