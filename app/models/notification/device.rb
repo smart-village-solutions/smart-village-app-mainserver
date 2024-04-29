@@ -25,6 +25,7 @@ class Notification::Device < ApplicationRecord
 
   serialize :exclude_data_provider_ids, Array
   serialize :exclude_mowas_regional_keys, Array
+  serialize :exclude_notification_configuration, Hash
 
   include Sortable
   sortable_on :device_type, :token

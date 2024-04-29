@@ -4,6 +4,7 @@ module Mutations
   class CreateEventRecord < BaseMutation
     argument :id, GraphQL::Types::ID, required: false
     argument :force_create, GraphQL::Types::Boolean, required: false
+    argument :push_notification, GraphQL::Types::Boolean, required: false
     argument :parent_id, Integer, required: false
     argument :description, String, required: false
     argument :external_id, String, required: false
@@ -64,6 +65,7 @@ module Mutations
     argument :recurring_weekdays, [String], required: false
     argument :recurring_type, String, required: false
     argument :recurring_interval, String, required: false
+    argument :point_of_interest_id, GraphQL::Types::ID, required: false
 
     field :event, Types::QueryTypes::EventRecordType, null: true
 

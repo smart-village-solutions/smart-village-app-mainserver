@@ -5,22 +5,26 @@
 class EventRecord < ApplicationRecord
   include FilterByRole
   include Categorizable
+  include FilterByDataProviderAndPoiScope
   extend OrderAsSpecified
 
   attr_accessor :category_name,
                 :category_names,
                 :region_name,
                 :force_create,
-                :in_date_range_start_date
+                :in_date_range_start_date,
+                :push_notification
 
-  before_save :remove_emojis
   before_save :handle_recurring_dates
   after_save :find_or_create_category # This is defined in the Categorizable module
   after_save :set_sort_date
+  after_save :send_push_notification
+
   before_validation :find_or_create_region
 
   belongs_to :region, optional: true
   belongs_to :data_provider, optional: true
+  belongs_to :point_of_interest, optional: true
 
   has_many :data_resource_categories, as: :data_resource
   has_many :categories, through: :data_resource_categories
@@ -223,11 +227,6 @@ class EventRecord < ApplicationRecord
       today.to_date
     end
 
-    def remove_emojis
-      self.title = RemoveEmoji::Sanitize.call(title) if title.present?
-      self.description = RemoveEmoji::Sanitize.call(description) if description.present?
-    end
-
     # For better performance store the calculated list date in db to be able to sort by db field.
     # a cronjob is regenerating the sort_dates every night and will by regenerated on update
     def set_sort_date
@@ -261,6 +260,34 @@ class EventRecord < ApplicationRecord
 
       date.date_start_changed? || date.date_end_changed? || date.time_start_changed? ||
         date.time_end_changed?
+    end
+
+    def send_push_notification
+      # do not send push notifications, if not explicitly requested
+      return unless push_notification.to_s == "true"
+      # do not send push notification, if already sent
+      return if push_notifications_sent_at.present?
+
+      push_title = title.presence || "Neue Nachricht"
+      push_body = description.presence || push_title
+      push_body = ActionView::Base.full_sanitizer.sanitize(push_body)
+
+      options = {
+        title: push_title,
+        body: push_body,
+        data: {
+          id: id,
+          query_type: self.class.to_s,
+          data_provider_id: data_provider.id,
+          categories_ids: category_ids,
+          poi_id: point_of_interest_id,
+          pn_config_klass: :events
+        }
+      }
+
+      PushNotification.delay.send_notifications(options, MunicipalityService.municipality_id)
+
+      touch(:push_notifications_sent_at)
     end
 end
 

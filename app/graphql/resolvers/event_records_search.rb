@@ -4,6 +4,7 @@ require "search_object/plugin/graphql"
 
 class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
+  include ExclusionFilter
 
   description "Searches for event records"
 
@@ -48,6 +49,7 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   option :take, type: GraphQL::Types::Int, with: :apply_take
   option :location, type: GraphQL::Types::String, with: :apply_location
   option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range
+  option :exclude_filter, type: GraphQL::Types::JSON, with: :apply_exclude_filter
 
   def apply_category_id(scope, value)
     scope.by_category(value)
@@ -140,5 +142,9 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
 
   def apply_order_with_list_date_asc(scope)
     scope.order("event_records.sort_date ASC")
+  end
+
+  def apply_exclude_filter(scope, filter_value)
+    exclusion_filter_for_klass(EventRecord, scope, filter_value)
   end
 end

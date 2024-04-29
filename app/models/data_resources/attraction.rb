@@ -11,7 +11,6 @@ class Attraction < ApplicationRecord
                 :category_name,
                 :category_names
 
-  before_save :remove_emojis
   after_save :find_or_create_category # This is defined in the Categorizable module
 
   store :payload, coder: JSON
@@ -61,14 +60,6 @@ class Attraction < ApplicationRecord
     ActiveSupport::Deprecation.warn(":category is replaced by has_many :categories")
     categories.first
   end
-
-  private
-
-    def remove_emojis
-      self.name = RemoveEmoji::Sanitize.call(name) if name.present?
-      self.description = RemoveEmoji::Sanitize.call(description) if description.present?
-      self.mobile_description = RemoveEmoji::Sanitize.call(mobile_description) if mobile_description.present?
-    end
 end
 
 # == Schema Information

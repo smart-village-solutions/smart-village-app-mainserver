@@ -5,17 +5,18 @@
 class NewsItem < ApplicationRecord
   include FilterByRole
   include Categorizable
+  include FilterByDataProviderAndPoiScope
 
   attr_accessor :force_create,
                 :category_name,
                 :category_names,
                 :push_notification
 
-  before_save :remove_emojis
   after_save :find_or_create_category # This is defined in the Categorizable module
   after_save :send_push_notification
 
   belongs_to :data_provider
+  belongs_to :point_of_interest, optional: true
 
   has_one :address, as: :addressable, dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy
@@ -94,17 +95,16 @@ class NewsItem < ApplicationRecord
           id: id,
           query_type: self.class.to_s,
           data_provider_id: data_provider.id,
-          mowas_regional_keys: mowas_regional_keys
+          mowas_regional_keys: mowas_regional_keys,
+          categories_ids: category_ids,
+          poi_id: point_of_interest_id,
+          pn_config_klass: :news
         }
       }
 
       PushNotification.delay.send_notifications(options, MunicipalityService.municipality_id)
 
       touch(:push_notifications_sent_at)
-    end
-
-    def remove_emojis
-      self.title = RemoveEmoji::Sanitize.call(title) if title.present?
     end
 end
 

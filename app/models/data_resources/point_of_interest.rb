@@ -5,6 +5,10 @@
 # smart village and the surrounding area
 #
 class PointOfInterest < Attraction
+  attr_accessor :push_notification
+
+  after_save :send_push_notification
+
   has_many :data_resource_categories, -> { where(data_resource_type: "PointOfInterest") }, foreign_key: :data_resource_id
   has_many :categories, through: :data_resource_categories
   has_many :opening_hours, as: :openingable, dependent: :destroy
@@ -14,6 +18,8 @@ class PointOfInterest < Attraction
            foreign_key: :generic_itemable_id,
            class_name: "GenericItem",
            dependent: :destroy
+  has_many :event_records, dependent: :restrict_with_error
+  has_many :news_items, dependent: :restrict_with_error
 
   accepts_nested_attributes_for :price_informations, :opening_hours, :lunches, :vouchers
 
@@ -63,6 +69,36 @@ class PointOfInterest < Attraction
   def has_travel_times?
     payload.present? && payload["has_travel_times"].present?
   end
+
+  private
+
+    def send_push_notification
+      # do not send push notifications, if not explicitly requested
+      return unless push_notification.to_s == "true"
+      # do not send push notification, if already sent
+      return if push_notifications_sent_at.present?
+
+      push_title = name.presence || "Neue Nachricht"
+      push_body = description.presence || push_title
+      push_body = ActionView::Base.full_sanitizer.sanitize(push_body)
+
+      options = {
+        title: push_title,
+        body: push_body,
+        data: {
+          id: id,
+          query_type: self.class.to_s,
+          data_provider_id: data_provider.id,
+          categories_ids: category_ids,
+          poi_id: nil, # itself does not have a point of interest related so jsut skip it for now
+          pn_config_klass: :pois
+        }
+      }
+
+      PushNotification.delay.send_notifications(options, MunicipalityService.municipality_id)
+
+      touch(:push_notifications_sent_at)
+    end
 end
 
 # == Schema Information

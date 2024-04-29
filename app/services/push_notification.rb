@@ -12,7 +12,7 @@
 # }
 class PushNotification
   def self.send_notification(device, message_options = {}, municipality_id)
-    return unless Rails.env.production?
+    # return unless Rails.env.production?
 
     SendSinglePushNotificationJob.perform_later(device.token, message_options, municipality_id)
   end
@@ -25,6 +25,10 @@ class PushNotification
     if data.present?
       data_provider_id = data.fetch(:data_provider_id)
       mowas_regional_keys = data.fetch(:mowas_regional_keys, [])
+
+      categories_ids = data.fetch(:categories_ids, [])
+      point_of_interest_id = data.fetch(:poi_id, nil)
+      pn_config_klass = data.fetch(:pn_config_klass, nil)
     end
 
     notification_devices = Notification::Device.all
@@ -43,8 +47,36 @@ class PushNotification
       )
     end
 
+    if categories_ids.present? || point_of_interest_id.present? || data_provider_id.present?
+      notification_devices = notification_devices.reject do |device|
+        check_device_pn_config(device, categories_ids, data_provider_id, point_of_interest_id, pn_config_klass)
+      end
+    end
+
     notification_devices.each do |device|
       send_notification(device, message_options, municipality_id)
+    end
+  end
+
+  # rubocop:disable all
+  def check_device_pn_config(device, resource_categories_ids, resource_dp_id, resource_poi_id, pn_config_klass)
+    configs = device.exclude_notification_configuration[pn_config_klass]
+    return false if configs.blank?
+
+    configs.any? do |category_ids, dp_poi_ids|
+      category_ids = category_ids.to_s.split("_").map(&:to_i)
+      with_descendant_ids = Category.where(id: category_ids).map(&:subtree_ids).flatten.uniq
+
+      dp_ids, poi_ids = extract_ids_from_exclusions(dp_poi_ids)
+
+      next false if (with_descendant_ids & resource_categories_ids).blank?
+
+      next true if data_provide_ids.blank? && poi_ids.blank?
+
+      is_data_match = dp_ids.present? && resource_dp_id.present? && dp_ids.include?(resource_dp_id)
+      is_point_match = poi_ids.present? && resource_poi_id.prsent? && poi_ids.include?(resource_poi_id)
+
+      is_data_match || is_point_match
     end
   end
 
@@ -125,5 +157,11 @@ class PushNotification
         .where("handler LIKE '%\n    :id: #{message_options.dig(:data, :id)}%'")
         .where("handler LIKE '%\n    :query_type: #{message_options.dig(:data, :query_type)}%'")
         .count
+    end
+
+    def extract_ids_from_exclusions(exclusions)
+      data_provider_ids = exclusions.filter_map { |e| e.delete_prefix("dp_").to_i if e.start_with?("dp_") }
+      poi_ids = exclusions.filter_map { |e| e.delete_prefix("poi_").to_i if e.start_with?("poi_") }
+      [data_provider_ids, poi_ids]
     end
 end

@@ -17,6 +17,12 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
         post "send_notifications" => "devices#send_notifications"
         post "send_notification/:id" => "devices#send_notification", as: :send_notification
       end
+
+      member do
+        get "exlusion_filter_config" => "devices#show_exclusion_config"
+        put "exlusion_filter_config" => "devices#update_exclusion_config"
+        patch "exlusion_filter_config" => "devices#update_exclusion_config"
+      end
     end
     post "push_device_assignments/add" => "push_device_assignments#add", defaults: { format: "json" }
     delete "push_device_assignments/remove" => "push_device_assignments#remove", defaults: { format: "json" }

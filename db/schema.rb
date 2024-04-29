@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_11_132953) do
+ActiveRecord::Schema.define(version: 2024_04_18_153949) do
 
   create_table "accessibility_informations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(version: 2024_03_11_132953) do
     t.integer "data_provider_id"
     t.boolean "visible", default: true
     t.text "payload"
+    t.datetime "push_notifications_sent_at"
     t.index ["data_provider_id"], name: "index_attractions_on_data_provider_id"
     t.index ["external_id"], name: "index_attractions_on_external_id"
     t.index ["name"], name: "index_attractions_on_name"
@@ -256,6 +257,8 @@ ActiveRecord::Schema.define(version: 2024_03_11_132953) do
     t.integer "recurring_type"
     t.integer "recurring_interval"
     t.datetime "sort_date"
+    t.integer "point_of_interest_id"
+    t.datetime "push_notifications_sent_at"
     t.index ["data_provider_id"], name: "index_event_records_on_data_provider_id"
     t.index ["external_id"], name: "index_event_records_on_external_id"
     t.index ["region_id"], name: "index_event_records_on_region_id"
@@ -317,6 +320,7 @@ ActiveRecord::Schema.define(version: 2024_03_11_132953) do
     t.string "generic_itemable_type"
     t.integer "generic_itemable_id"
     t.integer "member_id"
+    t.datetime "push_notifications_sent_at"
     t.index ["data_provider_id"], name: "index_generic_items_on_data_provider_id"
   end
 
@@ -464,6 +468,7 @@ ActiveRecord::Schema.define(version: 2024_03_11_132953) do
     t.boolean "visible", default: true
     t.datetime "push_notifications_sent_at"
     t.text "payload"
+    t.integer "point_of_interest_id"
     t.index ["data_provider_id"], name: "index_news_items_on_data_provider_id"
   end
 
@@ -476,6 +481,7 @@ ActiveRecord::Schema.define(version: 2024_03_11_132953) do
     t.text "exclude_data_provider_ids"
     t.integer "member_id"
     t.text "exclude_mowas_regional_keys"
+    t.text "exclude_notification_configuration"
     t.index ["token"], name: "index_notification_devices_on_token", unique: true
   end
 
