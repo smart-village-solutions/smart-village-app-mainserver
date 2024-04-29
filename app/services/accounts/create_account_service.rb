@@ -76,8 +76,7 @@ class Accounts::CreateAccountService
         external_service_id: external_service.id,
         data_provider_id: data_provider.id,
         client_key: account_params[:client_key],
-        client_secret: account_params[:client_secret],
-        organization_id: account_params[:organization_id]
+        client_secret: account_params[:client_secret]
       )
     end
 

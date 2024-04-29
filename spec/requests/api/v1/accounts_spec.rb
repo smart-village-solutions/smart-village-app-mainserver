@@ -111,8 +111,7 @@ RSpec.describe 'Accounts API', type: :request do
           contact_email: { type: :string, example: 'contact@example.com' },
           external_service_id: { type: :string, example: 'External Service ID' },
           client_key: { type: :string, example: 'Client Key' },
-          client_secret: { type: :string, example: 'Client Secret' },
-          organization_id: { type: :string, example: 'Organization ID' }
+          client_secret: { type: :string, example: 'Client Secret' }
         },
         required: ['email', 'role', 'name']
       }
@@ -177,8 +176,7 @@ RSpec.describe 'Accounts API', type: :request do
           contact_email: { type: :string },
           external_service_id: { type: :string },
           client_key: { type: :string },
-          client_secret: { type: :string },
-          organization_id: { type: :string }
+          client_secret: { type: :string }
         },
         required: ['name']
       }

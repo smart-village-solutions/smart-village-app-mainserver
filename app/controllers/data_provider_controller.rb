@@ -16,11 +16,11 @@ class DataProviderController < ApplicationController
       if @data_provider.present?
         format.json { render json: @data_provider, include:
           {
-            logo: { only: [:url, :description] },
-            address: { only: [:addition, :street, :city, :zip] },
-            contact: { only: [:first_name, :last_name, :phone, :fax, :email] }
+            logo: { only: %i[url description] },
+            address: { only: %i[addition street city zip] },
+            contact: { only: %i[first_name last_name phone fax email] }
           },
-          only: [:name, :description, :notice],
+          only: %i[name description notice],
           root: true
         }
       else
@@ -35,7 +35,7 @@ class DataProviderController < ApplicationController
     @data_provider.build_external_service_credential unless @data_provider.external_service_credential
 
     respond_to do |format|
-      format.json { render json: @data_provider, include: [:logo, :address, :contact, :external_service_credential]}
+      format.json { render json: @data_provider, include: %i[logo address contact external_service_credential] }
       format.html
     end
   end
@@ -47,7 +47,7 @@ class DataProviderController < ApplicationController
 
     flash[:notice] = "Data Provider Updated: #{@data_provider.try(:errors).try(:full_messages)}"
     respond_to do |format|
-      format.json { render json: @data_provider, include: [:logo, :address, :contact, :external_service_credential]}
+      format.json { render json: @data_provider, include: %i[logo address contact external_service_credential] }
       format.html { redirect_to action: :edit }
     end
   end
@@ -60,13 +60,20 @@ class DataProviderController < ApplicationController
     end
 
     def provider_params
+      # Fetch and convert keys from `additional_params` to symbols for safe parameter permitting, or default to an empty array if none are present.
+      additional_params_keys = params[:data_provider][:external_service_credential_attributes][:additional_params]&.keys
+      permitted_additional_params = additional_params_keys ? additional_params_keys.map(&:to_sym) : []
+
       params.require(:data_provider)
             .permit(
               :name, :description, :notice,
               address_attributes: %i[addition city street zip id],
               contact_attributes: %i[first_name last_name phone fax email id],
               logo_attributes: %i[url description id],
-              external_service_credential_attributes: %i[id client_key client_secret external_service_id organization_id]
+              external_service_credential_attributes: [
+                :id, :client_key, :client_secret, :external_service_id,
+                { additional_params: permitted_additional_params }
+              ]
             )
     end
 

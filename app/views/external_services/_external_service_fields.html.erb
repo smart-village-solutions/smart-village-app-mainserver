@@ -31,8 +31,13 @@
       <%= cred_fields.text_field :client_secret, class: "form-control" %>
     </div>
 
-    <div class="form-group">
-      <%= cred_fields.label :organization_id, "Organization ID" %>
-      <%= cred_fields.text_field :organization_id, class: "form-control" %>
-    </div>
+    <!-- Dynamic fields based on resource_config -->
+    <% if data_provider.external_service_credential.external_service %>
+      <% data_provider.external_service_credential.external_service.extract_params.each do |param| %>
+        <div class="form-group">
+          <%= cred_fields.label param, param.split('_').map(&:capitalize).join(' ') %>
+          <%= cred_fields.text_field "additional_params[#{param}]", value: data_provider.external_service_credential.additional_params[param], class: "form-control" %>
+        </div>
+      <% end %>
+    <% end %>
   <% end %>

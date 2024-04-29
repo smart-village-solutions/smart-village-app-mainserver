@@ -28,7 +28,6 @@ class Api::V1::AccountsController < Api::BaseController
 
   EXTERNAL_SERVICE_PARAMS = %i[
     external_service_id
-    organization_id
     client_key
     client_secret
   ].freeze
