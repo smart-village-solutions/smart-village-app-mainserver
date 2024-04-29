@@ -12,7 +12,6 @@ class NewsItem < ApplicationRecord
                 :category_names,
                 :push_notification
 
-  before_save :remove_emojis
   after_save :find_or_create_category # This is defined in the Categorizable module
   after_save :send_push_notification
 
@@ -106,10 +105,6 @@ class NewsItem < ApplicationRecord
       PushNotification.delay.send_notifications(options, MunicipalityService.municipality_id)
 
       touch(:push_notifications_sent_at)
-    end
-
-    def remove_emojis
-      self.title = RemoveEmoji::Sanitize.call(title) if title.present?
     end
 end
 

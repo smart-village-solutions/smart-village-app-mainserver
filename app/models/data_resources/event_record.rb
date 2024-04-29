@@ -15,7 +15,6 @@ class EventRecord < ApplicationRecord
                 :in_date_range_start_date,
                 :push_notification
 
-  before_save :remove_emojis
   before_save :handle_recurring_dates
   after_save :find_or_create_category # This is defined in the Categorizable module
   after_save :set_sort_date
@@ -226,11 +225,6 @@ class EventRecord < ApplicationRecord
 
       # return "today" if there is a future end date
       today.to_date
-    end
-
-    def remove_emojis
-      self.title = RemoveEmoji::Sanitize.call(title) if title.present?
-      self.description = RemoveEmoji::Sanitize.call(description) if description.present?
     end
 
     # For better performance store the calculated list date in db to be able to sort by db field.

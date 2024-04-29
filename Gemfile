@@ -32,7 +32,7 @@ gem "icalendar"
 # Execute interactive system calls
 gem "ruby_expect"
 
-gem "remove_emoji"
+gem "remove_emoji" # It can be removed next release after we confirm that emojis is stored correctly
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password

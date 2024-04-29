@@ -19,7 +19,6 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
                 :category_names,
                 :push_notification
 
-  before_save :remove_emojis
   after_save :find_or_create_category # This is defined in the Categorizable module
   after_save :send_push_notification
 
@@ -118,11 +117,6 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
     # send an email to addresses based on category if generic type is "DefectReport"
     def defect_report_notify_for_category
       DefectReportMailer.notify_for_category(self).deliver_later
-    end
-
-    def remove_emojis
-      self.title = RemoveEmoji::Sanitize.call(title) if title.present?
-      self.description = RemoveEmoji::Sanitize.call(description) if description.present?
     end
 
     def send_push_notification
