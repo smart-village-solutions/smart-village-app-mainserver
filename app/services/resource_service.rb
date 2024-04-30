@@ -210,7 +210,11 @@ class ResourceService
       if record && record.valid?
         record
       else
-        GraphQL::ExecutionError.new("Invalid input: #{record.errors.full_messages.join(", ")}")
+        if record.present? && record.errors.present?
+          GraphQL::ExecutionError.new("Invalid input: #{record.errors.full_messages.join(", ")}")
+        else
+          GraphQL::ExecutionError.new("Invalid input: Record could not be saved")
+        end
       end
     end
 
