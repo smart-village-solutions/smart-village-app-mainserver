@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_18_153949) do
+ActiveRecord::Schema.define(version: 2024_04_30_081037) do
 
   create_table "accessibility_informations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -307,6 +307,7 @@ ActiveRecord::Schema.define(version: 2024_04_18_153949) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "auth_path"
+    t.string "preparer_type"
   end
 
   create_table "fixed_dates", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
