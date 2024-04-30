@@ -6,7 +6,7 @@ class ExternalServices::EventRecords::EventSyncService
     @user = user
     @event = event
     @auth_service = ExternalServices::AuthService.new(user)
-    @external_service_preparer = ExternalServices::EventRecords::Preparer.new(event)
+    @external_service_preparer = ExternalServices::EventRecords::OvedaPreparer.new(event)
     @external_service = user.data_provider.external_service
   end
 
@@ -16,7 +16,11 @@ class ExternalServices::EventRecords::EventSyncService
   def create_or_update_event
     return unless access_token
 
-    organization_id = @external_service.external_service_credential.organization_id
+    external_creds = @user.data_provider.external_service_credential
+
+    # For the new event we should have organization_id in the external_service_credential additional_params
+    organization_id = external_creds.additional_params['organization_id']
+
     create_path = resolve_resource_path('create', organization_id: organization_id)
     update_path = resolve_resource_path('update', event_id: event.external_id) if event.external_id.present?
 
@@ -37,10 +41,6 @@ class ExternalServices::EventRecords::EventSyncService
     event
   end
 
-  # Deletes an event from the external service.
-  #
-  # @param event_id [Integer] The external ID of the event.
-  # @return [void]
   def delete_event
     return unless access_token
 

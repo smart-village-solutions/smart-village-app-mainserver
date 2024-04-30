@@ -2,7 +2,7 @@
 
 # rubocop:disable all
 # Class that prepares the event payload for the external service api requests
-class ExternalServices::EventRecords::Preparer 
+class ExternalServices::EventRecords::OvedaPreparer
   def initialize(event)
     @event = event
   end
