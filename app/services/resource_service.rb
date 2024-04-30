@@ -207,7 +207,7 @@ class ResourceService
     end
 
     def resource_or_error_message(record)
-      if record.valid?
+      if record && record.valid?
         record
       else
         GraphQL::ExecutionError.new("Invalid input: #{record.errors.full_messages.join(", ")}")
