@@ -48,7 +48,7 @@ class Accounts::UpdateAccountService
 
       credential.client_key = account_params[:client_key] if account_params.key?(:client_key)
       credential.client_secret = account_params[:client_secret] if account_params.key?(:client_secret)
-      credential.organization_id = account_params[:organization_id] if account_params.key?(:organization_id)
+      credential.additional_params = account_params[:external_service_additional_params] if account_params.key?(:external_service_additional_params)
 
       credential.save! if credential.new_record? || credential.changed?
     end
