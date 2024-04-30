@@ -25,6 +25,13 @@ RSpec.describe 'Accounts API', type: :request do
                      roles: { type: :object },
                      data_type: { type: :string },
                      notice: { type: :string, nullable: true },
+                     external_service: {
+                        type: :object,
+                        properties: {
+                          id: { type: :integer },
+                          name: { type: :string }
+                        }
+                      },
                      user: {
                         type: :object,
                         properties: {
@@ -59,7 +66,7 @@ RSpec.describe 'Accounts API', type: :request do
                         }
                       }
                    },
-                   required: ['id', 'name', 'description', 'roles', 'data_type', 'notice', 'user', 'logo', 'address', 'contact']
+                   required: ['id', 'name', 'description', 'roles', 'data_type', 'notice', 'user', 'logo', 'address', 'contact', 'external_service']
                  }
                },
                required: ['account']
@@ -101,7 +108,11 @@ RSpec.describe 'Accounts API', type: :request do
           contact_last_name: { type: :string, example: 'Last Name' },
           contact_phone: { type: :string, example: 'Phone Number' },
           contact_fax: { type: :string, example: 'Fax Number' },
-          contact_email: { type: :string, example: 'contact@example.com' }
+          contact_email: { type: :string, example: 'contact@example.com' },
+          external_service_id: { type: :string, example: 'External Service ID' },
+          client_key: { type: :string, example: 'Client Key' },
+          client_secret: { type: :string, example: 'Client Secret' },
+          external_service_additional_params: { type: :object, example: { key: 'value' } }
         },
         required: ['email', 'role', 'name']
       }
@@ -164,6 +175,10 @@ RSpec.describe 'Accounts API', type: :request do
           contact_phone: { type: :string },
           contact_fax: { type: :string },
           contact_email: { type: :string },
+          external_service_id: { type: :string },
+          client_key: { type: :string },
+          client_secret: { type: :string },
+          external_service_additional_params: { type: :object }
         },
         required: ['name']
       }

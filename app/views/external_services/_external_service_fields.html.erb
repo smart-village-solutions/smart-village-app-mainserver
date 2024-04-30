@@ -1,0 +1,43 @@
+<% use_account_form ||= false %>
+
+<h2>External Service</h2>
+
+  <% data_provider = @data_provider || @user.data_provider %>
+
+  <% if use_account_form %>
+    <% prefix = 'user[data_provider_attributes][external_service_credential_attributes]' %>
+  <% else %>
+    <% prefix = 'data_provider[external_service_credential_attributes]' %>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :external_service_id, 'Select External Service' %>
+    <%= select_tag "#{prefix}[external_service_id]", 
+        options_from_collection_for_select(
+          ExternalService.all, :id, :name, data_provider.external_service_credential.try(:external_service_id)
+        ),
+        include_blank: true, class: "form-control" 
+    %>
+  </div>
+
+  <%= f.fields_for :external_service_credential do |cred_fields| %>
+    <div class="form-group">
+      <%= cred_fields.label :client_key %>
+      <%= cred_fields.text_field :client_key, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= cred_fields.label :client_secret %>
+      <%= cred_fields.text_field :client_secret, class: "form-control" %>
+    </div>
+
+    <!-- Dynamic fields based on resource_config -->
+    <% if data_provider.external_service_credential.external_service %>
+      <% data_provider.external_service_credential.external_service.extract_params.each do |param| %>
+        <div class="form-group">
+          <%= cred_fields.label param, param.split('_').map(&:capitalize).join(' ') %>
+          <%= cred_fields.text_field "additional_params[#{param}]", value: data_provider.external_service_credential.additional_params[param], class: "form-control" %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>

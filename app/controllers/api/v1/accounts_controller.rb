@@ -26,7 +26,15 @@ class Api::V1::AccountsController < Api::BaseController
     contact_email
   ].freeze
 
-  PARAMS = USER_PARAMS + DATA_PROVIDER_PARAMS
+  EXTERNAL_SERVICE_PARAMS = %i[
+    external_service_id
+    client_key
+    client_secret
+  ] + [{
+    external_service_additional_params: []
+  }]
+
+  PARAMS = USER_PARAMS + DATA_PROVIDER_PARAMS + EXTERNAL_SERVICE_PARAMS
 
   def show
     render_account_response(@data_provider)
@@ -42,6 +50,11 @@ class Api::V1::AccountsController < Api::BaseController
   end
 
   def update
+    if account_params[:external_service_additional_params] && account_params[:external_service_id].blank?
+      render json: { error: "external_service_id is required when external_service_additional_params is provided." }, status: :unprocessable_entity
+      return
+    end
+
     account = Accounts::UpdateAccountService.new(
       data_provider_id: @data_provider.id,
       account_params: account_params
@@ -53,7 +66,15 @@ class Api::V1::AccountsController < Api::BaseController
   private
 
     def account_params
-      params.require(:account).permit(*PARAMS)
+      permitted_params = PARAMS.dup
+
+      # Dynamically fetch and permit all keys for `external_service_additional_params` if present
+      if params[:account][:external_service_additional_params].present?
+        permitted_params += [{
+          external_service_additional_params: params[:account][:external_service_additional_params].keys.map(&:to_sym)
+        }]
+      end
+      params.require(:account).permit(*permitted_params)
     end
 
     def set_data_provider
@@ -71,6 +92,7 @@ class Api::V1::AccountsController < Api::BaseController
 
     def serialize_account(account)
       account.as_json(include: {
+        external_service: { only: %i[id name] },
         user: {
           only: %i[email role],
           include: {

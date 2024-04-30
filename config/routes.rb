@@ -40,6 +40,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       get "batch_defaults"
     end
   end
+  resources :external_services
 
   get "/waste_calendar/export", to: "notification/wastes#ical_export", defaults: { format: "ics" }
 

@@ -46,6 +46,13 @@ paths:
                       notice:
                         type: string
                         nullable: true
+                      external_service:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
                       user:
                         type: object
                         properties:
@@ -105,6 +112,7 @@ paths:
                     - logo
                     - address
                     - contact
+                    - external_service
                 required:
                 - account
         '404':
@@ -164,6 +172,14 @@ paths:
                 contact_fax:
                   type: string
                 contact_email:
+                  type: string
+                external_service_id:
+                  type: string
+                client_key:
+                  type: string
+                client_secret:
+                  type: string
+                organization_id:
                   type: string
               required:
               - name
@@ -238,6 +254,18 @@ paths:
                 contact_email:
                   type: string
                   example: contact@example.com
+                external_service_id:
+                  type: string
+                  example: External Service ID
+                client_key:
+                  type: string
+                  example: Client Key
+                client_secret:
+                  type: string
+                  example: Client Secret
+                organization_id:
+                  type: string
+                  example: Organization ID
               required:
               - email
               - role

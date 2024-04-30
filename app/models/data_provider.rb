@@ -38,10 +38,12 @@ class DataProvider < ApplicationRecord
   has_one :address, as: :addressable
   has_one :contact, as: :contactable
   has_one :logo, as: :web_urlable, class_name: "WebUrl"
+  has_one :external_service_credential, dependent: :destroy
+  has_one :external_service, through: :external_service_credential
 
   before_save :parse_role_values
 
-  accepts_nested_attributes_for :address, :contact, :logo, :data_resource_settings
+  accepts_nested_attributes_for :address, :contact, :logo, :data_resource_settings, :external_service_credential
 
   def parse_role_values
     roles.each do |key, value|

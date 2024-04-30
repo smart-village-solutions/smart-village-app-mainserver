@@ -79,8 +79,10 @@ class ResourceService
     def create_or_update
       if @old_resource.present?
         update_resource
+        create_or_update_external_service_resource if @resource_class == EventRecord
       else
         create_resource
+        create_external_service_resource if @resource_class == EventRecord
       end
     end
 
@@ -127,6 +129,15 @@ class ResourceService
         external_type: @resource_class,
         unique_id: @resource.unique_id
       )
+    end
+
+    # Create resource on external service, which is relater to data provider, currently for EventRecords only
+    #
+    # @return [Object] Instance of @resource_class
+    def create_or_update_external_service_resource
+      return @resource unless @data_provider.external_service.present?
+
+      ExternalServices::EventRecords::EventSyncService.new(@data_provider.user, @resource).create_or_update_event
     end
 
     # for updating a resource every param of a resource needs to be present, even those, which are

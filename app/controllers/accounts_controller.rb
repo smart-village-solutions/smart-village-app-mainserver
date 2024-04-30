@@ -24,6 +24,7 @@ class AccountsController < ApplicationController
   def edit
     @user = User.find(params["id"])
     @user.build_data_provider if @user.data_provider.blank?
+    @user.data_provider.build_external_service_credential if @user.data_provider.external_service_credential.blank?
     DataResourceSetting::DATA_RESOURCES.each do |data_resource|
       data_resource_settings = @user.data_provider.data_resource_settings.where(
         data_resource_type: data_resource.to_s
@@ -139,6 +140,13 @@ class AccountsController < ApplicationController
           :facebook_page_id,
           :facebook_page_access_token,
           default_category_ids: []
+        ],
+        external_service_credential_attributes: %i[
+          id
+          client_key
+          client_secret
+          external_service_id
+          organization_id
         ]
       ]
     )

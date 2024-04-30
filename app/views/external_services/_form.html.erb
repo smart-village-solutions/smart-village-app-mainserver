@@ -1,0 +1,125 @@
+<div class="row">
+  <div class="col">
+    <%= form_with(model: external_service, local: true) do |form| %>
+      <%= form.hidden_field :resource_config, value: external_service.resource_config.to_json.html_safe %>
+
+      <% if external_service.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(external_service.errors.count, "error") %> prohibited this external service from being saved:</h2>
+
+          <ul>
+            <% external_service.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= form.label :name %>
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :base_uri, "Base URI" %>
+        <%= form.text_field :base_uri, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :auth_path, "Auth PATH" %>
+        <%= form.text_field :auth_path, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :preparer_type, "Preparer Type" %>
+        <%= form.select :preparer_type, 
+                        options_for_select(ExternalService::PREPARER_TYPES.keys.map { |k| [k.to_s.humanize, k] }, selected: @external_service.preparer_type),
+                        { include_blank: 'Select preparer (default: Oveda)' },
+                        { class: "form-control" } %>
+        <small class="form-text text-muted">
+          Leave blank for default behavior which uses the Oveda preparer.
+        </small>
+      </div>
+
+
+      <div class="form-group">
+        <%= form.label :resource_config %>
+        <% config = external_service.resource_config.to_json.html_safe %>
+        <% valid_json_content = JSON.parse(config) rescue nil %>
+        <% if valid_json_content %>
+          <div id="code_editor" style="height: 400px;"></div>
+          <small class="text-muted example-config">
+            Possible keys inside config: event_record / news_item (in future) / poi (in future)
+            <br>
+            <b>Example of config:</b>
+            <div id="example-config-container" style="white-space: pre-wrap;"></div>
+          </small>
+        <% else %>
+          <div>
+            <p class="text-danger"><small><em>JSON format is not valid!</em></small></p>
+            <%= form.text_area :resource_config, class: "form-control", style: "height: 400px;" %>
+          </div>
+        <% end %>
+      </div>
+
+      <h3>Category Mappings</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>External ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= form.fields_for :external_service_categories do |category_fields| %>
+            <tr class="nested-fields">
+              <td>
+                <%= category_fields.object.category.try(:name) %>
+                <%= category_fields.hidden_field :id %>
+                <%= category_fields.hidden_field :category_id %>
+              </td>
+              <td>
+                <%= category_fields.text_field :external_id, class: 'form-control' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <div class="form-group">
+        <%= form.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primary" %>
+        <%= link_to t('doorkeeper.applications.buttons.cancel'), external_services_path, class: "btn btn-default" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    var container = document.getElementById("code_editor");
+    var options = {
+      statusBar: false,
+      modes: ['code', 'tree'],
+      onChangeText: function(jsonString) {
+        $("#external_service_resource_config").val(jsonString);
+      }
+    };
+    var editor = new JSONEditor(container, options);
+    var exampleConfig = {
+      "event_record": {
+        "create": "/api/v1/organizations/{organization_id}/events",
+        "update": "/api/v1/events/{event_id}",
+        "delete": "/api/v1/events/{event_id}"
+      }
+    };
+
+    document.getElementById('example-config-container').innerText = JSON.stringify(exampleConfig, null, 2);
+
+    <% config = external_service.resource_config.to_json.html_safe %>;
+    <% if config.present? %>
+      editor.set(<%= config %>);
+    <% else %>
+      editor.set({});
+    <% end %>
+  });
+</script>

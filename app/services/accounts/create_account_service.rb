@@ -38,6 +38,7 @@ class Accounts::CreateAccountService
       data_provider = create_data_provider
       user.data_provider = data_provider
       user.save!
+      assign_external_service!(data_provider, account_params)
       create_oauth_application!(user)
       data_provider
     end
@@ -64,6 +65,19 @@ class Accounts::CreateAccountService
         name: "Zugriff per CMS",
         redirect_uri: "urn:ietf:wg:oauth:2.0:oob",
         confidential: true
+      )
+    end
+
+    def assign_external_service!(data_provider, account_params)
+      external_service = ExternalService.find_by(id: account_params[:external_service_id])
+      return unless external_service
+
+      ExternalServiceCredential.create!(
+        external_service_id: external_service.id,
+        data_provider_id: data_provider.id,
+        client_key: account_params[:client_key],
+        client_secret: account_params[:client_secret],
+        additional_params: account_params[:external_service_additional_params]
       )
     end
 

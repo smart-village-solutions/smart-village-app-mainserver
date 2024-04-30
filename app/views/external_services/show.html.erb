@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col">
+    <h1>External Service</h1>
+
+    <div class="form-group">
+      <label>Name</label>
+      <div><code><%= @external_service.name %></code></div>
+    </div>
+
+    <div class="form-group">
+      <label>Base URI</label>
+      <div><code><%= @external_service.base_uri %></code></div>
+    </div>
+
+    <div class="form-group">
+      <label>Auth PATH</label>
+      <div><code><%= @external_service.auth_path %></code></div>
+    </div>
+
+    <div class="form-group">
+      <label>Resource Config</label>
+      <div id="code_editor" style="height: 400px;"></div>
+    </div>
+
+    <div class="form-group">
+      <%= link_to t('doorkeeper.applications.buttons.back'), external_services_path, class: "btn btn-default" %>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    var container = document.getElementById("code_editor")
+    var options = {
+      statusBar: false,
+      modes: ['code', 'view'],
+      onEditable: function (node) {
+        if (!node.path) {
+          // In modes code and text, node is empty: no path, field, or value
+          // returning false makes the text area read-only
+          return false;
+        }
+      },
+    }
+    var editor = new JSONEditor(container, options)
+
+    <% config = @external_service.resource_config.to_json.html_safe %>
+    <% if config.present? %>
+      editor.set(<%= config %>);
+    <% else %>
+      editor.set({});
+    <% end %>
+  });
+</script>

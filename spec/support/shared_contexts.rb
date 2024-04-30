@@ -4,7 +4,9 @@ RSpec.shared_context "common setup for accounts API(account_manager user role)",
   let!(:municipality) { create(:municipality) }
   let!(:account_manager) { create(:user, municipality: municipality, role: :account_manager) }
 
+  let!(:external_service) { create(:external_service, municipality: municipality) }
   let!(:data_provider) { create(:data_provider, user: create(:user, municipality: municipality), municipality: municipality) }
+  let!(:external_service_credential) { create(:external_service_credential, external_service: external_service, data_provider: data_provider) }
   let!(:logo) { create(:web_url, web_urlable: data_provider) }
   let!(:contact) { create(:contact, contactable: data_provider) }
   let!(:address) { create(:address, addressable: data_provider) }

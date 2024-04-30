@@ -17,6 +17,7 @@ class Accounts::UpdateAccountService
       user.update!(user_params)
       data_provider.update!(data_provider_params)
       update_related_attributes(data_provider)
+      update_external_service(data_provider) if account_params[:external_service_id].present?
 
       data_provider
     end
@@ -37,6 +38,19 @@ class Accounts::UpdateAccountService
         :notice,
         :data_type
       )
+    end
+
+    def update_external_service(data_provider)
+      credential = ExternalServiceCredential.find_or_initialize_by(
+        data_provider_id: data_provider.id,
+        external_service_id: account_params[:external_service_id]
+      )
+
+      credential.client_key = account_params[:client_key] if account_params.key?(:client_key)
+      credential.client_secret = account_params[:client_secret] if account_params.key?(:client_secret)
+      credential.additional_params = account_params[:external_service_additional_params] if account_params.key?(:external_service_additional_params)
+
+      credential.save! if credential.new_record? || credential.changed?
     end
 
     def update_related_attributes(data_provider)
