@@ -92,7 +92,9 @@
         </div>
       <% end %>
 
-      <%= render partial: 'external_services/external_service_fields', locals: { f: f } %>
+      <% if ExternalService.any? %>
+        <%= render partial: 'external_services/external_service_fields', locals: { f: f } %>
+      <% end %>
 
       <p>
         <%= f.submit class: "btn btn-primary" %>

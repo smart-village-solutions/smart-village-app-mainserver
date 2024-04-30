@@ -164,7 +164,9 @@
     </div>
   <% end %>
 
-  <%= render partial: 'external_services/external_service_fields', locals: { f: d, use_account_form: true } %>
+  <% if ExternalService.any? %>
+    <%= render partial: 'external_services/external_service_fields', locals: { f: d, use_account_form: true } %>
+  <% end %>
 
   <h2>Optionen für Ressourcen</h2>
   <nav>
