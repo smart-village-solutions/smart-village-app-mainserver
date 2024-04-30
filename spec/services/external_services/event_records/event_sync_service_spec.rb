@@ -22,7 +22,9 @@ RSpec.describe ExternalServices::EventRecords::EventSyncService do
     allow(api_request_service).to receive(:post_request).and_return(OpenStruct.new(body: { id: 2 }.to_json))
     allow(api_request_service).to receive(:put_request).and_return(OpenStruct.new(body: { id: 2 }.to_json))
     allow(api_request_service).to receive(:delete_request).and_return(OpenStruct.new(body: {}.to_json))
-    allow(credential).to receive(:additional_params).and_return({ 'organization_id' => 123 })
+    allow(credential).to receive(:additional_params).and_return({ "organization_id" => 123 })
+    allow(external_service).to receive(:preparer_type).and_return("oveda")
+    allow(external_service).to receive(:preparer_class).and_return("ExternalServices::EventRecords::OvedaPreparer")
   end
 
   describe "#create_or_update_event" do

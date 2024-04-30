@@ -31,6 +31,18 @@
       </div>
 
       <div class="form-group">
+        <%= form.label :preparer_type, "Preparer Type" %>
+        <%= form.select :preparer_type, 
+                        options_for_select(ExternalService::PREPARER_TYPES.keys.map { |k| [k.to_s.humanize, k] }, selected: @external_service.preparer_type),
+                        { include_blank: 'Select preparer (default: Oveda)' },
+                        { class: "form-control" } %>
+        <small class="form-text text-muted">
+          Leave blank for default behavior which uses the Oveda preparer.
+        </small>
+      </div>
+
+
+      <div class="form-group">
         <%= form.label :resource_config %>
         <% config = external_service.resource_config.to_json.html_safe %>
         <% valid_json_content = JSON.parse(config) rescue nil %>

@@ -3,6 +3,11 @@
 class ExternalService < ApplicationRecord
   include MunicipalityScope
 
+  # This can be extended to support more preparer types in the future.
+  PREPARER_TYPES = {
+    oveda: "ExternalServices::EventRecords::OvedaPreparer"
+  }.freeze
+
   store :resource_config, coder: JSON
 
   belongs_to :municipality
@@ -13,6 +18,11 @@ class ExternalService < ApplicationRecord
   has_many :external_service_categories, dependent: :restrict_with_error
 
   accepts_nested_attributes_for :external_service_categories
+
+  validates :preparer_type, inclusion: {
+    in: PREPARER_TYPES.keys.map(&:to_s),
+    message: "%{value} is not a valid preparer type"
+  }, allow_blank: true
 
   # Extracts unique parameter names from the `resource_config` URLs.
   # This method identifies placeholders within curly braces `{}` in each URL pattern
@@ -32,6 +42,10 @@ class ExternalService < ApplicationRecord
       end
     end
     params.uniq
+  end
+
+  def preparer_class
+    PREPARER_TYPES[preparer_type.to_sym] || raise(NotImplementedError, "Class does not have a preparer type(default will be used OvedaPreparer)")
   end
 end
 

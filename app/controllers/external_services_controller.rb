@@ -73,7 +73,7 @@ class ExternalServicesController < ApplicationController
 
     def external_service_params
       params.require(:external_service).permit(
-        :name, :base_uri, :auth_path, :resource_config,
+        :name, :base_uri, :auth_path, :resource_config, :preparer_type,
         external_service_categories_attributes: %i[id category_id external_id]
       )
     end

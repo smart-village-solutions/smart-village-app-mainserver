@@ -6,8 +6,8 @@ class ExternalServices::EventRecords::EventSyncService
     @user = user
     @event = event
     @auth_service = ExternalServices::AuthService.new(user)
-    @external_service_preparer = ExternalServices::EventRecords::OvedaPreparer.new(event)
     @external_service = user.data_provider.external_service
+    @external_service_preparer = prepare_external_service(event)
   end
 
   # Publishes the event to the external service, including organizer and place creation.
@@ -100,5 +100,15 @@ class ExternalServices::EventRecords::EventSyncService
                  end
 
       JSON.parse(response.body, symbolize_names: true)
+    end
+
+    def prepare_external_service(event)
+      preparer_class_name = if external_service&.preparer_type.present?
+                              external_service.preparer_class
+                            else
+                              'ExternalServices::EventRecords::OvedaPreparer'
+                            end
+    
+      preparer_class_name.constantize.new(event)
     end
 end
