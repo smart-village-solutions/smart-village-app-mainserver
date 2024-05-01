@@ -31,6 +31,7 @@ module Types
     field :settings, QueryTypes::SettingType, null: true
     field :title, String, null: true
     field :teaser, String, null: true
+    field :description, String, null: true
     field :visible, GraphQL::Types::Boolean, null: true
     field :web_urls, [QueryTypes::WebUrlType], null: true
     field :updated_at, String, null: true
