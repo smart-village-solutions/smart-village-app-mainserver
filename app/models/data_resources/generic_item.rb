@@ -11,7 +11,8 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
     offer: "Offer",
     construction_site: "ConstructionSite",
     noticeboard: "Noticeboard",
-    voucher: "Voucher"
+    voucher: "Voucher",
+    announcement: "Announcement"
   }.freeze
 
   attr_accessor :force_create,
