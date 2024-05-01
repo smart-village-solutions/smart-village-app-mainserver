@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class InputTypes::AnnouncementOrganizerInput < BaseInputObject
+  class InputTypes::ShoutOrganizerInput < BaseInputObject
     argument :organizer_type, String,
              description: "Organizer type should is required to be present to create announcement",
              required: true
