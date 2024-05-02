@@ -22,6 +22,7 @@ module Types
     field :import_gtfs_feeds, mutation: Mutations::ImportGtfsFeeds
     field :redeemQuotaOfVoucher, mutation: Mutations::RedeemQuotaOfVoucher
     field :create_shout, mutation: Mutations::CreateShout
+    field :RedeemQuotaOfAnnouncement, mutation: Mutations::RedeemQuotaOfAnnouncement
 
     # destroys
     field :destroy_record, mutation: Mutations::DestroyRecord
