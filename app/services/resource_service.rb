@@ -76,14 +76,20 @@ class ResourceService
       end
     end
 
+    # Create or update resource
+    # If the resource already exists, it will be updated.
+    # If the resource does not exist, it will be created.
+    # If the resource is an EventRecord, it will be created or updated on the external service.
+    #
+    # @return updated Record
     def create_or_update
       if @old_resource.present?
-        update_resource
-        create_or_update_external_service_resource if @resource_class == EventRecord
+        record = update_resource
       else
-        create_resource
-        create_external_service_resource if @resource_class == EventRecord
+        record = create_resource
       end
+      create_or_update_external_service_resource if @resource_class == EventRecord
+      record
     end
 
     def create_resource
