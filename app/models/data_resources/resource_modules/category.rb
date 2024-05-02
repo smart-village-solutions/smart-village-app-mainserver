@@ -4,6 +4,7 @@
 # gem.
 class Category < ApplicationRecord
   has_ancestry orphan_strategy: :destroy
+  acts_as_taggable
   validates_presence_of :name
   validates_uniqueness_of :name
   has_many :data_resource_categories
@@ -13,6 +14,8 @@ class Category < ApplicationRecord
   has_many :news_items, source: :data_resource, source_type: "NewsItem", through: :data_resource_categories
   has_many :generic_items, source: :data_resource, source_type: "GenericItem", through: :data_resource_categories
   has_one :contact, as: :contactable, dependent: :destroy
+
+  TAG_OPTIONS = ["event_record", "news_item", "point_of_interest", "tour"] + GenericItem::GENERIC_TYPES.keys.map { |gt| "generic_item_#{gt}" }
 
   after_destroy :cleanup_data_resource_settings
 

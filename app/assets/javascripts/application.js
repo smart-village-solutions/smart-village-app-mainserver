@@ -14,4 +14,5 @@
 //= require jquery
 //= require activestorage
 //= require jsoneditor
+//= require select2
 //= require_tree .

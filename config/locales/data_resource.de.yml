@@ -1,9 +1,32 @@
 de:
-  Tour: "Tour"
-  Tours: "Touren"
-  PointOfInterest: "Ort"
-  PointOfInterests: "Orte"
-  NewsItem: "Nachricht"
-  NewsItems: "Nachrichten"
-  EventRecord: "Veranstaltung"
-  EventRecords: "Veranstaltungen"
+  data_resource:
+    tour:
+      one: "Tour"
+      other: "Touren"
+    point_of_interest:
+      one: "Ort"
+      other: "Orte"
+    news_item:
+      one: "Nachricht"
+      other: "Nachrichten"
+    event_record:
+      one: "Veranstaltung"
+      other: "Veranstaltungen"
+    generic_item_deadline:
+      one: "Fristen- und Aktionsmelder"
+      other: "Fristen- und Aktionsmelder"
+    generic_item_defect_report:
+        one: "Mängelmelder"
+        other: "Mängelmelder"
+    generic_item_job:
+      one: "Stellenanzeige"
+      other: "Stellenanzeigen"
+    generic_item_offer:
+      one: "Werbliche Anzeige"
+      other: "Werbliche Anzeigen"
+    generic_item_construction_site:
+      one: "Baustelle"
+      other: "Baustellen"
+    generic_item_noticeboard:
+      one: "Schwarzes Brett"
+      other: "Schwarzes Brett"

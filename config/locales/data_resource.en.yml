@@ -1,9 +1,32 @@
 en:
-  Tour: "Tour"
-  Tours: "Tours"
-  PointOfInterest: "Point of interest"
-  PointOfInterests: "Point of interests"
-  NewsItem: "News"
-  NewsItems: "News"
-  EventRecord: "Event"
-  EventRecords: "Events"
+  data_resource:
+    tour:
+      one: "Tour"
+      other: "Tours"
+    point_of_interest:
+      one: "Point of interest"
+      other: "Points of interest"
+    news_item:
+      one: "News"
+      other: "News"
+    event_record:
+      one: "Event"
+      other: "Events"
+    generic_item_deadline:
+      one: "Deadline"
+      other: "Deadlines"
+    generic_item_defect_report:
+      one: "Defect report"
+      other: "Defect reports"
+    generic_item_job:
+      one: "Job"
+      other: "Jobs"
+    generic_item_offer:
+      one: "Advertisement"
+      other: "Advertisements"
+    generic_item_construction_site:
+      one: "Construction site"
+      other: "Construction sites"
+    generic_item_noticeboard:
+      one: "Noticeboard"
+      other: "Noticeboards"
