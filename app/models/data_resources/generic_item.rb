@@ -58,6 +58,8 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
 
+  scope :announcements_type, -> { where(generic_type: GENERIC_TYPES[:announcement]) }
+
   scope :by_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
   }

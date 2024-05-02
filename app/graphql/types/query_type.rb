@@ -90,6 +90,8 @@ module Types
     field :get_messages, [QueryTypes::Conversations::MessageType], resolver: Resolvers::Conversations::GetMessages
     field :get_conversations, [QueryTypes::Conversations::ConversationType], resolver: Resolvers::Conversations::GetConversations
 
+    field :announcements, [QueryTypes::ShoutType], resolver: Resolvers::ShoutsSearch
+
     def waste_tours
       Waste::Tour.all
     end
