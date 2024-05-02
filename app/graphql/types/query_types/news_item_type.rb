@@ -23,5 +23,6 @@ module Types
     field :updated_at, String, null: true
     field :created_at, String, null: true
     field :push_notifications_sent_at, String, null: true
+    field :announcements, [Types::QueryTypes::ShoutType], null: true
   end
 end

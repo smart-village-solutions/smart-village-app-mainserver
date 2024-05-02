@@ -15,6 +15,8 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
     announcement: "Announcement"
   }.freeze
 
+  ANNOUNCEMENT_INCLUDES = %i[opening_hours categories addresses].freeze
+
   attr_accessor :force_create,
                 :category_name,
                 :category_names,

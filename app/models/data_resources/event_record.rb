@@ -40,7 +40,7 @@ class EventRecord < ApplicationRecord
   has_many :dates, as: :dateable, class_name: "FixedDate", dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy
 
-  has_many :announcements, -> { where(generic_itemable_type: "EventRecord", generic_type: GenericItem::GENERIC_TYPES[:announcement]) },
+  has_many :announcements, -> { includes(GenericItem::ANNOUNCEMENT_INCLUDES).where(generic_itemable_type: "EventRecord", generic_type: GenericItem::GENERIC_TYPES[:announcement]) },
            foreign_key: :generic_itemable_id,
            class_name: "GenericItem",
            dependent: :destroy

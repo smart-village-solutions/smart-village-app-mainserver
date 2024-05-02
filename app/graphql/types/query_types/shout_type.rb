@@ -35,27 +35,27 @@ module Types
     end
 
     def date_start
-      return unless opening_hours_item.date_from
+      return unless opening_hours_item&.date_from
 
-      prepared_date_time(opening_hours_item.date_from)
+      prepared_date_time(opening_hours_item&.date_from)
     end
 
     def date_end
-      return unless opening_hours_item.date_to
+      return unless opening_hours_item&.date_to
 
-      prepared_date_time(opening_hours_item.date_to)
+      prepared_date_time(opening_hours_item&.date_to)
     end
 
     def time_start
-      return unless opening_hours_item.time_from
+      return unless opening_hours_item&.time_from
 
-      prepared_date_time(opening_hours_item.time_from, is_date: false)
+      prepared_date_time(opening_hours_item&.time_from, is_date: false)
     end
 
     def time_end
-      return unless opening_hours_item.time_to
+      return unless opening_hours_item&.time_to
 
-      prepared_date_time(opening_hours_item.time_to, is_date: false)
+      prepared_date_time(opening_hours_item&.time_to, is_date: false)
     end
 
     def media_content

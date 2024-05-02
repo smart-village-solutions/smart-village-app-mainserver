@@ -35,6 +35,7 @@ module Types
     field :vouchers, [QueryTypes::GenericItemType], null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
+    field :announcements, [Types::QueryTypes::ShoutType], null: true
 
     def travel_times(date: "", sort_by: "arrival_time", sort_order: "asc")
       return [] if date.blank?
