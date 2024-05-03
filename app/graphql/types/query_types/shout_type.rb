@@ -18,6 +18,8 @@ module Types
     field :location, Types::QueryTypes::AddressType, null: true
 
     field :max_number_of_quota, Integer, null: true
+    field :quota_frequency, String, null: true
+
     field :participants, [ID], null: true
 
     field :organizer, Types::QueryTypes::ShoutOrganizerType, null: true
@@ -68,6 +70,10 @@ module Types
 
     def max_number_of_quota
       object.quota&.max_quantity
+    end
+
+    def quota_frequency
+      object.quota&.frequency
     end
 
     def location

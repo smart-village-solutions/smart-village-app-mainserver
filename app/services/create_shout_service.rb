@@ -8,24 +8,68 @@ class CreateShoutService
   end
 
   def call
-    GenericItem.transaction do
-      item = GenericItem.new(initial_item_params)
-      item.data_provider = data_provider
-
-      raise ActiveRecord::Rollback, "Can't save Announcement: #{item.errors.full_messages.join(", ")}" unless item.save
-
-      create_opening_hours(item)
-      create_categories(item)
-      create_addresses(item)
-      create_media_contents(item)
-      create_quota(item)
-      item
-    end
+    item = create_generic_item!
+    create_related_data!(item)
+    item.reload
+  rescue StandardError => e
+    Rails.logger.error "Error creating item: #{e.message}"
   end
 
   private
 
     attr_reader :data_provider, :params
+
+    def create_generic_item!
+      item = GenericItem.new(initial_item_params)
+      item.data_provider = data_provider
+      item.save!
+      item
+    end
+
+    def create_related_data!(item)
+      GenericItem.transaction do
+        create_opening_hours(item)
+        create_categories(item)
+        create_addresses(item)
+        create_media_contents(item)
+        create_quota(item)
+      end
+    end
+
+    def create_opening_hours(item)
+      return unless opening_hours_params.present?
+
+      item.opening_hours.create(opening_hours_params)
+    end
+
+    def create_categories(item)
+      return if categories_params.blank?
+
+      categories_params.compact.reject(&:empty?).each do |category_name|
+        category = Category.find_or_create_by(name: category_name)
+        item.categories << category
+      end
+
+      item.save
+    end
+
+    def create_addresses(item)
+      return unless location_params.present?
+
+      item.addresses.create(location_params)
+    end
+
+    def create_media_contents(item)
+      return unless media_content_params.present?
+
+      item.media_contents.create(media_content_params)
+    end
+
+    def create_quota(item)
+      return unless @params[:max_number_of_quota].present?
+
+      item.create_quota(quota_params)
+    end
 
     def initial_item_params
       {
@@ -62,36 +106,10 @@ class CreateShoutService
       @params[:media_content].to_h
     end
 
-    def create_opening_hours(item)
-      return unless opening_hours_params.present?
-
-      item.opening_hours.build(opening_hours_params)
-    end
-
-    def create_categories(item)
-      return if categories_params.blank?
-
-      categories_params.compact.reject(&:empty?).each do |category_name|
-        category = Category.find_or_create_by(name: category_name)
-        item.categories << category
-      end
-    end
-
-    def create_addresses(item)
-      return unless location_params.present?
-
-      item.addresses.build(location_params)
-    end
-
-    def create_media_contents(item)
-      return unless media_content_params.present?
-
-      item.media_contents.build(media_content_params)
-    end
-
-    def create_quota(item)
-      return unless @params[:max_number_of_quota].present?
-
-      item.build_quota(max_quantity: @params[:max_number_of_quota])
+    def quota_params
+      {
+        max_quantity: @params[:max_number_of_quota],
+        frequency: @params[:quota_frequency] || "once"
+      }
     end
 end

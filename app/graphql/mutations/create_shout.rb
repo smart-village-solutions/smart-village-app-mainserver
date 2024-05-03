@@ -12,6 +12,10 @@ module Mutations
     argument :announcement_types, [String], required: false
 
     argument :max_number_of_quota, Integer, required: false
+    argument :quota_frequency, String,
+             description: "Available frequencies: #{Quota.frequencies.keys.join(", ")}",
+             required: false
+
     argument :participants, [ID], required: false
 
     argument :media_content, Types::InputTypes::MediaContentInput, required: false
