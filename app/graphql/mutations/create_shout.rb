@@ -31,7 +31,7 @@ module Mutations
     def resolve(**args)
       return unless context[:current_user]&.data_provider
 
-      CreateShoutService.new(
+      Shouts::CreateShoutService.new(
         data_provider: context[:current_user].data_provider,
         params: args
       ).call

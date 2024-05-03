@@ -2,7 +2,7 @@
 
 # Service to redeem a quota for a member based on quantity of available quota
 class RedeemQuotaService
-  def initialize(item, member_id, quantity)
+  def initialize(item, member_id, quantity, device_token = nil)
     @item = item
     @member_id = member_id
     @quantity = quantity
@@ -18,6 +18,12 @@ class RedeemQuotaService
 
     member = Member.find_by(id: @member_id)
     return error_response("Member not found", 404) unless member.present?
+
+    # Deaktiviert bis klar ist, wie wir mit Membern umgehen wollen,
+    # die keine PushNotifications haben wollen
+    # if member.notification_devices.where(token: device_token).blank?
+    #   return error_status("Member has no device with given token", 403)
+    # end
 
     begin
       quota.redeem!(@member_id, @quantity)

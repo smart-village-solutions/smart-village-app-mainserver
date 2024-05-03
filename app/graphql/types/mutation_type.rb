@@ -21,7 +21,10 @@ module Types
     field :create_generic_item_message, mutation: Mutations::CreateGenericItemMessage
     field :import_gtfs_feeds, mutation: Mutations::ImportGtfsFeeds
     field :redeemQuotaOfVoucher, mutation: Mutations::RedeemQuotaOfVoucher
+
+    # Shout related mutations
     field :create_shout, mutation: Mutations::CreateShout
+    field :update_shout, mutation: Mutations::UpdateShout
     field :RedeemQuotaOfAnnouncement, mutation: Mutations::RedeemQuotaOfAnnouncement
 
     # destroys
