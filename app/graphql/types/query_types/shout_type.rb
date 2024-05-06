@@ -27,6 +27,9 @@ module Types
     field :announcementable_type, String, null: true
     field :announcementable_id, String, null: true
 
+    field :redemptions_count, Integer, null: true
+    field :redemptions_list, [Types::QueryTypes::RedemptionType], null: true
+
     def organizer
       return unless object.data_provider
 
@@ -90,6 +93,14 @@ module Types
 
     def announcementable_id
       object.generic_itemable_id
+    end
+
+    def redemptions_count
+      object.quota&.redemptions&.uniq&.count
+    end
+
+    def redemptions_list
+      object.quota&.redemptions
     end
 
     private

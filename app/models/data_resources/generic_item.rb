@@ -15,8 +15,6 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
     announcement: "Announcement"
   }.freeze
 
-  ANNOUNCEMENT_INCLUDES = %i[opening_hours categories addresses].freeze
-
   attr_accessor :force_create,
                 :category_name,
                 :category_names,
@@ -58,7 +56,17 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
 
-  scope :announcements_type, -> { where(generic_type: GENERIC_TYPES[:announcement]) }
+  ANNOUNCEMENT_INCLUDES = [
+    :opening_hours,
+    :categories,
+    :addresses,
+    {
+      media_contents: :source_url,
+      quota: { redemptions: :member }
+    }
+  ].freeze
+
+  scope :announcements_type, -> { includes(ANNOUNCEMENT_INCLUDES).where(generic_type: GENERIC_TYPES[:announcement]) }
 
   scope :by_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
