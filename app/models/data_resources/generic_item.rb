@@ -77,6 +77,17 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
       .left_joins(:locations).left_joins(:addresses)
   }
 
+  # scope for getting upcoming shouts/announcements
+  scope :upcoming, lambda { |current_user = nil|
+    return GenericItem.none unless current_user
+
+    joins(:opening_hours)
+      .where(generic_type: GENERIC_TYPES[:announcement])
+      .filtered_for_current_user(current_user)
+      .where("opening_hours.date_from >= ? OR opening_hours.date_to >= ?", Date.today, Date.today)
+      .distinct
+  }
+
   accepts_nested_attributes_for :web_urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :content_blocks, :data_provider, :price_informations, :opening_hours,
                                 :media_contents, :accessibility_informations, :addresses, :contacts,

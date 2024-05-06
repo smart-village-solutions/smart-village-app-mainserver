@@ -5,7 +5,7 @@ require "search_object/plugin/graphql"
 class Resolvers::ShoutsSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
-  scope { GenericItem.announcements_type.filtered_for_current_user(context[:current_user]) }
+  scope { GenericItem.upcoming(context[:current_user]) }
 
   type types[Types::QueryTypes::ShoutType]
 
