@@ -21,7 +21,7 @@ This main-server is one main part of the whole Smart Village App project. For mo
 ```bash
 export CFLAGS="-DUSE_FFI_CLOSURE_ALLOC"
 export PKG_CONFIG_PATH="$(brew --prefix openssl@1.1)/lib/pkgconfig"
-ruby-install 3.0.3 -- --with-openssl-dir=$(brew --prefix openssl@1.1)
+ruby-install 3.3.1 -- --with-openssl-dir=$(brew --prefix openssl@1.1)
 ```
 
 #### 2. Bundler installation

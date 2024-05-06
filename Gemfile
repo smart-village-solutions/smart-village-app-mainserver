@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.0.3"
+ruby "3.3.1"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 6"
@@ -103,13 +103,16 @@ gem "activerecord-nulldb-adapter"
 # Swagger-based DSL for describing and testing API operations.
 gem 'rswag'
 
+gem "bigdecimal"
+gem "mutex_m"
+
 gem "listen", ">= 3.0.5", "< 3.2"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "codeclimate-test-reporter"
-  gem "debase"
+  # gem "debase"
   gem "factory_bot"
   gem "factory_bot_rails"
   # gem "linter", git: "https://github.com/ikuseiGmbH/linters.git", tag: "rubocop-0.63.1"
@@ -117,7 +120,7 @@ group :development, :test do
   gem "rails-controller-testing"
   gem "rb-readline"
   gem "rspec-rails"
-  gem "ruby-debug-ide"
+  # gem "ruby-debug-ide"
   # Autorun rspec files on changes
   gem "annotate"
   gem "faker"
