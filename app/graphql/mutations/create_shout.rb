@@ -12,6 +12,9 @@ module Mutations
     argument :announcement_types, [String], required: false
 
     argument :max_number_of_quota, Integer, required: false
+    argument :quota_visibility, String,
+             description: "Available visibilities: #{Quota.visibilities.keys.join(", ")}",
+             required: false
     argument :quota_frequency, String,
              description: "Available frequencies: #{Quota.frequencies.keys.join(", ")}",
              required: false

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_30_081037) do
+ActiveRecord::Schema.define(version: 2024_05_07_113822) do
 
   create_table "accessibility_informations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -652,6 +652,7 @@ ActiveRecord::Schema.define(version: 2024_04_30_081037) do
     t.bigint "quotaable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "visibility", default: 0
     t.index ["quotaable_type", "quotaable_id"], name: "index_quotas_on_quotaable_type_and_quotaable_id"
   end
 

@@ -63,7 +63,12 @@ module Shouts
       def create_quota(item)
         return unless @params[:max_number_of_quota].present?
 
-        item.create_quota(quota_params)
+        # default to 'private' if not provided in params
+        extended_params = quota_params.merge(
+          visibility: @params[:quota_visibility] || Quota.visibilities[:private_visibility]
+        )
+
+        item.create_quota(extended_params)
       end
 
       def add_participants!(item)

@@ -17,6 +17,7 @@ describe Mutations::CreateShout do
         $timeEnd: String,
         $announcementTypes: [String!],
         $maxNumberOfQuota: Int,
+        $quotaVisibility: String,
         $participants: [ID!],
         $location: AddressInput,
         $mediaContent: MediaContentInput,
@@ -32,6 +33,7 @@ describe Mutations::CreateShout do
           timeEnd: $timeEnd,
           announcementTypes: $announcementTypes,
           maxNumberOfQuota: $maxNumberOfQuota,
+          quotaVisibility: $quotaVisibility,
           participants: $participants,
           location: $location,
           mediaContent: $mediaContent,
@@ -68,6 +70,7 @@ describe Mutations::CreateShout do
           announcementableType
           announcementableId
           maxNumberOfQuota
+          quotaVisibility
           participants
         }
       }
@@ -91,6 +94,7 @@ describe Mutations::CreateShout do
     timeEnd: "12:00",
     announcementTypes: ["Test type"],
     maxNumberOfQuota: 10,
+    quotaVisibility: "public_visibility",
     participants: [member1.id, member2.id],
     location: {
       city: "Test city",
@@ -148,6 +152,7 @@ describe Mutations::CreateShout do
         'announcementableType' => "EventRecord",
         'announcementableId' => event_record.id.to_s,
         'maxNumberOfQuota' => 10,
+        'quotaVisibility' => "public_visibility",
         'participants' => [member1.id.to_s, member2.id.to_s]
       )
     end
