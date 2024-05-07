@@ -32,26 +32,41 @@ class ExternalService < ApplicationRecord
   #
   # @example Usage
   #   external_service.extract_params #=> ["organization_id", "event_id", "other_param"]
+
   def extract_params
-    params = []
-    begin
-      resource_config.each_value do |config|
-        config.each_value do |url|
-          # This line extracts parameters enclosed in curly braces from the URL,
-          # adds them to the params array, and flattens the nested arrays into a single array.
-          params.concat(url.scan(/\{(\w+)\}/).flatten)
-        end
-      end
-    rescue
-      # TODO:
-      # If the resource_config is not a hash, it will raise an error.
-    end
+    raise TypeError, "Expected resource_config to be a Hash" unless valid_resource_config?
+
+    params = fetch_params_from_resource_config
     params.uniq
   end
 
   def preparer_class
     PREPARER_TYPES[preparer_type.to_sym] || raise(NotImplementedError, "Class does not have a preparer type(default will be used OvedaPreparer)")
   end
+
+  private
+
+    # if resource config is nil or not a hash, return false
+    def valid_resource_config?
+      resource_config.is_a?(Hash)
+    end
+
+    def fetch_params_from_resource_config
+      params = []
+      resource_config.each_value do |config|
+        validate_config(config)
+        params.concat(extract_params_from_config(config))
+      end
+      params
+    end
+
+    def validate_config(config)
+      raise TypeError, "Expected config to be a Hash" unless config.is_a?(Hash)
+    end
+
+    def extract_params_from_config(config)
+      config.values.map { |url| url.scan(/\{(\w+)\}/).flatten }.flatten
+    end
 end
 
 # == Schema Information
