@@ -92,6 +92,8 @@ module Types
 
     field :shouts, [QueryTypes::ShoutType], resolver: Resolvers::ShoutsSearch
 
+    field :reports, [QueryTypes::ReportType], resolver: Resolvers::ReportsSearch
+
     def waste_tours
       Waste::Tour.all
     end
