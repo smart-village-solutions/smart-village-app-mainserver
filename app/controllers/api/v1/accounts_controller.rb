@@ -51,7 +51,9 @@ class Api::V1::AccountsController < Api::BaseController
 
   def update
     if account_params[:external_service_additional_params] && account_params[:external_service_id].blank?
-      render json: { error: "external_service_id is required when external_service_additional_params is provided." }, status: :unprocessable_entity
+      render json: {
+        error: "external_service_id is required when external_service_additional_params is provided."
+      }, status: :unprocessable_entity
       return
     end
 
