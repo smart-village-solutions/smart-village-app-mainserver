@@ -5,6 +5,7 @@ require "search_object/plugin/graphql"
 class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
   include ExclusionFilter
+  include JsonFilterParseable
 
   scope { NewsItem.filtered_for_current_user(context[:current_user]) }
 
@@ -112,7 +113,10 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
     scope.order("id ASC")
   end
 
+  # filter_items method come from ExclusionFilter concern
+  # parse_and_validate_filter_json method come from JsonFilterParseable concern and validate the JSON format
   def apply_exclude_filter(scope, filter_value)
-    exclusion_filter_for_klass(NewsItem, scope, filter_value)
+    parsed_filter = parse_and_validate_filter_json(filter_value)
+    exclusion_filter_for_klass(NewsItem, scope, parsed_filter)
   end
 end

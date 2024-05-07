@@ -5,6 +5,7 @@ require "search_object/plugin/graphql"
 class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
   include ExclusionFilter
+  include JsonFilterParseable
 
   description "Searches for event records"
 
@@ -144,7 +145,10 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
     scope.order("event_records.sort_date ASC")
   end
 
+  # filter_items method come from ExclusionFilter concern
+  # parse_and_validate_filter_json method come from JsonFilterParseable concern and validate the JSON format
   def apply_exclude_filter(scope, filter_value)
-    exclusion_filter_for_klass(EventRecord, scope, filter_value)
+    parsed_filter = parse_and_validate_filter_json(filter_value)
+    exclusion_filter_for_klass(EventRecord, scope, parsed_filter)
   end
 end

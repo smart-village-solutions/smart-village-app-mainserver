@@ -74,4 +74,32 @@ describe Resolvers::EventRecordsSearch do
       ])
     end
   end
+
+  context "with an empty excludeFilter" do
+    let(:variables) { { excludeFilter: {}.to_json } }  # Pass an empty JSON object
+  
+    it "returns all events" do
+      is_expected.to match_array([
+        { "title" => "Event 1" },
+        { "title" => "Event 2" },
+        { "title" => "Event 3" },
+        { "title" => "Event 4" },
+        { "title" => "Event 5" },
+        { "title" => "Event 6" },
+        { "title" => "Event 7" },
+        { "title" => "Event 8" },
+        { "title" => "Event 9" },
+      ])
+    end
+  end
+
+  context "with an invalid excludeFilter" do
+    let(:variables) { { excludeFilter: "invalid_json" } }  # Pass an invalid JSON string
+
+    it 'returns an error if json filter is invalid' do
+      result
+      expect(errors).to be_present
+      expect(errors.first['message']).to eq("Invalid JSON format for filter.")
+    end
+  end  
 end
