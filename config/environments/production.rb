@@ -26,7 +26,8 @@ Rails.application.configure do
 
   # Compress JavaScripts and CSS.
   # https://github.com/rmosolgo/graphiql-rails/issues/44#issuecomment-397936805
-  config.assets.js_compressor = Uglifier.new(harmony: true)
+  # config.assets.js_compressor = Uglifier.new(harmony: true)
+  config.assets.js_compressor = config.assets.js_compressor = :terser
 
   # config.assets.css_compressor = :sass
 
