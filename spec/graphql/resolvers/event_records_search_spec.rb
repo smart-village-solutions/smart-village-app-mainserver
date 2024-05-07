@@ -101,5 +101,5 @@ describe Resolvers::EventRecordsSearch do
       expect(errors).to be_present
       expect(errors.first['message']).to eq("Invalid JSON format for filter.")
     end
-  end  
+  end
 end

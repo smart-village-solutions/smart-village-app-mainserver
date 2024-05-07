@@ -14,8 +14,8 @@ describe JsonFilterParseable do
   subject { DummyResolver.new(object: nil, context: {}, field: nil) }
 
   describe "#parse_and_validate_json" do
-    it "raises an error when filter is blank" do
-      expect { subject.resolve("") }.to raise_error(GraphQL::ExecutionError, "Filter cannot be blank.")
+    it "is not raise an error when filter is blank" do
+      expect(subject.resolve("{}")).to eq({})
     end
 
     it "raises an error when JSON is malformed" do
