@@ -34,12 +34,17 @@ class ExternalService < ApplicationRecord
   #   external_service.extract_params #=> ["organization_id", "event_id", "other_param"]
   def extract_params
     params = []
-    resource_config.each_value do |config|
-      config.each_value do |url|
-        # This line extracts parameters enclosed in curly braces from the URL,
-        # adds them to the params array, and flattens the nested arrays into a single array.
-        params.concat(url.scan(/\{(\w+)\}/).flatten)
+    begin
+      resource_config.each_value do |config|
+        config.each_value do |url|
+          # This line extracts parameters enclosed in curly braces from the URL,
+          # adds them to the params array, and flattens the nested arrays into a single array.
+          params.concat(url.scan(/\{(\w+)\}/).flatten)
+        end
       end
+    rescue
+      # TODO:
+      # If the resource_config is not a hash, it will raise an error.
     end
     params.uniq
   end
