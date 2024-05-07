@@ -315,28 +315,28 @@
       <div class="form-group">
         <div class="form-check">
           <%= d.check_box :role_tour, { class: "form-check-input" }, "true", "false" %>
-          <%= d.label :role_tour, "Touren", class: "form-check-label" %>
+          <%= d.label :role_tour, I18n.t("data_resource.tour.other"), class: "form-check-label" %>
         </div>
       </div>
 
       <div class="form-group">
         <div class="form-check">
           <%= d.check_box :role_point_of_interest, { class: "form-check-input" }, "true", "false" %>
-          <%= d.label :role_point_of_interest, "Orte", class: "form-check-label" %>
+          <%= d.label :role_point_of_interest, I18n.t("data_resource.point_of_interest.other"), class: "form-check-label" %>
         </div>
       </div>
 
       <div class="form-group">
         <div class="form-check">
           <%= d.check_box :role_news_item, { class: "form-check-input" }, "true", "false" %>
-          <%= d.label :role_news_item, "Nachrichten", class: "form-check-label" %>
+          <%= d.label :role_news_item, I18n.t("data_resource.news_item.other"), class: "form-check-label" %>
         </div>
       </div>
 
       <div class="form-group">
         <div class="form-check">
           <%= d.check_box :role_event_record, { class: "form-check-input" }, "true", "false" %>
-          <%= d.label :role_event_record,"Veranstaltungen", class: "form-check-label" %>
+          <%= d.label :role_event_record, I18n.t("data_resource.event_record.other"), class: "form-check-label" %>
         </div>
       </div>
 
@@ -364,14 +364,14 @@
       <div class="form-group">
         <div class="form-check">
           <%= d.check_box :role_deadlines, { class: "form-check-input" }, "true", "false" %>
-          <%= d.label :role_deadlines, "Fristen- und Aktionsmelder", class: "form-check-label" %>
+          <%= d.label :role_deadlines, I18n.t("data_resource.generic_item_deadline.other"), class: "form-check-label" %>
         </div>
       </div>
 
       <div class="form-group">
         <div class="form-check">
           <%= d.check_box :role_defect_report, { class: "form-check-input" }, "true", "false" %>
-          <%= d.label :role_defect_report, "Mängelmelder", class: "form-check-label" %>
+          <%= d.label :role_defect_report, I18n.t("data_resource.generic_item_defect_report.other"), class: "form-check-label" %>
         </div>
       </div>
     </div>
@@ -394,21 +394,21 @@
       <div class="form-group">
         <div class="form-check">
           <%= d.check_box :role_job, { class: "form-check-input" }, "true", "false" %>
-          <%= d.label :role_job, "Stellenanzeigen", class: "form-check-label" %>
+          <%= d.label :role_job, I18n.t("data_resource.generic_item_job.other"), class: "form-check-label" %>
         </div>
       </div>
 
       <div class="form-group">
         <div class="form-check">
           <%= d.check_box :role_offer, { class: "form-check-input" }, "true", "false" %>
-          <%= d.label :role_offer, "Werbliche Anzeigen", class: "form-check-label" %>
+          <%= d.label :role_offer, I18n.t("data_resource.generic_item_offer.other"), class: "form-check-label" %>
         </div>
       </div>
 
       <div class="form-group">
         <div class="form-check">
           <%= d.check_box :role_construction_site, { class: "form-check-input" }, "true", "false" %>
-          <%= d.label :role_construction_site, "Baustellen", class: "form-check-label" %>
+          <%= d.label :role_construction_site, I18n.t("data_resource.generic_item_construction_site.other"), class: "form-check-label" %>
         </div>
       </div>
 
@@ -429,7 +429,7 @@
       <div class="form-group">
         <div class="form-check">
           <%= d.check_box :role_noticeboard, { class: "form-check-input" }, "true", "false" %>
-          <%= d.label :role_noticeboard, "Schwarzes Brett", class: "form-check-label" %>
+          <%= d.label :role_noticeboard, I18n.t("data_resource.generic_item_noticeboard.other"), class: "form-check-label" %>
         </div>
       </div>
 

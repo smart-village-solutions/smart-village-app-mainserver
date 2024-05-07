@@ -486,6 +486,7 @@ GEM
     search_object_graphql (0.3.2)
       graphql (~> 1.8)
       search_object (~> 1.2.2)
+    select2-rails (4.0.13)
     shellany (0.0.1)
     shoulda-matchers (6.2.0)
       activesupport (>= 5.2.0)
@@ -638,6 +639,7 @@ DEPENDENCIES
   sass-rails (~> 5.0, >= 5.0.7)
   search_object
   search_object_graphql (= 0.3.2)
+  select2-rails
   shoulda-matchers
   simplecov
   solargraph

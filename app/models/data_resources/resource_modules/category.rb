@@ -6,6 +6,7 @@ class Category < ApplicationRecord
   include MunicipalityScope
 
   has_ancestry orphan_strategy: :destroy
+  acts_as_taggable
   validates_presence_of :name
   validates_uniqueness_of :name, scope: :municipality_id
   belongs_to :municipality
@@ -17,6 +18,8 @@ class Category < ApplicationRecord
   has_many :generic_items, source: :data_resource, source_type: "GenericItem", through: :data_resource_categories
   has_one :contact, as: :contactable, dependent: :destroy
   has_many :external_service_categories, dependent: :destroy
+
+  TAG_OPTIONS = ["event_record", "news_item", "point_of_interest", "tour"] + GenericItem::GENERIC_TYPES.keys.map { |gt| "generic_item_#{gt}" }
 
   after_destroy :cleanup_data_resource_settings
 
