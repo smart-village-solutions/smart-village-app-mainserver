@@ -41,7 +41,8 @@ class ExternalService < ApplicationRecord
   end
 
   def preparer_class
-    PREPARER_TYPES[preparer_type.to_sym] || raise(NotImplementedError, "Class does not have a preparer type(default will be used OvedaPreparer)")
+    PREPARER_TYPES[preparer_type.to_sym] ||
+      raise(NotImplementedError, "Class does not have a preparer type(default will be used OvedaPreparer)")
   end
 
   private
@@ -65,7 +66,25 @@ class ExternalService < ApplicationRecord
     end
 
     def extract_params_from_config(config)
-      config.values.map { |url| url.scan(/\{(\w+)\}/).flatten }.flatten
+      # Define a list of parameters to ignore
+      ignore_list = ["id", "%id%"]
+
+      # Convert the list to a regex pattern that matches any of these patterns enclosed by any combination of curly braces
+      ignore_pattern = ignore_list.map { |i| Regexp.escape(i) }.join("|")
+
+      # Create a regular expression (regex) that matches placeholders in URLs, excluding those defined in the ignore list.
+      # The regex does the following:
+      # 1. `\{` and `\}` match the literal curly braces.
+      # 2. `(?!#{ignore_pattern})` is a negative lookahead that ensures the sequence does not match any pattern in `ignore_pattern`.
+      # 3. `\w+` matches one or more word characters (letters, numbers, underscores) inside the braces that are not part of the ignore list.
+      regex = /\{((?!#{ignore_pattern})\w+)\}/
+
+      params = []
+      config.each_value do |url|
+        matches = url.scan(regex).flatten
+        params.concat(matches)
+      end
+      params.flatten
     end
 end
 
