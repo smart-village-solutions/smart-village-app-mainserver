@@ -1,0 +1,7 @@
+mutation {
+  destroyRecord(id: 18, recordType: "GenericItem") {
+    id
+    status
+    statusCode
+  }
+}

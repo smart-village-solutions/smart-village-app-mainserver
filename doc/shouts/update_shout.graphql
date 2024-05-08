@@ -1,0 +1,64 @@
+mutation {
+  updateShout(
+    id: "52",
+    title: "updated title",
+    description: "updated desc",
+    dateStart: "2024-09-25",
+    dateEnd: "2024-09-25",
+    timeStart: "07:00",
+    timeEnd: "20:00",
+    announcementTypes: ["qwerty", "test"],
+    maxNumberOfQuota: 5,
+    participants: [1, 2, 3],
+    location: {
+      city: "updated",
+      street: "updated",
+      geoLocation: {
+        longitude: 7.0,
+      	latitude: 12.345
+      }
+    },
+    mediaContent: {
+      contentType: "video",
+      sourceUrl: {
+        url: "http://updated.example"
+      }
+    }
+  )
+  {
+    id
+    title
+    description
+    dateStart
+    dateEnd
+    timeStart
+    timeEnd
+    announcementTypes
+    announcementableType
+    announcementableId
+    genericType
+    location {
+      city
+      street
+      geoLocation {
+        latitude
+        longitude
+      }
+    }
+    organizer {
+      organizerType
+      organizerId
+    }
+    mediaContent {
+      captionText
+      contentType
+      sourceUrl {
+        url
+      }
+    }
+    maxNumberOfQuota
+    quotaVisibility
+    quotaFrequency
+    participants
+  }
+}
