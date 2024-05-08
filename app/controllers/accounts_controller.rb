@@ -10,6 +10,84 @@ class AccountsController < ApplicationController
 
   include SortableController
 
+  USER_PARAMS = %i[
+    email
+    password
+    password_confirmation
+    role
+  ].freeze
+
+  DATA_PROVIDER_PARAMS = %i[
+    id
+    name
+    data_type
+    description
+    notice
+    role_point_of_interest
+    role_tour
+    role_news_item
+    role_event_record
+    role_push_notification
+    role_lunch
+    role_waste_calendar
+    role_job
+    role_offer
+    role_construction_site
+    role_survey
+    role_encounter_support
+    role_static_contents
+    role_tour_stops
+    role_deadlines
+    role_noticeboard
+    role_voucher
+    import_feeds
+  ].freeze
+
+  ADDRESS_PARAMS = %i[
+    id
+    street
+    addition
+    zip
+    city
+  ].freeze
+
+  CONTACT_PARAMS = %i[
+    id
+    first_name
+    last_name
+    phone
+    fax
+    email
+  ].freeze
+
+  LOGO_PARAMS = %i[
+    id
+    url
+    description
+  ].freeze
+
+  DATA_RESOURCE_SETTINGS_PARAMS = [
+    :id,
+    :data_resource_type,
+    :display_only_summary,
+    :always_recreate_on_import,
+    :data_provider_id,
+    :only_summary_link_text,
+    :convert_media_urls_to_external_storage,
+    :cleanup_old_records,
+    :post_to_facebook,
+    :facebook_page_id,
+    :facebook_page_access_token,
+    { default_category_ids: [] }
+  ].freeze
+
+  EXTERNAL_SERVICE_CREDENTIAL_PARAMS = %i[
+    id
+    client_key
+    client_secret
+    external_service_id
+  ].freeze
+
   def authenticate_user_role
     redirect_to edit_data_provider_path and return unless current_user.admin_role?
   end
@@ -77,81 +155,29 @@ class AccountsController < ApplicationController
     end
   end
 
+  # rubocop:disable Metrics/MethodLength, Layout/LineLength
   def account_params
-    values = params.require(:user).permit(
-      :email,
-      :password,
-      :password_confirmation,
-      :role,
+    additional_params_keys = params[:user][:data_provider_attributes][:external_service_credential_attributes][:additional_params]&.keys
+    permitted_additional_params = additional_params_keys ? additional_params_keys.map(&:to_sym) : []
+
+    permitted = params.require(:user).permit(
+      *USER_PARAMS,
       data_provider_attributes: [
-        :id,
-        :name,
-        :data_type,
-        :description,
-        :notice,
-        :role_point_of_interest,
-        :role_tour,
-        :role_news_item,
-        :role_event_record,
-        :role_push_notification,
-        :role_lunch,
-        :role_waste_calendar,
-        :role_job,
-        :role_offer,
-        :role_construction_site,
-        :role_survey,
-        :role_encounter_support,
-        :role_static_contents,
-        :role_tour_stops,
-        :role_deadlines,
-        :role_noticeboard,
-        :role_voucher,
-        :import_feeds,
-        logo_attributes: %i[
-          id
-          url
-          description
-        ],
-        address_attributes: %i[
-          id
-          street
-          addition
-          zip
-          city
-        ],
-        contact_attributes: %i[
-          id
-          first_name
-          last_name
-          phone
-          fax
-          email
-        ],
-        data_resource_settings_attributes: [
-          :id,
-          :data_resource_type,
-          :display_only_summary,
-          :always_recreate_on_import,
-          :data_provider_id,
-          :only_summary_link_text,
-          :convert_media_urls_to_external_storage,
-          :cleanup_old_records,
-          :post_to_facebook,
-          :facebook_page_id,
-          :facebook_page_access_token,
-          default_category_ids: []
-        ],
-        external_service_credential_attributes: %i[
-          id
-          client_key
-          client_secret
-          external_service_id
-          organization_id
-        ]
+        *DATA_PROVIDER_PARAMS,
+        { address_attributes: ADDRESS_PARAMS },
+        { contact_attributes: CONTACT_PARAMS },
+        { logo_attributes: LOGO_PARAMS },
+        { data_resource_settings_attributes: DATA_RESOURCE_SETTINGS_PARAMS },
+        { external_service_credential_attributes: [
+          *EXTERNAL_SERVICE_CREDENTIAL_PARAMS,
+          { additional_params: permitted_additional_params }
+        ]}
       ]
     )
-    values.delete_if { |_key, value| value.blank? }
+
+    permitted.delete_if { |_key, value| value.blank? }
   end
+  # rubocop:enable Metrics/MethodLength, Layout/LineLength
 
   def destroy
     @user = User.find(params["id"])

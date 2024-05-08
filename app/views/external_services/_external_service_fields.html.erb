@@ -1,6 +1,7 @@
 <% use_account_form ||= false %>
 
 <h2>External Service</h2>
+<small>Notice! After you save the form - here, below connected external service will appear dynamically generated fileds from external service resource_config  </small> 
 
   <% data_provider = @data_provider || @user.data_provider %>
 
@@ -10,7 +11,7 @@
     <% prefix = 'data_provider[external_service_credential_attributes]' %>
   <% end %>
 
-  <div class="form-group">
+  <div class="form-group mt-2">
     <%= f.label :external_service_id, 'Select External Service' %>
     <%= select_tag "#{prefix}[external_service_id]", 
         options_from_collection_for_select(
