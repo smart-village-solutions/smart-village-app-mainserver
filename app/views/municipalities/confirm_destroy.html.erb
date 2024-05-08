@@ -17,15 +17,15 @@
   <li>Slug: <strong><%= @municipality.slug %></strong></li>
   <li><strong><%= @municipality.users.count %> Users</strong> will be destroyed as well.</li>
   <li><strong><%= @municipality.members.count %> Members</strong> will be destroyed as well.</li>
-  <li><strong><%= @municipality.categories.count %> Categories</strong>  will be destroyed as well.</li>
-  <li><strong><%= @municipality.waste_location_types.count %> Waste::LocationTypes</strong>  will be destroyed as well.</li>
-  <li><strong><%= @municipality.waste_pick_up_times.count %> Waste::PickUpTime</strong>  will be destroyed as well.</li>
-  <li><strong><%= @municipality.waste_tours.count %> Waste::Tours</strong>  will be destroyed as well.</li>
-  <li><strong><%= @municipality.open_weather_maps.count %> OpenWeatherMaps</strong>  will be destroyed as well.</li>
-  <li><strong><%= @municipality.notification_devices.count %> Notification::Devices</strong>  will be destroyed as well.</li>
-  <li><strong><%= @municipality.static_contents.count %> StaticContents</strong>  will be destroyed as well.</li>
-  <li><strong><%= @municipality.app_user_contents.count %> AppUserContents</strong>  will be destroyed as well.</li>
-  <li><strong><%= @municipality.data_providers.count %> DataProvider</strong>  will be destroyed as well.</li>
+  <li><strong><%= @municipality.categories.count %> Categories</strong> will be destroyed as well.</li>
+  <li><strong><%= @municipality.waste_location_types.count %> Waste::LocationTypes</strong> will be destroyed as well.</li>
+  <li><strong><%= @municipality.waste_pick_up_times.count %> Waste::PickUpTime</strong> will be destroyed as well.</li>
+  <li><strong><%= @municipality.waste_tours.count %> Waste::Tours</strong> will be destroyed as well.</li>
+  <li><strong><%= @municipality.open_weather_maps.count %> OpenWeatherMaps</strong> will be destroyed as well.</li>
+  <li><strong><%= @municipality.notification_devices.count %> Notification::Devices</strong> will be destroyed as well.</li>
+  <li><strong><%= @municipality.static_contents.count %> StaticContents</strong> will be destroyed as well.</li>
+  <li><strong><%= @municipality.app_user_contents.count %> AppUserContents</strong> will be destroyed as well.</li>
+  <li><strong><%= @municipality.data_providers.count %> DataProvider</strong> will be destroyed as well.</li>
 </ul>
 
 <p>All NewsItems, Tours, POIs, EventRecords will <strong>not</strong> be delete and left behind as orphans</p>
@@ -34,6 +34,6 @@
   <div class="alert alert-danger" role="alert">
     <p>Are you sure you want to destroy this municipality?</p>
     <%= text_field_tag :confirm_slug, "", placeholder: "Enter slug to confirm", required: true %>
-    <%= form.submit "Destroy", class: "btn btn-danger", data: { confirm: "Diese Municipality löschen?" } %>
+    <%= form.submit "Destroy", class: "btn btn-danger", data: { confirm: "Delete this municipality?" } %>
   </div>
 <% end %>
