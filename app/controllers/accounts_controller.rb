@@ -40,6 +40,7 @@ class AccountsController < ApplicationController
     role_deadlines
     role_noticeboard
     role_voucher
+    role_defect_report
     import_feeds
   ].freeze
 

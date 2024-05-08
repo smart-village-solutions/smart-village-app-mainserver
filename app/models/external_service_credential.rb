@@ -3,7 +3,7 @@
 class ExternalServiceCredential < ApplicationRecord
   store :additional_params, coder: JSON
 
-  belongs_to :external_service
+  belongs_to :external_service, optional: true
   belongs_to :data_provider
 end
 
