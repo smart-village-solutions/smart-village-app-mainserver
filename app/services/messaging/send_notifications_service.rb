@@ -27,8 +27,10 @@ module Messaging
         data: {
           id: message.conversation_id,
           query_type: "Messaging::Conversation",
+          conversationable_id: message.conversation.conversationable_id,
           conversationable_type: message.conversation.conversationable_type,
-          conversationable_category: message.conversation.conversationable.try(:generic_type)
+          conversationable_category: message.conversation.conversationable.try(:generic_type),
+          title: message.conversation.conversationable.try(:title)
         }
       }
 
