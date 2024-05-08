@@ -158,7 +158,7 @@ class AccountsController < ApplicationController
 
   # rubocop:disable Metrics/MethodLength, Layout/LineLength
   def account_params
-    additional_params_keys = params[:user][:data_provider_attributes][:external_service_credential_attributes][:additional_params]&.keys
+    additional_params_keys = params.dig(:user, :data_provider_attributes, :external_service_credential_attributes, :additional_params)&.keys
     permitted_additional_params = additional_params_keys ? additional_params_keys.map(&:to_sym) : []
 
     permitted = params.require(:user).permit(
