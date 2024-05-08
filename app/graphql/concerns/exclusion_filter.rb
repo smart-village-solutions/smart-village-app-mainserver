@@ -30,7 +30,12 @@ module ExclusionFilter
   # )
 
   def exclusion_filter_for_klass(klass, scope, filter_json)
-    criteria = JSON.parse(filter_json)
+    filter_json = JSON.parse(filter_json) if filter_json.is_a?(String)
+    filter_json = filter_json.permit!.to_h if filter_json.is_a?(ActionController::Parameters)
+
+    return scope if filter_json.blank?
+
+    criteria = filter_json
     filter_scopes = nil
 
     criteria.each do |category_ids, dp_poi_ids|

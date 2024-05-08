@@ -61,4 +61,29 @@ describe Resolvers::NewsItemsSearch do
       ])
     end
   end
+
+  context "with an empty excludeFilter" do
+    let(:variables) { { excludeFilter: {}.to_json } }
+  
+    it "returns all events" do
+      is_expected.to match_array([
+        { "title" => "news_item 1" },
+        { "title" => "news_item 2" },
+        { "title" => "news_item 3" },
+        { "title" => "news_item 4" },
+        { "title" => "news_item 5" },
+        { "title" => "news_item 6" }
+      ])
+    end
+  end
+
+  context "with an invalid excludeFilter" do
+    let(:variables) { { excludeFilter: "invalid_json" } }
+
+    it 'returns an error if json filter is invalid' do
+      result
+      expect(errors).to be_present
+      expect(errors.first['message']).to eq("Invalid JSON format for filter.")
+    end
+  end
 end
