@@ -22,6 +22,7 @@ module Types
     field :generic_item_messages, [QueryTypes::GenericItemMessageType], null: true
     field :opening_hours, [QueryTypes::OpeningHourType], null: true
     field :payload, GraphQL::Types::JSON, null: true
+    field :point_of_interest, QueryTypes::PointOfInterestType, null: true
     field :price_informations, [QueryTypes::PriceType], null: true
     field :publication_date, String, null: true
     field :published_at, String, null: true
