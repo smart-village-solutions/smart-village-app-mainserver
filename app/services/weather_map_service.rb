@@ -13,7 +13,7 @@ class WeatherMapService
     @lat = settings[:openweathermap_lat]
     @lon = settings[:openweathermap_lon]
     @api_key = settings[:openweathermap_api_key]
-    @uri = "#{base_url}/data/2.5/onecall?lat=#{lat}&lon=#{lon}&appid=#{api_key}&units=metric&exclude=minutely&lang=de"
+    @uri = "#{base_url}/data/3.0/onecall?lat=#{lat}&lon=#{lon}&appid=#{api_key}&units=metric&exclude=minutely&lang=de"
   end
 
   # Delete old weather data and import new wether data from
