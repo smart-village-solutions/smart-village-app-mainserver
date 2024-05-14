@@ -10,7 +10,7 @@ class WeatherMapService
     @lat = Rails.application.credentials.openweathermap[:lat]
     @lon = Rails.application.credentials.openweathermap[:lon]
     @api_key = Rails.application.credentials.openweathermap[:api_key]
-    @uri = "#{base_url}/data/2.5/onecall?lat=#{lat}&lon=#{lon}&appid=#{api_key}&units=metric&exclude=minutely&lang=de"
+    @uri = "#{base_url}/data/3.0/onecall?lat=#{lat}&lon=#{lon}&appid=#{api_key}&units=metric&exclude=minutely&lang=de"
   end
 
   # Delete old weather data and import new wether data from
