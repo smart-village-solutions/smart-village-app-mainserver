@@ -30,6 +30,9 @@ en:
     generic_item_noticeboard:
       one: "Noticeboard"
       other: "Noticeboards"
+    generic_item_voucher:
+      one: "Voucher"
+      other: "Vouchers"
   GenericItem:
     GenericTypes:
       Deadline: "Deadline"
