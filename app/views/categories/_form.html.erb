@@ -48,7 +48,7 @@
 
   <div class="form-group">
     <%= form.label :tag_list, "Tags" %>
-    <%= form.select :tag_list, Category::TAG_OPTIONS.map{ |item| [I18n.t("data_resource.#{item}.other"), item] }, { include_blank: false }, { multiple: true, class: "form-control select2" } %>
+    <%= form.select :tag_list, Category::TAG_OPTIONS.map{ |item| [I18n.t("data_resource.#{item}.other"), item] }.sort, { include_blank: false }, { multiple: true, class: "form-control select2" } %>
     <small class="form-text text-muted">
       Select one or more tags for the category
     </small>
