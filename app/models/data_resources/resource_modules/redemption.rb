@@ -1,3 +1,4 @@
+# attribute quantity: Integer represents number of simultaneous redemptions
 class Redemption < ApplicationRecord
   belongs_to :member
   belongs_to :redemable, polymorphic: true

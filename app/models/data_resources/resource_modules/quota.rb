@@ -57,8 +57,9 @@ class Quota < ApplicationRecord
     false
   end
 
+  # attribute quantity in redemption represents number of simultaneous redemptions
   def redeem!(member_id, quantity)
-    redemptions.create!(member_id: member_id, quantity: quantity)
+    quantity.to_i.times { redemptions.create!(member_id: member_id, quantity: quantity) }
   end
 
   private
