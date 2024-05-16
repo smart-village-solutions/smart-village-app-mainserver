@@ -56,18 +56,6 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
 
-  ANNOUNCEMENT_INCLUDES = [
-    :opening_hours,
-    :categories,
-    :addresses,
-    {
-      media_contents: :source_url,
-      quota: { redemptions: :member }
-    }
-  ].freeze
-
-  scope :announcements_type, -> { includes(ANNOUNCEMENT_INCLUDES).where(generic_type: GENERIC_TYPES[:announcement]) }
-
   scope :by_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
   }
@@ -78,7 +66,7 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
   }
 
   # scope for getting upcoming shouts/announcements
-  scope :upcoming, lambda { |current_user = nil|
+  scope :upcoming_announcements, lambda { |current_user = nil|
     return GenericItem.none unless current_user
 
     joins(:opening_hours)

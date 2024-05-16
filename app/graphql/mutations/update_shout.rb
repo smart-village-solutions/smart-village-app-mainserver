@@ -24,7 +24,7 @@ module Mutations
     def resolve(id:, **args)
       return unless context[:current_user]&.data_provider
 
-      shout = GenericItem.announcements_type.find(id)
+      shout = GenericItem.where(generic_type: GenericItem::GENERIC_TYPES[:announcement]).find_by(id: id)
       return unless shout
 
       Shouts::UpdateShoutService.new(

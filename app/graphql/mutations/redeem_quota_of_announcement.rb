@@ -9,7 +9,7 @@ module Mutations
     type Types::StatusType
 
     def resolve(announcement_id:, member_id:, quantity:)
-      announcement = GenericItem.announcements_type.find_by(id: announcement_id)
+      announcement = GenericItem.where(generic_type: GenericItem::GENERIC_TYPES[:announcement]).find_by(id: announcement_id)
       RedeemQuotaService.new(announcement, member_id, quantity).call
     end
   end
