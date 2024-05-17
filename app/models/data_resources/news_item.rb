@@ -24,7 +24,7 @@ class NewsItem < ApplicationRecord
   has_many :data_resource_categories, as: :data_resource
   has_many :categories, through: :data_resource_categories
   has_many :content_blocks, as: :content_blockable, dependent: :destroy
-  has_many :announcements, -> { includes(GenericItem::ANNOUNCEMENT_INCLUDES).where(generic_itemable_type: "NewsItem", generic_type: GenericItem::GENERIC_TYPES[:announcement]) },
+  has_many :announcements, -> { includes(Resolvers::ShoutsSearch::ANNOUNCEMENT_INCLUDES).where(generic_itemable_type: "NewsItem", generic_type: GenericItem::GENERIC_TYPES[:announcement]) },
            foreign_key: :generic_itemable_id,
            class_name: "GenericItem",
            dependent: :destroy
