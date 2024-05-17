@@ -36,7 +36,7 @@ class ResourceService
     # Refuse to update data,
     # if the user has the role extended_user
     # and is not the owner of the data.
-    if @old_resource_id.present? && @data_provider.user.extended_user_role? && @old_resource.data_provider.user != @data_provider.user
+    if @old_resource_id.present? && @data_provider.user.extended_user_role? && @old_resource.try(:data_provider).try(:user) != @data_provider.user
       return GraphQL::ExecutionError.new("Access not permitted!")
     end
 
@@ -172,6 +172,10 @@ class ResourceService
 
       # update all attributes and recreate nested resources
       @old_resource.update(@params)
+
+      # we update the the `updated_at` of the resource anyways,
+      # because the records date needs to be up to date regarding cleanup processes
+      @old_resource.touch
 
       # we do not need to delete the old external reference explicitly, because it was already
       # deleted with going through `association_names_to_delete`, as `external_reference` is

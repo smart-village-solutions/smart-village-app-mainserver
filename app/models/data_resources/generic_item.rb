@@ -93,6 +93,19 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
     generate_checksum(fields)
   end
 
+  def compareable_attributes
+    except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id", "visible", "contactable_id", "dateable_id", "content_blockable_id", "priceable_id"]
+
+    list_of_attributes = {}
+    list_of_attributes.merge!(attributes.except(*except_attributes))
+    list_of_attributes.merge!(contacts: contacts.map { |contact| contact.attributes.except(*except_attributes) })
+    list_of_attributes.merge!(dates: dates.map { |date| date.attributes.except(*except_attributes) })
+    list_of_attributes.merge!(content_blocks: content_blocks.map { |content_block| content_block.attributes.except(*except_attributes) })
+    list_of_attributes.merge!(price_informations: price_informations.map { |price_information| price_information.attributes.except(*except_attributes) })
+
+    list_of_attributes
+  end
+
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "GenericItem").first.try(:settings)
   rescue
