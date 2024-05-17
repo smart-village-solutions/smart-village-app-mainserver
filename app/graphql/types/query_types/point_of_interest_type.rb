@@ -51,5 +51,8 @@ module Types
       object.vouchers.filtered_for_current_user(context[:current_user])
     end
 
+    def announcements
+      object.announcements.upcoming_announcements(context[:current_user])
+    end
   end
 end

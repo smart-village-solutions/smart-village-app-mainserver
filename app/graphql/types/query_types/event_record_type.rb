@@ -39,5 +39,9 @@ module Types
     def list_date
       object.try(:sort_date).try(:strftime, "%Y-%m-%d")
     end
+
+    def announcements
+      object.announcements.upcoming_announcements(context[:current_user])
+    end
   end
 end
