@@ -20,12 +20,12 @@ module Types
     field :schedule_push_notification, mutation: Mutations::SchedulePushNotification
     field :create_generic_item_message, mutation: Mutations::CreateGenericItemMessage
     field :import_gtfs_feeds, mutation: Mutations::ImportGtfsFeeds
-    field :redeemQuotaOfVoucher, mutation: Mutations::RedeemQuotaOfVoucher
+    field :redeem_quota_of_voucher, mutation: Mutations::RedeemQuotaOfVoucher
 
     # Shout related mutations
     field :create_shout, mutation: Mutations::CreateShout
     field :update_shout, mutation: Mutations::UpdateShout
-    field :RedeemQuotaOfAnnouncement, mutation: Mutations::RedeemQuotaOfAnnouncement
+    field :redeem_quota_of_announcement, mutation: Mutations::RedeemQuotaOfAnnouncement
 
     # destroys
     field :destroy_record, mutation: Mutations::DestroyRecord
