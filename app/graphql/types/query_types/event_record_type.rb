@@ -34,6 +34,7 @@ module Types
     field :recurring_interval, Integer, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
+    field :announcements, [Types::QueryTypes::ShoutType], null: true
 
     def list_date
       object.try(:sort_date).try(:strftime, "%Y-%m-%d")

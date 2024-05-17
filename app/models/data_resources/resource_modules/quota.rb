@@ -7,6 +7,7 @@ class Quota < ApplicationRecord
 
   # Einlösefrequenz: einmalig, wöchentlich, monatlich, jährlich
   enum frequency: { once: 0, daily: 1, weekly: 2, monthly: 3, quarterly: 4, yearly: 5 }, _prefix: true
+  enum visibility: { private_visibility: 0, public_visibility: 1 }
 
   # Number of maximum redemptions
   #

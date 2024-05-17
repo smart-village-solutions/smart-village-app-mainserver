@@ -11,7 +11,8 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
     offer: "Offer",
     construction_site: "ConstructionSite",
     noticeboard: "Noticeboard",
-    voucher: "Voucher"
+    voucher: "Voucher",
+    announcement: "Announcement"
   }.freeze
 
   attr_accessor :force_create,
@@ -62,6 +63,17 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
   scope :by_location, lambda { |location_name|
     where(locations: { name: location_name }).or(where(addresses: { city: location_name }))
       .left_joins(:locations).left_joins(:addresses)
+  }
+
+  # scope for getting upcoming shouts/announcements
+  scope :upcoming_announcements, lambda { |current_user = nil|
+    return GenericItem.none unless current_user
+
+    joins(:opening_hours)
+      .where(generic_type: GENERIC_TYPES[:announcement])
+      .filtered_for_current_user(current_user)
+      .where("opening_hours.date_from >= ? OR opening_hours.date_to >= ?", Date.today, Date.today)
+      .distinct
   }
 
   accepts_nested_attributes_for :web_urls, reject_if: ->(attr) { attr[:url].blank? }

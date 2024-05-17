@@ -1,0 +1,11 @@
+mutation {
+  RedeemQuotaOfAnnouncement(
+    announcementId: 30,
+    memberId: 7,
+    quantity: 1
+  ) {
+    id
+    status
+    statusCode
+  }
+}

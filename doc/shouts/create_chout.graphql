@@ -1,0 +1,72 @@
+mutation {
+  createShout(
+    title: "Title",
+    description: "descripton",
+    dateStart: "2024-09-18",
+    dateEnd: "2024-09-18",
+    timeStart: "12:00",
+    timeEnd: "17:00",
+    organizer: {
+      organizerType: "data_provider",
+      organizerId: 5
+    },
+    announcementTypes: ["news", "test"],
+    maxNumberOfQuota: 10,
+    quotaFrequency: "once",
+    quotaVisibility: "public_visibility", # or "private_visibility"(this is default value)
+    participants: [7, 8, 9, 11],
+    location: {
+      city: "city",
+      street: "street",
+      geoLocation: {
+        longitude: 12.345,
+      	latitude: 12.345
+      }
+    },
+    mediaContent: {
+      contentType: "image",
+      captionText: "some text",
+      sourceUrl: {
+        url: "http://example.com"
+      }
+    },
+    announcementableType: "EventRecord",
+    announcementableId: "5"
+  )
+  {
+    id
+    title
+    description
+    dateStart
+    dateEnd
+    timeStart
+    timeEnd
+    announcementTypes
+    announcementableType
+    announcementableId
+    genericType
+    location {
+      city
+      street
+      geoLocation {
+        latitude
+        longitude
+      }
+    }
+    organizer {
+      organizerType
+      organizerId
+    }
+    mediaContent {
+      captionText
+      contentType
+      sourceUrl {
+        url
+      }
+    }
+    maxNumberOfQuota
+    quotaVisibility
+    quotaFrequency
+    participants
+  }
+}

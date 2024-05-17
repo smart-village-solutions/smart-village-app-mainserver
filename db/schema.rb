@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_30_081037) do
+ActiveRecord::Schema.define(version: 2024_05_07_121538) do
 
   create_table "accessibility_informations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -652,6 +652,7 @@ ActiveRecord::Schema.define(version: 2024_04_30_081037) do
     t.bigint "quotaable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "visibility", default: 0
     t.index ["quotaable_type", "quotaable_id"], name: "index_quotas_on_quotaable_type_and_quotaable_id"
   end
 
@@ -678,6 +679,14 @@ ActiveRecord::Schema.define(version: 2024_04_30_081037) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_record_id"], name: "index_repeat_durations_on_event_record_id"
+  end
+
+  create_table "reports", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "reportable_type", null: false
+    t.bigint "reportable_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reportable_type", "reportable_id"], name: "index_reports_on_reportable"
   end
 
   create_table "static_contents", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

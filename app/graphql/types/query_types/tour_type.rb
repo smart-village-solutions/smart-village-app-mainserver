@@ -29,5 +29,6 @@ module Types
     field :tour_stops, [QueryTypes::TourStopType], null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
+    field :announcements, [Types::QueryTypes::ShoutType], null: true
   end
 end
