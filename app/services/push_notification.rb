@@ -59,7 +59,7 @@ class PushNotification
   end
 
   # rubocop:disable all
-  def check_device_pn_config(device, resource_categories_ids, resource_dp_id, resource_poi_id, pn_config_klass)
+  def self.check_device_pn_config(device, resource_categories_ids, resource_dp_id, resource_poi_id, pn_config_klass)
     configs = device.exclude_notification_configuration[pn_config_klass]
     return false if configs.blank?
 
