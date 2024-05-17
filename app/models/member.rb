@@ -44,7 +44,7 @@ class Member < ApplicationRecord
   # e.g.: "Max M." for "Max Mustermann"
   def public_name
     short_last_name = last_name.present? ? "#{last_name.to_s.first}." : ""
-    [first_name.to_s, short_last_name.to_s].join(" ")
+    [first_name.to_s, short_last_name.to_s].join(" ").strip
   end
 
   def self.from_omniauth(session_state:, session_code:) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
