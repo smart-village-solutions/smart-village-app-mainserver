@@ -20,8 +20,7 @@ class PointOfInterest < Attraction
            dependent: :destroy
   has_many :event_records, dependent: :restrict_with_error
   has_many :news_items, dependent: :restrict_with_error
-
-  has_many :announcements, -> { includes(Resolvers::ShoutsSearch::ANNOUNCEMENT_INCLUDES).where(generic_itemable_type: "PointOfInterest", generic_type: GenericItem::GENERIC_TYPES[:announcement]) },
+  has_many :announcements, -> { where(generic_itemable_type: "PointOfInterest", generic_type: GenericItem::GENERIC_TYPES[:announcement]) },
            foreign_key: :generic_itemable_id,
            class_name: "GenericItem",
            dependent: :destroy

@@ -12,8 +12,7 @@ class Tour < Attraction
   has_many :geometry_tour_data, as: :geo_locateable, class_name: "GeoLocation", dependent: :destroy
   has_many :tour_stop_assignments, foreign_key: :tour_id, dependent: :destroy
   has_many :tour_stops, through: :tour_stop_assignments
-
-  has_many :announcements, -> { includes(Resolvers::ShoutsSearch::ANNOUNCEMENT_INCLUDES).where(generic_itemable_type: "Tour", generic_type: GenericItem::GENERIC_TYPES[:announcement]) },
+  has_many :announcements, -> { where(generic_itemable_type: "Tour", generic_type: GenericItem::GENERIC_TYPES[:announcement]) },
            foreign_key: :generic_itemable_id,
            class_name: "GenericItem",
            dependent: :destroy

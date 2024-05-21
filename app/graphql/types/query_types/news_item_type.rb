@@ -24,5 +24,9 @@ module Types
     field :created_at, String, null: true
     field :push_notifications_sent_at, String, null: true
     field :announcements, [Types::QueryTypes::ShoutType], null: true
+
+    def announcements
+      object.announcements.upcoming_announcements(context[:current_user])
+    end
   end
 end
