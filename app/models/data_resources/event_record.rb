@@ -12,7 +12,8 @@ class EventRecord < ApplicationRecord
   attr_accessor :in_date_range_start_date
 
   before_save :remove_emojis
-  before_save :handle_recurring_dates
+  before_update :handle_recurring_dates
+  after_create :handle_recurring_dates
   after_save :find_or_create_category
   before_validation :find_or_create_region
 
@@ -263,7 +264,7 @@ class EventRecord < ApplicationRecord
     # given recurring pattern. The creation takes place in a background job to avoid long running
     # requests. If `recurring` is false, recurring patterns gets reset.
     def handle_recurring_dates
-      if recurring? && (recurring_pattern_changed? || event_date_changed?)
+      if recurring? && (new_record? || recurring_pattern_changed? || event_date_changed?)
         RecurringDatesForEventService.new(self).delay.create_with_pattern
       end
 
