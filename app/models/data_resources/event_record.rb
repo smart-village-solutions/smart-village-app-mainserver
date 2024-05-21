@@ -15,7 +15,8 @@ class EventRecord < ApplicationRecord
                 :in_date_range_start_date,
                 :push_notification
 
-  after_save :handle_recurring_dates
+  before_update :handle_recurring_dates
+  after_create :handle_recurring_dates
   after_save :find_or_create_category # This is defined in the Categorizable module
   after_save :set_sort_date
   after_save :send_push_notification
