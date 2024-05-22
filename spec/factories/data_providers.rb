@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :data_provider do
     name { "MyString" }
     description { "MyString" }
-    municipality_id { 1 }
+    municipality_id { create(:municipality).id }
 
     trait :with_logo do
       logo { create(:web_url, :for_data_provider) }

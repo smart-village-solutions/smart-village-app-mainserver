@@ -9,7 +9,7 @@ RSpec.describe EventRecord, type: :model do
   it { is_expected.to have_many(:addresses) }
   it { is_expected.to have_many(:contacts) }
   it { is_expected.to have_one(:organizer) }
-  it { is_expected.to belong_to(:data_provider) }
+  it { is_expected.to belong_to(:data_provider).optional }
   it { is_expected.to have_many(:price_informations) }
   it { is_expected.to have_many(:media_contents) }
   it { is_expected.to have_one(:location) }
@@ -21,13 +21,13 @@ RSpec.describe EventRecord, type: :model do
 
   def create_date(date_start, date_end)
     FixedDate.create(
-      weekday: Faker::Date.between(2000.days.ago, Date.today).strftime("%A"),
+      weekday: Faker::Date.between(from: 2000.days.ago, to: Date.today).strftime("%A"),
       date_start: date_start,
       date_end: date_end,
       time_start: Faker::Time.backward.strftime("%H:%M"),
       time_end: Faker::Time.forward.strftime("%H:%M"),
       time_description: Faker::Lorem.paragraph,
-      use_only_time_description: Faker::Boolean.boolean(0.8)
+      use_only_time_description: Faker::Boolean.boolean
     )
   end
 
@@ -43,8 +43,8 @@ RSpec.describe EventRecord, type: :model do
         er_1 = event_record_1
         future_date_1 = "21.12.2100"
         future_date_2 = "21.12.2101"
-        add_date_to(er_1, future_date_1)
-        add_date_to(er_1, future_date_2)
+        add_date_to(er_1, future_date_1, future_date_1)
+        add_date_to(er_1, future_date_2, future_date_2)
         result = er_1.list_date.strftime("%d.%m.%Y")
         expect(result).to eq(future_date_1)
       end
@@ -55,10 +55,9 @@ RSpec.describe EventRecord, type: :model do
         er_1 = event_record_1
         past_date_1 = "20.12.2018"
         past_date_2 = "21.05.2019"
-        add_date_to(er_1, past_date_1)
-        add_date_to(er_1, past_date_2)
-        result = er_1.list_date.strftime("%d.%m.%Y")
-        expect(result).to eq(past_date_2)
+        add_date_to(er_1, past_date_1, past_date_1)
+        add_date_to(er_1, past_date_2, past_date_2)
+        expect(er_1.list_date).to eq(nil)
       end
     end
 
@@ -68,9 +67,9 @@ RSpec.describe EventRecord, type: :model do
         future_date_1 = "21.12.2100"
         future_date_2 = "21.12.2101"
         past_date = "21.05.2019"
-        add_date_to(er_1, future_date_1)
-        add_date_to(er_1, future_date_2)
-        add_date_to(er_1, past_date)
+        add_date_to(er_1, future_date_1, future_date_1)
+        add_date_to(er_1, future_date_2, future_date_2)
+        add_date_to(er_1, past_date, past_date)
         result = er_1.list_date.strftime("%d.%m.%Y")
         expect(result).to eq(future_date_1)
       end
@@ -92,8 +91,7 @@ RSpec.describe EventRecord, type: :model do
         er_1 = event_record_1
         past_date = "12.05.2020"
         add_date_to(er_1, past_date, past_date)
-        result = er_1.list_date.strftime("%d.%m.%Y")
-        expect(result).to eq(past_date)
+        expect(er_1.list_date).to eq(nil)
       end
     end
 
