@@ -37,7 +37,7 @@ module Types
     field :created_at, String, null: true
     field :announcements, [Types::QueryTypes::ShoutType], null: true
 
-    def travel_times(date: "", sort_by: "arrival_time", sort_order: "asc")
+    def travel_times(date: "", sort_by: "departure_time", sort_order: "asc")
       return [] if date.blank?
 
       object.gtfs_travel_times(date: date, sort_by: sort_by, sort_order: sort_order)
