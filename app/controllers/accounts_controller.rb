@@ -5,6 +5,8 @@
 class AccountsController < ApplicationController
   layout "doorkeeper/admin"
 
+  skip_before_action :verify_authenticity_token, only: %i[check_rss_feeds]
+
   before_action :authenticate_user!
   before_action :authenticate_user_role
 
@@ -116,6 +118,17 @@ class AccountsController < ApplicationController
     @user = User.new
   end
 
+  def check_rss_feeds
+    rss_feed_check_result = {}
+
+    params.permit!["import_feeds"].to_h.values.each do |feed|
+      feed = transform_hash_values(feed)
+      rss_feed_check_result[feed["name"]] = CheckRssFeed.new(feed).call
+    end
+
+    render json: rss_feed_check_result, status: :ok
+  end
+
   # POST /resource/sign_in
   def create
     @user = User.new(account_params)
@@ -186,6 +199,19 @@ class AccountsController < ApplicationController
     flash[:notice] = "Nutzer wurde gelöscht"
     respond_to do |format|
       format.html { redirect_to action: :index }
+    end
+  end
+
+  private
+
+  def transform_hash_values(hash)
+    hash.transform_values do |value|
+      if value.is_a?(Hash)
+        transform_hash_values(value)
+      else
+        value == 'true' ? true : value
+        value == 'false' ? false : value
+      end
     end
   end
 end
