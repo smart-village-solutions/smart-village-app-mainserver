@@ -454,7 +454,7 @@
     <% end %>
     <div id="code_editor" style="height: 400px;"></div>
     <small class="form-text text-muted">
-      <%= link_to "Check RSS Feeds", "#", class: "btn btn-sm btn-secondary check_rss_feeds" %>
+      <%= link_to "Check RSS Feeds", "#", class: "btn btn-sm btn-secondary check_rss_feeds" if @user.id.present? %>
       <a target="_blank" href="https://tpwd.atlassian.net/wiki/spaces/SVA/pages/2845016065/Importer+Configs">
         https://tpwd.atlassian.net/wiki/spaces/SVA/pages/2845016065/Importer+Configs
       </a>
@@ -490,26 +490,28 @@
     <% end %>
   });
 
-  $(function () {
-    $(".check_rss_feeds").on("click", function(e) {
-      e.preventDefault();
-      $(".check_rss_feeds_results").html('<div class="spinner-border" role="status"><span>Loading...</span></div>');
-      $.ajax({
-        url: "<%= check_rss_feeds_account_path(@user) %>",
-        method: "POST",
-        data: { import_feeds: JSON.parse($("#user_data_provider_attributes_import_feeds").val()) },
-        success: function(data) {
-          var jsonData = JSON.stringify(data);
-          var tableHtml = "<table class='table table-striped col-4'><thead><tr><td>Feed</td><td>Auswertung</td></tr></thead>";
-          for (var key in data) {
-            json_response = JSON.stringify(data[key], null, 2).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            json_response = json_response.replace(/"([^"]+)":/g, '<strong>"$1":</strong>');
-            tableHtml += "<tr><td>" + key + "</td><td><pre>" + json_response + "</pre></td></tr>";
+  <% if @user.id.present? %>
+    $(function () {
+      $(".check_rss_feeds").on("click", function(e) {
+        e.preventDefault();
+        $(".check_rss_feeds_results").html('<div class="spinner-border" role="status"><span>Loading...</span></div>');
+        $.ajax({
+          url: "<%= check_rss_feeds_account_path(@user) %>",
+          method: "POST",
+          data: { import_feeds: JSON.parse($("#user_data_provider_attributes_import_feeds").val()) },
+          success: function(data) {
+            var jsonData = JSON.stringify(data);
+            var tableHtml = "<table class='table table-striped col-4'><thead><tr><td>Feed</td><td>Auswertung</td></tr></thead>";
+            for (var key in data) {
+              json_response = JSON.stringify(data[key], null, 2).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+              json_response = json_response.replace(/"([^"]+)":/g, '<strong>"$1":</strong>');
+              tableHtml += "<tr><td>" + key + "</td><td><pre>" + json_response + "</pre></td></tr>";
+            }
+            tableHtml += "</table>";
+            $(".check_rss_feeds_results").html(tableHtml);
           }
-          tableHtml += "</table>";
-          $(".check_rss_feeds_results").html(tableHtml);
-        }
+        });
       });
-    });
-  })
+    })
+  <% end %>
 </script>
