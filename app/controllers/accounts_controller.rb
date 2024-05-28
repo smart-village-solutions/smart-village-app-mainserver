@@ -205,6 +205,10 @@ class AccountsController < ApplicationController
   private
 
   def transform_hash_values(hash)
+    # wenn hash kein Hash ist, dann abbrechen
+    return hash unless hash.is_a?(Hash)
+    return nil if hash.blank?
+
     hash.transform_values do |value|
       if value.is_a?(Hash)
         transform_hash_values(value)
