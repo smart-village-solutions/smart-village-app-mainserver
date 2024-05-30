@@ -91,13 +91,22 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
     new_member_params = map_member_params_to_keycloak_user_attributes(new_member_params)
     old_keycloak_user_data = get_keycloak_member_data(member.keycloak_access_token)
 
-    request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{member.keycloak_id}"].join, nil, nil, new_member_params, auth_headers)
-    result = request.put_request
 
     if email_changed?(new_member_params, member, old_keycloak_user_data)
+      # add params for email verification in keycloak
+      new_member_params["emailVerified"] = false
+      new_member_params["requiredActions"] = ["VERIFY_EMAIL"]
+
+      member.update_columns(
+        email: new_member_params["email"],
+        authentication_token_created_at: Time.zone.now
+      )
+
       send_verification_email(member.keycloak_id)
-      member.update_columns(email: new_member_params["email"], authentication_token_created_at: Time.zone.now)
     end
+
+    request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{member.keycloak_id}"].join, nil, nil, new_member_params, auth_headers)
+    result = request.put_request
 
     { errors: nil, success: true } if result.code == "204"
   end
