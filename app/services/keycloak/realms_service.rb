@@ -91,9 +91,9 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
     new_member_params = map_member_params_to_keycloak_user_attributes(new_member_params)
     old_keycloak_user_data = get_keycloak_member_data(member.keycloak_access_token)
 
-
     if email_changed?(new_member_params, member, old_keycloak_user_data)
       # add params for email verification in keycloak
+      new_member_params["username"] = new_member_params["email"]
       new_member_params["emailVerified"] = false
       new_member_params["requiredActions"] = ["VERIFY_EMAIL"]
 
