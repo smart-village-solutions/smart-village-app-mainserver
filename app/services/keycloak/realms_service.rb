@@ -137,7 +137,6 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
 
   def get_keycloak_member_data(access_token)
     headers = { Authorization: "Bearer #{access_token}" }
-    p access_token
     request_service = ApiRequestService.new("#{uri}/realms/#{realm}/protocol/openid-connect/userinfo", nil, nil, nil, headers)
     response = request_service.get_request
 
