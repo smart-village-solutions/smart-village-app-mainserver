@@ -63,7 +63,7 @@ class Api::V1::AccountsController < Api::BaseController
 
     account = Accounts::UpdateAccountService.new(
       data_provider_id: @data_provider.id,
-      account_params: account_params
+      account_params: detected_params
     ).update_account
 
     render_account_response(account)
