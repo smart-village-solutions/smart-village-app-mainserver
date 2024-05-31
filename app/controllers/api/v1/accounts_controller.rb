@@ -2,6 +2,7 @@
 
 class Api::V1::AccountsController < Api::BaseController
   before_action :set_data_provider, only: %i[show update]
+  before_action :authenticate_user_role, only: %i[show update]
 
   USER_PARAMS = %i[
     email
@@ -35,6 +36,7 @@ class Api::V1::AccountsController < Api::BaseController
   }]
 
   PARAMS = USER_PARAMS + DATA_PROVIDER_PARAMS + EXTERNAL_SERVICE_PARAMS
+  INDIVIDUAL_ACCOUNT_PARAMS = DATA_PROVIDER_PARAMS + EXTERNAL_SERVICE_PARAMS
 
   def show
     render_account_response(@data_provider)
@@ -50,7 +52,9 @@ class Api::V1::AccountsController < Api::BaseController
   end
 
   def update
-    if account_params[:external_service_additional_params] && account_params[:external_service_id].blank?
+    detected_params = management_user_role? ? account_params : individual_account_params
+
+    if detected_params[:external_service_additional_params] && detected_params[:external_service_id].blank?
       render json: {
         error: "external_service_id is required when external_service_additional_params is provided."
       }, status: :unprocessable_entity
@@ -66,6 +70,22 @@ class Api::V1::AccountsController < Api::BaseController
   end
 
   private
+
+    def authenticate_user_role
+      render_unauthorized unless management_user_role? || user_allowed_to_update?
+    end
+
+    def management_user_role?
+      current_user&.account_manager_role? || current_user&.admin_role?
+    end
+
+    def user_allowed_to_update?
+      current_user&.data_provider&.id == @data_provider&.id
+    end
+
+    def individual_account_params
+      account_params.slice(*(DATA_PROVIDER_PARAMS + EXTERNAL_SERVICE_PARAMS))
+    end
 
     def account_params
       permitted_params = PARAMS.dup
