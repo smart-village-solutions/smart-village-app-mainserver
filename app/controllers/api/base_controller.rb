@@ -3,7 +3,6 @@
 class Api::BaseController < ApplicationController
   before_action :doorkeeper_authorize!
   skip_before_action :verify_authenticity_token
-  before_action :authenticate_user_role
   rescue_from ActionController::ParameterMissing, with: :render_unprocessable_entity
   rescue_from ArgumentError, with: :render_unprocessable_entity
   rescue_from ActiveRecord::RecordInvalid, with: :render_record_invalid
@@ -22,10 +21,6 @@ class Api::BaseController < ApplicationController
 
   def render_unprocessable_entity(exception)
     render json: { errors: exception.message }, status: :unprocessable_entity
-  end
-
-  def authenticate_user_role
-    render_unauthorized unless current_user&.account_manager_role? || current_user&.admin_role?
   end
 
   def current_user
