@@ -98,8 +98,19 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
       new_member_params["emailVerified"] = false
       new_member_params["requiredActions"] = ["VERIFY_EMAIL"]
 
-      # Sende E-mail an die Alte Adresse, das eine neue Email Adresse angegeben wurde
-      # todo: sende eigene E-mail an die Alte Adresse
+      # Sende E-mail an die alte Adresse, das eine neue Email Adresse angegeben wurde über den Rails Mailer
+      begin
+        NotificationMailer.email_changed(
+          member.id,
+          old_keycloak_user_data.fetch("given_name", ""),
+          new_member_params["email"],
+          municipality_id
+        ).deliver_now
+      rescue
+        # Wenn beim Versand der Hinweismail etwas schief geht,
+        # weil irgend eine Adresse ungültig war,
+        # dann wird der Prozess nicht unterbrochen
+      end
     end
 
     request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{member.keycloak_id}"].join, nil, nil, new_member_params, auth_headers)
