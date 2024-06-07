@@ -90,23 +90,26 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
 
     new_member_params = map_member_params_to_keycloak_user_attributes(new_member_params)
     old_keycloak_user_data = get_keycloak_member_data(member.keycloak_access_token)
+    did_email_change = email_changed?(new_member_params, member, old_keycloak_user_data)
 
-    if email_changed?(new_member_params, member, old_keycloak_user_data)
+    if did_email_change
       # add params for email verification in keycloak
       new_member_params["username"] = new_member_params["email"]
       new_member_params["emailVerified"] = false
       new_member_params["requiredActions"] = ["VERIFY_EMAIL"]
 
-      member.update_columns(
-        email: new_member_params["email"],
-        authentication_token_created_at: Time.zone.now
-      )
-
-      send_verification_email(member.keycloak_id)
+      # Sende E-mail an die Alte Adresse, das eine neue Email Adresse angegeben wurde
+      # todo: sende eigene E-mail an die Alte Adresse
     end
 
     request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{member.keycloak_id}"].join, nil, nil, new_member_params, auth_headers)
     result = request.put_request
+
+    # Wenn jemand in Keycloak aktualisiert tokens erhalten hat, dann wird auch die Gültigkeitsdauer der Device Tokens aktualisiert
+    member.update_columns(authentication_token_created_at: Time.zone.now)
+
+    # Sende E-mail an die Neue Adresse, um die Adresse zu bestätigen, falls sich die E-mail Adresse geändert hat
+    send_verification_email(member.keycloak_id) if did_email_change
 
     { errors: nil, success: true } if result.code == "204"
   end
