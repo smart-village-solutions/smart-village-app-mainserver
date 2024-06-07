@@ -8,4 +8,4 @@ de:
       new_message:
         subject: "[Smart Village App] Neue Nachricht"
       email_changed:
-        subject: "[Smart Village App] Ihre E-Mail-Adresse wird geändert"
+        subject: "[Smart Village App] E-Mail-Adresse wird geändert"
