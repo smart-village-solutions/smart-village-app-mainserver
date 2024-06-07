@@ -90,6 +90,10 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
 
     new_member_params = map_member_params_to_keycloak_user_attributes(new_member_params)
     old_keycloak_user_data = get_keycloak_member_data(member.keycloak_access_token)
+    if old_keycloak_user_data.nil?
+      return { errors: "Login failed, Please log in again", success: false }
+    end
+
     did_email_change = email_changed?(new_member_params, member, old_keycloak_user_data)
 
     if did_email_change
@@ -115,6 +119,13 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
 
     request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{member.keycloak_id}"].join, nil, nil, new_member_params, auth_headers)
     result = request.put_request
+
+    # Wenn die E-Mail Adresse bereits existiert oder ein anderer Fehler auftritt,
+    # dann wird ein Fehler zurückgegeben
+    if result.code == "409" || result.code == "400"
+      error_messsage = JSON.parse(result.body)
+      return { errors: error_messsage["errorMessage"], success: false }
+    end
 
     # Wenn jemand in Keycloak aktualisiert tokens erhalten hat, dann wird auch die Gültigkeitsdauer der Device Tokens aktualisiert
     member.update_columns(authentication_token_created_at: Time.zone.now)

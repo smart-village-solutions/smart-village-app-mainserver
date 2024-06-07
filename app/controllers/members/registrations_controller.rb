@@ -68,17 +68,23 @@ class Members::RegistrationsController < Devise::RegistrationsController
     when :devise
       super
     when :keycloak
+      error_messages = []
       keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
       @resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
 
-      # hier werden nur locale Attribute aktualisiert, dier in "store :preferences" gespeichert sind
-      # es wird keine Email aktualisiert
+      # hier werden nur locale Attribute aktualisiert, die in "store :preferences" gespeichert sind,
+      # es wird keine E-Mail aktualisiert
       result = @resource.update(member_update_params.except(*MEMBER_EXCEPT_ATTRIBUTES))
+      error_messages << @resource.errors.full_messages if result == false
 
       @resource.update_columns(authentication_token_created_at: Time.zone.now) if result && @resource.errors.blank?
+      error_messages << @resource.errors.full_messages if @resource.errors.present?
 
       # hier werden Zugangsdaten in Keycloak aktualisiert
-      keycloak_service.update_user(member_params.except(*Member.stored_attributes[:preferences]), @resource) if result && @resource.errors.blank?
+      keycloak_response = keycloak_service.update_user(member_params.except(*Member.stored_attributes[:preferences]), @resource) if result && @resource.errors.blank?
+      error_messages << keycloak_response[:errors] if keycloak_response[:success] == false
+
+      error_messages = error_messages.flatten.compact
     when :key_and_secret
       super
     end
@@ -86,7 +92,7 @@ class Members::RegistrationsController < Devise::RegistrationsController
     respond_to do |format|
       format.html { super }
       format.json do
-        if result.present? && @resource.errors.blank?
+        if error_messages.blank?
           return render json: {
             success: true,
             member: result
@@ -95,7 +101,7 @@ class Members::RegistrationsController < Devise::RegistrationsController
 
         render json: {
           success: false,
-          errors: result&.errors&.full_messages
+          errors: error_messages.join(",")
         }, status: 403
       end
     end
