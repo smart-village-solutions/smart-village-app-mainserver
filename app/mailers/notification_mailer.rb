@@ -49,4 +49,35 @@ class NotificationMailer < ApplicationMailer
       subject: t("mailers.notification.new_message.subject")
     )
   end
+
+  def email_changed(member_id, first_name, new_email, municipality_id)
+    municipality = Municipality.find_by(id: municipality_id)
+    set_delivery_options(municipality)
+    set_static_content_values
+
+    @member = Member.find_by(id: member_id)
+    @first_name = first_name
+    @new_email = new_email
+
+    mail(
+      to: @member.email,
+      from: municipality.settings[:mailjet_default_from],
+      subject: t("mailers.notification.email_changed.subject")
+    )
+  end
+
+  private
+
+    def set_static_content_values
+      static_content = StaticContent.find_by(name: "mailer-config").try(:content)
+
+      begin
+        static_content = JSON.parse(static_content)
+      rescue StandardError
+        return
+      end
+
+      @app_name = static_content["app_name"]
+      @mail_footer = static_content["mail_footer"].join("\n")
+    end
 end

@@ -7,3 +7,5 @@ de:
         subject: "[Smart Village App] Umfrage wurde kommentiert"
       new_message:
         subject: "[Smart Village App] Neue Nachricht"
+      email_changed:
+        subject: "[Smart Village App] E-Mail-Adresse wird geändert"

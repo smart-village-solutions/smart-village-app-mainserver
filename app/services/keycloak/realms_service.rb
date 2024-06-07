@@ -90,23 +90,48 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
 
     new_member_params = map_member_params_to_keycloak_user_attributes(new_member_params)
     old_keycloak_user_data = get_keycloak_member_data(member.keycloak_access_token)
+    if old_keycloak_user_data.nil?
+      return { errors: "Login failed, Please log in again", success: false }
+    end
 
-    if email_changed?(new_member_params, member, old_keycloak_user_data)
+    did_email_change = email_changed?(new_member_params, member, old_keycloak_user_data)
+
+    if did_email_change
       # add params for email verification in keycloak
       new_member_params["username"] = new_member_params["email"]
       new_member_params["emailVerified"] = false
       new_member_params["requiredActions"] = ["VERIFY_EMAIL"]
 
-      member.update_columns(
-        email: new_member_params["email"],
-        authentication_token_created_at: Time.zone.now
-      )
-
-      send_verification_email(member.keycloak_id)
+      # Send an email to the old address notifying that a new email address has been provided using the Rails Mailer
+      begin
+        NotificationMailer.email_changed(
+          member.id,
+          old_keycloak_user_data.fetch("given_name", ""),
+          new_member_params["email"],
+          municipality_id
+        ).deliver_now
+      rescue
+        # If there is an error sending the notification email,
+        # due to an invalid address,
+        # the process will not be interrupted
+      end
     end
 
     request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{member.keycloak_id}"].join, nil, nil, new_member_params, auth_headers)
     result = request.put_request
+
+    # If the email address already exists or another error occurs,
+    # an error will be returned
+    if result.code == "409" || result.code == "400"
+      error_messsage = JSON.parse(result.body)
+      return { errors: error_messsage["errorMessage"], success: false }
+    end
+
+    # If someone has updated tokens in Keycloak, then the validity period of the device tokens will also be updated
+    member.update_columns(authentication_token_created_at: Time.zone.now)
+
+    # Send email to the new address to confirm the address, if the email address has changed
+    send_verification_email(member.keycloak_id) if did_email_change
 
     { errors: nil, success: true } if result.code == "204"
   end
