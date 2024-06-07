@@ -78,11 +78,19 @@ class Members::SessionsController < Devise::SessionsController # rubocop:disable
     return false if result.blank?
     return false if result["error"].present?
 
-    @resource = Member.where(
-      municipality_id: MunicipalityService.municipality_id,
-      email: member_params[:email]
-    ).first
+    # get member data from keycloak
+    keycloak_member_data = keycloak_service.get_keycloak_member_data(result["access_token"])
+
+    # find or create member in mainserver with keycloak_id
+    @resource = Member.where(municipality_id: MunicipalityService.municipality_id, keycloak_id: keycloak_member_data["sub"]).first_or_create do |member|
+      member_password = SecureRandom.alphanumeric
+      member.password = member_password
+      member.password_confirmation = member_password
+      member.email = keycloak_member_data["email"] if keycloak_member_data["email_verified"]
+    end
+
     @resource.update_keycloak_tokens(keycloak_tokens: result, access_token: result["access_token"])
+
     sign_in(resource_name, @resource)
     @resource.authentication_token_created_at = Time.zone.now
     @resource.save # recreates authentication_token after sign in
