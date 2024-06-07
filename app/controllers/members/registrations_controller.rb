@@ -72,15 +72,15 @@ class Members::RegistrationsController < Devise::RegistrationsController
       keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
       @resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
 
-      # hier werden nur locale Attribute aktualisiert, die in "store :preferences" gespeichert sind,
-      # es wird keine E-Mail aktualisiert
+      # Only local attributes stored in "store :preferences" are updated here,
+      # no email is updated
       result = @resource.update(member_update_params.except(*MEMBER_EXCEPT_ATTRIBUTES))
       error_messages << @resource.errors.full_messages if result == false
 
       @resource.update_columns(authentication_token_created_at: Time.zone.now) if result && @resource.errors.blank?
       error_messages << @resource.errors.full_messages if @resource.errors.present?
 
-      # hier werden Zugangsdaten in Keycloak aktualisiert
+      # here access data is updated in Keycloak
       keycloak_response = keycloak_service.update_user(member_params.except(*Member.stored_attributes[:preferences]), @resource) if result && @resource.errors.blank?
       error_messages << keycloak_response[:errors] if keycloak_response[:success] == false
 

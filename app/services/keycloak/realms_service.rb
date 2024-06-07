@@ -102,7 +102,7 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
       new_member_params["emailVerified"] = false
       new_member_params["requiredActions"] = ["VERIFY_EMAIL"]
 
-      # Sende E-mail an die alte Adresse, das eine neue Email Adresse angegeben wurde über den Rails Mailer
+      # Send an email to the old address notifying that a new email address has been provided using the Rails Mailer
       begin
         NotificationMailer.email_changed(
           member.id,
@@ -111,26 +111,26 @@ class Keycloak::RealmsService # rubocop:disable Metrics/ClassLength
           municipality_id
         ).deliver_now
       rescue
-        # Wenn beim Versand der Hinweismail etwas schief geht,
-        # weil irgend eine Adresse ungültig war,
-        # dann wird der Prozess nicht unterbrochen
+        # If there is an error sending the notification email,
+        # due to an invalid address,
+        # the process will not be interrupted
       end
     end
 
     request = ApiRequestService.new([uri, "/admin/realms/#{realm}/users/#{member.keycloak_id}"].join, nil, nil, new_member_params, auth_headers)
     result = request.put_request
 
-    # Wenn die E-Mail Adresse bereits existiert oder ein anderer Fehler auftritt,
-    # dann wird ein Fehler zurückgegeben
+    # If the email address already exists or another error occurs,
+    # an error will be returned
     if result.code == "409" || result.code == "400"
       error_messsage = JSON.parse(result.body)
       return { errors: error_messsage["errorMessage"], success: false }
     end
 
-    # Wenn jemand in Keycloak aktualisiert tokens erhalten hat, dann wird auch die Gültigkeitsdauer der Device Tokens aktualisiert
+    # If someone has updated tokens in Keycloak, then the validity period of the device tokens will also be updated
     member.update_columns(authentication_token_created_at: Time.zone.now)
 
-    # Sende E-mail an die Neue Adresse, um die Adresse zu bestätigen, falls sich die E-mail Adresse geändert hat
+    # Send email to the new address to confirm the address, if the email address has changed
     send_verification_email(member.keycloak_id) if did_email_change
 
     { errors: nil, success: true } if result.code == "204"
