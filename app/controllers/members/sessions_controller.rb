@@ -86,9 +86,11 @@ class Members::SessionsController < Devise::SessionsController # rubocop:disable
       member_password = SecureRandom.alphanumeric
       member.password = member_password
       member.password_confirmation = member_password
-      member.email = keycloak_member_data["email"] if keycloak_member_data["email_verified"]
     end
 
+    if keycloak_member_data["email_verified"] && @resource.email != keycloak_member_data["email"]
+      @resource.update_columns(email: keycloak_member_data["email"])
+    end
     @resource.update_keycloak_tokens(keycloak_tokens: result, access_token: result["access_token"])
 
     sign_in(resource_name, @resource)
