@@ -77,6 +77,7 @@ class MunicipalitiesController < AdminController
     # Only allow a list of trusted parameters through.
     def municipality_params
       params.require(:municipality).permit(
+        :global,
         :slug,
         :title,
         :settings,

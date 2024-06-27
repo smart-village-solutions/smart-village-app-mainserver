@@ -91,5 +91,4 @@ class MunicipalityService
       timeout: 30
     }
   end
-
 end

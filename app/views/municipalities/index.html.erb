@@ -9,6 +9,7 @@
 <table class="table table-striped">
   <thead>
     <tr>
+      <th>Global</th>
       <th>ID</th>
       <th>Slug</th>
       <th>Title</th>
@@ -20,6 +21,7 @@
   <tbody>
     <% @municipalities.each do |municipality| %>
       <tr>
+        <td><div class="<%= 'fas fa-globe text-danger' if municipality.global %>"></div></td>
         <td><%= municipality.id %></td>
         <td><%= municipality.slug %></td>
         <td><%= municipality.title %></td>
