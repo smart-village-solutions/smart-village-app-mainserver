@@ -77,6 +77,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
+          <th>Global</th>
           <th style="min-width: 55px">
             <%= link_to "ID", accounts_path(params_for_link(:id)) + "#accounts" %>
             <%= render partial: "sort_icon", locals: { sort_column: "id" } %>
@@ -100,6 +101,7 @@
           <% data_provider = user.data_provider %>
 
           <tr id="user_<%= user.id %>">
+            <td class="align-middle"><div class="<%= 'fas fa-globe text-danger' if user.try(:municipality).try(:global) %>"></div></td>
             <td class="align-middle"><%= user.id %></td>
             <td class="align-middle"><%= link_to user.email, edit_account_path(user) %></td>
             <td class="align-middle"><%= data_provider.try(:name) %> <%= data_provider.try(:id) %></td>
@@ -140,7 +142,9 @@
               <%= link_to t('doorkeeper.applications.buttons.edit'), edit_account_path(user), class: "btn btn-sm btn-outline-secondary" %>
             </td>
             <td class="align-middle" style="width: 70px">
-              <%= link_to "Destroy", account_path(user), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: "Sind sie sicher?" } %>
+              <% if user.try(:municipality).try(:global) == false %>
+                <%= link_to "Destroy", account_path(user), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: "Sind sie sicher?" } %>
+              <% end %>
             </td>
           </tr>
         <% end %>
