@@ -17,7 +17,8 @@
 <% end %>
 
 <div class="alert alert-warning" role="alert">
-  Dieser Account wird in der Municipality <%= @user.municipality_id %> verwaltet!
+  Dieser Account wird in der Municipality <%= @user.municipality_id %> verwaltet! <br>
+  Anpassungen, die hier durch die Filtern vorgenommen werden, betreffen nur die Daten in dieser Municipality.
 </div>
 
 <div class="form-group">
@@ -56,7 +57,6 @@
   <div class="tab-content" id="nav-tabContent">
     <%= d.fields_for :data_resource_settings do |s| %>
       <div class="tab-pane fade show <%= s.object.data_resource_type == 'NewsItem' ? 'active' : '' %>" id="nav-<%= s.object.data_resource_type %>" role="tabpanel" aria-labelledby="nav-home-tab">
-        <% global_settings_municipality_key = "user[data_provider_attributes][data_resource_settings_attributes][#{s.index}][global_settings][municipality_#{MunicipalityService.municipality_id}]" %>
         <% resource_settings_key = "user[data_provider_attributes][data_resource_settings_attributes][#{s.index}]" %>
         <%= s.hidden_field :id %>
         <%= s.hidden_field :data_provider_id %>

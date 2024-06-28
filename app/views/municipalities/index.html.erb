@@ -1,10 +1,6 @@
-<h1>Municipalities</h1>
+<h1>Globals</h1>
 
-<% if @municipality_suggestion.present? %>
-  <div class="alert alert-info ">
-    Die Kommune "<%= @municipality_suggestion %>" existiert noch nicht, wollen sie diese anlegen?
-  </div>
-<% end %>
+<p>Datenlieferanten die in den Globals konfiguriert sind, sind in allen Municipalities verfügbar. Die Filterung der globalen Daten dieser Datenlieferanten erfolgt innerhalb der einzelnen Municipalities</p>
 
 <table class="table table-striped">
   <thead>
@@ -19,9 +15,44 @@
   </thead>
 
   <tbody>
-    <% @municipalities.each do |municipality| %>
+    <% @municipalities.global.each do |municipality| %>
       <tr>
         <td><div class="<%= 'fas fa-globe text-danger' if municipality.global %>"></div></td>
+        <td><%= municipality.id %></td>
+        <td><%= municipality.slug %></td>
+        <td><%= municipality.title %></td>
+        <td><%= municipality.created_at.strftime(t('doorkeeper.authorized_applications.index.date_format')) %></td>
+        <td><%= link_to 'Mainserver', municipality.url, target: "_blank" %></td>
+        <td><%= link_to 'CMS', municipality.cms_url, target: "_blank" %></td>
+        <td><%= link_to 'Edit', edit_municipality_path(municipality) %></td>
+        <td><%= link_to 'Destroy', confirm_destroy_municipality_path(municipality) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h1>Municipalities</h1>
+
+<% if @municipality_suggestion.present? %>
+  <div class="alert alert-info ">
+    Die Kommune "<%= @municipality_suggestion %>" existiert noch nicht, wollen sie diese anlegen?
+  </div>
+<% end %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Slug</th>
+      <th>Title</th>
+      <th>Created at</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @municipalities.not_global.each do |municipality| %>
+      <tr>
         <td><%= municipality.id %></td>
         <td><%= municipality.slug %></td>
         <td><%= municipality.title %></td>
