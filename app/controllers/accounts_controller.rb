@@ -81,7 +81,17 @@ class AccountsController < ApplicationController
     :post_to_facebook,
     :facebook_page_id,
     :facebook_page_access_token,
-    { default_category_ids: [] }
+    :use_global_resource,
+    {
+      default_category_ids: [],
+      filter_category_ids: [],
+      filter_location_name: [],
+      filter_location_region: [],
+      filter_location_department: [],
+      filter_location_district: [],
+      filter_location_state: [],
+      filter_location_country: []
+    }
   ].freeze
 
   EXTERNAL_SERVICE_CREDENTIAL_PARAMS = %i[
@@ -110,8 +120,11 @@ class AccountsController < ApplicationController
       data_resource_settings = @user.data_provider.data_resource_settings.where(
         data_resource_type: data_resource.to_s
       )
-      data_resource_settings.build if data_resource_settings.blank?
+      drs = data_resource_settings.build if data_resource_settings.blank?
+      drs.global_settings = {} if drs.present? && drs.global_settings.blank?
     end
+
+    @locations = Location.all if @user.try(:municipality).try(:global) == true
   end
 
   def new
@@ -151,8 +164,11 @@ class AccountsController < ApplicationController
   # POST /resource/sign_in
   def update
     @user = User.find(params["id"])
-    @user.update(account_params)
-    flash[:notice] = "Nutzer aktualisiert"
+    if @user.update(account_params)
+      flash[:notice] = "Nutzer aktualisiert"
+    else
+      flash[:error] = "Nutzer konnte nicht aktualisiert werden: #{@user.errors.full_messages.join(', ')}"
+    end
     respond_to do |format|
       format.html { redirect_to action: :edit }
     end

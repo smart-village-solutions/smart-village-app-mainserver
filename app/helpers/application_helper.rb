@@ -12,18 +12,36 @@ module ApplicationHelper
     MunicipalityService.settings["member_auth_types"].include?("keycloak") == true
   end
 
-  def render_selectable_categories(categories, form)
+  def render_selectable_categories(categories, form, base_element = nil, selected_category_ids = [])
     category_tags = ""
-    base_element = "user[data_provider_attributes][data_resource_settings_attributes][#{form.options[:child_index]}][default_category_ids][]"
+    base_element = "user[data_provider_attributes][data_resource_settings_attributes][#{form.options[:child_index]}][default_category_ids][]" if base_element.nil?
+    selected_category_ids = Array(form.object.default_category_ids) if selected_category_ids.blank?
 
     categories.each do |category, subtree|
       tree_element = check_box_tag(
         base_element,
         category.id,
-        Array(form.object.default_category_ids).include?(category.id.to_s)
+        selected_category_ids.include?(category.id.to_s)
       )
       tree_element += category.name
       tree_element += render_selectable_categories(subtree, form)
+      category_tags << content_tag("li", raw(tree_element))
+    end
+
+    content_tag("ul", raw(category_tags))
+  end
+
+  def render_selectable_location(location_attribute_list, base_element, selected_location_attribute)
+    category_tags = ""
+    location_attribute_list = location_attribute_list.compact.map(&:strip).uniq.sort
+
+    location_attribute_list.each do |list_item|
+      tree_element = check_box_tag(
+        base_element,
+        list_item,
+        selected_location_attribute.include?(list_item)
+      )
+      tree_element += list_item
       category_tags << content_tag("li", raw(tree_element))
     end
 

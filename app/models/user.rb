@@ -61,13 +61,12 @@ class User < ApplicationRecord
     MunicipalityService.municipality_id = @current_municipality.id if @current_municipality.present?
 
     if @current_municipality.present?
-      # params = { municipality_id: @current_municipality.id }
-      params = warden_conditions[:email].present? ? { email: warden_conditions[:email] } : {}
+      params = warden_conditions[:email].present? ? { email: warden_conditions[:email], municipality_id: @current_municipality.id } : {}
       if warden_conditions[:authentication_token].present?
         params.merge!(authentication_token: warden_conditions[:authentication_token])
       end
 
-      return where(params).first
+      return unscoped.where(params).first
     end
 
     where("1 == 0")

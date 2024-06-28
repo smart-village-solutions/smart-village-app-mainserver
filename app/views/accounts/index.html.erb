@@ -142,7 +142,7 @@
               <%= link_to t('doorkeeper.applications.buttons.edit'), edit_account_path(user), class: "btn btn-sm btn-outline-secondary" %>
             </td>
             <td class="align-middle" style="width: 70px">
-              <% if user.try(:municipality).try(:global) == false %>
+              <% if user.try(:municipality).try(:global) == false || user.municipality_id == MunicipalityService.municipality_id %>
                 <%= link_to "Destroy", account_path(user), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: "Sind sie sicher?" } %>
               <% end %>
             </td>
