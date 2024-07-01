@@ -7,7 +7,7 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   include ExclusionFilter
   include JsonFilterParseable
 
-  scope { NewsItem.filtered_for_current_user(context[:current_user]).with_globals }
+  scope { NewsItem.filtered_for_current_user(context[:current_user]).with_filterd_globals }
 
   type types[Types::QueryTypes::NewsItemType]
 

@@ -37,11 +37,7 @@ class NewsItem < ApplicationRecord
     where(categories: { id: category_id }).joins(:categories)
   }
 
-  scope :with_globals, lambda {
-    # selected_municipality_ids = []
-    # accessible_municipality_ids = [MunicipalityService.municipality_id] + selected_municipality_ids
-
-    # where(municipality_id: Array(accessible_municipality_ids.compact.uniq))
+  scope :with_filterd_globals, lambda {
     scope
   }
 

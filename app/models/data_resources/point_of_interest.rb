@@ -31,6 +31,10 @@ class PointOfInterest < Attraction
   accepts_nested_attributes_for :price_informations, :opening_hours, :lunches, :vouchers
 
   scope :meilisearch_import, -> { includes(:data_provider, location: :region) }
+  scope :with_filterd_globals, lambda {
+    # poi_ids_restricted_to_dataproviders = PointOfInterest.search("*", filter: [["municipality_id = 6", "municipality_id = 7"]]).pluck(:id)
+    scope
+  }
 
   meilisearch index_uid: "#{MunicipalityService.municipality_id}_PointOfInterest", sanitize: true, force_utf8_encoding: true do
     filterable_attributes [:data_provider_id, :municipality_id, :location_name, :location_department, :location_district, :location_state, :location_country, :region_name]
