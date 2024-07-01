@@ -25,10 +25,10 @@
         <%= form.text_field :title, class: "form-control", disabled: true %>
       </div>
 
-      <h1>Settings</h1>
 
       <%= render partial: "municipalities/form_partials/member_auth_settings", locals: { form: form, municipality: municipality } %>
       <%= render partial: "municipalities/form_partials/uptime_robot_settings", locals: { form: form } %>
+      <%= render partial: "municipalities/form_partials/meilisearch_settings", locals: { form: form } %>
       <%= render partial: "municipalities/form_partials/mailer_settings", locals: { form: form } %>
       <%= render partial: "municipalities/form_partials/minio_settings", locals: { form: form } %>
       <%= render partial: "municipalities/form_partials/open_weather_settings", locals: { form: form } %>

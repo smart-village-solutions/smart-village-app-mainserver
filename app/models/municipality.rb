@@ -40,6 +40,7 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
           :rollbar_access_token,
           :redis_host, :redis_namespace,
           :uptime_robot_api_key, :uptime_robot_alert_contacts,
+          :meilisearch_url, :meilisearch_api_key,
           :member_auth_types, :member_auth_key_and_secret_url,
           :member_keycloak_url, :member_keycloak_realm, :member_keycloak_client_id, :member_keycloak_client_secret,
           :member_keycloak_admin_username, :member_keycloak_admin_password
@@ -78,6 +79,10 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
     # Uptime Robot
     self.uptime_robot_api_key = Settings.uptime_robot[:api_key] if self.uptime_robot_api_key.nil?
     self.uptime_robot_alert_contacts = Settings.uptime_robot[:alert_contacts] if self.uptime_robot_alert_contacts.nil?
+
+    # Meilisearch Server
+    self.meilisearch_url = Settings.meilisearch[:url] if self.meilisearch_url.nil?
+    self.meilisearch_api_key = Settings.meilisearch[:api_key] if self.meilisearch_api_key.nil?
 
     # Mailer Settings
     self.mailer_notify_admin_to = Settings.mailer[:notify_admin][:to] if self.mailer_notify_admin_to.nil?
