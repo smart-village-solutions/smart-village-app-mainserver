@@ -71,11 +71,13 @@ class DataResourceSetting < ApplicationRecord
     end
 
     def update_municipality_cache
-      municipality = Municipality.find_by(id: MunicipalityService.municipality_id)
-      municipality.activated_globals = {} if municipality.activated_globals.blank?
-      municipality.activated_globals["municipality_ids"] = []
-      municipality.activated_globals["data_provider_ids"] = []
-      municipality.save
+      current_municipality = data_provider.municipality
+      data_resource_settings = Municipality.global.map(&:data_providers).flatten.map(&:data_resource_settings).flatten.select{ |drs| drs.global_settings.keys.include?("municipality_#{current_municipality.id}") }
+
+      current_municipality.activated_globals = {} if current_municipality.activated_globals.blank?
+      current_municipality.activated_globals["municipality_ids"] = data_resource_settings.map(&:data_provider).map(&:municipality_id).flatten.uniq
+      current_municipality.activated_globals["data_provider_ids"] = data_resource_settings.map(&:data_provider_id).flatten.uniq
+      current_municipality.save
     end
 end
 
