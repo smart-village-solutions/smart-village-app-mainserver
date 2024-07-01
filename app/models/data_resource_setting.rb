@@ -24,6 +24,8 @@ class DataResourceSetting < ApplicationRecord
   store :global_settings, coder: JSON
 
   before_save :cleanup_global_settings
+  # maybe we cache the municipality_ids to display somewhere
+  after_save :update_municipality_cache
 
   belongs_to :data_provider
 
@@ -66,6 +68,14 @@ class DataResourceSetting < ApplicationRecord
           self.global_settings["municipality_#{MunicipalityService.municipality_id}"][global_settings_attribute] = self.global_settings["municipality_#{MunicipalityService.municipality_id}"][global_settings_attribute].delete_if(&:blank?)
         end
       end
+    end
+
+    def update_municipality_cache
+      municipality = Municipality.find_by(id: MunicipalityService.municipality_id)
+      municipality.activated_globals = {} if municipality.activated_globals.blank?
+      municipality.activated_globals["municipality_ids"] = []
+      municipality.activated_globals["data_provider_ids"] = []
+      municipality.save
     end
 end
 

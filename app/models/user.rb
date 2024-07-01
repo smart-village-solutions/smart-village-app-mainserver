@@ -9,6 +9,11 @@ class User < ApplicationRecord
   include Sortable
   include MunicipalityScope
 
+  default_scope(all_queries: true) do
+    accessible_municipality_ids = [MunicipalityService.municipality_id] + Municipality.global.pluck(:id)
+    unscoped.where(municipality_id: Array(accessible_municipality_ids.compact.uniq))
+  end
+
   sortable_on :email, :id
 
   include Searchable

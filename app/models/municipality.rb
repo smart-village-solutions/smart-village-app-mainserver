@@ -46,7 +46,8 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
           :meilisearch_url, :meilisearch_api_key,
           :member_auth_types, :member_auth_key_and_secret_url,
           :member_keycloak_url, :member_keycloak_realm, :member_keycloak_client_id, :member_keycloak_client_secret,
-          :member_keycloak_admin_username, :member_keycloak_admin_password
+          :member_keycloak_admin_username, :member_keycloak_admin_password,
+          :activated_globals
         ],
         coder: JSON
 
