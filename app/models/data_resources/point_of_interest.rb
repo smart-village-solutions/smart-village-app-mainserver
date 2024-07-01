@@ -5,9 +5,12 @@
 # smart village and the surrounding area
 #
 class PointOfInterest < Attraction
+  include MeiliSearch::Rails
+
   attr_accessor :push_notification
 
   after_save :send_push_notification
+  after_touch :index!
 
   has_many :data_resource_categories, -> { where(data_resource_type: "PointOfInterest") }, foreign_key: :data_resource_id
   has_many :categories, through: :data_resource_categories
@@ -26,6 +29,47 @@ class PointOfInterest < Attraction
            dependent: :destroy
 
   accepts_nested_attributes_for :price_informations, :opening_hours, :lunches, :vouchers
+
+  scope :meilisearch_import, -> { includes(:data_provider, location: :region) }
+
+  meilisearch sanitize: true do
+    filterable_attributes [:data_provider_id, :municipality_id, :location_name, :location_department, :location_district, :location_state, :location_country, :region_name]
+    sortable_attributes [:id, :title, :created_at, :name]
+    ranking_rules [
+        "sort",
+        "created_at:desc",
+        "words",
+        "typo",
+        "proximity",
+        "attribute",
+        "exactness"
+      ]
+    attribute :id, :name, :description, :data_provider_id, :visible, :active
+    attribute :municipality_id do
+      data_provider.try(:municipality_id)
+    end
+    attribute :categories do
+      categories.map(&:name)
+    end
+    attribute :location_name do
+      location.try(:name)
+    end
+    attribute :location_department do
+      location.try(:department)
+    end
+    attribute :location_district do
+      location.try(:district)
+    end
+    attribute :location_state do
+      location.try(:state)
+    end
+    attribute :location_country do
+      location.try(:country)
+    end
+    attribute :region_name do
+      location.try(:region).try(:name)
+    end
+  end
 
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "PointOfInterest").first.try(:settings)

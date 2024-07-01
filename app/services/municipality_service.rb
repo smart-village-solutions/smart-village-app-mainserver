@@ -18,6 +18,7 @@ class MunicipalityService
   def self.municipality_id=(id)
     Thread.current[:municipality_id] = id
     rollbar_initializer(id) if id && Municipality.exists?(id)
+    meilisearch_initializer(id) if id && Municipality.exists?(id)
     id
   end
 
@@ -70,13 +71,24 @@ class MunicipalityService
     Municipality.find_by(slug: slug_name)
   end
 
-  private 
+  private
 
   def self.rollbar_initializer(id)
-    Rollbar.configuration.access_token = settings[:rollbar_access_token]
+    current_settings = settings
+    Rollbar.configuration.access_token = current_settings[:rollbar_access_token]
     Rollbar.configuration.payload_options = {
       municipality_id: id,
-      minio_bucket: settings[:minio_bucket]
+      minio_bucket: current_settings[:minio_bucket]
+    }
+  end
+
+  def self.meilisearch_initializer(id)
+    current_settings = settings
+    MeiliSearch::Rails.configuration = {
+      meilisearch_url: current_settings[:meilisearch_url],
+      meilisearch_api_key: current_settings[:meilisearch_api_key],
+      per_environment: true,
+      timeout: 30
     }
   end
 
