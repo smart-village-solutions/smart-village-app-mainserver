@@ -38,7 +38,7 @@ class NewsItem < ApplicationRecord
   }
 
   scope :with_filterd_globals, lambda {
-    scope
+    where("1 = 1")
   }
 
   # defined by FilterByRole
