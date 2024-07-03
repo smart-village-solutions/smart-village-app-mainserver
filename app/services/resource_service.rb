@@ -13,7 +13,7 @@ class ResourceService
     @params = params
 
     # Erlaube nur ein Anlegen von Daten wenn der Nutzer nicht ReadOnly ist.
-    return GraphQL::ExecutionError.new("Access not permitted!") if @data_provider.user.read_only_role?
+    return GraphQL::ExecutionError.new("Access not permitted!") if @data_provider.blank? || @data_provider.user.blank? || @data_provider.user.read_only_role?
 
     # cleanup params for given :id
     @old_resource_id = @params.delete(:id)
