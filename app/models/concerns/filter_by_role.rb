@@ -8,10 +8,14 @@ module FilterByRole
     # .all sind also hier nicht alle sondern nur alle innerhalb einer Municipality.
     # Zusätzlich werden die globalen DataProvider hinzugefügt.
     scope :by_data_provider, -> {
-      data_provider_ids_of_globals = MunicipalityService.settings.dig("activated_globals", "data_provider_ids")
-      data_provider_ids_of_current_municipality = DataProvider.all.pluck(:id)
+      begin
+        data_provider_ids_of_globals = MunicipalityService.settings.dig("activated_globals", "data_provider_ids")
+      rescue
+        data_provider_ids_of_globals = []
+      end
+      look_up_data_provider_ids = Array(DataProvider.all.pluck(:id)) + Array(data_provider_ids_of_globals)
 
-      where(data_provider_id: Array(data_provider_ids_of_current_municipality) + Array(data_provider_ids_of_globals))
+      where(data_provider_id: look_up_data_provider_ids.flatten.compact.uniq.delete_if(&:blank?))
     }
 
     scope :visible, -> { where(visible: true) }
