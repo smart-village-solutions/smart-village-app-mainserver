@@ -38,7 +38,7 @@ module Types
     field :created_at, String, null: true
 
     def point_of_interest
-      object.generic_itemable if object.generic_itemable_type = "PointOfInterest"
+      object.generic_itemable if object.generic_itemable_type == "PointOfInterest"
     end
   end
 end
