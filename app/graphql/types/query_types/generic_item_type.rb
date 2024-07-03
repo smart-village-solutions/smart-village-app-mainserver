@@ -36,6 +36,7 @@ module Types
     field :web_urls, [QueryTypes::WebUrlType], null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
+    field :ancestry, String, null: true
 
     def point_of_interest
       object.generic_itemable if object.generic_itemable_type == "PointOfInterest"
