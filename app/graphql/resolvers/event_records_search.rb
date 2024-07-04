@@ -11,15 +11,15 @@ class Resolvers::EventRecordsSearch
 
     begin
       lookahead = context[:extras][:lookahead].selection(:event_records)
+      event_records = event_records.upcoming_with_date_select if lookahead.selects?(:date)
       event_records = event_records.includes(:addresses) if lookahead.selects?(:addresses)
       event_records = event_records.includes(:categories) if lookahead.selects?(:categories)
-      event_records = event_records.includes(:dates) if lookahead.selects?(:list_date) || lookahead.selects?(:dates)
       event_records = event_records.includes(:data_provider) if lookahead.selects?(:data_provider)
     rescue
       # ignore
     end
 
-    event_records.distinct
+    event_records
   }
 
   type types[Types::QueryTypes::EventRecordType]

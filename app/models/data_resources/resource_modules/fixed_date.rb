@@ -3,6 +3,10 @@
 # provides dates to other resources (e.g. Events) who need a fixed dates
 class FixedDate < ApplicationRecord
   belongs_to :dateable, polymorphic: true
+
+  scope :upcoming, lambda { |current_user = nil|
+    where("date_start >= ? OR date_end >= ?", Date.today, Date.today)
+  }
 end
 
 # == Schema Information

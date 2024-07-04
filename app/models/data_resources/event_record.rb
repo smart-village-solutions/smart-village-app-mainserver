@@ -10,12 +10,14 @@ class EventRecord < ApplicationRecord
   attr_accessor :region_name
   attr_accessor :force_create
   attr_accessor :in_date_range_start_date
+  attr_accessor :date
 
   before_save :remove_emojis
   before_update :handle_recurring_dates
   after_create :handle_recurring_dates
   after_save :find_or_create_category
   before_validation :find_or_create_region
+  after_find :set_date_accessor
 
   belongs_to :region, optional: true
   belongs_to :data_provider
@@ -89,6 +91,22 @@ class EventRecord < ApplicationRecord
       .distinct
   }
 
+  scope :upcoming_with_date_select, lambda { |current_user = nil|
+    select_clause = <<~SQL
+      event_records.*,
+      fixed_dates.id AS fixed_date_id,
+      fixed_dates.date_start AS fixed_date_start,
+      fixed_dates.date_end AS fixed_date_end,
+      fixed_dates.time_start AS fixed_time_start,
+      fixed_dates.time_end AS fixed_time_end,
+      fixed_dates.weekday AS fixed_weekday,
+      fixed_dates.time_description AS fixed_time_description,
+      fixed_dates.use_only_time_description AS fixed_use_only_time_description
+    SQL
+
+    select(select_clause)
+  }
+
   scope :by_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
   }
@@ -141,6 +159,15 @@ class EventRecord < ApplicationRecord
 
   # @return [Date]
   def list_date
+    if recurring? && date.present?
+      return today_in_time_range(
+        OpenStruct.new(
+          date_start: date.date_start,
+          date_end: date.date_end
+        )
+      )
+    end
+
     return in_date_range_start_date if in_date_range_start_date.present?
 
     list_date_cached = RedisAdapter.get_event_list_date(id)
@@ -199,6 +226,10 @@ class EventRecord < ApplicationRecord
     calculated_list_date
   end
 
+  def upcoming_dates
+    dates.upcoming
+  end
+
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "EventRecord").first.try(:settings)
   end
@@ -217,6 +248,21 @@ class EventRecord < ApplicationRecord
   end
 
   private
+
+    def set_date_accessor
+      return if self[:fixed_date_id].blank?
+
+      self.date = OpenStruct.new(
+        id: self[:fixed_date_id],
+        date_start: self[:fixed_date_start],
+        date_end: self[:fixed_date_end],
+        time_start: self[:fixed_time_start].try(:localtime),
+        time_end: self[:fixed_time_end].try(:localtime),
+        weekday: self[:weekday],
+        time_description: self[:time_description],
+        use_only_time_description: self[:use_only_time_description]
+      )
+    end
 
     def find_or_create_category
       # für Abwärtskompatibilität, wenn nur ein einiger Kategorienamen angegeben wird
@@ -241,13 +287,17 @@ class EventRecord < ApplicationRecord
     # if a start and end date describes a larger time range, "today" needs to be returned until end
     # is reached.
     def today_in_time_range(date)
+      start_date = date.date_start
       end_date = date.date_end
       today = Time.zone.now.beginning_of_day
+
+      # return start date if start date is in the future
+      return start_date if start_date >= today
 
       # return "today" if there is no end date
       return today.to_date if end_date.blank?
 
-      # return nil if the start and end dates are in the past
+      # return nil if the end date is in the past
       return nil if end_date < today
 
       # return "today" if there is a future end date
