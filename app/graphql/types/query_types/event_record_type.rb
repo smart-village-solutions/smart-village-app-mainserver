@@ -36,7 +36,7 @@ module Types
     field :created_at, String, null: true
 
     def dates
-      object.upcoming_dates
+      object.dates_upcoming
     end
   end
 end

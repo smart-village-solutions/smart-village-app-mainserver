@@ -41,6 +41,8 @@ class EventRecord < ApplicationRecord
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
 
+  delegate :upcoming, to: :dates, prefix: true
+
   # timespan_to_search und timespan werden Arrays der Eventzeiträume
   # und deren Schnittemenge > 0 bedeutet eine Überschneidung.
   #
@@ -224,10 +226,6 @@ class EventRecord < ApplicationRecord
     calculated_list_date = event_dates.last.try(:date_start)
     RedisAdapter.set_event_list_date(id, calculated_list_date.try(:to_time).to_i)
     calculated_list_date
-  end
-
-  def upcoming_dates
-    dates.upcoming
   end
 
   def settings
