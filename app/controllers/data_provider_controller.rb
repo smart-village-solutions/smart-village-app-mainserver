@@ -61,7 +61,9 @@ class DataProviderController < ApplicationController
 
     def provider_params
       # Fetch and convert keys from `additional_params` to symbols for safe parameter permitting, or default to an empty array if none are present.
-      additional_params_keys = params[:data_provider][:external_service_credential_attributes][:additional_params]&.keys
+      additional_params_keys = params.dig(:data_provider,
+                                          :external_service_credential_attributes,
+                                          :additional_params)&.keys
       permitted_additional_params = additional_params_keys ? additional_params_keys.map(&:to_sym) : []
 
       params.require(:data_provider)
