@@ -35,6 +35,7 @@ class Users::SessionsController < Devise::SessionsController
     resource = warden.authenticate!(auth_options)
     set_flash_message(:notice, :signed_in) if is_flashing_format?
     sign_in(resource_name, resource)
+    resource.authentication_token_created_at = Time.zone.now
     resource.save # recreates authentication_token after sign in
 
     # Ein Login zum Graphiql Interface ist nur mit einer
