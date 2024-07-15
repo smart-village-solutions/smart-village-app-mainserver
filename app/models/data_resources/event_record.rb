@@ -93,7 +93,7 @@ class EventRecord < ApplicationRecord
       .distinct
   }
 
-  scope :upcoming_with_date_select, lambda { |current_user = nil|
+  scope :upcoming_with_date_select, lambda {
     select_clause = <<~SQL
       event_records.*,
       fixed_dates.id AS fixed_date_id,
@@ -106,7 +106,10 @@ class EventRecord < ApplicationRecord
       fixed_dates.use_only_time_description AS fixed_use_only_time_description
     SQL
 
-    select(select_clause)
+    # ignore the first date for recurring events, because it is the original date object with
+    # a time span that should not be listed in the returning event records.
+    where("fixed_dates.id != (SELECT MIN(fd.id) FROM fixed_dates fd WHERE fd.dateable_id = event_records.id)")
+      .select(select_clause)
   }
 
   scope :by_category, lambda { |category_id|

@@ -19,7 +19,13 @@ class Resolvers::EventRecordsSearch
       # ignore
     end
 
-    event_records
+    # if the date is requested we need to return all records, because there will be different events
+    # with the same id that only differ in date
+    if lookahead.selects?(:date)
+      event_records
+    else
+      event_records.distinct
+    end
   }
 
   type types[Types::QueryTypes::EventRecordType]
