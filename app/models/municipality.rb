@@ -81,8 +81,9 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
     self.uptime_robot_alert_contacts = Settings.uptime_robot[:alert_contacts] if self.uptime_robot_alert_contacts.nil?
 
     # Meilisearch Server
-    self.meilisearch_url = Settings.meilisearch[:url] if self.meilisearch_url.nil?
-    self.meilisearch_api_key = Settings.meilisearch[:api_key] if self.meilisearch_api_key.nil?
+    meilisearch_access_api_key = create_meilisearch_access.fetch("key", nil)
+    self.meilisearch_url = Settings.meilisearch[:url] if meilisearch_url.nil?
+    self.meilisearch_api_key = meilisearch_access_api_key.presence || Settings.meilisearch[:api_key] if meilisearch_api_key.nil?
 
     # Mailer Settings
     self.mailer_notify_admin_to = Settings.mailer[:notify_admin][:to] if self.mailer_notify_admin_to.nil?
@@ -118,6 +119,30 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   private
+
+    def create_meilisearch_access
+      data = {
+        "actions": [
+          "*"
+        ],
+        "indexes": [
+          "#{MunicipalityService.municipality_id}_PointOfInterest_development",
+          "#{MunicipalityService.municipality_id}_EventRecord_development",
+          "#{MunicipalityService.municipality_id}_NewsItem_development",
+          "#{MunicipalityService.municipality_id}_PointOfInterest_production",
+          "#{MunicipalityService.municipality_id}_EventRecord_production",
+          "#{MunicipalityService.municipality_id}_NewsItem_production"
+        ],
+        "expiresAt": nil,
+        "name": "Access for Municipality ID #{MunicipalityService.municipality_id}"
+      }
+      header = { "Authorization": "Bearer #{Settings.meilisearch[:api_key]}" }
+      request_service = ApiRequestService.new("#{Settings.meilisearch[:url]}/keys", nil, nil, data, header)
+      response = request_service.post_request
+      JSON.parse(response.body)
+    rescue StandardError
+      {}
+    end
 
     def create_admin_user
       SetupUserService.new(
