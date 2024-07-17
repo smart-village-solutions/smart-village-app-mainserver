@@ -107,9 +107,9 @@ class AccountsController < ApplicationController
 
   def index
     @users = User
-      .sorted_for_params(params)
-      .where_email_contains(params[:query])
-      .page(params[:page])
+             .sorted_for_params(params)
+             .where_email_contains(params[:query])
+             .page(params[:page])
   end
 
   def edit
@@ -167,7 +167,7 @@ class AccountsController < ApplicationController
     if @user.update(account_params)
       flash[:notice] = "Nutzer aktualisiert"
     else
-      flash[:error] = "Nutzer konnte nicht aktualisiert werden: #{@user.errors.full_messages.join(', ')}"
+      flash[:error] = "Nutzer konnte nicht aktualisiert werden: #{@user.errors.full_messages.join(", ")}"
     end
     respond_to do |format|
       format.html { redirect_to action: :edit }
@@ -201,7 +201,7 @@ class AccountsController < ApplicationController
         { external_service_credential_attributes: [
           *EXTERNAL_SERVICE_CREDENTIAL_PARAMS,
           { additional_params: permitted_additional_params }
-        ]}
+        ] }
       ]
     )
 
@@ -220,18 +220,18 @@ class AccountsController < ApplicationController
 
   private
 
-  def transform_hash_values(hash)
-    # wenn hash kein Hash ist, dann abbrechen
-    return hash unless hash.is_a?(Hash)
-    return nil if hash.blank?
+    def transform_hash_values(hash)
+      # wenn hash kein Hash ist, dann abbrechen
+      return hash unless hash.is_a?(Hash)
+      return nil if hash.blank?
 
-    hash.transform_values do |value|
-      if value.is_a?(Hash)
-        transform_hash_values(value)
-      else
-        value == 'true' ? true : value
-        value == 'false' ? false : value
+      hash.transform_values do |value|
+        if value.is_a?(Hash)
+          transform_hash_values(value)
+        else
+          value == "true" ? true : value
+          value == "false" ? false : value
+        end
       end
     end
-  end
 end

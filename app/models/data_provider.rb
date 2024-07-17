@@ -66,8 +66,8 @@ class DataProvider < ApplicationRecord
 
   def import_auth_credentials
     user = User.unscoped.where(municipality_id: municipality.id, data_provider_id: id).first
-
     return nil if user.blank?
+
     oauth_app = user.oauth_applications.first
     { client_key: oauth_app.uid, client_secret: oauth_app.plaintext_secret, municipality_slug: municipality.slug }
   end
