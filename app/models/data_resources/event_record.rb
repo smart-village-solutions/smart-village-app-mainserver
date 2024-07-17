@@ -6,6 +6,7 @@ class EventRecord < ApplicationRecord
   include FilterByRole
   include Categorizable
   include FilterByDataProviderAndPoiScope
+  include MeiliSearch::Rails
   extend OrderAsSpecified
 
   attr_accessor :category_name,
@@ -21,6 +22,7 @@ class EventRecord < ApplicationRecord
   after_save :find_or_create_category # This is defined in the Categorizable module
   after_save :set_sort_date
   after_save :send_push_notification
+  after_touch :index!
 
   before_validation :find_or_create_region
   after_find :set_date_accessor
@@ -153,6 +155,48 @@ class EventRecord < ApplicationRecord
   acts_as_taggable
 
   validates_presence_of :title
+
+  meilisearch index_uid: "#{MunicipalityService.municipality_id}_EventRecord", sanitize: true, force_utf8_encoding: true do
+    filterable_attributes %i[data_provider_id municipality_id, :location_name, :location_department, :location_district, :location_state, :location_country, :region_name]
+    sortable_attributes %i[id title created_at]
+    ranking_rules [
+      "sort",
+      "created_at:desc",
+      "words",
+      "typo",
+      "proximity",
+      "attribute",
+      "exactness"
+    ]
+    attribute :id, :title, :description, :data_provider_id, :visible
+    attribute :municipality_id do
+      data_provider.try(:municipality_id)
+    end
+    attribute :categories do
+      categories.map(&:name)
+    end
+    attribute :list_date do
+      list_date
+    end
+    attribute :location_name do
+      location.try(:name)
+    end
+    attribute :location_department do
+      location.try(:department)
+    end
+    attribute :location_district do
+      location.try(:district)
+    end
+    attribute :location_state do
+      location.try(:state)
+    end
+    attribute :location_country do
+      location.try(:country)
+    end
+    attribute :region_name do
+      location.try(:region).try(:name)
+    end
+  end
 
   def find_or_create_region
     self.region_id = Region.where(name: region_name).first_or_create.id

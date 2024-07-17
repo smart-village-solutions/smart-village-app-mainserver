@@ -32,18 +32,18 @@ class PointOfInterest < Attraction
 
   scope :meilisearch_import, -> { includes(:data_provider, location: :region) }
 
-  meilisearch sanitize: true do
+  meilisearch index_uid: "#{MunicipalityService.municipality_id}_PointOfInterest", sanitize: true, force_utf8_encoding: true do
     filterable_attributes [:data_provider_id, :municipality_id, :location_name, :location_department, :location_district, :location_state, :location_country, :region_name]
     sortable_attributes [:id, :title, :created_at, :name]
     ranking_rules [
-        "sort",
-        "created_at:desc",
-        "words",
-        "typo",
-        "proximity",
-        "attribute",
-        "exactness"
-      ]
+      "sort",
+      "created_at:desc",
+      "words",
+      "typo",
+      "proximity",
+      "attribute",
+      "exactness"
+    ]
     attribute :id, :name, :description, :data_provider_id, :visible, :active
     attribute :municipality_id do
       data_provider.try(:municipality_id)
