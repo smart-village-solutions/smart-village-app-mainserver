@@ -5,7 +5,7 @@ require "search_object/plugin/graphql"
 class Resolvers::PointsOfInterestSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
-  scope { PointOfInterest.filtered_for_current_user(context[:current_user]).with_filterd_globals }
+  scope { PointOfInterest.filtered_for_current_user(context[:current_user]).with_filtered_globals }
 
   type types[Types::QueryTypes::PointOfInterestType]
 

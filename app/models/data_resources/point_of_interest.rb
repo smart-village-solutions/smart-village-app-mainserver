@@ -31,14 +31,15 @@ class PointOfInterest < Attraction
   accepts_nested_attributes_for :price_informations, :opening_hours, :lunches, :vouchers
 
   scope :meilisearch_import, -> { includes(:data_provider, location: :region) }
-  scope :with_filterd_globals, lambda {
+  scope :with_filtered_globals, lambda {
     # poi_ids_restricted_to_dataproviders = PointOfInterest.search("*", filter: [["municipality_id = 6", "municipality_id = 7"]]).pluck(:id)
     where("1 = 1")
   }
 
-  meilisearch index_uid: "#{MunicipalityService.municipality_id}_PointOfInterest", sanitize: true, force_utf8_encoding: true do
-    filterable_attributes [:data_provider_id, :municipality_id, :location_name, :location_department, :location_district, :location_state, :location_country, :region_name]
-    sortable_attributes [:id, :title, :created_at, :name]
+  meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
+    filterable_attributes %i[data_provider_id municipality_id location_name location_department
+                             location_district location_state location_country region_name]
+    sortable_attributes %i[id title created_at name]
     ranking_rules [
       "sort",
       "created_at:desc",
@@ -75,9 +76,13 @@ class PointOfInterest < Attraction
     end
   end
 
+  def searchable?
+    visible && data_provider.try(:municipality_id).present?
+  end
+
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "PointOfInterest").first.try(:settings)
-  rescue
+  rescue StandardError
     nil
   end
 

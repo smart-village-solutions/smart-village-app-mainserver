@@ -126,19 +126,10 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
     def create_meilisearch_access
       data = {
-        "actions": [
-          "*"
-        ],
-        "indexes": [
-          "#{MunicipalityService.municipality_id}_PointOfInterest_development",
-          "#{MunicipalityService.municipality_id}_EventRecord_development",
-          "#{MunicipalityService.municipality_id}_NewsItem_development",
-          "#{MunicipalityService.municipality_id}_PointOfInterest_production",
-          "#{MunicipalityService.municipality_id}_EventRecord_production",
-          "#{MunicipalityService.municipality_id}_NewsItem_production"
-        ],
+        "actions": ["*"],
+        "indexes": ["*"],
         "expiresAt": nil,
-        "name": "Access for Municipality ID #{MunicipalityService.municipality_id}"
+        "name": "Access for Municipality ID #{id}"
       }
       header = { "Authorization": "Bearer #{Settings.meilisearch[:api_key]}" }
       request_service = ApiRequestService.new("#{Settings.meilisearch[:url]}/keys", nil, nil, data, header)

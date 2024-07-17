@@ -37,7 +37,7 @@ class NewsItem < ApplicationRecord
     where(categories: { id: category_id }).joins(:categories)
   }
 
-  scope :with_filterd_globals, lambda {
+  scope :with_filtered_globals, lambda {
     where("1 = 1")
   }
 
@@ -46,7 +46,7 @@ class NewsItem < ApplicationRecord
 
   accepts_nested_attributes_for :content_blocks, :data_provider, :address, :source_url
 
-  meilisearch index_uid: "#{MunicipalityService.municipality_id}_NewsItem", sanitize: true, force_utf8_encoding: true do
+  meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
     filterable_attributes %i[data_provider_id municipality_id]
     sortable_attributes %i[id title created_at]
     ranking_rules [
@@ -71,6 +71,10 @@ class NewsItem < ApplicationRecord
     attribute :description do
       content_for_facebook[:message]
     end
+  end
+
+  def searchable?
+    visible && data_provider.try(:municipality_id).present?
   end
 
   def unique_id

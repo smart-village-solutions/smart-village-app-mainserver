@@ -55,6 +55,10 @@ class EventRecord < ApplicationRecord
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
 
+  scope :with_filtered_globals, lambda {
+    where("1 = 1")
+  }
+
   delegate :upcoming, to: :dates, prefix: true
 
   # timespan_to_search und timespan werden Arrays der Eventzeiträume
@@ -147,6 +151,8 @@ class EventRecord < ApplicationRecord
       .left_joins(:location).left_joins(:addresses)
   }
 
+  scope :meilisearch_import, -> { includes(:data_provider, :categories, :location, :dates) }
+
   accepts_nested_attributes_for :urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :data_provider, :organizer,
                                 :addresses, :location, :contacts,
@@ -156,7 +162,7 @@ class EventRecord < ApplicationRecord
 
   validates_presence_of :title
 
-  meilisearch index_uid: "#{MunicipalityService.municipality_id}_EventRecord", sanitize: true, force_utf8_encoding: true do
+  meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
     filterable_attributes %i[data_provider_id municipality_id, :location_name, :location_department, :location_district, :location_state, :location_country, :region_name]
     sortable_attributes %i[id title created_at]
     ranking_rules [
@@ -196,6 +202,10 @@ class EventRecord < ApplicationRecord
     attribute :region_name do
       location.try(:region).try(:name)
     end
+  end
+
+  def searchable?
+    visible && data_provider.try(:municipality_id).present?
   end
 
   def find_or_create_region

@@ -72,7 +72,7 @@ class DataResourceSetting < ApplicationRecord
 
     def update_municipality_cache
       current_municipality = data_provider.municipality
-      return if current_municipality.blank? || current_municipality.global == true
+      return if current_municipality.blank?
 
       data_resource_settings = Municipality.global.map(&:data_providers).flatten.map(&:data_resource_settings).flatten.select{ |drs| drs.global_settings.keys.include?("municipality_#{current_municipality.id}") }
 
