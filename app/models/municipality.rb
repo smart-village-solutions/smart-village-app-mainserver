@@ -119,130 +119,130 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   private
 
-  def create_admin_user
-    SetupUserService.new(
-      provider_name: "Administrator",
-      email: "admin@smart-village.app",
-      role: 1,
-      municipality_id: self.id,
-      application_name: "Administrator",
-      data_provider_roles: {
-        role_point_of_interest: true,
-        role_tour: true,
-        role_news_item: true,
-        role_event_record: true,
-        role_push_notification: true,
-        role_lunch: true,
-        role_waste_calendar: true,
-        role_job: true,
-        role_offer: true,
-        role_construction_site: true,
-        role_survey: true,
-        role_encounter_support: true,
-        role_static_contents: true,
-        role_tour_stops: true
-      }
-    )
-  end
+    def create_admin_user
+      SetupUserService.new(
+        provider_name: "Administrator",
+        email: "admin@smart-village.app",
+        role: 1,
+        municipality_id: id,
+        application_name: "Administrator",
+        data_provider_roles: {
+          role_point_of_interest: true,
+          role_tour: true,
+          role_news_item: true,
+          role_event_record: true,
+          role_push_notification: true,
+          role_lunch: true,
+          role_waste_calendar: true,
+          role_job: true,
+          role_offer: true,
+          role_construction_site: true,
+          role_survey: true,
+          role_encounter_support: true,
+          role_static_contents: true,
+          role_tour_stops: true
+        }
+      )
+    end
 
-  def create_mobile_app_user
-    SetupUserService.new(
-      provider_name: "Mobile App",
-      email: "mobile-app@smart-village.app",
-      role: 2,
-      municipality_id: self.id,
-      application_name: "Mobile App (iOS/Android)"
-    )
-  end
+    def create_mobile_app_user
+      SetupUserService.new(
+        provider_name: "Mobile App",
+        email: "mobile-app@smart-village.app",
+        role: 2,
+        municipality_id: id,
+        application_name: "Mobile App (iOS/Android)"
+      )
+    end
 
-  def create_mowas_user
-    SetupUserService.new(
-      provider_name: "Warnsystem des Bundes",
-      description: "Zur automatischen Erstellung von Warnungen durch das MoWaS (Modulares Warnsystem des Bundes) inkl. Push-Notification",
-      logo_url: "https://fileserver.smart-village.app/fileserver/partner/mowas-banner.png",
-      email: "mowas@smart-village.app",
-      role: 0,
-      municipality_id: self.id,
-      application_name: "Zugriff per CMS",
-      data_provider_roles: {
-        role_news_item: true,
-        role_push_notification: true,
-      }
-    )
-  end
+    def create_mowas_user
+      SetupUserService.new(
+        provider_name: "Warnsystem des Bundes",
+        description: "Zur automatischen Erstellung von Warnungen durch das MoWaS (Modulares Warnsystem des Bundes) inkl. Push-Notification",
+        logo_url: "https://fileserver.smart-village.app/fileserver/partner/mowas-banner.png",
+        email: "mowas@smart-village.app",
+        role: 0,
+        municipality_id: id,
+        application_name: "Zugriff per CMS",
+        data_provider_roles: {
+          role_news_item: true,
+          role_push_notification: true
+        }
+      )
+    end
 
-  def create_minio_bucket
-    return unless minio_config_valid?
+    def create_minio_bucket
+      return unless minio_config_valid?
 
-    MinioService.new(
-      endpoint: minio_endpoint,
-      access_key: minio_access_key,
-      secret_key: minio_secret_key,
-      region: minio_region
-    ).create_bucket(minio_bucket)
-  end
+      MinioService.new(
+        endpoint: minio_endpoint,
+        access_key: minio_access_key,
+        secret_key: minio_secret_key,
+        region: minio_region
+      ).create_bucket(minio_bucket)
+    end
 
-  def create_uptime_robot_monitor
-    return unless Rails.env.production?
+    def create_uptime_robot_monitor
+      return unless Rails.env.production?
 
-    UptimeRobotService.new(
-      api_key: uptime_robot_api_key,
-      alert_contacts: uptime_robot_alert_contacts,
-      slug: slug
-    ).create_monitors
-  end
+      UptimeRobotService.new(
+        api_key: uptime_robot_api_key,
+        alert_contacts: uptime_robot_alert_contacts,
+        slug: slug
+      ).create_monitors
+    end
 
-  def create_category_and_static_content
-    category = Category.where(name: "Nachrichten", municipality_id: self.id).first_or_create
+    def create_category_and_static_content
+      category = Category.where(name: "Nachrichten", municipality_id: id).first_or_create
 
-    StaticContent.create(
-      name: "globalSettings",
-      content: initial_static_content_data_for_news(category.id),
-      data_type: "json",
-      municipality_id: self.id
-    )
-  end
+      StaticContent.create(
+        name: "globalSettings",
+        content: initial_static_content_data_for_news(category.id),
+        data_type: "json",
+        municipality_id: id
+      )
+    end
 
-  def initial_static_content_data_for_news(category_id)
-    {
-      "filter": {
-        "news": false,
-        "events": true
-      },
-      "showImageRights": false,
-      "sections": {
-        "showNews": true,
-        "showPointsOfInterestAndTours": true,
-        "showEvents": true,
-        "headlineNews": "Nachrichten",
-        "buttonNews": "Alle Nachrichten anzeigen",
-        "categoriesNews": [
-          {
-            "categoryId": category_id,
-            "categoryTitle": "Nachrichten",
-            "categoryTitleDetail": "Nachricht",
-            "categoryButton": "Alle Nachrichten anzeigen"
-          }
-        ],
-        "headlinePointsOfInterestAndTours": "Touren und Orte",
-        "buttonPointsOfInterestAndTours": "Alle Touren und Orte anzeigen",
-        "headlineEvents": "Veranstaltungen",
-        "buttonEvents": "Alle Veranstaltungen anzeigen",
-        "headlineService": "Service",
-        "headlineAbout": "Über die App"
-      },
-      "settings": {
-        "pushNotifications": true,
-        "feedbackFooter": true,
-        "matomo": false,
-        "locationService": false,
-        "onboarding": false
-      },
-      "widgets": [
-        "weather"
-      ]
-    }.to_json
-  end
+    def initial_static_content_data_for_news(category_id)
+      {
+        "filter": {
+          "news": false,
+          "events": true
+        },
+        "showImageRights": false,
+        "sections": {
+          "showNews": true,
+          "showPointsOfInterestAndTours": true,
+          "showEvents": true,
+          "headlineNews": "Nachrichten",
+          "buttonNews": "Alle Nachrichten anzeigen",
+          "categoriesNews": [
+            {
+              "categoryId": category_id,
+              "categoryTitle": "Nachrichten",
+              "categoryTitleDetail": "Nachricht",
+              "categoryButton": "Alle Nachrichten anzeigen"
+            }
+          ],
+          "headlinePointsOfInterestAndTours": "Touren und Orte",
+          "buttonPointsOfInterestAndTours": "Alle Touren und Orte anzeigen",
+          "headlineEvents": "Veranstaltungen",
+          "buttonEvents": "Alle Veranstaltungen anzeigen",
+          "headlineService": "Service",
+          "headlineAbout": "Über die App"
+        },
+        "settings": {
+          "pushNotifications": true,
+          "feedbackFooter": true,
+          "matomo": false,
+          "locationService": false,
+          "onboarding": false
+        },
+        "widgets": [
+          "weather"
+        ]
+      }.to_json
+    end
 end
 
 # == Schema Information
