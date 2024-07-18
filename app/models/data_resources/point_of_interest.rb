@@ -32,7 +32,11 @@ class PointOfInterest < Attraction
 
   scope :meilisearch_import, -> { includes(:data_provider, location: :region) }
   scope :with_filtered_globals, lambda {
-    # poi_ids_restricted_to_dataproviders = PointOfInterest.search("*", filter: [["municipality_id = 6", "municipality_id = 7"]]).pluck(:id)
+    current_municipality_id = MunicipalityService.municipality_id
+    municipality_filter_ids = [current_municipality_id] + Array(Municipality.find(current_municipality_id).settings.dig(:activated_globals, :municipality_ids))
+    # ["municipality_id = 6", "municipality_id = 7"]
+    municipality_filter_ids = municipality_filter_ids.map { |f| "municipality_id = #{f}" }
+    poi_ids = PointOfInterest.search("*", filter: [municipality_filter_ids]).pluck(:id)
     where("1 = 1")
   }
 

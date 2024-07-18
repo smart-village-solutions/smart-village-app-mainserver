@@ -7,14 +7,15 @@ module FilterByRole
     # der MunicipalityService setzt den :default_scope dei DataProvider auf die Kommune.
     # .all sind also hier nicht alle sondern nur alle innerhalb einer Municipality.
     # Zusätzlich werden die globalen DataProvider hinzugefügt.
-    scope :by_data_provider, -> {
-      begin
-        data_provider_ids_of_globals = MunicipalityService.settings.dig("activated_globals", "data_provider_ids")
-      rescue
-        data_provider_ids_of_globals = []
-      end
-      look_up_data_provider_ids = Array(DataProvider.all.pluck(:id)) + Array(data_provider_ids_of_globals)
+    scope :by_data_provider, lambda {
+      # begin
+      #   data_provider_ids_of_globals = MunicipalityService.settings.dig("activated_globals", "data_provider_ids")
+      # rescue
+      #   data_provider_ids_of_globals = []
+      # end
+      # look_up_data_provider_ids = Array(DataProvider.all.pluck(:id)) + Array(data_provider_ids_of_globals)
 
+      look_up_data_provider_ids = Array(DataProvider.all.pluck(:id))
       where(data_provider_id: look_up_data_provider_ids.flatten.compact.uniq.delete_if(&:blank?))
     }
 
