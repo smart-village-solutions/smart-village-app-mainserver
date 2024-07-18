@@ -7,6 +7,7 @@ class NewsItem < ApplicationRecord
   include Categorizable
   include FilterByDataProviderAndPoiScope
   include MeiliSearch::Rails
+  include GlobalFilterScope
 
   attr_accessor :force_create,
                 :category_name,
@@ -37,17 +38,14 @@ class NewsItem < ApplicationRecord
     where(categories: { id: category_id }).joins(:categories)
   }
 
-  scope :with_filtered_globals, lambda {
-    where("1 = 1")
-  }
-
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
 
   accepts_nested_attributes_for :content_blocks, :data_provider, :address, :source_url
 
+  FILTERABLE_BY_LOCATION = false
   meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
-    filterable_attributes %i[data_provider_id municipality_id]
+    filterable_attributes %i[data_provider_id municipality_id categories]
     sortable_attributes %i[id title created_at]
     ranking_rules [
       "sort",

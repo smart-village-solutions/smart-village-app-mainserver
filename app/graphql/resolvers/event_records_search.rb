@@ -10,7 +10,7 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   description "Searches for event records"
 
   scope do
-    event_records = EventRecord.upcoming(context[:current_user]).with_filtered_globals
+    event_records = EventRecord.upcoming(context[:current_user]).include_filtered_globals
 
     begin
       lookahead = context[:extras][:lookahead].selection(:event_records)

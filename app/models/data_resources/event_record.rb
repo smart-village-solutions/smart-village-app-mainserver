@@ -7,6 +7,7 @@ class EventRecord < ApplicationRecord
   include Categorizable
   include FilterByDataProviderAndPoiScope
   include MeiliSearch::Rails
+  include GlobalFilterScope
   extend OrderAsSpecified
 
   attr_accessor :category_name,
@@ -162,8 +163,10 @@ class EventRecord < ApplicationRecord
 
   validates_presence_of :title
 
+  FILTERABLE_BY_LOCATION = true
   meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
-    filterable_attributes %i[data_provider_id municipality_id, :location_name, :location_department, :location_district, :location_state, :location_country, :region_name]
+    filterable_attributes [:data_provider_id, :municipality_id, :location_name, :location_department,
+      :location_district, :location_state, :location_country, :region_name, :categories]
     sortable_attributes %i[id title created_at]
     ranking_rules [
       "sort",

@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include FilterByRole
   include Categorizable
+  include MeiliSearch::Rails
+  include GlobalFilterScope
 
   has_ancestry orphan_strategy: :destroy
-
   GENERIC_TYPES = {
     deadline: "Deadline",
     defect_report: "DefectReport",
@@ -52,6 +55,33 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
            class_name: "Notification::Push",
            dependent: :destroy
   has_many :conversations, as: :conversationable
+
+  meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
+    filterable_attributes %i[data_provider_id municipality_id categories]
+    sortable_attributes %i[id title created_at]
+    ranking_rules [
+      "sort",
+      "created_at:desc",
+      "words",
+      "typo",
+      "proximity",
+      "attribute",
+      "exactness"
+    ]
+    attribute :id, :data_provider_id, :visible
+    attribute :municipality_id do
+      data_provider.try(:municipality_id)
+    end
+    attribute :categories do
+      categories.map(&:name)
+    end
+    attribute :title do
+      parsed_title
+    end
+    attribute :description do
+      content_for_facebook[:message]
+    end
+  end
 
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
