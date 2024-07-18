@@ -22,7 +22,7 @@ class User < ApplicationRecord
   validates_presence_of :email
   validates_uniqueness_of :email, scope: :municipality_id
 
-  belongs_to :data_provider, optional: true
+  belongs_to :data_provider, -> { unscope(where: :municipality_id) }, optional: true
   belongs_to :municipality
   accepts_nested_attributes_for :data_provider
 
