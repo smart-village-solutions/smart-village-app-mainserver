@@ -31,18 +31,54 @@ class PointOfInterest < Attraction
   accepts_nested_attributes_for :price_informations, :opening_hours, :lunches, :vouchers
 
   scope :meilisearch_import, -> { includes(:data_provider, location: :region) }
+
+  # Filter by Search Results of Meilisearch
+  # PointOfInterest.search("", { filter: [["municipality_id = '7'", "municipality_id = '6'"], ["location_district = 'Uckermark'", "location_district = 'Potsdam-Mittelmark'"]], hits_per_page: 1000 } ).pluck(:id)
   scope :with_filtered_globals, lambda {
     current_municipality_id = MunicipalityService.municipality_id
-    municipality_filter_ids = [current_municipality_id] + Array(Municipality.find(current_municipality_id).settings.dig(:activated_globals, :municipality_ids))
-    # ["municipality_id = 6", "municipality_id = 7"]
-    municipality_filter_ids = municipality_filter_ids.map { |f| "municipality_id = #{f}" }
-    poi_ids = PointOfInterest.search("*", filter: [municipality_filter_ids]).pluck(:id)
-    where("1 = 1")
+    conditions = []
+    query = all
+    global_data_provider_ids = Array(Municipality.find(current_municipality_id).settings.dig(:activated_globals, :data_provider_ids))
+    global_data_provider_ids.each do |global_data_provider_id|
+      global_data_provider = DataProvider.unscoped.find(global_data_provider_id)
+      next if global_data_provider.blank?
+
+      global_settings_for_resource = global_data_provider.settings("PointOfInterest")
+      next if global_settings_for_resource.blank?
+
+      global_settings = global_settings_for_resource.global_settings.fetch("municipality_#{current_municipality_id}", {})
+      next unless global_settings["use_global_resource"] == "true"
+
+      meili_filters = []
+      meili_filters << "municipality_id = #{global_data_provider.municipality_id}"
+
+      # more filters
+      meili_filters << global_settings["filter_location_name"].map { |f| "location_name = '#{f}'" }
+      meili_filters << global_settings["filter_location_region"].map { |f| "region_name = '#{f}'" }
+      meili_filters << global_settings["filter_location_department"].map { |f| "location_department = '#{f}'" }
+      meili_filters << global_settings["filter_location_district"].map { |f| "location_district = '#{f}'" }
+      meili_filters << global_settings["filter_location_state"].map { |f| "location_state = '#{f}'" }
+      meili_filters << global_settings["filter_location_country"].map { |f| "location_country = '#{f}'" }
+
+      meili_filters = meili_filters.compact.delete_if(&:blank?)
+      poi_ids = PointOfInterest.search("*", filter: meili_filters, hits_per_page: 10_000).pluck(:id)
+
+      conditions << { id: poi_ids }
+    end
+
+    conditions.each do |condition|
+      query = query.or(PointOfInterest.unscoped.where(condition))
+    end
+
+    query
   }
 
   meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
-    filterable_attributes %i[data_provider_id municipality_id location_name location_department
-                             location_district location_state location_country region_name]
+    searchable_attributes %i[id name description data_provider_id municipality_id]
+    filterable_attributes %i[
+      data_provider_id municipality_id location_name location_department
+      location_district location_state location_country region_name
+    ]
     sortable_attributes %i[id title created_at name]
     ranking_rules [
       "sort",

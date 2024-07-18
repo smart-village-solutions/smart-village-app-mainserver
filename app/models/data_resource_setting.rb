@@ -51,9 +51,12 @@ class DataResourceSetting < ApplicationRecord
     end
 
     define_method("#{global_settings_attribute}=") do |value|
-      self.global_settings = {} if self.global_settings.blank?
-      self.global_settings["municipality_#{MunicipalityService.municipality_id}"] = {} if self.global_settings["municipality_#{MunicipalityService.municipality_id}"].blank?
-      self.global_settings["municipality_#{MunicipalityService.municipality_id}"][global_settings_attribute] = value
+      self.global_settings = {} if global_settings.blank?
+      if global_settings["municipality_#{MunicipalityService.municipality_id}"].blank?
+        global_settings["municipality_#{MunicipalityService.municipality_id}"] =
+          {}
+      end
+      global_settings["municipality_#{MunicipalityService.municipality_id}"][global_settings_attribute] = value
     end
   end
 
@@ -71,14 +74,18 @@ class DataResourceSetting < ApplicationRecord
     end
 
     def update_municipality_cache
-      current_municipality = data_provider.municipality
+      current_municipality = Municipality.find(MunicipalityService.municipality_id)
       return if current_municipality.blank?
 
-      data_resource_settings = Municipality.global.map(&:data_providers).flatten.map(&:data_resource_settings).flatten.select{ |drs| drs.global_settings.keys.include?("municipality_#{current_municipality.id}") }
+      data_resource_settings = Municipality.global.map(&:data_providers).flatten.map(&:data_resource_settings).flatten.select do |drs|
+        drs.global_settings.keys.include?("municipality_#{current_municipality.id}")
+      end
 
       current_municipality.activated_globals = {} if current_municipality.activated_globals.blank?
-      current_municipality.activated_globals["municipality_ids"] = data_resource_settings.map(&:data_provider).map(&:municipality_id).flatten.uniq
-      current_municipality.activated_globals["data_provider_ids"] = data_resource_settings.map(&:data_provider_id).flatten.uniq
+      current_municipality.activated_globals["municipality_ids"] =
+        data_resource_settings.map(&:data_provider).map(&:municipality_id).flatten.uniq
+      current_municipality.activated_globals["data_provider_ids"] =
+        data_resource_settings.map(&:data_provider_id).flatten.uniq
       current_municipality.save
     end
 end
