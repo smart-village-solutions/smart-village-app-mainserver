@@ -37,6 +37,11 @@ class Resolvers::GenericItemSearch < GraphQL::Schema::Resolver
   option :location, type: GraphQL::Types::String, with: :apply_location
   option :current_member, type: GraphQL::Types::Boolean, default: false, with: :apply_current_member
   option :member_id, type: GraphQL::Types::ID, with: :apply_member_id
+  option :search, type: GraphQL::Types::String, with: :apply_search
+
+  def apply_search(scope, value)
+    scope.search(value)
+  end
 
   def apply_member_id(scope, value)
     return scope if value.blank?

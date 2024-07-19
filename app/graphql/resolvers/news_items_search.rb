@@ -33,6 +33,11 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   option :category_id, type: GraphQL::Types::ID, with: :apply_category_id
   option :category_ids, type: types[GraphQL::Types::ID], with: :apply_category_ids
   option :exclude_filter, type: GraphQL::Types::JSON, with: :apply_exclude_filter
+  option :search, type: GraphQL::Types::String, with: :apply_search
+
+  def apply_search(scope, value)
+    scope.search(value)
+  end
 
   def apply_limit(scope, value)
     scope.limit(value)

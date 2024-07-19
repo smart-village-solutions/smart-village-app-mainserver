@@ -57,6 +57,11 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   option :exclude_filter, type: GraphQL::Types::JSON, with: :apply_exclude_filter
   option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range
   option :take, type: GraphQL::Types::Int, with: :apply_take
+  option :search, type: GraphQL::Types::String, with: :apply_search
+
+  def apply_search(scope, value)
+    scope.search(value)
+  end
 
   def apply_category_id(scope, value)
     scope.by_category(value)
