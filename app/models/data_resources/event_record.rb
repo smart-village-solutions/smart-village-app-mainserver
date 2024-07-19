@@ -108,7 +108,7 @@ class EventRecord < ApplicationRecord
 
     # ignore the first date for recurring events, because it is the original date object with
     # a time span that should not be listed in the returning event records.
-    where("fixed_dates.id != (SELECT MIN(fd.id) FROM fixed_dates fd WHERE fd.dateable_id = event_records.id)")
+    where("event_records.recurring = false OR fixed_dates.id != (SELECT MIN(fd.id) FROM fixed_dates fd WHERE fd.dateable_id = event_records.id)")
       .select(select_clause)
   }
 
