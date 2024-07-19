@@ -83,8 +83,8 @@ class MunicipalityService
   def self.meilisearch_initializer(_id)
     current_settings = settings
     MeiliSearch::Rails.configuration = {
-      meilisearch_url: current_settings[:meilisearch_url],
-      meilisearch_api_key: current_settings[:meilisearch_api_key].presence || Settings.meilisearch[:api_key],
+      meilisearch_url: current_settings.fetch(:meilisearch_url, nil).presence || Settings.meilisearch[:url],
+      meilisearch_api_key: current_settings.fetch(:meilisearch_api_key, nil).presence || Settings.meilisearch[:api_key],
       per_environment: true,
       timeout: 30
     }
