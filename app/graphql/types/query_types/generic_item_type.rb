@@ -12,6 +12,7 @@ module Types
     field :content_blocks, [QueryTypes::ContentBlockType], null: true
     field :data_provider, QueryTypes::DataProviderType, null: true
     field :dates, [QueryTypes::DateType], null: true
+    field :discount_type, QueryTypes::DiscountType, null: true
     field :external_id, String, null: true
     field :generic_items, [QueryTypes::GenericItemType], null: true
     field :generic_type, String, null: true
@@ -24,7 +25,9 @@ module Types
     field :publication_date, String, null: true
     field :published_at, String, null: true
     field :push_notifications, [QueryTypes::PushNotificationType], null: true
+    field :quota, QueryTypes::QuotaType, null: true
     field :settings, QueryTypes::SettingType, null: true
+    field :teaser, String, null: true
     field :title, String, null: true
     field :visible, Boolean, null: true
     field :web_urls, [QueryTypes::WebUrlType], null: true
