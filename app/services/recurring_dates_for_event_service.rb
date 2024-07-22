@@ -76,7 +76,7 @@ class RecurringDatesForEventService
     def create_date
       FixedDate.create(
         date_start: @date_start,
-        date_end: @date_start,
+        date_end: @date_end,
         time_start: @time_start,
         time_end: @time_end,
         dateable_type: "EventRecord",
