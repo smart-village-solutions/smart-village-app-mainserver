@@ -127,6 +127,10 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
     visible && data_provider.try(:municipality_id).present?
   end
 
+  def parsed_title
+    title.presence || content_blocks.try(:first).try(:title).presence || "Neue Nachricht"
+  end
+
   def compareable_attributes
     except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id", "visible", "contactable_id", "dateable_id", "content_blockable_id", "priceable_id"]
 
