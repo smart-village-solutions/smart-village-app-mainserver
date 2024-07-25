@@ -14,16 +14,6 @@ class RecurringDatesForEventService
   end
 
   def create_with_pattern
-    # first, create complete time span
-    FixedDate.create(
-      date_start: @date_start,
-      date_end: @date_end,
-      time_start: @time_start,
-      time_end: @time_end,
-      dateable_type: "EventRecord",
-      dateable_id: @event_id
-    )
-
     case @type
     when 0
       create_daily_events
