@@ -50,9 +50,9 @@ class Resolvers::EventRecordsSearch
   option :order, type: EventRecordsOrder, default: "createdAt_DESC"
   option :dataProvider, type: types.String, with: :apply_data_provider
   option :dataProviderId, type: types.ID, with: :apply_data_provider_id
-  option :take, type: types.Int, with: :apply_take
   option :location, type: types.String, with: :apply_location
   option :dateRange, type: types[types.String], with: :apply_date_range
+  option :take, type: types.Int, with: :apply_take
 
   def apply_category_id(scope, value)
     scope.by_category(value)
