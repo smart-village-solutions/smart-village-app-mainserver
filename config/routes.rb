@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get "/health-check" => "health_check#show"
+
   namespace :notification do
     resources :wastes
     resources :devices do
