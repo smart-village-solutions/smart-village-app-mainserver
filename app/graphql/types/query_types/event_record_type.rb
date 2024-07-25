@@ -10,6 +10,7 @@ module Types
     field :description, String, null: true
     field :title, String, null: true
     field :dates, [QueryTypes::DateType], null: true
+    field :date, QueryTypes::DateType, null: true
     field :list_date, String, null: true
     field :sort_date, String, null: true
     field :repeat, GraphQL::Types::Boolean, null: true
@@ -42,6 +43,10 @@ module Types
 
     def announcements
       object.announcements.upcoming_announcements(context[:current_user])
+    end
+
+    def dates
+      object.dates_upcoming(object.recurring?)
     end
   end
 end

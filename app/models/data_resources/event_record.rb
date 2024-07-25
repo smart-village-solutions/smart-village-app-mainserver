@@ -13,7 +13,8 @@ class EventRecord < ApplicationRecord
                 :region_name,
                 :force_create,
                 :in_date_range_start_date,
-                :push_notification
+                :push_notification,
+                :date
 
   before_update :handle_recurring_dates
   after_create :handle_recurring_dates
@@ -22,6 +23,7 @@ class EventRecord < ApplicationRecord
   after_save :send_push_notification
 
   before_validation :find_or_create_region
+  after_find :set_date_accessor
 
   belongs_to :region, optional: true
   belongs_to :data_provider, optional: true
@@ -51,6 +53,8 @@ class EventRecord < ApplicationRecord
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
 
+  delegate :upcoming, to: :dates, prefix: true
+
   # timespan_to_search und timespan werden Arrays der Eventzeiträume
   # und deren Schnittemenge > 0 bedeutet eine Überschneidung.
   #
@@ -62,20 +66,20 @@ class EventRecord < ApplicationRecord
   # joins(:dates).where("fixed_dates.date_start >= ? AND fixed_dates.date_start <= ?", start_date, end_date)
   scope :in_date_range, lambda { |start_date, end_date|
     timespan_to_search = (start_date..end_date).to_a
+    # ignore the first date for recurring events, because it is the original date object with
+    fixed_date_ids = FixedDate.where(dateable_type: "EventRecord")
+                       .where("fixed_dates.id NOT IN (SELECT MIN(fd.id) FROM fixed_dates fd WHERE fd.dateable_type = 'EventRecord' GROUP BY fd.dateable_id)")
+                       .where.not(date_start: nil)
+                       .where("(date_start <= :end_date) AND (COALESCE(date_end, date_start) >= :start_date)", start_date: start_date, end_date: end_date)
+                       .pluck(:id)
+    events_in_timespan = joins(:dates).where(fixed_dates: { id: fixed_date_ids })
 
-    list_of_fixed_dates = FixedDate.where.not(date_start: nil).to_a.select do |a|
-      timespan = (a.date_start..a.date_start).to_a if a.date_start.present? && a.date_end.blank?
-      timespan = (a.date_start..a.date_end).to_a if a.date_start.present? && a.date_end.present?
-
-      (timespan_to_search & timespan).count.positive?
-    end
-
-    events_in_timespan = joins(:dates).where(fixed_dates: { id: list_of_fixed_dates.map(&:id) })
     # reject recurring events with just one date object, because all dates are outside the timespan.
     # the one date object is the original date of the recurring event, that need to be ignored.
     events_in_timespan = events_in_timespan.reject do |event_record|
       event_record.recurring? && event_record.dates.size == 1
     end
+
     events_in_timespan.map do |event_record|
       # return the start_date of the event if the requested start_date is before event start_date
       if start_date < event_record.dates.first.date_start
@@ -83,6 +87,11 @@ class EventRecord < ApplicationRecord
       else
         event_record.in_date_range_start_date = start_date
       end
+    end
+
+    # ignore events with list date outside the timespan
+    events_in_timespan = events_in_timespan.reject do |event_record|
+      event_record.list_date < start_date || event_record.list_date > end_date
     end
 
     events_in_timespan
@@ -99,6 +108,25 @@ class EventRecord < ApplicationRecord
       .joins(:dates)
       .where("fixed_dates.date_start >= ? OR fixed_dates.date_end >= ?", Date.today, Date.today)
       .distinct
+  }
+
+  scope :upcoming_with_date_select, lambda {
+    select_clause = <<~SQL
+      event_records.*,
+      fixed_dates.id AS fixed_date_id,
+      fixed_dates.date_start AS fixed_date_start,
+      fixed_dates.date_end AS fixed_date_end,
+      fixed_dates.time_start AS fixed_time_start,
+      fixed_dates.time_end AS fixed_time_end,
+      fixed_dates.weekday AS fixed_weekday,
+      fixed_dates.time_description AS fixed_time_description,
+      fixed_dates.use_only_time_description AS fixed_use_only_time_description
+    SQL
+
+    # ignore the first date for recurring events, because it is the original date object with
+    # a time span that should not be listed in the returning event records.
+    where("event_records.recurring = false OR fixed_dates.id != (SELECT MIN(fd.id) FROM fixed_dates fd WHERE fd.dateable_id = event_records.id)")
+      .select(select_clause)
   }
 
   scope :by_category, lambda { |category_id|
@@ -153,6 +181,15 @@ class EventRecord < ApplicationRecord
 
   # @return [Date]
   def list_date
+    if recurring? && date.present?
+      return today_in_time_range(
+        OpenStruct.new(
+          date_start: date.date_start,
+          date_end: date.date_end
+        )
+      )
+    end
+
     return in_date_range_start_date if in_date_range_start_date.present?
 
     event_dates = dates.order(date_start: :asc)
@@ -216,17 +253,35 @@ class EventRecord < ApplicationRecord
   end
 
   private
+    def set_date_accessor
+      return if self[:fixed_date_id].blank?
+
+      self.date = OpenStruct.new(
+        id: self[:fixed_date_id],
+        date_start: self[:fixed_date_start],
+        date_end: self[:fixed_date_end],
+        time_start: self[:fixed_time_start].try(:localtime),
+        time_end: self[:fixed_time_end].try(:localtime),
+        weekday: self[:weekday],
+        time_description: self[:time_description],
+        use_only_time_description: self[:use_only_time_description]
+      )
+    end
 
     # if a start and end date describes a larger time range, "today" needs to be returned until end
     # is reached.
     def today_in_time_range(date)
+      start_date = date.date_start
       end_date = date.date_end
       today = Time.zone.now.beginning_of_day
+
+      # return start date if start date is in the future
+      return start_date if start_date >= today
 
       # return "today" if there is no end date
       return today.to_date if end_date.blank?
 
-      # return nil if the start and end dates are in the past
+      # return nil if the end date is in the past
       return nil if end_date < today
 
       # return "today" if there is a future end date
