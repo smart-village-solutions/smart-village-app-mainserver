@@ -55,8 +55,9 @@ class EventRecord < ApplicationRecord
   scope :in_date_range, lambda { |start_date, end_date|
     timespan_to_search = (start_date..end_date).to_a
     # ignore the first date for recurring events, because it is the original date object with
-    fixed_date_ids = FixedDate.where(dateable_type: "EventRecord")
-                       .where("fixed_dates.id NOT IN (SELECT MIN(fd.id) FROM fixed_dates fd WHERE fd.dateable_type = 'EventRecord' GROUP BY fd.dateable_id)")
+    fixed_date_ids = FixedDate.joins("INNER JOIN event_records ON event_records.id = fixed_dates.dateable_id")
+                       .where(dateable_type: "EventRecord")
+                       .where("event_records.recurring = false OR fixed_dates.id NOT IN (SELECT MIN(fd.id) FROM fixed_dates fd WHERE fd.dateable_type = 'EventRecord' GROUP BY fd.dateable_id)")
                        .where.not(date_start: nil)
                        .where("(date_start <= :end_date) AND (COALESCE(date_end, date_start) >= :start_date)", start_date: start_date, end_date: end_date)
                        .pluck(:id)
