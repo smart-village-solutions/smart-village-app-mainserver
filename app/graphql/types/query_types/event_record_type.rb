@@ -10,6 +10,7 @@ module Types
     field :description, String, null: true
     field :title, String, null: true
     field :dates, [QueryTypes::DateType], null: true
+    field :date, QueryTypes::DateType, null: true
     field :list_date, String, null: true
     field :repeat, Boolean, null: true
     field :repeat_duration, QueryTypes::RepeatDurationType, null: true
@@ -33,5 +34,9 @@ module Types
     field :recurring_interval, Integer, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
+
+    def dates
+      object.dates_upcoming(object.recurring?)
+    end
   end
 end
