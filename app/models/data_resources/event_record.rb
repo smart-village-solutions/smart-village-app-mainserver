@@ -54,20 +54,20 @@ class EventRecord < ApplicationRecord
   # joins(:dates).where("fixed_dates.date_start >= ? AND fixed_dates.date_start <= ?", start_date, end_date)
   scope :in_date_range, lambda { |start_date, end_date|
     timespan_to_search = (start_date..end_date).to_a
+    # ignore the first date for recurring events, because it is the original date object with
+    fixed_date_ids = FixedDate.where(dateable_type: "EventRecord")
+                       .where("fixed_dates.id NOT IN (SELECT MIN(fd.id) FROM fixed_dates fd WHERE fd.dateable_type = 'EventRecord' GROUP BY fd.dateable_id)")
+                       .where.not(date_start: nil)
+                       .where("(date_start <= :end_date) AND (COALESCE(date_end, date_start) >= :start_date)", start_date: start_date, end_date: end_date)
+                       .pluck(:id)
+    events_in_timespan = joins(:dates).where(fixed_dates: { id: fixed_date_ids })
 
-    list_of_fixed_dates = FixedDate.where.not(date_start: nil).to_a.select do |a|
-      timespan = (a.date_start..a.date_start).to_a if a.date_start.present? && a.date_end.blank?
-      timespan = (a.date_start..a.date_end).to_a if a.date_start.present? && a.date_end.present?
-
-      (timespan_to_search & timespan).count.positive?
-    end
-
-    events_in_timespan = joins(:dates).where(fixed_dates: { id: list_of_fixed_dates.map(&:id) })
     # reject recurring events with just one date object, because all dates are outside the timespan.
     # the one date object is the original date of the recurring event, that need to be ignored.
     events_in_timespan = events_in_timespan.reject do |event_record|
       event_record.recurring? && event_record.dates.size == 1
     end
+
     events_in_timespan.map do |event_record|
       # return the start_date of the event if the requested start_date is before event start_date
       if start_date < event_record.dates.first.date_start
@@ -75,6 +75,11 @@ class EventRecord < ApplicationRecord
       else
         event_record.in_date_range_start_date = start_date
       end
+    end
+
+    # ignore events with list date outside the timespan
+    events_in_timespan = events_in_timespan.reject do |event_record|
+      event_record.list_date < start_date || event_record.list_date > end_date
     end
 
     events_in_timespan

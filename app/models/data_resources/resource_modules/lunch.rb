@@ -19,16 +19,11 @@ class Lunch < ApplicationRecord
   # joins(:dates).where("fixed_dates.date_start >= ? AND fixed_dates.date_start <= ?", start_date, end_date)
   scope :in_date_range, lambda { |start_date, end_date|
     timespan_to_search = (start_date..end_date).to_a
+    fixed_date_ids = FixedDate.where(dateable_type: "GenericItem").where.not(date_start: nil)
+                       .where("(date_start <= :end_date) AND (COALESCE(date_end, date_start) >= :start_date)", start_date: start_date, end_date: end_date)
+                       .pluck(:id)
 
-    list_of_fixed_date_ids = FixedDate.where.not(date_start: nil).to_a.select do |a|
-      timespan = [] if a.date_start.blank?
-      timespan = (a.date_start..a.date_start).to_a if a.date_start.present? && a.date_end.blank?
-      timespan = (a.date_start..a.date_end).to_a if a.date_start.present? && a.date_end.present?
-
-      (timespan_to_search & timespan).count.positive?
-    end
-
-    joins(:dates).where(fixed_dates: { id: list_of_fixed_date_ids.map(&:id) })
+    joins(:dates).where(fixed_dates: { id: fixed_date_ids })
   }
 
   scope :upcoming, lambda {
