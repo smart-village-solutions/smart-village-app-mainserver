@@ -53,10 +53,10 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   option :order, type: EventRecordsOrder, default: "createdAt_DESC"
   option :data_provider, type: GraphQL::Types::String, with: :apply_data_provider
   option :data_provider_id, type: GraphQL::Types::ID, with: :apply_data_provider_id
-  option :take, type: GraphQL::Types::Int, with: :apply_take
   option :location, type: GraphQL::Types::String, with: :apply_location
-  option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range
   option :exclude_filter, type: GraphQL::Types::JSON, with: :apply_exclude_filter
+  option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range
+  option :take, type: GraphQL::Types::Int, with: :apply_take
 
   def apply_category_id(scope, value)
     scope.by_category(value)
@@ -74,13 +74,6 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
     scope.where(id: value)
   end
 
-  # Achtung: Diese Methode liefert ein Array als Ergebnis
-  # und kann nicht weiter verkettet werden
-  def apply_take(scope, value)
-    scope.take(value)
-  end
-  deprecate apply_take: :limit
-
   def apply_data_provider(scope, value)
     scope.joins(:data_provider).where(data_providers: { name: value })
   end
@@ -91,6 +84,13 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
 
   def apply_location(scope, value)
     scope.by_location(value)
+  end
+
+  # filter_items method come from ExclusionFilter concern
+  # parse_and_validate_filter_json method come from JsonFilterParseable concern and validate the JSON format
+  def apply_exclude_filter(scope, filter_value)
+    parsed_filter = parse_and_validate_filter_json(filter_value)
+    exclusion_filter_for_klass(EventRecord, scope, parsed_filter)
   end
 
   # :values is array of 2 dates:
@@ -111,6 +111,13 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
     # the date range filter gets applied after the order so we need to order again in some cases
     scope.in_date_range(start_date, end_date, params["order"])
   end
+
+  # Achtung: Diese Methode liefert ein Array als Ergebnis
+  # und kann nicht weiter verkettet werden
+  def apply_take(scope, value)
+    scope.take(value)
+  end
+  deprecate apply_take: :limit
 
   def apply_order_with_created_at_desc(scope)
     scope.order("event_records.created_at DESC")
@@ -154,12 +161,5 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
     ordered_ids = scope.select(&:list_date).sort_by(&:list_date).map(&:id)
 
     scope.order_as_specified(id: ordered_ids)
-  end
-
-  # filter_items method come from ExclusionFilter concern
-  # parse_and_validate_filter_json method come from JsonFilterParseable concern and validate the JSON format
-  def apply_exclude_filter(scope, filter_value)
-    parsed_filter = parse_and_validate_filter_json(filter_value)
-    exclusion_filter_for_klass(EventRecord, scope, parsed_filter)
   end
 end
