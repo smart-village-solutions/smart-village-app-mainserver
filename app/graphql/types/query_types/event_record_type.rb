@@ -46,7 +46,7 @@ module Types
     end
 
     def dates
-      object.dates_upcoming(object.recurring?)
+      object.dates_upcoming
     end
   end
 end

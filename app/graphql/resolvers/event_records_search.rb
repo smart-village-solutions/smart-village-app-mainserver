@@ -108,7 +108,8 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
       raise error_message
     end
 
-    scope.in_date_range(start_date, end_date)
+    # the date range filter gets applied after the order so we need to order again in some cases
+    scope.in_date_range(start_date, end_date, params["order"])
   end
 
   def apply_order_with_created_at_desc(scope)

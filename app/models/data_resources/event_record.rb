@@ -64,12 +64,12 @@ class EventRecord < ApplicationRecord
   #
   # statt einer einfachen Überscheidung des Startwertes:
   # joins(:dates).where("fixed_dates.date_start >= ? AND fixed_dates.date_start <= ?", start_date, end_date)
-  scope :in_date_range, lambda { |start_date, end_date|
+  scope :in_date_range, lambda { |start_date, end_date, order|
     timespan_to_search = (start_date..end_date).to_a
     # ignore the first date for recurring events, because it is the original date object with
     fixed_date_ids = FixedDate.joins("INNER JOIN event_records ON event_records.id = fixed_dates.dateable_id")
                        .where(dateable_type: "EventRecord")
-                       .where("event_records.recurring = false OR fixed_dates.id NOT IN (SELECT MIN(fd.id) FROM fixed_dates fd WHERE fd.dateable_type = 'EventRecord' GROUP BY fd.dateable_id)")
+                       .where("event_records.recurring = false OR fixed_dates.id != (SELECT MIN(fd.id) FROM fixed_dates fd WHERE fd.dateable_id = event_records.id)")
                        .where.not(date_start: nil)
                        .where("(date_start <= :end_date) AND (COALESCE(date_end, date_start) >= :start_date)", start_date: start_date, end_date: end_date)
                        .pluck(:id)
@@ -81,7 +81,7 @@ class EventRecord < ApplicationRecord
       event_record.recurring? && event_record.dates.size == 1
     end
 
-    events_in_timespan.map do |event_record|
+    events_in_timespan.each do |event_record|
       # return the start_date of the event if the requested start_date is before event start_date
       if start_date < event_record.dates.first.date_start
         event_record.in_date_range_start_date = event_record.dates.first.date_start
@@ -95,7 +95,13 @@ class EventRecord < ApplicationRecord
       event_record.list_date < start_date || event_record.list_date > end_date
     end
 
-    events_in_timespan
+    if order == "listDate_ASC"
+      events_in_timespan.sort_by(&:list_date)
+    elsif order == "listDate_DESC"
+      events_in_timespan.sort_by(&:list_date).reverse
+    else
+      events_in_timespan
+    end
   }
 
   scope :upcoming, lambda { |current_user = nil|
