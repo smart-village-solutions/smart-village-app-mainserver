@@ -86,7 +86,7 @@ class MunicipalityService
       meilisearch_url: current_settings.fetch(:meilisearch_url, nil).presence || Settings.meilisearch[:url],
       meilisearch_api_key: current_settings.fetch(:meilisearch_api_key, nil).presence || Settings.meilisearch[:api_key],
       per_environment: true,
-      timeout: 30
+      timeout: 300
     }
   end
 end
