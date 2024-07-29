@@ -32,6 +32,8 @@ module GlobalFilterScope
         # filter by location
         if const_defined?(:FILTERABLE_BY_LOCATION) &&
            self::FILTERABLE_BY_LOCATION == true
+          # Muster
+          # [ ["location_name = 'Havelland'", "location_name = 'Rügen'"], "municipality_id = 2" ]
           meili_filters << global_settings["filter_location_name"].map { |f| "location_name = '#{f}'" }
           meili_filters << global_settings["filter_location_region"].map { |f| "region_name = '#{f}'" }
           meili_filters << global_settings["filter_location_department"].map { |f| "location_department = '#{f}'" }
@@ -41,6 +43,8 @@ module GlobalFilterScope
         end
 
         # filter by categories
+        # TODO: category von Globa Municipality ist nicht identich mit den KAtegorein andere municiopaliteis
+        #  Nur die (TMB) Global Kategorein im UI zur auswahl geben
         meili_filters << global_settings["filter_category_ids"].map do |f|
           "categories = '#{Category.find_by(id: f).try(:name)}'"
         end
@@ -61,9 +65,11 @@ module GlobalFilterScope
     # Filter by Search Results of Meilisearch
     # current scope is mapped to a list of record ids and then the scope is extended to include the global records
     scope :include_filtered_globals, lambda {
+      # TODO: data_resources ids of all global municipalities e.g.: news_items, event_records, generic_items, ...
       record_ids = klass.global_record_ids
       return all if record_ids.blank?
 
+      # upcomming.where(...).current_municipality...
       current_record_ids = all.pluck(:id)
       klass.unscoped.where(id: Array(current_record_ids + record_ids).flatten.compact.uniq)
     }

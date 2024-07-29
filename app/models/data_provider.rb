@@ -46,11 +46,6 @@ class DataProvider < ApplicationRecord
   accepts_nested_attributes_for :address, :contact, :logo, :data_resource_settings
   accepts_nested_attributes_for :external_service_credential, reject_if: :all_blank
 
-  # default_scope(all_queries: true) do
-  #   accessible_municipality_ids = [MunicipalityService.municipality_id] + Municipality.global.pluck(:id)
-  #   unscoped.where(municipality_id: Array(accessible_municipality_ids.compact.uniq))
-  # end
-
   def parse_role_values
     roles.each do |key, value|
       roles[key] = ["true", true].include?(value)

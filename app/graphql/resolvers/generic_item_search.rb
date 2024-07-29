@@ -5,6 +5,7 @@ require "search_object/plugin/graphql"
 class Resolvers::GenericItemSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
+  # todo: include_filtered_globals
   scope { GenericItem.filtered_for_current_user(context[:current_user]) }
 
   type types[Types::QueryTypes::GenericItemType]
@@ -42,7 +43,7 @@ class Resolvers::GenericItemSearch < GraphQL::Schema::Resolver
   def apply_search(scope, value)
     scope.search(value)
   end
-
+  # todo: reihenfolge checken der MEthoden
   def apply_member_id(scope, value)
     return scope if value.blank?
 
