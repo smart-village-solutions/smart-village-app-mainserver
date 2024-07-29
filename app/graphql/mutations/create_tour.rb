@@ -12,38 +12,38 @@ module Mutations
     argument :category_name, String, required: false
     argument :payload, GraphQL::Types::JSON, required: false
     argument :categories, [Types::InputTypes::CategoryInput], required: false,
-                                                  as: :category_names,
-                                                  prepare: lambda { |category, _ctx|
-                                                             category.map(&:to_h)
-                                                           }
+                                                              as: :category_names,
+                                                              prepare: lambda { |category, _ctx|
+                                                                         Array(category).map(&:to_h)
+                                                                       }
     argument :addresses, [Types::InputTypes::AddressInput], required: false,
-                                                as: :addresses_attributes,
-                                                prepare: lambda { |addresses, _ctx|
-                                                  addresses.map(&:to_h)
-                                                }
+                                                            as: :addresses_attributes,
+                                                            prepare: lambda { |addresses, _ctx|
+                                                                       Array(addresses).map(&:to_h)
+                                                                     }
     argument :contact, Types::InputTypes::ContactInput, required: false, as: :contact_attributes,
-                                            prepare: ->(contact, _ctx) { contact.to_h }
+                                                        prepare: ->(contact, _ctx) { contact.to_h }
     argument :operating_company, Types::InputTypes::OperatingCompanyInput, required: false,
-                                                               as: :operating_company_attributes,
-                                                               prepare:
+                                                                           as: :operating_company_attributes,
+                                                                           prepare:
                                                         lambda { |operating_company, _ctx|
                                                           operating_company.to_h
                                                         }
     argument :web_urls, [Types::InputTypes::WebUrlInput], required: false, as: :web_urls_attributes,
-                                              prepare: ->(web_urls, _ctx) { web_urls.map(&:to_h) }
+                                                          prepare: ->(web_urls, _ctx) { web_urls.map(&:to_h) }
     argument :media_contents, [Types::InputTypes::MediaContentInput], required: false,
-                                                          as: :media_contents_attributes,
-                                                          prepare: lambda { |media_contents, _ctx|
-                                                                     media_contents.map(&:to_h)
-                                                                   }
+                                                                      as: :media_contents_attributes,
+                                                                      prepare: lambda { |media_contents, _ctx|
+                                                                                 Array(media_contents).map(&:to_h)
+                                                                               }
     argument :location, Types::InputTypes::LocationInput, required: false,
-                                              as: :location_attributes,
-                                              prepare: ->(location, _ctx) { location.to_h }
+                                                          as: :location_attributes,
+                                                          prepare: ->(location, _ctx) { location.to_h }
     argument :certificates, [Types::InputTypes::CertificateInput], required: false,
-                                                       as: :certificates_attributes,
-                                                       prepare: lambda { |certificates, _ctx|
-                                                                  certificates.map(&:to_h)
-                                                                }
+                                                                   as: :certificates_attributes,
+                                                                   prepare: lambda { |certificates, _ctx|
+                                                                              Array(certificates).map(&:to_h)
+                                                                            }
     argument :accessibility_information,
              Types::InputTypes::AccessibilityInformationInput,
              required: false,
@@ -54,16 +54,16 @@ module Mutations
     argument :length_km, Integer, required: true
     argument :means_of_transportation, String, required: false
     argument :geometry_tour_data, [Types::InputTypes::GeoLocationInput], required: false,
-                                                             as: :geometry_tour_data_attributes,
-                                                             prepare: lambda { |geometry_tour_data, _ctx|
-                                                                        geometry_tour_data.map(&:to_h)
-                                                                      }
+                                                                         as: :geometry_tour_data_attributes,
+                                                                         prepare: lambda { |geometry_tour_data, _ctx|
+                                                                                    Array(geometry_tour_data).map(&:to_h)
+                                                                                  }
     argument :tags, [String], as: :tag_list, required: false
     argument :tour_stops, [Types::InputTypes::TourStopInput], required: false,
-                                                  as: :tour_stops_attributes,
-                                                  prepare: lambda { |tour_stops, _ctx|
-                                                    tour_stops.map(&:to_h)
-                                                  }
+                                                              as: :tour_stops_attributes,
+                                                              prepare: lambda { |tour_stops, _ctx|
+                                                                         Array(tour_stops).map(&:to_h)
+                                                                       }
 
     field :tour, Types::QueryTypes::TourType, null: false
 
