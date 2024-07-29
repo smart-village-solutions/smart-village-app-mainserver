@@ -60,7 +60,8 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   option :take, type: GraphQL::Types::Int, with: :apply_take
 
   def apply_search(scope, value)
-    scope.search(value, hits_per_page: 10_000)
+    search_ids = scope.search(value).pluck(:id)
+    where(id: search_ids)
   end
 
   def apply_category_id(scope, value)
