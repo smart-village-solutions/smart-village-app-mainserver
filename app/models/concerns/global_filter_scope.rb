@@ -47,7 +47,7 @@ module GlobalFilterScope
 
         # perform search in Meilisearch
         meili_filters = meili_filters.compact.delete_if(&:blank?)
-        poi_ids = search("*", filter: meili_filters, hits_per_page: 100_000).pluck(:id)
+        poi_ids = search("*", filter: meili_filters, hits_per_page: 10_000).pluck(:id)
         next if poi_ids.blank?
 
         global_record_ids << poi_ids

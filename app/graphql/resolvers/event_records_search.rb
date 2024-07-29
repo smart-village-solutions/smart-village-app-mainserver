@@ -46,6 +46,7 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
     value "listDate_ASC"
   end
 
+  option :search, type: GraphQL::Types::String, with: :apply_search
   option :category_id, type: GraphQL::Types::ID, with: :apply_category_id
   option :skip, type: GraphQL::Types::Int, with: :apply_skip
   option :limit, type: GraphQL::Types::Int, with: :apply_limit
@@ -57,10 +58,9 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   option :exclude_filter, type: GraphQL::Types::JSON, with: :apply_exclude_filter
   option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range
   option :take, type: GraphQL::Types::Int, with: :apply_take
-  option :search, type: GraphQL::Types::String, with: :apply_search
 
   def apply_search(scope, value)
-    scope.search(value)
+    scope.search(value, hits_per_page: 10_000)
   end
 
   def apply_category_id(scope, value)
