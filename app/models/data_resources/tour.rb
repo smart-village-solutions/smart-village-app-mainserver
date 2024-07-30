@@ -66,6 +66,10 @@ class Tour < Attraction
     end
   end
 
+  def searchable?
+    visible && data_provider.try(:municipality_id).present?
+  end
+
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "Tour").first.try(:settings)
   rescue StandardError
