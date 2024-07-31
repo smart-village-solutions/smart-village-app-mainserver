@@ -26,11 +26,11 @@ module GlobalFilterScope
         global_settings = resource_settings.global_settings.fetch("municipality_#{current_municipality_id}", {})
         next unless global_settings["use_global_resource"] == "true"
 
-        # filter by municipality
+        # Filter by municipality
         meili_filters = []
         meili_filters << "municipality_id = #{global_data_provider.municipality_id}"
 
-        # filter by location
+        # Filter by location
         if const_defined?(:FILTERABLE_BY_LOCATION) &&
            self::FILTERABLE_BY_LOCATION == true
           # Muster
@@ -43,9 +43,7 @@ module GlobalFilterScope
           meili_filters << global_settings["filter_location_country"].map { |f| "location_country = '#{f}'" }
         end
 
-        # filter by categories
-        # FixMe: category von Globa Municipality ist nicht identich mit den KAtegorein andere municiopaliteis
-        #  Nur die (TMB) Global Kategorein im UI zur auswahl geben
+        # Filter by categories
         meili_filters << global_settings["filter_category_ids"].map do |f|
           category_name = Category.unscoped
                                   .where(municipality_id: global_municipality_id, id: f)
@@ -54,7 +52,7 @@ module GlobalFilterScope
           "categories = '#{category_name}'"
         end
 
-        # perform search in Meilisearch
+        # Perform search in Meilisearch
         meili_filters = meili_filters.compact.delete_if(&:blank?)
         begin
           searched_record_ids = search("*", filter: meili_filters, hits_per_page: MEILISEARCH_MAX_TOTAL_HITS).pluck(:id)
