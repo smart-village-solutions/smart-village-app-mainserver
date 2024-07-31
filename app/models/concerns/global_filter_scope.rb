@@ -19,6 +19,7 @@ module GlobalFilterScope
 
         # get global settings for resource: name == "Newsitem", "EventRecord", ...
         resource_settings = global_data_provider.settings(name)
+        global_municipality_id = global_data_provider.municipality_id
 
         next if resource_settings.blank?
 
@@ -46,12 +47,21 @@ module GlobalFilterScope
         # FixMe: category von Globa Municipality ist nicht identich mit den KAtegorein andere municiopaliteis
         #  Nur die (TMB) Global Kategorein im UI zur auswahl geben
         meili_filters << global_settings["filter_category_ids"].map do |f|
-          "categories = '#{Category.find_by(id: f).try(:name)}'"
+          category_name = Category.unscoped
+                                  .where(municipality_id: global_municipality_id, id: f)
+                                  .first
+                                  .try(:name)
+          "categories = '#{category_name}'"
         end
 
         # perform search in Meilisearch
         meili_filters = meili_filters.compact.delete_if(&:blank?)
-        searched_record_ids = search("*", filter: meili_filters, hits_per_page: MEILISEARCH_MAX_TOTAL_HITS).pluck(:id)
+        begin
+          searched_record_ids = search("*", filter: meili_filters, hits_per_page: MEILISEARCH_MAX_TOTAL_HITS).pluck(:id)
+        rescue
+          Rails.logger.error "Error in GlobalFilterScope.global_record_ids: #{e.message}"
+          searched_record_ids = []
+        end
         next if searched_record_ids.blank?
 
         global_record_ids << searched_record_ids

@@ -79,7 +79,7 @@
             <%= s.label :default_category_ids, "Filterung der Daten nach Kategorie" %>
             <div class="category-tree">
               <%= hidden_field_tag("#{resource_settings_key}[filter_category_ids][]", nil) %>
-              <%= render_selectable_categories(Category.all.arrange, s, "#{resource_settings_key}[filter_category_ids][]", s.object.global_settings_for_current_municipality.fetch("filter_category_ids", [])) %>
+              <%= render_selectable_categories(Category.unscoped.where(municipality_id: @user.municipality_id).arrange, s, "#{resource_settings_key}[filter_category_ids][]", s.object.global_settings_for_current_municipality.fetch("filter_category_ids", [])) %>
             </div>
             <small class="form-text text-muted">
               <strong><%= s.object.data_resource_type %></strong> der ausgewählten Kategorien werden angezeigt. Ist keine Kategorie ausgewählt, werden alle angezeigt.
