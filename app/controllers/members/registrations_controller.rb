@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# todo: rewrite Error handling to streamline errors of model and keycloak
+# TODO: rewrite Error handling to streamline errors of model and keycloak
 
 class Members::RegistrationsController < Devise::RegistrationsController
   skip_before_action :verify_authenticity_token
@@ -33,7 +33,7 @@ class Members::RegistrationsController < Devise::RegistrationsController
         keycloak_service = Keycloak::RealmsService.new(MunicipalityService.municipality_id)
         result = keycloak_service.create_user(member_params)
       else
-        # Todo: Anything missing here?
+        # TODO: Anything missing here?
       end
     when :key_and_secret
       super

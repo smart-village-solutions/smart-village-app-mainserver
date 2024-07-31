@@ -43,7 +43,7 @@ module GlobalFilterScope
         end
 
         # filter by categories
-        # TODO: category von Globa Municipality ist nicht identich mit den KAtegorein andere municiopaliteis
+        # FixMe: category von Globa Municipality ist nicht identich mit den KAtegorein andere municiopaliteis
         #  Nur die (TMB) Global Kategorein im UI zur auswahl geben
         meili_filters << global_settings["filter_category_ids"].map do |f|
           "categories = '#{Category.find_by(id: f).try(:name)}'"
