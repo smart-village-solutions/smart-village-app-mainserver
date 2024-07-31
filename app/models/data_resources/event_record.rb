@@ -165,6 +165,7 @@ class EventRecord < ApplicationRecord
 
   FILTERABLE_BY_LOCATION = true
   meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
+    pagination max_total_hits: MEILISEARCH_MAX_TOTAL_HITS
     filterable_attributes [:data_provider_id, :municipality_id, :location_name, :location_department,
       :location_district, :location_state, :location_country, :region_name, :categories]
     sortable_attributes %i[id title created_at]

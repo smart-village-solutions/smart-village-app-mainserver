@@ -57,6 +57,7 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
   has_many :conversations, as: :conversationable
 
   meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
+    pagination max_total_hits: MEILISEARCH_MAX_TOTAL_HITS
     filterable_attributes %i[data_provider_id municipality_id categories]
     sortable_attributes %i[id title created_at]
     ranking_rules [

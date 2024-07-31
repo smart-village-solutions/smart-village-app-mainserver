@@ -51,12 +51,10 @@ module GlobalFilterScope
 
         # perform search in Meilisearch
         meili_filters = meili_filters.compact.delete_if(&:blank?)
-        # TODO: naming anpassen
-        # todo: hier kommen immer nur max 1000
-        poi_ids = search("*", filter: meili_filters, hits_per_page: 100_000).pluck(:id)
-        next if poi_ids.blank?
+        searched_record_ids = search("*", filter: meili_filters, hits_per_page: MEILISEARCH_MAX_TOTAL_HITS).pluck(:id)
+        next if searched_record_ids.blank?
 
-        global_record_ids << poi_ids
+        global_record_ids << searched_record_ids
       end
 
       global_record_ids.flatten.compact.uniq.delete_if(&:blank?)

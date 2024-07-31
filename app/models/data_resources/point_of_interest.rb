@@ -35,6 +35,7 @@ class PointOfInterest < Attraction
 
   FILTERABLE_BY_LOCATION = true
   meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
+    pagination max_total_hits: MEILISEARCH_MAX_TOTAL_HITS
     searchable_attributes %i[id name description data_provider_id municipality_id]
     filterable_attributes %i[
       data_provider_id municipality_id location_name location_department
