@@ -152,7 +152,7 @@ class EventRecord < ApplicationRecord
       .left_joins(:location).left_joins(:addresses)
   }
 
-  scope :meilisearch_import, -> { includes(:data_provider, :categories, :location, :dates) }
+  scope :meilisearch_import, -> { includes(:data_provider, :categories, :location, :dates, :organizer, :point_of_interest) }
 
   accepts_nested_attributes_for :urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :data_provider, :organizer,
@@ -182,11 +182,23 @@ class EventRecord < ApplicationRecord
     attribute :municipality_id do
       data_provider.try(:municipality_id)
     end
+    attribute :data_provider_name do
+      data_provider.try(:name)
+    end
+    attribute :organizer_name do
+      organizer.try(:name)
+    end
     attribute :categories do
       categories.map(&:name)
     end
     attribute :list_date do
       list_date
+    end
+    attribute :poi_name do
+      point_of_interest.try(:description)
+    end
+    attribute :poi_description do
+      point_of_interest.try(:name)
     end
     attribute :location_name do
       location.try(:name)
