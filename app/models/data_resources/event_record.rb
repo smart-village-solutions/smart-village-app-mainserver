@@ -56,10 +56,6 @@ class EventRecord < ApplicationRecord
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
 
-  scope :with_filtered_globals, lambda {
-    where("1 = 1")
-  }
-
   delegate :upcoming, to: :dates, prefix: true
 
   # timespan_to_search und timespan werden Arrays der Eventzeiträume
