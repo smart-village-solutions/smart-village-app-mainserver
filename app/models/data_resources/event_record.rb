@@ -16,8 +16,8 @@ class EventRecord < ApplicationRecord
                 :push_notification,
                 :date
 
-  before_update :handle_recurring_dates
-  after_create :handle_recurring_dates
+  before_save :store_changes_for_handling_recurring_dates
+  after_commit :handle_recurring_dates, on: [:create, :update]
   after_save :find_or_create_category # This is defined in the Categorizable module
   after_save :set_sort_date
   after_save :send_push_notification
@@ -202,7 +202,7 @@ class EventRecord < ApplicationRecord
     event_dates = dates.order(date_start: :asc)
     # ignore the first date if recurring, because it is the original date object with a time span
     event_dates = event_dates[1..-1] if recurring?
-    dates_count = event_dates.size
+    dates_count = event_dates&.size.to_i
 
     return nil if dates_count.zero?
 
@@ -282,6 +282,9 @@ class EventRecord < ApplicationRecord
       end_date = date.date_end
       today = Time.zone.now.beginning_of_day
 
+      # return "today" if there is no start date
+      return today.to_date if start_date.blank?
+
       # return start date if start date is in the future
       return start_date if start_date >= today
 
@@ -301,18 +304,6 @@ class EventRecord < ApplicationRecord
       update_column(:sort_date, list_date)
     end
 
-    # Check if `recurring` is true and if so, handle recurring dates following the given pattern.
-    # This method is called after the event is created or updated and recreates dates based on the
-    # given recurring pattern. The creation takes place in a background job to avoid long running
-    # requests. If `recurring` is false, recurring patterns gets reset.
-    def handle_recurring_dates
-      if recurring? && (new_record? || recurring_pattern_changed? || event_date_changed?)
-        RecurringDatesForEventService.new(self).create_with_pattern
-      end
-
-      reset_recurring_attributes if !recurring? && recurring_changed?
-    end
-
     def reset_recurring_attributes
       self.recurring_weekdays = nil
       self.recurring_type = nil
@@ -328,6 +319,38 @@ class EventRecord < ApplicationRecord
 
       date.date_start_changed? || date.date_end_changed? || date.time_start_changed? ||
         date.time_end_changed?
+    end
+
+    # To ensure that the checks on field changes work properly in `handle_recurring_dates`, even
+    # when using `after_commit`, we store the necessary state or changes in instance variables
+    # during `before_save`. This way, we can access these values after the commit when
+    # `after_commit` callback is triggered.
+    def store_changes_for_handling_recurring_dates
+      @event_date_changed = event_date_changed?
+      @recurring_pattern_changed = recurring_pattern_changed?
+    end
+
+    # Check if `recurring` is true and if so, handle recurring dates following the given pattern.
+    # This method is called after the event is created or updated and recreates dates based on the
+    # given recurring pattern. The creation takes place in a background job to avoid long running
+    # requests. If `recurring` is false, recurring patterns gets reset.
+    def handle_recurring_dates
+      # Ensure that the recurring dates are only handled once per save
+      return if @recurring_dates_handled
+
+      # `new_record?` does not work as expected in the `after_commit` callback because by that time
+      # the record is already saved to the database. Instead, we can use
+      # `transaction_include_any_action?`, which can check if the transaction included a specific
+      # action like create or update.
+      is_new_record = transaction_include_any_action?([:create])
+
+      if recurring? && (is_new_record || @recurring_pattern_changed || @event_date_changed)
+        RecurringDatesForEventService.new(self).create_with_pattern
+      end
+
+      reset_recurring_attributes if !recurring? && recurring_changed?
+
+      @recurring_dates_handled = true
     end
 
     def send_push_notification
