@@ -298,10 +298,10 @@ class EventRecord < ApplicationRecord
       today.to_date
     end
 
-    # For better performance store the calculated list date in db to be able to sort by db field.
-    # a cronjob is regenerating the sort_dates every night and will by regenerated on update
+    # For better performance store the calculated list date in db for not recurring events.
+    # A cronjob is regenerating the `sort_date`s every night and it will be regenerated on update.
     def set_sort_date
-      update_column(:sort_date, list_date)
+      update_column(:sort_date, list_date) if !recurring?
     end
 
     def reset_recurring_attributes

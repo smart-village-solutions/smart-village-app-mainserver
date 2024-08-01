@@ -38,6 +38,8 @@ module Types
     field :announcements, [Types::QueryTypes::ShoutType], null: true
 
     def list_date
+      return object.try(:list_date) if object.recurring?
+
       object.try(:sort_date).try(:strftime, "%Y-%m-%d")
     end
 
