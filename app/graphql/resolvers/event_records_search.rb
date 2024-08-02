@@ -29,7 +29,7 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
     else
       event_records.distinct
     end
-  }
+  end
 
   type types[Types::QueryTypes::EventRecordType]
 
