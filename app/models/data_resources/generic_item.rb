@@ -56,6 +56,8 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
            dependent: :destroy
   has_many :conversations, as: :conversationable
 
+  scope :meilisearch_import, -> { includes(:data_provider, :categories) }
+
   meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
     pagination max_total_hits: MEILISEARCH_MAX_TOTAL_HITS
     filterable_attributes %i[data_provider_id municipality_id categories]
@@ -93,7 +95,7 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   scope :by_location, lambda { |location_name|
     where(locations: { name: location_name }).or(where(addresses: { city: location_name }))
-      .left_joins(:locations).left_joins(:addresses)
+                                             .left_joins(:locations).left_joins(:addresses)
   }
 
   # scope for getting upcoming shouts/announcements

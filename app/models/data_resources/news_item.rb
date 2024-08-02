@@ -37,7 +37,7 @@ class NewsItem < ApplicationRecord
   scope :by_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
   }
-
+  scope :meilisearch_import, -> { includes(:data_provider, :categories) }
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
 
