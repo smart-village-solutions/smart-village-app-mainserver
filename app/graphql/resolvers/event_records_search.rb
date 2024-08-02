@@ -60,7 +60,8 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   option :take, type: GraphQL::Types::Int, with: :apply_take
 
   def apply_search(scope, value)
-    search_ids = scope.search(value, hits_per_page: MEILISEARCH_MAX_TOTAL_HITS).pluck(:id)
+    search_ids = scope.search(value, filter: GlobalMeilisearchHelper.municipality_id_filters,
+                                     hits_per_page: MEILISEARCH_MAX_TOTAL_HITS).pluck(:id)
     scope.where(id: search_ids)
   end
 

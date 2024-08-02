@@ -7,10 +7,10 @@ class MeilisearchReindexJob < ApplicationJob
     Municipality.all.each do |municipality|
       MunicipalityService.municipality_id = municipality.id
       MeiliSearch::Rails.configuration[:timeout] = 3000
-      EventRecord.in_batches(of: 10).each_record(&:index!)
-      NewsItem.in_batches(of: 10).each_record(&:index!)
-      GenericItem.in_batches(of: 10).each_record(&:index!)
-      PointOfInterest.in_batches(of: 10).each_record(&:index!)
+      NewsItem.meilisearch_import.map(&:index!)
+      EventRecord.meilisearch_import.map(&:index!)
+      GenericItem.meilisearch_import.map(&:index!)
+      PointOfInterest.meilisearch_import.map(&:index!)
     end
   end
 end
