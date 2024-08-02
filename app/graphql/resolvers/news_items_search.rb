@@ -36,7 +36,8 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   option :search, type: GraphQL::Types::String, with: :apply_search
 
   def apply_search(scope, value)
-    scope.search(value)
+    search_ids = scope.search(value, hits_per_page: MEILISEARCH_MAX_TOTAL_HITS).pluck(:id)
+    scope.where(id: search_ids)
   end
 
   def apply_limit(scope, value)
