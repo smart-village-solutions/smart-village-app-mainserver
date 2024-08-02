@@ -49,7 +49,8 @@ class PushNotification
 
     if categories_ids.present? || point_of_interest_id.present? || data_provider_id.present?
       notification_devices = notification_devices.reject do |device|
-        check_device_pn_config(device, categories_ids, data_provider_id, point_of_interest_id, pn_config_klass)
+        PushNotification.check_device_pn_config(device, categories_ids, data_provider_id, point_of_interest_id,
+                                                pn_config_klass)
       end
     end
 
