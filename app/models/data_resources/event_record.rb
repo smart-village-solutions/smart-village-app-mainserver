@@ -6,6 +6,8 @@ class EventRecord < ApplicationRecord
   include FilterByRole
   include Categorizable
   include FilterByDataProviderAndPoiScope
+  include MeiliSearch::Rails
+  include GlobalFilterScope
   extend OrderAsSpecified
 
   attr_accessor :category_name,
@@ -21,6 +23,7 @@ class EventRecord < ApplicationRecord
   after_save :find_or_create_category # This is defined in the Categorizable module
   after_save :set_sort_date
   after_save :send_push_notification
+  after_touch :index!
 
   before_validation :find_or_create_region
   after_find :set_date_accessor
@@ -145,6 +148,8 @@ class EventRecord < ApplicationRecord
       .left_joins(:location).left_joins(:addresses)
   }
 
+  scope :meilisearch_import, -> { includes(:data_provider, :categories, :location, :dates, :organizer, :point_of_interest) }
+
   accepts_nested_attributes_for :urls, reject_if: ->(attr) { attr[:url].blank? }
   accepts_nested_attributes_for :data_provider, :organizer,
                                 :addresses, :location, :contacts,
@@ -153,6 +158,67 @@ class EventRecord < ApplicationRecord
   acts_as_taggable
 
   validates_presence_of :title
+
+  FILTERABLE_BY_LOCATION = true
+  meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
+    pagination max_total_hits: MEILISEARCH_MAX_TOTAL_HITS
+    filterable_attributes [:data_provider_id, :municipality_id, :location_name, :location_department,
+      :location_district, :location_state, :location_country, :region_name, :categories]
+    sortable_attributes %i[id title created_at]
+    ranking_rules [
+      "sort",
+      "created_at:desc",
+      "words",
+      "typo",
+      "proximity",
+      "attribute",
+      "exactness"
+    ]
+    attribute :id, :title, :description, :data_provider_id, :visible
+    attribute :municipality_id do
+      data_provider.try(:municipality_id)
+    end
+    attribute :data_provider_name do
+      data_provider.try(:name)
+    end
+    attribute :organizer_name do
+      organizer.try(:name)
+    end
+    attribute :categories do
+      categories.map(&:name)
+    end
+    attribute :list_date do
+      list_date
+    end
+    attribute :poi_name do
+      point_of_interest.try(:description)
+    end
+    attribute :poi_description do
+      point_of_interest.try(:name)
+    end
+    attribute :location_name do
+      location.try(:name)
+    end
+    attribute :location_department do
+      location.try(:department)
+    end
+    attribute :location_district do
+      location.try(:district)
+    end
+    attribute :location_state do
+      location.try(:state)
+    end
+    attribute :location_country do
+      location.try(:country)
+    end
+    attribute :region_name do
+      location.try(:region).try(:name)
+    end
+  end
+
+  def searchable?
+    visible && data_provider.try(:municipality_id).present?
+  end
 
   def find_or_create_region
     self.region_id = Region.where(name: region_name).first_or_create.id

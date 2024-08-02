@@ -3,7 +3,11 @@
     <h1>Nutzer bearbeiten</h1>
 
     <%= form_for @user, url: account_path(@user), method: :patch, html: { class: 'form-horizontal', role: 'form' } do |f| %>
-      <%= render partial: 'form', locals: { f: f } %>
+      <% if @user.try(:municipality).try(:global) && @user.municipality_id != MunicipalityService.municipality_id %>
+        <%= render partial: 'form_global', locals: { f: f } %>
+      <% else %>
+        <%= render partial: 'form', locals: { f: f } %>
+      <% end %>
     <% end %>
   </div>
 </div>

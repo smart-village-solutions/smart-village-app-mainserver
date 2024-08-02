@@ -16,6 +16,9 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
   has_many :app_user_contents, dependent: :destroy
   has_many :data_providers, dependent: :destroy
 
+  scope :global, -> { where(global: true) }
+  scope :not_global, -> { where(global: false) }
+
   before_create :setup_defaults
   after_create :create_admin_user
   after_create :create_mobile_app_user
@@ -40,9 +43,11 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
           :rollbar_access_token,
           :redis_host, :redis_namespace,
           :uptime_robot_api_key, :uptime_robot_alert_contacts,
+          :meilisearch_url, :meilisearch_api_key,
           :member_auth_types, :member_auth_key_and_secret_url,
           :member_keycloak_url, :member_keycloak_realm, :member_keycloak_client_id, :member_keycloak_client_secret,
-          :member_keycloak_admin_username, :member_keycloak_admin_password
+          :member_keycloak_admin_username, :member_keycloak_admin_password,
+          :activated_globals
         ],
         coder: JSON
 
@@ -79,6 +84,11 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
     self.uptime_robot_api_key = Settings.uptime_robot[:api_key] if self.uptime_robot_api_key.nil?
     self.uptime_robot_alert_contacts = Settings.uptime_robot[:alert_contacts] if self.uptime_robot_alert_contacts.nil?
 
+    # Meilisearch Server
+    meilisearch_access_api_key = create_meilisearch_access.fetch("key", nil)
+    self.meilisearch_url = Settings.meilisearch[:url] if meilisearch_url.nil?
+    self.meilisearch_api_key = meilisearch_access_api_key.presence || Settings.meilisearch[:api_key] if meilisearch_api_key.nil?
+
     # Mailer Settings
     self.mailer_notify_admin_to = Settings.mailer[:notify_admin][:to] if self.mailer_notify_admin_to.nil?
     self.mailjet_api_key = Settings.mailjet[:api_key] if self.mailjet_api_key.nil?
@@ -114,130 +124,145 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   private
 
-  def create_admin_user
-    SetupUserService.new(
-      provider_name: "Administrator",
-      email: "admin@smart-village.app",
-      role: 1,
-      municipality_id: self.id,
-      application_name: "Administrator",
-      data_provider_roles: {
-        role_point_of_interest: true,
-        role_tour: true,
-        role_news_item: true,
-        role_event_record: true,
-        role_push_notification: true,
-        role_lunch: true,
-        role_waste_calendar: true,
-        role_job: true,
-        role_offer: true,
-        role_construction_site: true,
-        role_survey: true,
-        role_encounter_support: true,
-        role_static_contents: true,
-        role_tour_stops: true
+    def create_meilisearch_access
+      data = {
+        "actions": ["*"],
+        "indexes": ["*"],
+        "expiresAt": nil,
+        "name": "Access for Municipality ID #{id}"
       }
-    )
-  end
+      header = { "Authorization": "Bearer #{Settings.meilisearch[:api_key]}" }
+      request_service = ApiRequestService.new("#{Settings.meilisearch[:url]}/keys", nil, nil, data, header)
+      response = request_service.post_request
+      JSON.parse(response.body)
+    rescue StandardError
+      {}
+    end
 
-  def create_mobile_app_user
-    SetupUserService.new(
-      provider_name: "Mobile App",
-      email: "mobile-app@smart-village.app",
-      role: 2,
-      municipality_id: self.id,
-      application_name: "Mobile App (iOS/Android)"
-    )
-  end
+    def create_admin_user
+      SetupUserService.new(
+        provider_name: "Administrator",
+        email: "admin@smart-village.app",
+        role: 1,
+        municipality_id: id,
+        application_name: "Administrator",
+        data_provider_roles: {
+          role_point_of_interest: true,
+          role_tour: true,
+          role_news_item: true,
+          role_event_record: true,
+          role_push_notification: true,
+          role_lunch: true,
+          role_waste_calendar: true,
+          role_job: true,
+          role_offer: true,
+          role_construction_site: true,
+          role_survey: true,
+          role_encounter_support: true,
+          role_static_contents: true,
+          role_tour_stops: true
+        }
+      )
+    end
 
-  def create_mowas_user
-    SetupUserService.new(
-      provider_name: "Warnsystem des Bundes",
-      description: "Zur automatischen Erstellung von Warnungen durch das MoWaS (Modulares Warnsystem des Bundes) inkl. Push-Notification",
-      logo_url: "https://fileserver.smart-village.app/fileserver/partner/mowas-banner.png",
-      email: "mowas@smart-village.app",
-      role: 0,
-      municipality_id: self.id,
-      application_name: "Zugriff per CMS",
-      data_provider_roles: {
-        role_news_item: true,
-        role_push_notification: true,
-      }
-    )
-  end
+    def create_mobile_app_user
+      SetupUserService.new(
+        provider_name: "Mobile App",
+        email: "mobile-app@smart-village.app",
+        role: 2,
+        municipality_id: id,
+        application_name: "Mobile App (iOS/Android)"
+      )
+    end
 
-  def create_minio_bucket
-    return unless minio_config_valid?
+    def create_mowas_user
+      SetupUserService.new(
+        provider_name: "Warnsystem des Bundes",
+        description: "Zur automatischen Erstellung von Warnungen durch das MoWaS (Modulares Warnsystem des Bundes) inkl. Push-Notification",
+        logo_url: "https://fileserver.smart-village.app/fileserver/partner/mowas-banner.png",
+        email: "mowas@smart-village.app",
+        role: 0,
+        municipality_id: id,
+        application_name: "Zugriff per CMS",
+        data_provider_roles: {
+          role_news_item: true,
+          role_push_notification: true
+        }
+      )
+    end
 
-    MinioService.new(
-      endpoint: minio_endpoint,
-      access_key: minio_access_key,
-      secret_key: minio_secret_key,
-      region: minio_region
-    ).create_bucket(minio_bucket)
-  end
+    def create_minio_bucket
+      return unless minio_config_valid?
 
-  def create_uptime_robot_monitor
-    return unless Rails.env.production?
+      MinioService.new(
+        endpoint: minio_endpoint,
+        access_key: minio_access_key,
+        secret_key: minio_secret_key,
+        region: minio_region
+      ).create_bucket(minio_bucket)
+    end
 
-    UptimeRobotService.new(
-      api_key: uptime_robot_api_key,
-      alert_contacts: uptime_robot_alert_contacts,
-      slug: slug
-    ).create_monitors
-  end
+    def create_uptime_robot_monitor
+      return unless Rails.env.production?
 
-  def create_category_and_static_content
-    category = Category.where(name: "Nachrichten", municipality_id: self.id).first_or_create
+      UptimeRobotService.new(
+        api_key: uptime_robot_api_key,
+        alert_contacts: uptime_robot_alert_contacts,
+        slug: slug
+      ).create_monitors
+    end
 
-    StaticContent.create(
-      name: "globalSettings",
-      content: initial_static_content_data_for_news(category.id),
-      data_type: "json",
-      municipality_id: self.id
-    )
-  end
+    def create_category_and_static_content
+      category = Category.where(name: "Nachrichten", municipality_id: id).first_or_create
 
-  def initial_static_content_data_for_news(category_id)
-    {
-      "filter": {
-        "news": false,
-        "events": true
-      },
-      "showImageRights": false,
-      "sections": {
-        "showNews": true,
-        "showPointsOfInterestAndTours": true,
-        "showEvents": true,
-        "headlineNews": "Nachrichten",
-        "buttonNews": "Alle Nachrichten anzeigen",
-        "categoriesNews": [
-          {
-            "categoryId": category_id,
-            "categoryTitle": "Nachrichten",
-            "categoryTitleDetail": "Nachricht",
-            "categoryButton": "Alle Nachrichten anzeigen"
-          }
-        ],
-        "headlinePointsOfInterestAndTours": "Touren und Orte",
-        "buttonPointsOfInterestAndTours": "Alle Touren und Orte anzeigen",
-        "headlineEvents": "Veranstaltungen",
-        "buttonEvents": "Alle Veranstaltungen anzeigen",
-        "headlineService": "Service",
-        "headlineAbout": "Über die App"
-      },
-      "settings": {
-        "pushNotifications": true,
-        "feedbackFooter": true,
-        "matomo": false,
-        "locationService": false,
-        "onboarding": false
-      },
-      "widgets": [
-        "weather"
-      ]
-    }.to_json
-  end
+      StaticContent.create(
+        name: "globalSettings",
+        content: initial_static_content_data_for_news(category.id),
+        data_type: "json",
+        municipality_id: id
+      )
+    end
+
+    def initial_static_content_data_for_news(category_id)
+      {
+        "filter": {
+          "news": false,
+          "events": true
+        },
+        "showImageRights": false,
+        "sections": {
+          "showNews": true,
+          "showPointsOfInterestAndTours": true,
+          "showEvents": true,
+          "headlineNews": "Nachrichten",
+          "buttonNews": "Alle Nachrichten anzeigen",
+          "categoriesNews": [
+            {
+              "categoryId": category_id,
+              "categoryTitle": "Nachrichten",
+              "categoryTitleDetail": "Nachricht",
+              "categoryButton": "Alle Nachrichten anzeigen"
+            }
+          ],
+          "headlinePointsOfInterestAndTours": "Touren und Orte",
+          "buttonPointsOfInterestAndTours": "Alle Touren und Orte anzeigen",
+          "headlineEvents": "Veranstaltungen",
+          "buttonEvents": "Alle Veranstaltungen anzeigen",
+          "headlineService": "Service",
+          "headlineAbout": "Über die App"
+        },
+        "settings": {
+          "pushNotifications": true,
+          "feedbackFooter": true,
+          "matomo": false,
+          "locationService": false,
+          "onboarding": false
+        },
+        "widgets": [
+          "weather"
+        ]
+      }.to_json
+    end
 end
 
 # == Schema Information

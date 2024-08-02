@@ -9,6 +9,11 @@ class User < ApplicationRecord
   include Sortable
   include MunicipalityScope
 
+  default_scope(all_queries: true) do
+    accessible_municipality_ids = [MunicipalityService.municipality_id] + Municipality.global.pluck(:id)
+    unscoped.where(municipality_id: Array(accessible_municipality_ids.compact.uniq))
+  end
+
   sortable_on :email, :id
 
   include Searchable
@@ -17,7 +22,7 @@ class User < ApplicationRecord
   validates_presence_of :email
   validates_uniqueness_of :email, scope: :municipality_id
 
-  belongs_to :data_provider, optional: true
+  belongs_to :data_provider, -> { unscope(where: :municipality_id) }, optional: true
   belongs_to :municipality
   accepts_nested_attributes_for :data_provider
 
@@ -61,13 +66,12 @@ class User < ApplicationRecord
     MunicipalityService.municipality_id = @current_municipality.id if @current_municipality.present?
 
     if @current_municipality.present?
-      # params = { municipality_id: @current_municipality.id }
-      params = warden_conditions[:email].present? ? { email: warden_conditions[:email] } : {}
+      params = warden_conditions[:email].present? ? { email: warden_conditions[:email], municipality_id: @current_municipality.id } : {}
       if warden_conditions[:authentication_token].present?
         params.merge!(authentication_token: warden_conditions[:authentication_token])
       end
 
-      return where(params).first
+      return unscoped.where(params).first
     end
 
     where("1 == 0")

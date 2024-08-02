@@ -18,6 +18,7 @@ class MunicipalityService
   def self.municipality_id=(id)
     Thread.current[:municipality_id] = id
     rollbar_initializer(id) if id && Municipality.exists?(id)
+    meilisearch_initializer(id) if id && Municipality.exists?(id)
     id
   end
 
@@ -48,13 +49,15 @@ class MunicipalityService
     # wenn Anzahl der Subdomains 1 dann wird das Admin UI ausgewählt, sofern die Subdomain "server" ist
     # http://staging-server.smart-village.local
     # http://staging-server.smart-village.app
-    return true if @subdomains.length == 1 && @subdomains.last == SUBDOMAIN_NAMESPACE
+    true if @subdomains.length == 1 && @subdomains.last == SUBDOMAIN_NAMESPACE
   end
 
   def subdomain_valid?
     # wenn Anzahl der Subdomains 1 und die Subdomain nicht "server" ist
     # dann sollte diese Domain nicht auf diese Applikation zeigen
-    raise "municipality error: subdomain not assigned" if @subdomains.length == 1 && @subdomains.last != SUBDOMAIN_NAMESPACE
+    if @subdomains.length == 1 && @subdomains.last != SUBDOMAIN_NAMESPACE
+      raise "municipality error: subdomain not assigned"
+    end
 
     # wenn Anzahl der Subdomains größer 2 ist, dann wird ein Fehler geworfen
     # http://bad-belzig.foo.staging-server.smart-village.de
@@ -70,14 +73,22 @@ class MunicipalityService
     Municipality.find_by(slug: slug_name)
   end
 
-  private 
-
   def self.rollbar_initializer(id)
-    Rollbar.configuration.access_token = settings[:rollbar_access_token]
+    current_settings = settings
+    Rollbar.configuration.access_token = current_settings[:rollbar_access_token]
     Rollbar.configuration.payload_options = {
       municipality_id: id,
-      minio_bucket: settings[:minio_bucket]
+      minio_bucket: current_settings[:minio_bucket]
     }
   end
 
+  def self.meilisearch_initializer(_id)
+    current_settings = settings
+    MeiliSearch::Rails.configuration = {
+      meilisearch_url: current_settings.fetch(:meilisearch_url, nil).presence || Settings.meilisearch[:url],
+      meilisearch_api_key: current_settings.fetch(:meilisearch_api_key, nil).presence || Settings.meilisearch[:api_key],
+      per_environment: true,
+      timeout: 30
+    }
+  end
 end

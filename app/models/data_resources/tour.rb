@@ -5,6 +5,9 @@
 # the surrounding areas of the Smart Village
 #
 class Tour < Attraction
+  include MeiliSearch::Rails
+  include GlobalFilterScope
+
   enum means_of_transportation: { bike: 0, canoe: 1, foot: 2 }
 
   has_many :data_resource_categories, -> { where(data_resource_type: "Tour") }, foreign_key: :data_resource_id
@@ -19,9 +22,58 @@ class Tour < Attraction
 
   accepts_nested_attributes_for :geometry_tour_data, :tour_stops
 
+  FILTERABLE_BY_LOCATION = true
+  meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
+    pagination max_total_hits: MEILISEARCH_MAX_TOTAL_HITS
+    searchable_attributes %i[id name description data_provider_id municipality_id]
+    filterable_attributes %i[
+      data_provider_id municipality_id location_name location_department
+      location_district location_state location_country region_name categories
+    ]
+    sortable_attributes %i[id title created_at name]
+    ranking_rules [
+      "sort",
+      "created_at:desc",
+      "words",
+      "typo",
+      "proximity",
+      "attribute",
+      "exactness"
+    ]
+    attribute :id, :name, :description, :data_provider_id, :visible, :active
+    attribute :municipality_id do
+      data_provider.try(:municipality_id)
+    end
+    attribute :categories do
+      categories.map(&:name)
+    end
+    attribute :location_name do
+      location.try(:name)
+    end
+    attribute :location_department do
+      location.try(:department)
+    end
+    attribute :location_district do
+      location.try(:district)
+    end
+    attribute :location_state do
+      location.try(:state)
+    end
+    attribute :location_country do
+      location.try(:country)
+    end
+    attribute :region_name do
+      location.try(:region).try(:name)
+    end
+  end
+
+  def searchable?
+    visible && data_provider.try(:municipality_id).present?
+  end
+
   def settings
     data_provider.data_resource_settings.where(data_resource_type: "Tour").first.try(:settings)
-  rescue
+  rescue StandardError
     nil
   end
 

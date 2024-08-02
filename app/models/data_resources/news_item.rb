@@ -6,6 +6,8 @@ class NewsItem < ApplicationRecord
   include FilterByRole
   include Categorizable
   include FilterByDataProviderAndPoiScope
+  include MeiliSearch::Rails
+  include GlobalFilterScope
 
   attr_accessor :force_create,
                 :category_name,
@@ -14,6 +16,7 @@ class NewsItem < ApplicationRecord
 
   after_save :find_or_create_category # This is defined in the Categorizable module
   after_save :send_push_notification
+  after_touch :index!
 
   belongs_to :data_provider
   belongs_to :point_of_interest, optional: true
@@ -39,6 +42,39 @@ class NewsItem < ApplicationRecord
   # scope :visible, -> { where(visible: true) }
 
   accepts_nested_attributes_for :content_blocks, :data_provider, :address, :source_url
+
+  FILTERABLE_BY_LOCATION = false
+  meilisearch sanitize: true, force_utf8_encoding: true, if: :searchable? do
+    pagination max_total_hits: MEILISEARCH_MAX_TOTAL_HITS
+    filterable_attributes %i[data_provider_id municipality_id categories]
+    sortable_attributes %i[id title created_at]
+    ranking_rules [
+      "sort",
+      "created_at:desc",
+      "words",
+      "typo",
+      "proximity",
+      "attribute",
+      "exactness"
+    ]
+    attribute :id, :data_provider_id, :visible, :publication_date, :published_at, :news_type
+    attribute :municipality_id do
+      data_provider.try(:municipality_id)
+    end
+    attribute :categories do
+      categories.map(&:name)
+    end
+    attribute :title do
+      parsed_title
+    end
+    attribute :description do
+      content_for_facebook[:message]
+    end
+  end
+
+  def searchable?
+    visible && data_provider.try(:municipality_id).present?
+  end
 
   def unique_id
     return external_id if external_id.present?
@@ -77,13 +113,17 @@ class NewsItem < ApplicationRecord
 
   private
 
+    def parsed_title
+      title.presence || content_blocks.try(:first).try(:title).presence || "Neue Nachricht"
+    end
+
     def send_push_notification
       # do not send push notifications, if not explicitly requested
       return unless push_notification.to_s == "true"
       # do not send push notification, if already sent
       return if push_notifications_sent_at.present?
 
-      push_title = title.presence || content_blocks.try(:first).try(:title).presence || "Neue Nachricht"
+      push_title = parsed_title
       push_body = content_blocks.try(:first).try(:intro).presence || push_title
       push_body = ActionView::Base.full_sanitizer.sanitize(push_body)
       if payload.present?

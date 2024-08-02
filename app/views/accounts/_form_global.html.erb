@@ -1,0 +1,175 @@
+<% if @user.errors.any? %>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <h5>
+      <%= t("doorkeeper.applications.form.error") %>
+    </h5>
+
+    <ul style="margin: 0">
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>
+
+<div class="alert alert-warning" role="alert">
+  Dieser Account wird in der Municipality <%= @user.municipality_id %> verwaltet! <br>
+  Anpassungen, die hier durch die Filtern vorgenommen werden, betreffen nur die Daten in dieser Municipality.
+</div>
+
+<div class="form-group">
+  <%= f.label :email, "E-Mail" %>
+  <%= f.text_field :email, class: "form-control", required: true, disabled: true %>
+</div>
+
+<%= f.fields_for :data_provider, object: @user.data_provider || @user.build_data_provider do |d| %>
+  <h2>Data Provider</h2>
+  <div class="form-group">
+    <%= d.label :name %>
+    <%= d.text_field :name, class: "form-control", disabled: true %>
+    <small class="form-text text-muted">
+      Dieser Text wird auch in der App angezeigt.
+    </small>
+  </div>
+
+  <div class="form-group">
+    <%= d.label :description %>
+    <%= d.text_area :description, class: "form-control", disabled: true %>
+    <small class="form-text text-muted">
+      Nur für interne Zwecke
+    </small>
+  </div>
+
+  <h2>Optionen für Ressourcen</h2>
+  <nav>
+    <div class="nav nav-tabs" id="resource-nav-tab" role="tablist">
+      <%= d.fields_for :data_resource_settings do |s| %>
+        <% next unless s.object.data_resource_type %>
+        <a class="nav-item nav-link <%= s.object.data_resource_type == 'NewsItem' ? 'active' : '' %>" id="nav-contact-tab" data-toggle="tab" href="#nav-<%= s.object.data_resource_type %>" role="tab" aria-controls="nav-contact" aria-selected="false"><%= s.object.data_resource_type.pluralize %></a>
+      <% end %>
+    </div>
+  </nav>
+
+  <div class="tab-content" id="nav-tabContent">
+    <%= d.fields_for :data_resource_settings do |s| %>
+      <div class="tab-pane fade show <%= s.object.data_resource_type == 'NewsItem' ? 'active' : '' %>" id="nav-<%= s.object.data_resource_type %>" role="tabpanel" aria-labelledby="nav-home-tab">
+        <% resource_settings_key = "user[data_provider_attributes][data_resource_settings_attributes][#{s.index}]" %>
+        <%= s.hidden_field :id %>
+        <%= s.hidden_field :data_provider_id %>
+        <%= s.hidden_field :data_resource_type %>
+        <div class="row">
+          <div class="form-group col-6">
+            <div class="form-check">
+              <%= hidden_field_tag("#{resource_settings_key}[use_global_resource]", "false") %>
+              <%= check_box_tag "#{resource_settings_key}[use_global_resource]", "true", s.object.global_settings_for_current_municipality.fetch("use_global_resource", "false") == "true", { class: "form-check-input" } %>
+              <%= label_tag "global_settings[1][#{s.object.data_resource_type}]", "Diese Daten anzeigen", class: "form-check-label" %>
+              <small class="form-text text-muted">
+                Zusätzlich <%= s.object.data_resource_type.constantize.global_record_ids.count %> globale <%= s.object.data_resource_type.pluralize %> in der aktuellen Municipality anzeigen
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-6">
+            <%= s.label :default_category_ids, "Filterung der Daten nach Kategorie" %>
+            <div class="category-tree">
+              <%= hidden_field_tag("#{resource_settings_key}[filter_category_ids][]", nil) %>
+              <%= render_selectable_categories(Category.unscoped.where(municipality_id: @user.municipality_id).arrange, s, "#{resource_settings_key}[filter_category_ids][]", s.object.global_settings_for_current_municipality.fetch("filter_category_ids", [])) %>
+            </div>
+            <small class="form-text text-muted">
+              <strong><%= s.object.data_resource_type %></strong> der ausgewählten Kategorien werden angezeigt. Ist keine Kategorie ausgewählt, werden alle angezeigt.
+            </small>
+          </div>
+        </div>
+
+        <% if s.object.data_resource_type.constantize.const_defined?(:FILTERABLE_BY_LOCATION) && s.object.data_resource_type.constantize::FILTERABLE_BY_LOCATION == true %>
+          <div class="row">
+            <div class="form-group col-6">
+              <%= s.label :default_category_ids, "Filterung der Daten nach Ortsname" %>
+              <div class="category-tree">
+                <%= hidden_field_tag("#{resource_settings_key}[filter_location_name][]", nil) %>
+                <%= render_selectable_location(@locations.map(&:name), "#{resource_settings_key}[filter_location_name][]", s.object.global_settings_for_current_municipality.fetch("filter_location_name", [])) %>
+              </div>
+              <small class="form-text text-muted">
+                <strong><%= s.object.data_resource_type %></strong> der ausgewählten Orte werden angezeigt. Ist kein Ort ausgewählt, werden alle angezeigt.
+              </small>
+            </div>
+
+            <div class="form-group col-6">
+              <%= s.label :default_category_ids, "Filterung der Daten nach Region" %>
+              <div class="category-tree">
+                <%= hidden_field_tag("#{resource_settings_key}[filter_location_region][]", nil) %>
+                <%= render_selectable_location(Region.all.pluck(:name), "#{resource_settings_key}[filter_location_region][]", s.object.global_settings_for_current_municipality.fetch("filter_location_region", [])) %>
+              </div>
+              <small class="form-text text-muted">
+                <strong><%= s.object.data_resource_type %></strong> der ausgewählten Regionen werden angezeigt. Ist keine Region ausgewählt, werden alle angezeigt.
+              </small>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-6">
+              <%= s.label :default_category_ids, "Filterung der Daten nach Department" %>
+              <div class="category-tree">
+                <%= hidden_field_tag("#{resource_settings_key}[filter_location_department][]", nil) %>
+                <%= render_selectable_location(@locations.map(&:department), "#{resource_settings_key}[filter_location_department][]", s.object.global_settings_for_current_municipality.fetch("filter_location_department", [])) %>
+              </div>
+              <small class="form-text text-muted">
+                <strong><%= s.object.data_resource_type %></strong> der ausgewählten Departments werden angezeigt. Ist kein Department ausgewählt, werden alle angezeigt.
+              </small>
+            </div>
+
+            <div class="form-group col-6">
+              <%= s.label :default_category_ids, "Filterung der Daten nach Bezirk" %>
+              <div class="category-tree">
+                <%= hidden_field_tag("#{resource_settings_key}[filter_location_district][]", nil) %>
+                <%= render_selectable_location(@locations.map(&:district), "#{resource_settings_key}[filter_location_district][]", s.object.global_settings_for_current_municipality.fetch("filter_location_district", [])) %>
+              </div>
+              <small class="form-text text-muted">
+                <strong><%= s.object.data_resource_type %></strong> der ausgewählten Bezirke werden angezeigt. Ist kein Bezirk ausgewählt, werden alle angezeigt.
+              </small>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-6">
+              <%= s.label :default_category_ids, "Filterung der Daten nach State" %>
+              <div class="category-tree">
+                <%= hidden_field_tag("#{resource_settings_key}[filter_location_state][]", nil) %>
+                <%= render_selectable_location(@locations.map(&:state), "#{resource_settings_key}[filter_location_state][]", s.object.global_settings_for_current_municipality.fetch("filter_location_state", [])) %>
+              </div>
+              <small class="form-text text-muted">
+                <strong><%= s.object.data_resource_type %></strong> der ausgewählten States werden angezeigt. Ist kein State ausgewählt, werden alle angezeigt.
+              </small>
+            </div>
+
+            <div class="form-group col-6">
+              <%= s.label :default_category_ids, "Filterung der Daten nach Land" %>
+              <div class="category-tree">
+                <%= hidden_field_tag("#{resource_settings_key}[filter_location_country][]", nil) %>
+                <%= render_selectable_location(@locations.map(&:country), "#{resource_settings_key}[filter_location_country][]", s.object.global_settings_for_current_municipality.fetch("filter_location_country", [])) %>
+              </div>
+              <small class="form-text text-muted">
+                <strong><%= s.object.data_resource_type %></strong> der ausgewählten Länder werden angezeigt. Ist kein Land ausgewählt, werden alle angezeigt.
+              </small>
+            </div>
+          </div>
+        <% end %>
+
+      </div>
+    <% end %>
+  </div>
+
+<% end %>
+
+<br>
+
+<div class="form-group">
+  <%= f.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primary" %>
+  <%= link_to t('doorkeeper.applications.buttons.cancel'), accounts_path, class: "btn btn-default" %>
+</div>

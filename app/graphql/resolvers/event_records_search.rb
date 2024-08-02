@@ -9,8 +9,8 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
 
   description "Searches for event records"
 
-  scope {
-    event_records = EventRecord.upcoming(context[:current_user])
+  scope do
+    event_records = EventRecord.upcoming(context[:current_user]).include_filtered_globals.upcoming
 
     begin
       lookahead = context[:extras][:lookahead].selection(:event_records)
@@ -46,6 +46,7 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
     value "listDate_ASC"
   end
 
+  option :search, type: GraphQL::Types::String, with: :apply_search
   option :category_id, type: GraphQL::Types::ID, with: :apply_category_id
   option :skip, type: GraphQL::Types::Int, with: :apply_skip
   option :limit, type: GraphQL::Types::Int, with: :apply_limit
@@ -57,6 +58,11 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   option :exclude_filter, type: GraphQL::Types::JSON, with: :apply_exclude_filter
   option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range
   option :take, type: GraphQL::Types::Int, with: :apply_take
+
+  def apply_search(scope, value)
+    search_ids = scope.search(value, hits_per_page: 10_000).pluck(:id)
+    scope.where(id: search_ids)
+  end
 
   def apply_category_id(scope, value)
     scope.by_category(value)

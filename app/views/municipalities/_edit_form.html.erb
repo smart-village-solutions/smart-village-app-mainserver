@@ -25,10 +25,15 @@
         <%= form.text_field :title, class: "form-control", disabled: true %>
       </div>
 
-      <h1>Settings</h1>
+      <h2>Global</h2>
+      <div class="form-check">
+        <%= form.check_box :global, { class: "form-check-input" } %>
+        <%= form.label :global, "Data can be used by other municipalities", class: "form-check-label" %>
+      </div>
 
       <%= render partial: "municipalities/form_partials/member_auth_settings", locals: { form: form, municipality: municipality } %>
       <%= render partial: "municipalities/form_partials/uptime_robot_settings", locals: { form: form } %>
+      <%= render partial: "municipalities/form_partials/meilisearch_settings", locals: { form: form } %>
       <%= render partial: "municipalities/form_partials/mailer_settings", locals: { form: form } %>
       <%= render partial: "municipalities/form_partials/minio_settings", locals: { form: form } %>
       <%= render partial: "municipalities/form_partials/open_weather_settings", locals: { form: form } %>

@@ -27,7 +27,7 @@ class DataProvider < ApplicationRecord
         coder: JSON
   enum data_type: { general_importer: 0, business_account: 1 }, _suffix: :role
 
-  belongs_to :municipality
+  belongs_to :municipality, optional: true
   has_many :data_resource_settings, class_name: "DataResourceSetting"
   has_many :news_items
   has_many :generic_items
@@ -48,7 +48,7 @@ class DataProvider < ApplicationRecord
 
   def parse_role_values
     roles.each do |key, value|
-      roles[key] = value == "true" || value == true
+      roles[key] = ["true", true].include?(value)
     end
   end
 
@@ -66,8 +66,8 @@ class DataProvider < ApplicationRecord
 
   def import_auth_credentials
     user = User.unscoped.where(municipality_id: municipality.id, data_provider_id: id).first
-
     return nil if user.blank?
+
     oauth_app = user.oauth_applications.first
     { client_key: oauth_app.uid, client_secret: oauth_app.plaintext_secret, municipality_slug: municipality.slug }
   end

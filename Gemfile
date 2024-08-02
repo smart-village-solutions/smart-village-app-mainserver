@@ -53,6 +53,9 @@ gem "tty-progressbar"
 gem "exponent-server-sdk"
 gem "ffi", "~> 1.15"
 
+# Search Engine
+gem "meilisearch-rails"
+
 gem "acts-as-taggable-on"
 gem "ancestry"
 gem "devise"

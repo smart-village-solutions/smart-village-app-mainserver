@@ -90,7 +90,7 @@
   <%= d.fields_for :logo, object: @user.data_provider.logo || @user.data_provider.build_logo do |l| %>
     <div class="form-group">
       <%= l.label :url, "Link zum Logo" %>
-      <%= l.text_field :url, class: "form-control", required: true %>
+      <%= l.text_field :url, class: "form-control" %>
       <small class="form-text text-muted">
         Diese Grafik wird über Ihren Beiträgen dargestellt.
         bsp.: https://smart-village.solutions/wp-content/uploads/2020/09/Logo-Smart-Village-Solutions-SVS.png
