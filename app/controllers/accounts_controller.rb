@@ -144,7 +144,7 @@ class AccountsController < ApplicationController
 
   # POST /resource/sign_in
   def create
-    @user = User.new(account_params)
+    @user = User.new(account_params.merge(municipality_id: MunicipalityService.municipality_id))
 
     respond_to do |format|
       if @user.save
