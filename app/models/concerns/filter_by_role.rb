@@ -37,7 +37,7 @@ module FilterByRole
       end
 
       # if current_user has role restricted
-      where(data_provider_id: all_data_provider_ids.uniq.compact)
+      where(data_provider_id: current_user.data_provider_id)
     }
   end
 
