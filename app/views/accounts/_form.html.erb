@@ -303,6 +303,24 @@
             </small>
           </div>
         </div>
+
+        <div class="row">
+          <div class="col-5 align-items-center justify-content-start"><hr></div>
+          <div class="col-2 align-items-center justify-content-center"><center>Danger Zone</center></div>
+          <div class="col-5 align-items-center justify-content-end"><hr></div>
+        </div>
+
+        <small class="form-text text-muted">
+              <%= s.object.data_resource_type.constantize.where(data_provider_id: s.object.data_provider_id).count %> Einträgen dieses Data Providers vom Typ <strong><%= s.object.data_resource_type %></strong>
+              können hier gelöscht werden:
+          <%= link_to(
+            t("doorkeeper.applications.buttons.destroy_all"),
+            batch_destroy_all_account_path(@user, data_resource_type: s.object.data_resource_type),
+            "data-confirm": "Sollen alle Einträge dieses Data Providers vom Typ #{s.object.data_resource_type} gelöscht werden? ACHTUNG: Dieser Vorgang kann nicht rückgängig gemacht werden!",
+            class: "btn btn-sm btn-warning"
+          ) %>
+        </small>
+
       </div>
     <% end %>
   </div>

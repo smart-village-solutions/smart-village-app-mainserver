@@ -38,6 +38,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   resources :accounts do
     member do
       get "batch_defaults"
+      get "batch_destroy_all"
       post "check_rss_feeds"
     end
   end
