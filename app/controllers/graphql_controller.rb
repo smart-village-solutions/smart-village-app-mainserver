@@ -41,7 +41,11 @@ class GraphqlController < ApplicationController
     def lookaheads(query)
       return nil unless valid_query?(query)
 
-      GraphQL::Query.new(SmartVillageAppMainserverSchema, query).lookahead
+      begin
+        GraphQL::Query.new(SmartVillageAppMainserverSchema, query).lookahead
+      rescue StandardError
+        nil
+      end
     end
 
     def valid_query?(query)
