@@ -178,8 +178,18 @@ class AccountsController < ApplicationController
   def batch_defaults
     @user = User.find(params["id"])
     data_resource_type = params[:data_resource_type]
-    system "rake batch_defaults:create DATAPROVIDER_ID=#{@user.data_provider_id} DATA_RESOURCE_TYPE=#{data_resource_type}"
+    system "rake batch_defaults:create DATAPROVIDER_ID=#{@user.data_provider_id} DATA_RESOURCE_TYPE=#{data_resource_type} MUNICIPALITY_ID=#{MunicipalityService.municipality_id}"
     flash[:notice] = "Batch Action wurde gestartet für den Typ #{data_resource_type}"
+    respond_to do |format|
+      format.html { redirect_to action: :edit }
+    end
+  end
+
+  def batch_destroy_all
+    @user = User.find(params["id"])
+    data_resource_type = params[:data_resource_type]
+    system "rake batch_destroy:records DATAPROVIDER_ID=#{@user.data_provider_id} DATA_RESOURCE_TYPE=#{data_resource_type}  MUNICIPALITY_ID=#{MunicipalityService.municipality_id}"
+    flash[:notice] = "Batch Action zum Löschen der Daten wurde gestartet für den Typ #{data_resource_type}"
     respond_to do |format|
       format.html { redirect_to action: :edit }
     end

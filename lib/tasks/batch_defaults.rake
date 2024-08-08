@@ -3,8 +3,13 @@
 namespace :batch_defaults do
   desc "Sets default categories to all elements of a given data_provider and data_resource_type"
   task create: :environment do
+    municipality_id = ENV["MUNICIPALITY_ID"]
+    MunicipalityService.municipality_id = municipality_id
+
     data_resource_type = ENV["DATA_RESOURCE_TYPE"]
-    raise "data_resource_type does not exist" unless DataResourceSetting::DATA_RESOURCES.map(&:to_s).include?(data_resource_type)
+    unless DataResourceSetting::DATA_RESOURCES.map(&:to_s).include?(data_resource_type)
+      raise "data_resource_type does not exist"
+    end
 
     data_provider_id = ENV["DATAPROVIDER_ID"]
 

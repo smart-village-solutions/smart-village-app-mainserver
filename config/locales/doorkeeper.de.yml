@@ -29,6 +29,7 @@ de:
         back: 'Zurück'
         authorize: 'Autorisieren'
         batch_action: "Sammelaktion starten"
+        destroy_all: "Alle löschen"
       form:
         error: 'Hoppla! Überprüfen Sie das Formular auf mögliche Fehler'
       help:
