@@ -31,7 +31,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   resources :categories
   resources :app_user_contents
   resources :static_contents
-  resources :media_contents, only: %i[create], defaults: { format: "json" }
+  resources :media_contents, only: %i[create destroy], defaults: { format: "json" }
   get "data_provider", to: "data_provider#show", as: :data_provider
   get "data_provider/edit", as: :edit_data_provider
   post "data_provider/update", as: :update_data_provider
@@ -53,7 +53,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     controllers applications: "oauth/applications"
   end
 
-  devise_for :members, module: "members", only: [:omniauth_callbacks, :registrations, :sessions, :passwords]
+  devise_for :members, module: "members", only: %i[omniauth_callbacks registrations sessions passwords]
   devise_for :users, controllers: { sessions: "users/sessions" }
   devise_for :admins
   authenticate :admin do
