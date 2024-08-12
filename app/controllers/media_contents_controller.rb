@@ -23,6 +23,23 @@ class MediaContentsController < ApplicationController
     end
   end
 
+  # DELETE /media_contents/1.json
+  def destroy
+    media_content = MediaContent.find_by(id: params[:id])
+
+    if media_content.present?
+      result = media_content.destroy
+      status = :ok
+    else
+      result = { error: "Media content not found" }
+      status = :not_found
+    end
+
+    respond_to do |format|
+      format.json { render json: result, status: status }
+    end
+  end
+
   private
 
     def auth_user_or_doorkeeper
@@ -35,5 +52,4 @@ class MediaContentsController < ApplicationController
     def media_content_params
       params.require(:media_content).permit(:attachment, :content_type)
     end
-
 end
