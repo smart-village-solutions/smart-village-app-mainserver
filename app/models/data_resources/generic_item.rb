@@ -143,6 +143,7 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
     list_of_attributes.merge!(dates: dates.map { |date| date.attributes.except(*except_attributes) })
     list_of_attributes.merge!(content_blocks: content_blocks.map { |content_block| content_block.attributes.except(*except_attributes) })
     list_of_attributes.merge!(price_informations: price_informations.map { |price_information| price_information.attributes.except(*except_attributes) })
+    list_of_attributes.merge!(media_contents: media_contents.map { |media_content| media_content.attributes.except(*except_attributes) })
 
     list_of_attributes
   end
