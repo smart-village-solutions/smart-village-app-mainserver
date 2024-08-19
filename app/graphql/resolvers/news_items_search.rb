@@ -61,17 +61,28 @@ class Resolvers::NewsItemsSearch
   end
 
   def apply_exclude_mowas_regional_keys(scope, value)
-    value.each do |regional_key|
-      next if regional_key.blank?
+    regional_keys = value.delete_if(&:blank?)
+    return scope if regional_keys.blank?
 
-      scope = scope.where(
-        "payload IS NULL OR (payload LIKE ? AND payload NOT LIKE ?)",
-        "%regionalKeys%",
-        "%#{regional_key}%"
-      )
-    end
+    news_items_with_regional_keys = scope.where("payload LIKE ?", "%regionalKeys%")
 
-    scope
+    # loop through all news items with regional keys and check if all of the regional keys are
+    # present in the payload.regionalKeys object from the database. if this is the case, we can
+    # safely exclude the news item from the result set.
+    news_item_ids = news_items_with_regional_keys.select do |news_item|
+      payload_regional_keys = news_item.payload[:regionalKeys]
+      next if payload_regional_keys.blank?
+
+      # if there is just one regional key for a message, we can check with include,
+      # otherwise we need to check exactly if all regional keys from the payload are being excluded
+      if payload_regional_keys.length == 1
+        !regional_keys.include?(payload_regional_keys.first)
+      else
+        (regional_keys & payload_regional_keys).length != payload_regional_keys.length
+      end
+    end.pluck(:id)
+
+    scope.where("news_items.payload IS NULL OR news_items.id IN (?)", news_item_ids)
   end
 
   def apply_category_id(scope, value)
