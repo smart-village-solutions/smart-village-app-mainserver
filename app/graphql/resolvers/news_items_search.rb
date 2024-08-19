@@ -21,31 +21,19 @@ class Resolvers::NewsItemsSearch
     value "id_ASC"
   end
 
-  option :limit, type: types.Int, with: :apply_limit
-  option :skip, type: types.Int, with: :apply_skip
   option :ids, type: types[types.ID], with: :apply_ids
-  option :order, type: NewsItemsOrder, default: "publishedAt_DESC"
   option :dataProvider, type: types.String, with: :apply_data_provider
   option :dataProviderId, type: types.ID, with: :apply_data_provider_id
   option :excludeDataProviderIds, type: types[types.ID], with: :apply_exclude_data_provider_ids
   option :excludeMowasRegionalKeys, type: types[types.String], with: :apply_exclude_mowas_regional_keys
   option :categoryId, type: types.ID, with: :apply_category_id
   option :categoryIds, type: types[types.ID], with: :apply_category_ids
-
-  def apply_limit(scope, value)
-    scope.limit(value)
-  end
-
-  def apply_skip(scope, value)
-    scope.offset(value)
-  end
+  option :limit, type: types.Int, with: :apply_limit
+  option :skip, type: types.Int, with: :apply_skip
+  option :order, type: NewsItemsOrder, default: "publishedAt_DESC"
 
   def apply_ids(scope, value)
     scope.where(id: value)
-  end
-
-  def apply_order(scope, value)
-    scope.order(value)
   end
 
   def apply_data_provider(scope, value)
@@ -89,6 +77,18 @@ class Resolvers::NewsItemsSearch
     scope.by_category(value)
   end
   alias_method :apply_category_ids, :apply_category_id
+
+  def apply_limit(scope, value)
+    scope.limit(value)
+  end
+
+  def apply_skip(scope, value)
+    scope.offset(value)
+  end
+
+  def apply_order(scope, value)
+    scope.order(value)
+  end
 
   def apply_order_with_created_at_desc(scope)
     scope.order("created_at DESC")
