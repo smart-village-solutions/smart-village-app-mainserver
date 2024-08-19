@@ -22,10 +22,7 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
     value "id_ASC"
   end
 
-  option :limit, type: GraphQL::Types::Int, with: :apply_limit
-  option :skip, type: GraphQL::Types::Int, with: :apply_skip
   option :ids, type: types[GraphQL::Types::ID], with: :apply_ids
-  option :order, type: NewsItemsOrder, default: "publishedAt_DESC"
   option :data_provider, type: GraphQL::Types::String, with: :apply_data_provider
   option :data_provider_id, type: GraphQL::Types::ID, with: :apply_data_provider_id
   option :exclude_data_provider_ids, type: types[GraphQL::Types::ID], with: :apply_exclude_data_provider_ids
@@ -34,27 +31,12 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   option :category_ids, type: types[GraphQL::Types::ID], with: :apply_category_ids
   option :exclude_filter, type: GraphQL::Types::JSON, with: :apply_exclude_filter
   option :search, type: GraphQL::Types::String, with: :apply_search
-
-  def apply_search(scope, value)
-    search_ids = scope.search(value, filter: GlobalMeilisearchHelper.municipality_id_filters,
-                                     hits_per_page: MEILISEARCH_MAX_TOTAL_HITS).pluck(:id)
-    scope.where(id: search_ids)
-  end
-
-  def apply_limit(scope, value)
-    scope.limit(value)
-  end
-
-  def apply_skip(scope, value)
-    scope.offset(value)
-  end
+  option :limit, type: GraphQL::Types::Int, with: :apply_limit
+  option :skip, type: GraphQL::Types::Int, with: :apply_skip
+  option :order, type: NewsItemsOrder, default: "publishedAt_DESC"
 
   def apply_ids(scope, value)
     scope.where(id: value)
-  end
-
-  def apply_order(scope, value)
-    scope.order(value)
   end
 
   def apply_data_provider(scope, value)
@@ -70,23 +52,59 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   end
 
   def apply_exclude_mowas_regional_keys(scope, value)
-    value.each do |regional_key|
-      next if regional_key.blank?
+    regional_keys = value.delete_if(&:blank?)
+    return scope if regional_keys.blank?
 
-      scope = scope.where(
-        "payload IS NULL OR (payload LIKE ? AND payload NOT LIKE ?)",
-        "%regionalKeys%",
-        "%#{regional_key}%"
-      )
-    end
+    news_items_with_regional_keys = scope.where("payload LIKE ?", "%regionalKeys%")
 
-    scope
+    # loop through all news items with regional keys and check if all of the regional keys are
+    # present in the payload.regionalKeys object from the database. if this is the case, we can
+    # safely exclude the news item from the result set.
+    news_item_ids = news_items_with_regional_keys.select do |news_item|
+      payload_regional_keys = news_item.payload[:regionalKeys]
+      next if payload_regional_keys.blank?
+
+      # if there is just one regional key for a message, we can check with include,
+      # otherwise we need to check exactly if all regional keys from the payload are being excluded
+      if payload_regional_keys.length == 1
+        !regional_keys.include?(payload_regional_keys.first)
+      else
+        (regional_keys & payload_regional_keys).length != payload_regional_keys.length
+      end
+    end.pluck(:id)
+
+    scope.where("news_items.payload IS NULL OR news_items.id IN (?)", news_item_ids)
   end
 
   def apply_category_id(scope, value)
     scope.by_category(value)
   end
   alias_method :apply_category_ids, :apply_category_id
+
+  # filter_items method come from ExclusionFilter concern
+  # parse_and_validate_filter_json method come from JsonFilterParseable concern and validate the JSON format
+  def apply_exclude_filter(scope, filter_value)
+    parsed_filter = parse_and_validate_filter_json(filter_value)
+    exclusion_filter_for_klass(NewsItem, scope, parsed_filter)
+  end
+
+  def apply_search(scope, value)
+    search_ids = scope.search(value, filter: GlobalMeilisearchHelper.municipality_id_filters,
+                                     hits_per_page: MEILISEARCH_MAX_TOTAL_HITS).pluck(:id)
+    scope.where(id: search_ids)
+  end
+
+  def apply_limit(scope, value)
+    scope.limit(value)
+  end
+
+  def apply_skip(scope, value)
+    scope.offset(value)
+  end
+
+  def apply_order(scope, value)
+    scope.order(value)
+  end
 
   def apply_order_with_created_at_desc(scope)
     scope.order("created_at DESC")
@@ -118,12 +136,5 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
 
   def apply_order_with_id_asc(scope)
     scope.order("id ASC")
-  end
-
-  # filter_items method come from ExclusionFilter concern
-  # parse_and_validate_filter_json method come from JsonFilterParseable concern and validate the JSON format
-  def apply_exclude_filter(scope, filter_value)
-    parsed_filter = parse_and_validate_filter_json(filter_value)
-    exclusion_filter_for_klass(NewsItem, scope, parsed_filter)
   end
 end
