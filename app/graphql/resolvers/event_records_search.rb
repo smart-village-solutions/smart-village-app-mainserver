@@ -105,7 +105,7 @@ class Resolvers::EventRecordsSearch
     end
 
     # the date range filter gets applied after the order so we need to order again in some cases
-    scope.in_date_range(start_date, end_date, params["order"])
+    scope.in_date_range(start_date, end_date, params["order"], params["skip"])
   end
 
   def apply_order_with_created_at_desc(scope)

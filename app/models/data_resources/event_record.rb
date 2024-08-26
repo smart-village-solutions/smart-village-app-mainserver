@@ -43,7 +43,7 @@ class EventRecord < ApplicationRecord
 
   delegate :upcoming, to: :dates, prefix: true
 
-  scope :in_date_range, lambda { |start_date, end_date, order|
+  scope :in_date_range, lambda { |start_date, end_date, order, offset|
     # ignore the first date for recurring events, because it is the original date object with
     # a time span that should not be listed in the returning event records.
     fixed_date_ids = FixedDate.joins("INNER JOIN event_records ON event_records.id = fixed_dates.dateable_id")
@@ -72,12 +72,16 @@ class EventRecord < ApplicationRecord
     end
 
     if order == "listDate_ASC"
-      events_in_timespan.sort_by(&:list_date)
+      events_in_timespan = events_in_timespan.sort_by(&:list_date)
     elsif order == "listDate_DESC"
-      events_in_timespan.sort_by(&:list_date).reverse
-    else
-      events_in_timespan
+      events_in_timespan = events_in_timespan.sort_by(&:list_date).reverse
     end
+
+    if offset.present? && offset.to_i > 0
+      events_in_timespan = events_in_timespan.drop(offset.to_i)
+    end
+
+    events_in_timespan
   }
 
   scope :upcoming, lambda { |current_user = nil|
