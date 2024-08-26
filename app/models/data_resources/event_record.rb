@@ -58,17 +58,7 @@ class EventRecord < ApplicationRecord
 
   delegate :upcoming, to: :dates, prefix: true
 
-  # timespan_to_search und timespan werden Arrays der Eventzeiträume
-  # und deren Schnittemenge > 0 bedeutet eine Überschneidung.
-  #
-  # timespan_to_search = ["2020-01-04", "2020-01-05", "2020-01-06"]
-  # timespan = ["2020-01-03", "2020-01-04"]
-  # timespan_to_search & timespan == ["2020-01-04"]
-  #
-  # statt einer einfachen Überscheidung des Startwertes:
-  # joins(:dates).where("fixed_dates.date_start >= ? AND fixed_dates.date_start <= ?", start_date, end_date)
   scope :in_date_range, lambda { |start_date, end_date, order|
-    timespan_to_search = (start_date..end_date).to_a
     # ignore the first date for recurring events, because it is the original date object with
     # a time span that should not be listed in the returning event records.
     fixed_date_ids = FixedDate.joins("INNER JOIN event_records ON event_records.id = fixed_dates.dateable_id")
@@ -88,7 +78,7 @@ class EventRecord < ApplicationRecord
     end
 
     events_in_timespan.each do |event_record|
-      # return the start_date of the event if the requested start_date is before event start_date
+      # return the date_start of the event if the requested start_date is before event date_start
       if start_date < event_record.dates.first.date_start
         event_record.in_date_range_start_date = event_record.dates.first.date_start
       else
