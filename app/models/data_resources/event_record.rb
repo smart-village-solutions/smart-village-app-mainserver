@@ -81,8 +81,10 @@ class EventRecord < ApplicationRecord
 
     # reject recurring events with just one date object, because all dates are outside the timespan.
     # the one date object is the original date of the recurring event, that need to be ignored.
+    # and ignore events with list date outside the timespan
     events_in_timespan = events_in_timespan.reject do |event_record|
-      event_record.recurring? && event_record.dates.size == 1
+      (event_record.recurring? && event_record.dates.size == 1) ||
+      (event_record.list_date < start_date || event_record.list_date > end_date)
     end
 
     events_in_timespan.each do |event_record|
@@ -92,11 +94,6 @@ class EventRecord < ApplicationRecord
       else
         event_record.in_date_range_start_date = start_date
       end
-    end
-
-    # ignore events with list date outside the timespan
-    events_in_timespan = events_in_timespan.reject do |event_record|
-      event_record.list_date < start_date || event_record.list_date > end_date
     end
 
     if order == "listDate_ASC"
