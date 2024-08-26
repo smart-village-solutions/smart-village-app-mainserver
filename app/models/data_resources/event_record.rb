@@ -70,6 +70,7 @@ class EventRecord < ApplicationRecord
   scope :in_date_range, lambda { |start_date, end_date, order|
     timespan_to_search = (start_date..end_date).to_a
     # ignore the first date for recurring events, because it is the original date object with
+    # a time span that should not be listed in the returning event records.
     fixed_date_ids = FixedDate.joins("INNER JOIN event_records ON event_records.id = fixed_dates.dateable_id")
                        .where(dateable_type: "EventRecord")
                        .where("event_records.recurring = false OR fixed_dates.id != (SELECT MIN(fd.id) FROM fixed_dates fd WHERE fd.dateable_id = event_records.id)")
@@ -333,8 +334,8 @@ class EventRecord < ApplicationRecord
         id: self[:fixed_date_id],
         date_start: self[:fixed_date_start],
         date_end: self[:fixed_date_end],
-        time_start: self[:fixed_time_start].try(:localtime),
-        time_end: self[:fixed_time_end].try(:localtime),
+        time_start: self[:fixed_time_start],
+        time_end: self[:fixed_time_end],
         weekday: self[:weekday],
         time_description: self[:time_description],
         use_only_time_description: self[:use_only_time_description]
