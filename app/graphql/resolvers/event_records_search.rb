@@ -116,7 +116,7 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
     end
 
     # the date range filter gets applied after the order so we need to order again in some cases
-    scope.in_date_range(start_date, end_date, params["order"])
+    scope.in_date_range(start_date, end_date, params["order"], params["skip"])
   end
 
   # Achtung: Diese Methode liefert ein Array als Ergebnis
