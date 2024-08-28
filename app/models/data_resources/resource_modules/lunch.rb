@@ -8,18 +8,10 @@ class Lunch < ApplicationRecord
 
   accepts_nested_attributes_for :dates, :lunch_offers
 
-  # timespan_to_search und timespan werden Arrays der Zeiträume
-  # und deren Schnittemenge > 0 bedeutet eine Überschneidung.
-  #
-  # timespan_to_search = ["2020-01-04", "2020-01-05", "2020-01-06"]
-  # timespan = ["2020-01-03", "2020-01-04"]
-  # timespan_to_search & timespan == ["2020-01-04"]
-  #
-  # statt einer einfachen Überscheidung des Startwertes:
-  # joins(:dates).where("fixed_dates.date_start >= ? AND fixed_dates.date_start <= ?", start_date, end_date)
   scope :in_date_range, lambda { |start_date, end_date|
-    timespan_to_search = (start_date..end_date).to_a
-    fixed_date_ids = FixedDate.where(dateable_type: "GenericItem").where.not(date_start: nil)
+    fixed_date_ids = FixedDate.joins("INNER JOIN lunches ON lunches.id = fixed_dates.dateable_id")
+                       .where(dateable_type: "Lunch")
+                       .where.not(date_start: nil)
                        .where("(date_start <= :end_date) AND (COALESCE(date_end, date_start) >= :start_date)", start_date: start_date, end_date: end_date)
                        .pluck(:id)
 
