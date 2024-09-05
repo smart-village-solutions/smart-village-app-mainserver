@@ -41,27 +41,27 @@ module Types
     end
 
     def date_start
-      return unless opening_hours_item&.date_from
+      return unless date_item&.date_start
 
-      prepared_date_time(opening_hours_item&.date_from)
+      prepared_date_time(date_item&.date_start)
     end
 
     def date_end
-      return unless opening_hours_item&.date_to
+      return unless date_item&.date_end
 
-      prepared_date_time(opening_hours_item&.date_to)
+      prepared_date_time(date_item&.date_end)
     end
 
     def time_start
-      return unless opening_hours_item&.time_from
+      return unless date_item&.time_start
 
-      prepared_date_time(opening_hours_item&.time_from, is_date: false)
+      prepared_date_time(date_item&.time_start, is_date: false)
     end
 
     def time_end
-      return unless opening_hours_item&.time_to
+      return unless date_item&.time_end
 
-      prepared_date_time(opening_hours_item&.time_to, is_date: false)
+      prepared_date_time(date_item&.time_end, is_date: false)
     end
 
     def media_content
@@ -110,8 +110,8 @@ module Types
 
     private
 
-      def opening_hours_item
-        @opening_hours_item ||= object.opening_hours.first
+      def date_item
+        @date_item ||= object.dates.first
       end
 
       def prepared_date_time(value, is_date: true)

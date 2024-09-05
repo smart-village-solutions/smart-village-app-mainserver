@@ -26,7 +26,7 @@ module Shouts
 
       def update_related_data!
         GenericItem.transaction do
-          update_opening_hours!
+          update_fixed_dates!
           update_categories!
           update_addresses!
           update_media_contents!
@@ -34,8 +34,8 @@ module Shouts
         end
       end
 
-      def update_opening_hours!
-        item.opening_hours.first.update(opening_hours_params) if opening_hours_params.present?
+      def update_fixed_dates!
+        item.dates.first.update(fixed_dates_params) if fixed_dates_params.present?
       end
 
       def update_categories!
