@@ -6,7 +6,7 @@ class Resolvers::ShoutsSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
   ANNOUNCEMENT_INCLUDES = [
-    :opening_hours,
+    :dates,
     :categories,
     :addresses,
     {

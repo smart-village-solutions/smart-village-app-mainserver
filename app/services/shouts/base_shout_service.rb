@@ -22,7 +22,9 @@ module Shouts
           generic_type: GenericItem::GENERIC_TYPES[:announcement]
         }
 
-        data.merge!(generic_itemable_params) if @params[:announcementable_type].present? && @params[:announcementable_id].present?
+        if @params[:announcementable_type].present? && @params[:announcementable_id].present?
+          data.merge!(generic_itemable_params)
+        end
         data
       end
 
@@ -37,12 +39,12 @@ module Shouts
         @params[:organizer].to_h
       end
 
-      def opening_hours_params
+      def fixed_dates_params
         {
-          date_from: @params[:date_start],
-          date_to: @params[:date_end],
-          time_from: @params[:time_start],
-          time_to: @params[:time_end]
+          date_start: @params[:date_start],
+          date_end: @params[:date_end],
+          time_start: @params[:time_start],
+          time_end: @params[:time_end]
         }
       end
 

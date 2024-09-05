@@ -23,7 +23,7 @@ module Shouts
 
       def create_related_data!(item)
         GenericItem.transaction do
-          create_opening_hours(item)
+          create_fixed_dates(item)
           create_categories(item)
           create_addresses(item)
           create_media_contents(item)
@@ -31,10 +31,10 @@ module Shouts
         end
       end
 
-      def create_opening_hours(item)
-        return unless opening_hours_params.present?
+      def create_fixed_dates(item)
+        return unless fixed_dates_params.present?
 
-        item.opening_hours.create(opening_hours_params)
+        item.dates.create(fixed_dates_params)
       end
 
       def create_categories(item)
