@@ -1,0 +1,51 @@
+<% content_for :action_buttons do %>
+  <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#structureModal">
+    Hilfe zur Content Struktur
+  </button>
+<% end %>
+
+<!-- Modal -->
+<div class="modal fade" id="structureModal" tabindex="-1" aria-labelledby="Structure of Static Content" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="structureModalLabel">Struktur</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="lead">Diese Struktur zeigt ein maximales Set an Optionen,
+          die in dieser Art von StaticContent verwendet wurden</p>
+
+        <div id="structure_editor" style="height: 400px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    var container = document.getElementById("structure_editor");
+
+    if (container) {
+      var options = {
+        statusBar: false,
+        mainMenuBar: false,
+        mode: 'code',
+        mainMenuBar: true,
+        modes: ['code', 'tree']
+      };
+      var editor = new JSONEditor(container, options);
+
+      <% content = @static_content_structure.to_s.html_safe %>
+
+        <% valid_json_content = JSON.parse(content) rescue nil %>
+        <% if content.present? && valid_json_content %>
+          editor.set(<%= content %>);
+        <% else %>
+          editor.set({});
+        <% end %>
+    }
+  });
+</script>

@@ -55,6 +55,7 @@
   <div class="form-group">
     <%= form.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primary" %>
     <%= link_to t('doorkeeper.applications.buttons.cancel'), static_contents_path, class: "btn btn-default" %>
+    <%= yield(:action_buttons) %>
   </div>
 <% end %>
 

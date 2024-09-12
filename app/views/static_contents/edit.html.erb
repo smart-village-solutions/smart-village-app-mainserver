@@ -2,6 +2,7 @@
   <div class="col">
     <h1>Static Content bearbeiten</h1>
 
+    <%= render 'structure', static_content_structure: @static_content_structure if @static_content_structure %>
     <%= render 'form', static_content: @static_content %>
   </div>
 </div>
