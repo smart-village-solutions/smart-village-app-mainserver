@@ -261,11 +261,11 @@ class EventRecord < ApplicationRecord
         id: self[:fixed_date_id],
         date_start: self[:fixed_date_start],
         date_end: self[:fixed_date_end],
-        time_start: self[:fixed_time_start],
-        time_end: self[:fixed_time_end],
-        weekday: self[:weekday],
-        time_description: self[:time_description],
-        use_only_time_description: self[:use_only_time_description]
+        time_start: self[:fixed_time_start]&.in_time_zone,
+        time_end: self[:fixed_time_end]&.in_time_zone,
+        weekday: self[:fixed_weekday],
+        time_description: self[:fixed_time_description],
+        use_only_time_description: self[:fixed_use_only_time_description]
       )
     end
 
