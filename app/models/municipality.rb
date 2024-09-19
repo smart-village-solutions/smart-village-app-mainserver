@@ -15,6 +15,7 @@ class Municipality < ApplicationRecord # rubocop:disable Metrics/ClassLength
   has_many :static_contents, dependent: :destroy
   has_many :app_user_contents, dependent: :destroy
   has_many :data_providers, dependent: :destroy
+  has_many :data_resource_filters, dependent: :destroy
 
   scope :global, -> { where(global: true) }
   scope :not_global, -> { where(global: false) }
