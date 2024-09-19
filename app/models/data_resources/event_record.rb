@@ -58,6 +58,13 @@ class EventRecord < ApplicationRecord
 
   delegate :upcoming, to: :dates, prefix: true
 
+  # === Class Methods ===================================================
+
+  # List of possible filters is defined in service Filters::AttributeService
+  def self.available_filters
+    [:date_start, :date_end, :category, :location, :saveable]
+  end
+
   scope :in_date_range, lambda { |start_date, end_date, order, offset|
     # ignore the first date for recurring events, because it is the original date object with
     # a time span that should not be listed in the returning event records.
