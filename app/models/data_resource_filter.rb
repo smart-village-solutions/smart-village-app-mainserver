@@ -43,17 +43,19 @@ class DataResourceFilter < ApplicationRecord
     #
     # @return [void]
     def validate_filter_attributes(filter_name, attributes)
-      case filter_name
-      when "category"
-        p attributes
-        # if attributes["max_selection"].present? && !attributes["max_selection"].is_a?(Integer)
-        #   errors.add(:filters, "Attribut 'max_selection' für 'category' muss eine Zahl sein")
-        # end
-      when "location"
-        # if attributes["radius"].present? && !attributes["radius"].is_a?(Numeric)
-        #   errors.add(:filters, "Attribut 'radius' für 'location' muss numerisch sein")
-        # end
-        # Weitere Filter und ihre spezifischen Validierungen können hier hinzugefügt werden
-      end
+      # TODO: Add Validations defined in Filters::AttributeService
+
+      # case filter_name
+      # when "category"
+      #   p attributes
+      #   # if attributes["max_selection"].present? && !attributes["max_selection"].is_a?(Integer)
+      #   errors.add(:filters, "Attribut 'max_selection' für 'category' muss eine Zahl sein")
+      # end
+      # when "location"
+      # if attributes["radius"].present? && !attributes["radius"].is_a?(Numeric)
+      #   errors.add(:filters, "Attribut 'radius' für 'location' muss numerisch sein")
+      # end
+      # Weitere Filter und ihre spezifischen Validierungen können hier hinzugefügt werden
+      # end
     end
 end
