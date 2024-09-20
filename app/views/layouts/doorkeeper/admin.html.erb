@@ -24,16 +24,19 @@
             <%= link_to t('doorkeeper.layouts.admin.nav.applications'), oauth_applications_path, class: "nav-link" %>
           </li>
 
-          <li class="nav-item">
-            <%= link_to "Static Contents", static_contents_path, class: "nav-link" %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Settings
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <%= link_to "Static Contents", static_contents_path, class: "dropdown-item" %>
+              <%= link_to "Data Resources", data_resources_path, class: "dropdown-item" %>
+              <%= link_to "Categories", categories_path, class: "dropdown-item" %>
+            </div>
           </li>
 
           <li class="nav-item">
             <%= link_to "App User Contents", app_user_contents_path, class: "nav-link" %>
-          </li>
-
-          <li class="nav-item">
-            <%= link_to "Categories", categories_path, class: "nav-link" %>
           </li>
 
           <li class="nav-item">

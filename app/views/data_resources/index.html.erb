@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col">
+    <h1>DataResources</h1>
+
+    <% Filters::AttributeService.data_resource_types.each do |data_resource_type| %>
+      <% @data_resource = @current_municipality.data_resource_filters.find_or_initialize_by(data_resource_type: data_resource_type.to_s) %>
+      <div class="jumbotron">
+      <%= form_tag(api_v1_save_resource_filter_path, method: :post, html: { class: 'form-horizontal', role: 'form' }) do |f| %>
+        <h3><%= data_resource_type.to_s %></h3>
+        <%= hidden_field_tag :resource_type, data_resource_type.to_s %>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-6">
+              <%= text_area_tag :filters, @data_resource.config, class: 'form-control' %>
+            </div>
+            <div class="col-sm-6 defaultValues">
+              <code>
+                <%= Filters::AttributeService.fallback_config(data_resource_type).inspect %>
+              </code>
+            </div>
+          </div>
+        </div>
+        <%= submit_tag "Absenden", class: 'btn btn-primary' %>
+      <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

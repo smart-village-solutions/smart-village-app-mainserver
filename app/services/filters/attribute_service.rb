@@ -22,20 +22,57 @@ class Filters::AttributeService
 
     def map_defaults_with_custom_definition(data_resource_type, current_municipality)
       data_resource_filter = current_municipality.data_resource_filters.find_or_initialize_by(data_resource_type: data_resource_type.to_s)
-
+      if data_resource_filter.config.present?
+        municipality_filter_config = determine_municipality_filter_config(data_resource_filter)
+      end
       {
         data_resource_type: data_resource_type.to_s,
-        config: data_resource_filter.config.presence || fallback_config(data_resource_type)
+        config: municipality_filter_config.presence || fallback_config(data_resource_type)
       }
     end
 
+    # Determines the municipality filter configuration with default values.
+    #
+    # This method processes a given data resource filter and constructs a configuration
+    # hash for municipalities, incorporating default values where necessary.
+    #
+    # @param data_resource_filter [Object] The data resource filter containing configuration details.
+    # @return [Hash] A hash representing the municipality filter configuration with defaults applied.
+    #
+    # The method iterates through each filter in the data resource filter's configuration,
+    # retrieves the corresponding filter configuration from the Filters::AttributeService,
+    # and merges the default attribute values with those provided in the data resource filter.
+    def determine_municipality_filter_config(data_resource_filter)
+      municipality_config_with_defaults = {}
+      # Iterate through each filter in the data resource filter's configuration stored in the database
+      data_resource_filter.config.each do |filter_name, filter_attributes|
+        municipality_config_with_defaults[filter_name] = {}
+        # Retrieve the filter configuration from the Filters::AttributeService
+        filter_config = Filters::AttributeService.send(filter_name)
+        filter_config.fetch(:allowed_attributes, {}).each do |attribute, attribute_config|
+          municipality_config_with_defaults[filter_name][attribute] =
+            filter_attributes.fetch(attribute, attribute_config.fetch(:default, nil))
+        end
+      end
+
+      municipality_config_with_defaults
+    end
+
+    # creates a configuration hash for the given `data_resource_type`.
+    #
+    # @param data_resource_type [Object] An object that defines the `available_filters` method.
+    # @return [Hash] A hash containing the default configurations for the available filters.
+    #
+    # The method iterates through all available filters of the `data_resource_type` and retrieves the
+    # corresponding configuration for each filter. For each attribute in the configuration, the default
+    # value (`:default`) is extracted and inserted into the result hash.
     def fallback_config(data_resource_type)
       result = {}
       data_resource_type.available_filters.each do |filter_name|
         result[filter_name] = {}
         filter_config = Filters::AttributeService.send(filter_name)
-        filter_config.fetch(:allowed_attributes, []).each do |attribute|
-          result[filter_name][attribute] = filter_config.dig(:attribute_validations, attribute, :default)
+        filter_config.fetch(:allowed_attributes, {}).each do |attribute, attribute_config|
+          result[filter_name][attribute] = attribute_config.fetch(:default, nil)
         end
       end
 
@@ -45,15 +82,13 @@ class Filters::AttributeService
     # === Filter definitions ===
 
     # {
-    #   allowed_attributes: [:radius],
-    #   attribute_validations: {
+    #   allowed_attributes: {
     #     radius: { type: Numeric, allow_nil: true }
     #   }
     # }
     def date_start
       {
-        allowed_attributes: %i[default past_dates future_dates],
-        attribute_validations: {
+        allowed_attributes: {
           past_dates: { type: :boolean, allow_nil: true, default: false },
           future_dates: { type: :boolean, allow_nil: true, default: true },
           default: { type: :date, allow_nil: true, default: nil }
@@ -63,8 +98,7 @@ class Filters::AttributeService
 
     def date_end
       {
-        allowed_attributes: %i[default past_dates future_dates],
-        attribute_validations: {
+        allowed_attributes: {
           past_dates: { type: :boolean, allow_nil: true, default: false },
           future_dates: { type: :boolean, allow_nil: true, default: true },
           default: { type: :date, allow_nil: true, default: nil }
@@ -74,8 +108,7 @@ class Filters::AttributeService
 
     def category
       {
-        allowed_attributes: %i[default multiselect],
-        attribute_validations: {
+        allowed_attributes: {
           multiselect: { type: :boolean, allow_nil: true, default: true },
           default: { type: :string, allow_nil: true, default: nil }
         }
@@ -84,8 +117,7 @@ class Filters::AttributeService
 
     def location
       {
-        allowed_attributes: %i[default multiselect],
-        attribute_validations: {
+        allowed_attributes: {
           multiselect: { type: :boolean, allow_nil: true, default: false },
           default: { type: :string, allow_nil: true, default: nil }
         }
@@ -94,8 +126,7 @@ class Filters::AttributeService
 
     def saveable
       {
-        allowed_attributes: %i[default],
-        attribute_validations: {
+        allowed_attributes: {
           default: { type: :boolean, allow_nil: true, default: false }
         }
       }
