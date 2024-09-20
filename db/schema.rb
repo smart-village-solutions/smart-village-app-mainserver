@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_09_19_160831) do
+ActiveRecord::Schema.define(version: 2024_09_20_070805) do
 
   create_table "accessibility_informations", charset: "utf8", force: :cascade do |t|
     t.text "description"
@@ -367,6 +367,7 @@ ActiveRecord::Schema.define(version: 2024_09_19_160831) do
     t.integer "member_id"
     t.datetime "push_notifications_sent_at"
     t.index ["data_provider_id"], name: "index_generic_items_on_data_provider_id"
+    t.index ["generic_type"], name: "index_generic_items_on_generic_type"
   end
 
   create_table "geo_locations", charset: "utf8", force: :cascade do |t|
