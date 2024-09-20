@@ -2,7 +2,6 @@
 
 class DataResourceFilter < ApplicationRecord
   include MunicipalityScope
-  DATA_RESOURCES = DataResourceSetting::DATA_RESOURCES
 
   store :config,
         coder: JSON

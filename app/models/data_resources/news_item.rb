@@ -72,6 +72,10 @@ class NewsItem < ApplicationRecord
     end
   end
 
+  def self.available_filters
+    %i[date_start date_end category saveable]
+  end
+
   def searchable?
     visible && data_provider.try(:municipality_id).present?
   end

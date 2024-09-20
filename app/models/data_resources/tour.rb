@@ -67,6 +67,11 @@ class Tour < Attraction
     end
   end
 
+  # List of available filters is defined in service Filters::AttributeService
+  def self.available_filters
+    %i[category location saveable]
+  end
+
   def searchable?
     visible && data_provider.try(:municipality_id).present?
   end

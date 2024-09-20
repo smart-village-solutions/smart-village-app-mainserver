@@ -60,7 +60,7 @@ class EventRecord < ApplicationRecord
 
   # === Class Methods ===================================================
 
-  # List of possible filters is defined in service Filters::AttributeService
+  # List of available filters is defined in service Filters::AttributeService
   def self.available_filters
     [:date_start, :date_end, :category, :location, :saveable]
   end
