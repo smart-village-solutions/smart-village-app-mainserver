@@ -17,7 +17,9 @@ class Filters::AttributeService
         filters << map_defaults_with_custom_definition(data_resource_type, current_municipality)
       end
 
-      filters
+      filters.map do |filter|
+        filter.deep_transform_keys { |key| key.to_s.camelize(:lower) }
+      end
     end
 
     def map_defaults_with_custom_definition(data_resource_type, current_municipality)
@@ -86,12 +88,25 @@ class Filters::AttributeService
     #     radius: { type: Numeric, allow_nil: true }
     #   }
     # }
+
+    def data_provider
+      {
+        allowed_attributes: {
+          is_multiselect: { type: :boolean, allow_nil: true, default: false },
+          searchable: { type: :boolean, allow_nil: true, default: false },
+          default: { type: :string, allow_nil: true, default: nil },
+          type: { type: :string, allow_nil: true, default: "dropdown" }
+        }
+      }
+    end
+
     def date_start
       {
         allowed_attributes: {
-          past_dates: { type: :boolean, allow_nil: true, default: false },
-          future_dates: { type: :boolean, allow_nil: true, default: true },
-          default: { type: :date, allow_nil: true, default: nil }
+          has_past_dates: { type: :boolean, allow_nil: true, default: false },
+          has_future_dates: { type: :boolean, allow_nil: true, default: true },
+          default: { type: :date, allow_nil: true, default: nil },
+          type: { type: :string, allow_nil: true, default: "date" }
         }
       }
     end
@@ -99,9 +114,10 @@ class Filters::AttributeService
     def date_end
       {
         allowed_attributes: {
-          past_dates: { type: :boolean, allow_nil: true, default: false },
-          future_dates: { type: :boolean, allow_nil: true, default: true },
-          default: { type: :date, allow_nil: true, default: nil }
+          has_past_dates: { type: :boolean, allow_nil: true, default: false },
+          has_future_dates: { type: :boolean, allow_nil: true, default: true },
+          default: { type: :date, allow_nil: true, default: nil },
+          type: { type: :string, allow_nil: true, default: "date" }
         }
       }
     end
@@ -109,8 +125,10 @@ class Filters::AttributeService
     def category
       {
         allowed_attributes: {
-          multiselect: { type: :boolean, allow_nil: true, default: true },
-          default: { type: :string, allow_nil: true, default: nil }
+          is_multiselect: { type: :boolean, allow_nil: true, default: true },
+          searchable: { type: :boolean, allow_nil: true, default: false },
+          default: { type: :string, allow_nil: true, default: nil },
+          type: { type: :string, allow_nil: true, default: "dropdown" }
         }
       }
     end
@@ -118,8 +136,20 @@ class Filters::AttributeService
     def location
       {
         allowed_attributes: {
-          multiselect: { type: :boolean, allow_nil: true, default: false },
-          default: { type: :string, allow_nil: true, default: nil }
+          is_multiselect: { type: :boolean, allow_nil: true, default: false },
+          searchable: { type: :boolean, allow_nil: true, default: false },
+          default: { type: :string, allow_nil: true, default: nil },
+          type: { type: :string, allow_nil: true, default: "dropdown" }
+        }
+      }
+    end
+
+    def radius_search
+      {
+        allowed_attributes: {
+          options: { type: :array, allow_nil: true, default: %w[1 2 5 10 50 100] },
+          default: { type: :string, allow_nil: true, default: nil },
+          type: { type: :string, allow_nil: true, default: "slider" }
         }
       }
     end
@@ -127,7 +157,16 @@ class Filters::AttributeService
     def saveable
       {
         allowed_attributes: {
-          default: { type: :boolean, allow_nil: true, default: true }
+          default: { type: :boolean, allow_nil: true, default: true },
+          type: { type: :string, allow_nil: true, default: "checkbox" }
+        }
+      }
+    end
+
+    def active
+      {
+        allowed_attributes: {
+          default: { type: :boolean, allow_nil: false, default: true }
         }
       }
     end

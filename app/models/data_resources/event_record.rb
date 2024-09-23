@@ -62,7 +62,7 @@ class EventRecord < ApplicationRecord
 
   # List of available filters is defined in service Filters::AttributeService
   def self.available_filters
-    [:date_start, :date_end, :category, :location, :saveable]
+    %i[date_start date_end category location radius_search saveable active]
   end
 
   scope :in_date_range, lambda { |start_date, end_date, order, offset|

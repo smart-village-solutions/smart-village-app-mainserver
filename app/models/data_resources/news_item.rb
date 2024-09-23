@@ -73,7 +73,7 @@ class NewsItem < ApplicationRecord
   end
 
   def self.available_filters
-    %i[date_start date_end category saveable]
+    %i[data_provider date_start date_end category saveable active]
   end
 
   def searchable?

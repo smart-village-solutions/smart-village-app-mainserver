@@ -25,11 +25,10 @@ class DataResourceFilter < ApplicationRecord
         "enthält ungültigen Filter für #{data_resource_type}: #{filter_name}"
       )
 
-      # Hier können Sie zusätzliche Validierungen für die Attribute hinzufügen
       validate_filter_attributes(filter_name, filter_attributes)
     end
-  rescue NameError
-    errors.add(:data_resource_type, "ist kein gültiges Datenmodell")
+  rescue NameError => e
+    errors.add(:data_resource_type, "ist kein gültiges Datenmodell: #{e}")
   end
 
   private
@@ -40,7 +39,7 @@ class DataResourceFilter < ApplicationRecord
     # @param [Hash] attributes - Zusätzliche Attribute des Filters
     #
     # @return [void]
-    def validate_filter_attributes(filter_name, attributes)
+    def validate_filter_attributes(_filter_name, _attributes)
       # TODO: Add Validations defined in Filters::AttributeService
 
       # case filter_name

@@ -19,7 +19,7 @@
           <div class="form-group">
             <div class="row">
               <div class="col-sm-6">
-                <%= hidden_field_tag "filters", @data_resource.config, id: "filters_#{data_resource_type.to_s.underscore}"  %>
+                <%= hidden_field_tag "filters", @data_resource.config.to_json, id: "filters_#{data_resource_type.to_s.underscore}"  %>
                 Manuelle Anpassungen:
                 <div id="code_editor_<%= data_resource_type.to_s.underscore %>" style="height: 200px;"></div>
               </div>
