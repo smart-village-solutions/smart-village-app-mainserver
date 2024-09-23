@@ -30,12 +30,31 @@ module Api
       # @return [JSON] Erfolgsnachricht oder Fehlerdetails
       def create
         resource_filter = @current_municipality.data_resource_filters.find_or_initialize_by(data_resource_type: filter_params[:resource_type])
-        resource_filter.config = filter_params[:filters]
+        filters = filter_params[:filters]
+        begin
+          filters = filters.is_a?(String) && filters.present? ? JSON.parse(filters) : filters
+        rescue StandardError => e
+          respond_to do |format|
+            format.json do
+              render json: { errors: ["Ungültiges JSON-Format für Filter: #{e}"] },
+                     status: :unprocessable_entity and return
+            end
+            format.js { render js: "alert('Ungültiges JSON-Format für Filter');" and return }
+          end
+        end
+
+        resource_filter.config = filters
 
         if resource_filter.save
-          render json: { success: true, message: "Filter erfolgreich gespeichert." }, status: :ok
+          respond_to do |format|
+            format.json { render json: { success: true, message: "Filter erfolgreich gespeichert." }, status: :ok }
+            format.js { render js: "alert('Filter erfolgreich gespeichert.');" }
+          end
         else
-          render json: { errors: resource_filter.errors.full_messages }, status: :unprocessable_entity
+          respond_to do |format|
+            format.json { render json: { errors: resource_filter.errors.full_messages }, status: :unprocessable_entity }
+            format.js { render js: "alert('#{resource_filter.errors.full_messages}');" }
+          end
         end
       end
 

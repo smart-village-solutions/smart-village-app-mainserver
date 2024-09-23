@@ -8,7 +8,6 @@ class DataResourceFilter < ApplicationRecord
 
   belongs_to :municipality
   validates :data_resource_type, presence: true
-  validates :config, presence: true
   validate :configs_are_valid
 
   # Validiert, ob die angegebenen Filterconfigs für das gegebene Datenmodell zulässig sind.

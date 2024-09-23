@@ -127,7 +127,7 @@ class Filters::AttributeService
     def saveable
       {
         allowed_attributes: {
-          default: { type: :boolean, allow_nil: true, default: false }
+          default: { type: :boolean, allow_nil: true, default: true }
         }
       }
     end
