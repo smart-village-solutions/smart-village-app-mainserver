@@ -17,11 +17,17 @@ class Filters::AttributeService
         filters << map_defaults_with_custom_definition(data_resource_type, current_municipality)
       end
 
+      # only values of "config" should be renamed
+      # `data_resource_type` will be renamed in camelcase bei GraphQL API
       filters.map do |filter|
-        filter.deep_transform_keys { |key| key.to_s.camelize(:lower) }
+        filter.deep_transform_keys { |key| key.to_s != "data_resource_type" ? key.to_s.camelize(:lower) : key }
       end
     end
 
+    # {
+    #   data_resource_type: Name of a Resource like PointOfInterest,
+    #   config: Hash of Filter Options
+    # }
     def map_defaults_with_custom_definition(data_resource_type, current_municipality)
       data_resource_filter = current_municipality.data_resource_filters.find_or_initialize_by(data_resource_type: data_resource_type.to_s)
       if data_resource_filter.config.present?
