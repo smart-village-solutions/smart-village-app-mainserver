@@ -20,10 +20,24 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
     value "name_ASC"
   end
 
+  class TaggingStrategy < Types::BaseEnum
+    value "ANY", "Match any of the specified tags"
+    value "ALL", "Match all given tags"
+    value "EXCLUDE", "Match any that have not been tagged with the specified tags"
+  end
+
+  TAGGING_STRATEGIES = {
+    "ANY" => { any: true },
+    "ALL" => { match_all: true },
+    "EXCLUDE" => { exclude: true }
+  }.freeze
+
   option :limit, type: GraphQL::Types::Int, with: :apply_limit
   option :skip, type: GraphQL::Types::Int, with: :apply_skip
   option :ids, type: types[GraphQL::Types::ID], with: :apply_ids
   option :exclude_ids, type: types[GraphQL::Types::ID], with: :apply_exclude_ids
+  option :tagging_strategy, type: TaggingStrategy, default: "ANY", with: :set_tagging_strategy
+  option :tag_list, type: types[GraphQL::Types::String], with: :apply_tag_list
   option :order, type: CategoriesOrder, default: "name_ASC"
 
   def apply_limit(scope, value)
@@ -40,6 +54,15 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
 
   def apply_exclude_ids(scope, value)
     scope.where.not(id: value)
+  end
+
+  def set_tagging_strategy(scope, value)
+    @tagging_strategy = value
+    scope
+  end
+
+  def apply_tag_list(scope, value)
+    scope.tagged_with(value, TAGGING_STRATEGIES[@tagging_strategy])
   end
 
   def apply_order(scope, value)
