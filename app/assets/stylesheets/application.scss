@@ -18,3 +18,19 @@
 @import 'buttons';
 @import 'categories';
 @import 'tab_panes';
+@import 'footer';
+
+.navbar-collapse {
+  background-color: #343a40;
+}
+
+@media (min-width: 1200px) {
+  .full-width-section {
+    left: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    position: relative;
+    right: 50%;
+    width: 100vw;
+  }
+}

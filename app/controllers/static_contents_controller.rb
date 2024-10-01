@@ -48,6 +48,9 @@ class StaticContentsController < ApplicationController
 
   # GET /static_contents/1/edit
   def edit
+    if @static_content.data_type == "json"
+      @static_content_structure = StaticContent::StructureService.new(@static_content.id).json
+    end
   end
 
   # POST /static_contents
@@ -101,5 +104,4 @@ class StaticContentsController < ApplicationController
     def static_content_params
       params.require(:static_content).permit(:name, :version, :data_type, :content)
     end
-
 end
