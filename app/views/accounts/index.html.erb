@@ -74,82 +74,92 @@
 
     <%= render partial: "search_form", locals: { form_path: accounts_path, search_column: "email" } %>
 
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Global</th>
-          <th style="min-width: 55px">
-            <%= link_to "ID", accounts_path(params_for_link(:id)) + "#accounts" %>
-            <%= render partial: "sort_icon", locals: { sort_column: "id" } %>
-          </th>
-          <th>
-            <%= link_to "E-Mail", accounts_path(params_for_link(:email)) + "#accounts" %>
-            <%= render partial: "sort_icon", locals: { sort_column: "email" } %>
-          </th>
-          <th>Data Provider</th>
-          <th>Rolle</th>
-          <th>CMS POI <span class="badge badge-secondary">Kategorie gesetzt?</span></th>
-          <th>CMS Tour <span class="badge badge-secondary">Kategorie gesetzt?</span></th>
-          <th>CMS News Items <span class="badge badge-secondary">Kategorie gesetzt?</span></th>
-          <th>CMS Event Records <span class="badge badge-secondary">Kategorie gesetzt?</span></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @users.each do |user| %>
-          <% data_provider = user.data_provider %>
+    <div class="full-width-section">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col p-0 p-lg-3">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Global</th>
+                    <th style="min-width: 55px">
+                      <%= link_to "ID", accounts_path(params_for_link(:id)) + "#accounts" %>
+                      <%= render partial: "sort_icon", locals: { sort_column: "id" } %>
+                    </th>
+                    <th>
+                      <%= link_to "E-Mail", accounts_path(params_for_link(:email)) + "#accounts" %>
+                      <%= render partial: "sort_icon", locals: { sort_column: "email" } %>
+                    </th>
+                    <th>Data Provider</th>
+                    <th>Rolle</th>
+                    <th>CMS POI <span class="badge badge-secondary">Kategorie gesetzt?</span></th>
+                    <th>CMS Tour <span class="badge badge-secondary">Kategorie gesetzt?</span></th>
+                    <th>CMS News Items <span class="badge badge-secondary">Kategorie gesetzt?</span></th>
+                    <th>CMS Event Records <span class="badge badge-secondary">Kategorie gesetzt?</span></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @users.each do |user| %>
+                    <% data_provider = user.data_provider %>
 
-          <tr id="user_<%= user.id %>">
-            <td class="align-middle"><div class="<%= 'fas fa-globe text-danger' if user.try(:municipality).try(:global) %>"></div></td>
-            <td class="align-middle"><%= user.id %></td>
-            <td class="align-middle"><%= link_to user.email, edit_account_path(user) %></td>
-            <td class="align-middle"><%= data_provider.try(:name) %> <%= data_provider.try(:id) %></td>
-            <td class="align-middle"><%= user.role.try(:humanize) %></td>
-            <td class="align-middle">
-              <span class="badge <%= data_provider.try(:role_point_of_interest) ? 'badge-success' : 'badge-danger' %>">
-                <%= data_provider.try(:role_point_of_interest) ? "aktiv" : "" %>
-              </span>
-                <% if data_provider.try(:settings, "PointOfInterest")&.has_default_categories? %>
-                  <span class="badge badge-secondary">ja</span>
-                <% end %>
-            </td>
-            <td class="align-middle">
-              <span class="badge <%= data_provider.try(:role_tour) ? 'badge-success' : 'badge-danger' %>">
-                <%= data_provider.try(:role_tour) ? "aktiv" : "" %>
-              </span>
-              <% if data_provider.try(:settings, "Tour")&.has_default_categories? %>
-                <span class="badge badge-secondary">ja</span>
-              <% end %>
-            </td>
-            <td class="align-middle">
-              <span class="badge <%= data_provider.try(:role_news_item) ? 'badge-success' : 'badge-danger' %>">
-                <%= data_provider.try(:role_news_item) ? "aktiv" : "" %>
-              </span>
-              <% if data_provider.try(:settings, "NewsItem")&.has_default_categories? %>
-                <span class="badge badge-secondary">ja</span>
-              <% end %>
-            </td>
-            <td class="align-middle">
-              <span class="badge <%= data_provider.try(:role_event_record) ? 'badge-success' : 'badge-danger' %>">
-                <%= data_provider.try(:role_event_record) ? "aktiv" : "" %>
-              </span>
-              <% if data_provider.try(:settings, "EventRecord")&.has_default_categories? %>
-                <span class="badge badge-secondary">ja</span>
-              <% end %>
-            </td>
-            <td class="align-middle" style="width: 70px">
-              <%= link_to t('doorkeeper.applications.buttons.edit'), edit_account_path(user), class: "btn btn-sm btn-outline-secondary" %>
-            </td>
-            <td class="align-middle" style="width: 70px">
-              <% if user.try(:municipality).try(:global) == false || user.municipality_id == MunicipalityService.municipality_id %>
-                <%= link_to "Destroy", account_path(user), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: "Sind sie sicher?" } %>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+                    <tr id="user_<%= user.id %>">
+                      <td class="align-middle"><div class="<%= 'fas fa-globe text-danger' if user.try(:municipality).try(:global) %>"></div></td>
+                      <td class="align-middle"><%= user.id %></td>
+                      <td class="align-middle"><%= link_to user.email, edit_account_path(user) %></td>
+                      <td class="align-middle"><%= data_provider.try(:name) %> <%= data_provider.try(:id) %></td>
+                      <td class="align-middle"><%= user.role.try(:humanize) %></td>
+                      <td class="align-middle">
+                        <span class="badge <%= data_provider.try(:role_point_of_interest) ? 'badge-success' : 'badge-danger' %>">
+                          <%= data_provider.try(:role_point_of_interest) ? "aktiv" : "" %>
+                        </span>
+                          <% if data_provider.try(:settings, "PointOfInterest")&.has_default_categories? %>
+                            <span class="badge badge-secondary">ja</span>
+                          <% end %>
+                      </td>
+                      <td class="align-middle">
+                        <span class="badge <%= data_provider.try(:role_tour) ? 'badge-success' : 'badge-danger' %>">
+                          <%= data_provider.try(:role_tour) ? "aktiv" : "" %>
+                        </span>
+                        <% if data_provider.try(:settings, "Tour")&.has_default_categories? %>
+                          <span class="badge badge-secondary">ja</span>
+                        <% end %>
+                      </td>
+                      <td class="align-middle">
+                        <span class="badge <%= data_provider.try(:role_news_item) ? 'badge-success' : 'badge-danger' %>">
+                          <%= data_provider.try(:role_news_item) ? "aktiv" : "" %>
+                        </span>
+                        <% if data_provider.try(:settings, "NewsItem")&.has_default_categories? %>
+                          <span class="badge badge-secondary">ja</span>
+                        <% end %>
+                      </td>
+                      <td class="align-middle">
+                        <span class="badge <%= data_provider.try(:role_event_record) ? 'badge-success' : 'badge-danger' %>">
+                          <%= data_provider.try(:role_event_record) ? "aktiv" : "" %>
+                        </span>
+                        <% if data_provider.try(:settings, "EventRecord")&.has_default_categories? %>
+                          <span class="badge badge-secondary">ja</span>
+                        <% end %>
+                      </td>
+                      <td class="align-middle" style="width: 70px">
+                        <%= link_to t('doorkeeper.applications.buttons.edit'), edit_account_path(user), class: "btn btn-sm btn-outline-secondary" %>
+                      </td>
+                      <td class="align-middle" style="width: 70px">
+                        <% if user.try(:municipality).try(:global) == false || user.municipality_id == MunicipalityService.municipality_id %>
+                          <%= link_to "Destroy", account_path(user), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: "Sind sie sicher?" } %>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <%= paginate @users, theme: "twitter-bootstrap-4" %>
   </div>

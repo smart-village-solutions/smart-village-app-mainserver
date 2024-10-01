@@ -4,8 +4,7 @@
   </button>
 <% end %>
 
-<!-- Modal -->
-<div class="modal fade" id="structureModal" tabindex="-1" aria-labelledby="Structure of Static Content" aria-hidden="true">
+<div class="modal fade" id="structureModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -15,8 +14,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <p class="lead">Diese Struktur zeigt ein maximales Set an Optionen,
-          die in dieser Art von StaticContent verwendet wurden</p>
+        <p>
+          Diese Struktur zeigt ein maximales Set an Optionen,
+          die in dieser Art von StaticContent verwendet wurden.
+        </p>
 
         <div id="structure_editor" style="height: 400px;"></div>
       </div>
@@ -39,13 +40,12 @@
       var editor = new JSONEditor(container, options);
 
       <% content = @static_content_structure.to_s.html_safe %>
-
-        <% valid_json_content = JSON.parse(content) rescue nil %>
-        <% if content.present? && valid_json_content %>
-          editor.set(<%= content %>);
-        <% else %>
-          editor.set({});
-        <% end %>
+      <% valid_json_content = JSON.parse(content) rescue nil %>
+      <% if content.present? && valid_json_content %>
+        editor.set(<%= content %>);
+      <% else %>
+        editor.set({});
+      <% end %>
     }
   });
 </script>

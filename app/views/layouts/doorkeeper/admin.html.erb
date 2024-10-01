@@ -9,7 +9,6 @@
 
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav mr-auto">
-
         <% if current_user.admin_role? %>
           <% if keycloak_login_available? %>
             <li class="nav-item">
@@ -21,7 +20,7 @@
           </li>
 
           <li class="nav-item <%= 'active' if request.path == oauth_applications_path %>">
-            <%= link_to t('doorkeeper.layouts.admin.nav.applications'), oauth_applications_path, class: "nav-link" %>
+            <%= link_to t("doorkeeper.layouts.admin.nav.applications"), oauth_applications_path, class: "nav-link" %>
           </li>
 
           <li class="nav-item">
@@ -84,6 +83,6 @@
     <%= yield %>
   </div>
 
-  <%= render 'layouts/footer' %>
+  <%= render partial: "layouts/partials/footer" %>
 </body>
 </html>

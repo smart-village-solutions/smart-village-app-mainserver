@@ -21,7 +21,7 @@ class StaticContent::StructureService
     JSON.pretty_generate(combined_hash)
   end
 
-  # Rekursive Funktion zum Sortieren eines Hashes nach Keys (auch für verschachtelte Hashes)
+  # Recursive function to sort a hash by keys (also for nested hashes)
   def deep_sort_hash_by_key(hash)
     return hash unless hash.is_a?(Hash)
 
@@ -58,7 +58,7 @@ class StaticContent::StructureService
     end
   end
 
-  # Funktion zum Ersetzen von finalen Werten durch Dummydaten
+  # Function to replace final values with dummy data
   def replace_values_with_dummy_data(hash)
     if hash.is_a?(Array)
       hash.map do |item|
@@ -69,13 +69,13 @@ class StaticContent::StructureService
     if hash.is_a?(Hash)
       hash.each do |key, value|
         if value.is_a?(Hash)
-          replace_values_with_dummy_data(value) # Rekursiv weitergehen, wenn es ein Hash ist
+          replace_values_with_dummy_data(value) # Continue recursively if it is a hash
         elsif value.is_a?(Array)
           hash[key] = value.map do |item|
             item.is_a?(Hash) ? replace_values_with_dummy_data(item) : "dummy_array_item"
           end
         else
-          # Ersetze finale Werte mit Dummydaten basierend auf dem Typ
+          # Replace final values with dummy data based on type
           hash[key] = case value
                       when String
                         "dummy_string"
