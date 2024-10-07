@@ -67,7 +67,7 @@ class Tour < Attraction
     end
   end
 
-  # List of available filters is defined in service Filters::AttributeService
+  # List of available filters is defined in service DataResourceFilterServices::AttributeService
   def self.available_filters
     %i[category location radius_search saveable active]
   end

@@ -7,10 +7,9 @@ class DataResourcesController < ApplicationController
   before_action :authenticate_user_role
 
   def authenticate_user_role
-    render inline: "not allowed", status: 404 unless current_user.admin_role?
+    render inline: "not allowed", status: 405 unless current_user.admin_role?
   end
 
   # GET /data_resources
-  def index
-  end
+  def index; end
 end

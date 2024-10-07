@@ -8,12 +8,12 @@ class DataResourceFilter < ApplicationRecord
 
   belongs_to :municipality
   validates :data_resource_type, presence: true
-  validate :configs_are_valid
+  validate :resource_filter_configs
 
   # Validiert, ob die angegebenen Filterconfigs für das gegebene Datenmodell zulässig sind.
   #
   # @return [void]
-  def configs_are_valid
+  def resource_filter_configs
     model = data_resource_type.constantize
     available_filters = model.available_filters.map(&:to_s)
 
@@ -40,7 +40,7 @@ class DataResourceFilter < ApplicationRecord
     #
     # @return [void]
     def validate_filter_attributes(_filter_name, _attributes)
-      # TODO: Add Validations defined in Filters::AttributeService
+      # TODO: Add Validations defined in DataResourceFilterServices::AttributeService
 
       # case filter_name
       # when "category"

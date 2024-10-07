@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Filters::AttributeService
+class DataResourceFilterServices::AttributeService
   class << self
     def data_resource_types
       [Tour, PointOfInterest, NewsItem, EventRecord] + GenericItem.descendants
@@ -48,15 +48,15 @@ class Filters::AttributeService
     # @return [Hash] A hash representing the municipality filter configuration with defaults applied.
     #
     # The method iterates through each filter in the data resource filter's configuration,
-    # retrieves the corresponding filter configuration from the Filters::AttributeService,
+    # retrieves the corresponding filter configuration from the DataResourceFilterServices::AttributeService,
     # and merges the default attribute values with those provided in the data resource filter.
     def determine_municipality_filter_config(data_resource_filter)
       municipality_config_with_defaults = {}
       # Iterate through each filter in the data resource filter's configuration stored in the database
       data_resource_filter.config.each do |filter_name, filter_attributes|
         municipality_config_with_defaults[filter_name] = {}
-        # Retrieve the filter configuration from the Filters::AttributeService
-        filter_config = Filters::AttributeService.send(filter_name)
+        # Retrieve the filter configuration from the DataResourceFilterServices::AttributeService
+        filter_config = DataResourceFilterServices::AttributeService.send(filter_name)
         filter_config.fetch(:allowed_attributes, {}).each do |attribute, attribute_config|
           municipality_config_with_defaults[filter_name][attribute] =
             filter_attributes.fetch(attribute, attribute_config.fetch(:default, nil))
@@ -78,7 +78,7 @@ class Filters::AttributeService
       result = {}
       data_resource_type.available_filters.each do |filter_name|
         result[filter_name] = {}
-        filter_config = Filters::AttributeService.send(filter_name)
+        filter_config = DataResourceFilterServices::AttributeService.send(filter_name)
         filter_config.fetch(:allowed_attributes, {}).each do |attribute, attribute_config|
           result[filter_name][attribute] = attribute_config.fetch(:default, nil)
         end
