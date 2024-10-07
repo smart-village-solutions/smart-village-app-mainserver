@@ -30,6 +30,7 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   option :exclude_mowas_regional_keys, type: types[GraphQL::Types::String], with: :apply_exclude_mowas_regional_keys
   option :category_id, type: GraphQL::Types::ID, with: :apply_category_id
   option :category_ids, type: types[GraphQL::Types::ID], with: :apply_category_ids
+  option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range
   option :exclude_filter, type: GraphQL::Types::JSON, with: :apply_exclude_filter
   option :search, type: GraphQL::Types::String, with: :apply_search
   option :limit, type: GraphQL::Types::Int, with: :apply_limit
@@ -93,6 +94,24 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
     search_ids = scope.search(value, filter: GlobalMeilisearchHelper.municipality_id_filters,
                                      hits_per_page: MEILISEARCH_MAX_TOTAL_HITS).pluck(:id)
     scope.where(id: search_ids)
+  end
+
+  # :values is array of 2 dates:
+  # - first element is :start_date
+  # - second element is :end_date
+  # Each element is of format "2020-12-31"
+  def apply_date_range(scope, values)
+    error_message = "DateRange invalid! Should be [start_date, end_date] each with format `2020-12-31`"
+    raise error_message unless values.count == 2
+
+    begin
+      start_date = Date.parse(values[0])
+      end_date = Date.parse(values[1])
+    rescue ArgumentError
+      raise error_message
+    end
+
+    scope.in_date_range(start_date, end_date)
   end
 
   def apply_limit(scope, value)
