@@ -210,7 +210,7 @@ module Types
     end
 
     def resource_filters
-      Filters::AttributeService.all
+      DataResourceFilterServices::AttributeService.all
     end
 
     private
