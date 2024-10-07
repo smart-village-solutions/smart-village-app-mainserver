@@ -12,7 +12,7 @@ module Types
       argument :id, GraphQL::Types::ID, required: false
     end
 
-    field :points_of_interest, [QueryTypes::PointOfInterestType],  resolver: Resolvers::PointsOfInterestSearch
+    field :points_of_interest, [QueryTypes::PointOfInterestType], resolver: Resolvers::PointsOfInterestSearch
     field :point_of_interest, QueryTypes::PointOfInterestType, null: false do
       argument :id, GraphQL::Types::ID, required: true
     end
@@ -60,6 +60,8 @@ module Types
       argument :name, String, required: true
       argument :version, String, required: false
     end
+
+    field :resource_filters, [QueryTypes::DataResourceFilterType], null: false
 
     field :news_items_data_providers, [QueryTypes::DataProviderType], null: false do
       argument :category_id, GraphQL::Types::ID, required: false
@@ -205,6 +207,10 @@ module Types
     # @return [Object] object with the contents of the file, if it exists - otherwise with {}
     def public_json_file(name:, version: nil)
       static_content_with_data_type("json", name, version)
+    end
+
+    def resource_filters
+      DataResourceFilterServices::AttributeService.all
     end
 
     private

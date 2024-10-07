@@ -78,6 +78,11 @@ class PointOfInterest < Attraction
     end
   end
 
+  # List of available filters is defined in service DataResourceFilterServices::AttributeService
+  def self.available_filters
+    %i[category location radius_search saveable active]
+  end
+
   def searchable?
     visible && data_provider.try(:municipality_id).present?
   end

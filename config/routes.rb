@@ -29,6 +29,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   end
 
   resources :categories
+  resources :data_resources, only: %i[index]
   resources :app_user_contents
   resources :static_contents
   resources :media_contents, only: %i[create destroy], defaults: { format: "json" }
@@ -69,6 +70,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   namespace :api do
     namespace :v1 do
       resources :accounts, only: %i[show create update]
+      post :resource_filters, to: "resource_filters#create", as: :save_resource_filter
     end
   end
 

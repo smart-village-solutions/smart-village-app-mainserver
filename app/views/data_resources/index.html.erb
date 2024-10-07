@@ -1,0 +1,100 @@
+<div class="row">
+  <div class="col">
+    <h1>Filteroptionen der einzelnen Datentypen</h1>
+    <p>
+      Die Filteroptionen für die einzelnen Datentypen können hier angepasst werden.
+      Wenn zu einem Datentypen nichts angegeben wird, wird der Standardwert verwendet.
+      Sobald ein Filter für ein Datentyp angegeben wird, werden nur die angegebenen Filter verwendet.
+      Wenn es für einen Filter Anpassungen an den Attributen gibt, werden weiterhin die Standardwerte für die Attribute verwendet, die nicht definiert sind.
+    </p>
+
+    <p>Am Ende der Liste befindet sich eine Vorschau, welche Filteroptionen an die SVA-App gesendet werden</p>
+
+    <% DataResourceFilterServices::AttributeService.data_resource_types.each do |data_resource_type| %>
+      <% @data_resource = @current_municipality.data_resource_filters.find_or_initialize_by(data_resource_type: data_resource_type.to_s) %>
+      <div class="jumbotron">
+        <%= form_tag(api_v1_save_resource_filter_path, method: :post, html: { class: 'form-horizontal', role: 'form' }, remote: true) do |f| %>
+          <h3><%= data_resource_type.to_s %></h3>
+          <%= hidden_field_tag :resource_type, data_resource_type.to_s %>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6">
+                <%= hidden_field_tag "filters", @data_resource.config.to_json, id: "filters_#{data_resource_type.to_s.underscore.gsub('/','_')}"  %>
+                Manuelle Anpassungen:
+                <div id="code_editor_<%= data_resource_type.to_s.underscore.gsub('/','_') %>" style="height: 200px;"></div>
+              </div>
+              <div class="col-sm-6 defaultValues">
+                Standardwerte / Fallback:
+                <div id="code_editor_<%= data_resource_type.to_s.underscore.gsub('/','_') %>_defaults" style="height: 200px;"></div>
+              </div>
+            </div>
+          </div>
+          <%= submit_tag "Speichern", class: 'btn btn-primary' %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <h1>Berechnete Filteroptionen</h1>
+    <i>
+      Folgende Filteroptionen werden an die Applikationen gesendet. <br>
+      <i>Stand: <%= Time.now.strftime("%d.%m.%Y %H:%M:%S") %></i>
+    </p>
+    <div class="jumbotron">
+      <pre id="filters_output">
+        <%= debug(DataResourceFilterServices::AttributeService.all) %>
+      </pre>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    <% DataResourceFilterServices::AttributeService.data_resource_types.each do |data_resource_type| %>
+    <% data_resource = @current_municipality.data_resource_filters.find_or_initialize_by(data_resource_type: data_resource_type.to_s) %>
+      var container = document.getElementById("code_editor_<%= data_resource_type.to_s.underscore.gsub('/','_') %>");
+      var container_defaults = document.getElementById("code_editor_<%= data_resource_type.to_s.underscore.gsub('/','_') %>_defaults");
+
+      if (container) {
+        var options = {
+          statusBar: false,
+          mainMenuBar: false,
+          mode: 'code',
+          mainMenuBar: true,
+          modes: ['code', 'tree'],
+
+          onChangeText: function(jsonString) {
+            $("#filters_<%= data_resource_type.to_s.underscore.gsub('/','_') %>").val(jsonString);
+          }
+        };
+        var editor = new JSONEditor(container, options);
+        <% content = data_resource.config %>
+        <% valid_json_content = JSON.parse(content.to_json) rescue nil %>
+
+        <% if content.present? && valid_json_content %>
+          editor.set(<%= content.to_json.html_safe %>);
+        <% else %>
+          editor.set({});
+        <% end %>
+      }
+
+      if (container_defaults) {
+        var options = {
+          statusBar: false,
+          mainMenuBar: false,
+          mode: 'code',
+          mainMenuBar: false,
+          onEditable: function(node){if (!node.path){return false;}}
+        };
+        var editor = new JSONEditor(container_defaults, options);
+        <% content = DataResourceFilterServices::AttributeService.fallback_config(data_resource_type) %>
+        <% valid_json_content = JSON.parse(content.to_json) rescue nil %>
+
+        <% if content.present? && valid_json_content %>
+          editor.set(<%= content.to_json.html_safe %>);
+        <% else %>
+          editor.set({});
+        <% end %>
+      }
+    <% end %>
+  });
+</script>
