@@ -24,7 +24,7 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
       default_scope { where(generic_type: GenericItem::GENERIC_TYPES[type_key]) }
 
       def self.available_filters
-        %i[date_start date_end category location saveable active]
+        %i[category location saveable active]
       end
     end)
   end
