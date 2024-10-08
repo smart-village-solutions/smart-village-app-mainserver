@@ -25,6 +25,7 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   option :ids, type: types[GraphQL::Types::ID], with: :apply_ids
   option :data_provider, type: GraphQL::Types::String, with: :apply_data_provider
   option :data_provider_id, type: GraphQL::Types::ID, with: :apply_data_provider_id
+  option :data_provider_ids, type: types[GraphQL::Types::ID], with: :apply_data_provider_id
   option :exclude_data_provider_ids, type: types[GraphQL::Types::ID], with: :apply_exclude_data_provider_ids
   option :exclude_mowas_regional_keys, type: types[GraphQL::Types::String], with: :apply_exclude_mowas_regional_keys
   option :category_id, type: GraphQL::Types::ID, with: :apply_category_id
