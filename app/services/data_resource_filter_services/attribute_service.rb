@@ -160,6 +160,15 @@ class DataResourceFilterServices::AttributeService
       }
     end
 
+    def only_currently_open
+      {
+        allowed_attributes: {
+          default: { type: :boolean, allow_nil: true, default: true },
+          type: { type: :string, allow_nil: true, default: "checkbox" }
+        }
+      }
+    end
+
     def saveable
       {
         allowed_attributes: {
