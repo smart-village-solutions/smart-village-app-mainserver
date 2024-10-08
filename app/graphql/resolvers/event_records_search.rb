@@ -55,6 +55,7 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   option :data_provider, type: GraphQL::Types::String, with: :apply_data_provider
   option :data_provider_id, type: GraphQL::Types::ID, with: :apply_data_provider_id
   option :location, type: GraphQL::Types::String, with: :apply_location
+  option :locations, type: types[GraphQL::Types::String], with: :apply_location
   option :exclude_filter, type: GraphQL::Types::JSON, with: :apply_exclude_filter
   option :date_range, type: types[GraphQL::Types::String], with: :apply_date_range
   option :take, type: GraphQL::Types::Int, with: :apply_take
