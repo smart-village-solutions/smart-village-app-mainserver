@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_09_20_070805) do
+ActiveRecord::Schema.define(version: 2024_10_09_102018) do
 
   create_table "accessibility_informations", charset: "utf8", force: :cascade do |t|
     t.text "description"
@@ -144,6 +144,8 @@ ActiveRecord::Schema.define(version: 2024_09_20_070805) do
     t.string "ancestry"
     t.integer "municipality_id"
     t.string "icon_name"
+    t.text "payload"
+    t.boolean "active", default: true
     t.index ["ancestry"], name: "index_categories_on_ancestry"
     t.index ["name"], name: "index_categories_on_name"
   end

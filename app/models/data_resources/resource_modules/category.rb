@@ -19,6 +19,8 @@ class Category < ApplicationRecord
   has_one :contact, as: :contactable, dependent: :destroy
   has_many :external_service_categories, dependent: :destroy
 
+  store :payload, coder: JSON
+
   TAG_OPTIONS = ["event_record", "news_item", "point_of_interest", "tour"] + GenericItem::GENERIC_TYPES.keys.map { |gt| "generic_item_#{gt}" }
 
   after_destroy :cleanup_data_resource_settings
