@@ -7,6 +7,10 @@
   li {
     list-style-type: none;
 
+    .inactive{
+      color: #adb5bd;
+    }
+
     .action-links {
       display: none;
       padding-left: 10px;

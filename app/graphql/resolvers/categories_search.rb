@@ -5,7 +5,7 @@ require "search_object/plugin/graphql"
 class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
-  scope { Category.all }
+  scope { Category.active }
 
   type types[Types::QueryTypes::CategoryType]
 

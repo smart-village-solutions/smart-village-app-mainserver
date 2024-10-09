@@ -22,8 +22,10 @@ class Category < ApplicationRecord
   store :payload, coder: JSON
 
   TAG_OPTIONS = ["event_record", "news_item", "point_of_interest", "tour"] + GenericItem::GENERIC_TYPES.keys.map { |gt| "generic_item_#{gt}" }
+  scope :active, -> { where(active: true) }
 
   after_destroy :cleanup_data_resource_settings
+  after_update :set_active_flag_for_descendants
 
   accepts_nested_attributes_for :contact
 
@@ -96,6 +98,18 @@ class Category < ApplicationRecord
       data_resource_setting.save
     end
   end
+
+  private
+
+    # Set the active flag for all descendants to the same value as the parent
+    def set_active_flag_for_descendants
+      return unless saved_change_to_attribute?(:active)
+
+      descendants.each do |descendant|
+        # save without callbacks to avoid infinite loop
+        descendant.update_column(:active, active)
+      end
+    end
 end
 
 # == Schema Information

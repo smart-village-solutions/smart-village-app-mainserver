@@ -6,7 +6,7 @@ class CategoriesController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_user_role
 
-  before_action :set_category, only: [:show, :edit, :update, :destroy]
+  before_action :set_category, only: %i[show edit update destroy]
 
   def authenticate_user_role
     render inline: "not allowed", status: 404 unless current_user.admin_role?
@@ -81,6 +81,6 @@ class CategoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def category_params
-      params.require(:category).permit(:name, :parent_id, :icon_name, contact_attributes: %i[email], tag_list: [])
+      params.require(:category).permit(:name, :parent_id, :icon_name, :active, contact_attributes: %i[email], tag_list: [])
     end
 end

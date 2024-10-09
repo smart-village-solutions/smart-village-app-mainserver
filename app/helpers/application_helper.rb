@@ -67,7 +67,8 @@ module ApplicationHelper
           style: "cursor: help;"
         )
       end
-      tree_element << category.name
+      tree_element << content_tag("span", category.name,  class: "#{category.active ? "active" : "inactive"}")
+      tree_element << content_tag("span", "inactive", class: "badge badge-danger") unless category.active
       tree_element << content_tag("span", category.tags.map(&:name).map { |tag_name| I18n.t("data_resource.#{tag_name}.other") }.join(", "), class: "badge badge-light")
       element_buttons << link_to("New Child", new_category_path(parent_id: category.id), class: "btn btn-xs btn-outline-success")
       element_buttons << link_to("Edit", edit_category_path(category), class: "btn btn-xs btn-outline-secondary")

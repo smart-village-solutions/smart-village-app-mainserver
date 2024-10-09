@@ -151,7 +151,7 @@ module Types
     end
 
     def category_tree
-      Category.order(:name).select(:id, :name, :ancestry).arrange_serializable
+      Category.active.order(:name).select(:id, :name, :ancestry).arrange_serializable
     end
 
     def waste_location_types(tour_id: nil)
