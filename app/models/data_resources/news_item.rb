@@ -34,10 +34,20 @@ class NewsItem < ApplicationRecord
 
   store :payload, coder: JSON
 
+  def self.available_filters
+    %i[data_provider date_start date_end category saveable active]
+  end
+
   scope :by_category, lambda { |category_id|
     where(categories: { id: category_id }).joins(:categories)
   }
+
+  scope :in_date_range, lambda { |start_date, end_date|
+    where(published_at: start_date.beginning_of_day..end_date.end_of_day)
+  }
+
   scope :meilisearch_import, -> { includes(:data_provider, :categories) }
+
   # defined by FilterByRole
   # scope :visible, -> { where(visible: true) }
 
