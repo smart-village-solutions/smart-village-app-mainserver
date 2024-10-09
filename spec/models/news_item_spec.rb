@@ -28,4 +28,5 @@ end
 #  visible                    :boolean          default(TRUE)
 #  push_notifications_sent_at :datetime
 #  payload                    :text(65535)
+#  point_of_interest_id       :integer
 #

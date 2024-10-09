@@ -95,4 +95,5 @@ end
 #  quotaable_id   :bigint
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  visibility     :integer          default("private_visibility")
 #

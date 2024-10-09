@@ -48,11 +48,14 @@ end
 #
 # Table name: notification_devices
 #
-#  id                          :bigint           not null, primary key
-#  token                       :string(255)
-#  device_type                 :integer          default("undefined")
-#  created_at                  :datetime         not null
-#  updated_at                  :datetime         not null
-#  exclude_data_provider_ids   :text(65535)
-#  exclude_mowas_regional_keys :text(65535)
+#  id                                 :bigint           not null, primary key
+#  token                              :string(255)
+#  device_type                        :integer          default("undefined")
+#  created_at                         :datetime         not null
+#  updated_at                         :datetime         not null
+#  municipality_id                    :integer
+#  exclude_data_provider_ids          :text(65535)
+#  member_id                          :integer
+#  exclude_mowas_regional_keys        :text(65535)
+#  exclude_notification_configuration :text(65535)
 #

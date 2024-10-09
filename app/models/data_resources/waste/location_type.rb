@@ -30,10 +30,11 @@ end
 #
 # Table name: waste_location_types
 #
-#  id            :bigint           not null, primary key
-#  waste_type    :string(255)
-#  address_id    :integer
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  waste_tour_id :integer
+#  id              :bigint           not null, primary key
+#  waste_type      :string(255)
+#  address_id      :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  waste_tour_id   :integer
+#  municipality_id :integer
 #

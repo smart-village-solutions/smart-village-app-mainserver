@@ -276,4 +276,5 @@ end
 #  settings   :text(65535)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  global     :boolean          default(FALSE)
 #

@@ -56,3 +56,15 @@ class DataResourceFilter < ApplicationRecord
       # end
     end
 end
+
+# == Schema Information
+#
+# Table name: data_resource_filters
+#
+#  id                 :bigint           not null, primary key
+#  data_resource_type :string(255)
+#  municipality_id    :integer
+#  config             :text(65535)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#

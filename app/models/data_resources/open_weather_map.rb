@@ -21,8 +21,9 @@ end
 #
 # Table name: open_weather_maps
 #
-#  id         :bigint           not null, primary key
-#  data       :text(65535)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id              :bigint           not null, primary key
+#  data            :text(65535)
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  municipality_id :integer
 #
