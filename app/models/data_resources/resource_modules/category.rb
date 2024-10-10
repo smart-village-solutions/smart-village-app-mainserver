@@ -126,4 +126,5 @@ end
 #  icon_name       :string(255)
 #  payload         :text(65535)
 #  active          :boolean          default(TRUE)
+#  position        :integer          default(0)
 #

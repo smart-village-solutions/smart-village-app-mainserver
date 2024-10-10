@@ -56,6 +56,15 @@
   <% end %>
 
   <div class="form-group">
+    <%= form.label :position %>
+    <%= form.text_field :position, class: "form-control" %>
+    <small class="form-text text-muted">
+      For sorting, "higher" means further up the list (a lower position number), and "lower" means further down the list (a higher position number).<br>
+      E.g. 0 would be the first position, 100 the last at the bottom.
+    </small>
+  </div>
+
+  <div class="form-group">
     <%= form.label :tag_list, "Tags" %>
     <%= form.select :tag_list, Category::TAG_OPTIONS.map { |item| [I18n.t("data_resource.#{item}.other"), item] }.sort, { include_blank: false }, { multiple: true, class: "form-control select2" } %>
     <small class="form-text text-muted">

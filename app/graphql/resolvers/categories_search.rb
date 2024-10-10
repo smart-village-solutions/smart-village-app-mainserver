@@ -18,6 +18,8 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
     value "id_ASC"
     value "name_DESC"
     value "name_ASC"
+    value "position_DESC"
+    value "position_ASC"
   end
 
   class TaggingStrategy < Types::BaseEnum
@@ -99,5 +101,13 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
 
   def apply_order_with_name_asc(scope)
     scope.order("name ASC")
+  end
+
+  def apply_order_with_position_desc(scope)
+    scope.order("position DESC")
+  end
+
+  def apply_order_with_position_asc(scope)
+    scope.order("position ASC")
   end
 end

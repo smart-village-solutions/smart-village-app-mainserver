@@ -15,7 +15,8 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.json
   def index
-    @categories = Category.all
+    @order = params[:order].present? ? params[:order].to_sym : :id
+    @categories = Category.all.order(@order)
   end
 
   # GET /categories/1
@@ -81,6 +82,7 @@ class CategoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def category_params
-      params.require(:category).permit(:name, :parent_id, :icon_name, :active, contact_attributes: %i[email], tag_list: [])
+      params.require(:category).permit(:name, :parent_id, :icon_name, :active, :position,
+                                       contact_attributes: %i[email], tag_list: [])
     end
 end

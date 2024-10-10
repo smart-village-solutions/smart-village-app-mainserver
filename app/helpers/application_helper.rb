@@ -48,13 +48,18 @@ module ApplicationHelper
     content_tag("ul", raw(category_tags))
   end
 
-  def render_categories(categories)
+  def render_categories(categories, order_by = :id)
     category_tags = ""
     categories.each do |category, subtree|
       tree_element = []
       element_buttons = []
-
-      tree_element << content_tag("span", "ID: #{category.id}", class: "badge badge-info")
+      
+      if order_by == :position
+        tree_element << content_tag("span", "Pos: #{category.position}", class: "badge badge-info")
+      else
+        tree_element << content_tag("span", "ID: #{category.id}", class: "badge badge-info")
+      end
+      
       if category.icon_name.present?
         tree_element << content_tag("span", "Icon: #{category.icon_name}", class: "badge badge-secondary")
       end
@@ -74,7 +79,7 @@ module ApplicationHelper
       element_buttons << link_to("Edit", edit_category_path(category), class: "btn btn-xs btn-outline-secondary")
       element_buttons << link_to("Destroy", category, method: :delete, data: { confirm: "Are you sure? All children are destroyed as well!" }, class: "btn btn-xs btn-outline-danger")
       tree_element << content_tag("div", raw(element_buttons.join), class: "action-links")
-      tree_element << render_categories(subtree)
+      tree_element << render_categories(subtree, order_by)
       tree_element = tree_element.join(" ")
       category_tags << content_tag("li", raw(tree_element))
     end

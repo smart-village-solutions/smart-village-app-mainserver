@@ -43,6 +43,11 @@
       </div>
     <% end %>
 
+    <div class="form-group">
+      <label>Position</label>
+      <div><code><%= @category.position %></code></div>
+    </div>
+
     <% if @category.tag_list.present? %>
       <div class="form-group">
         <label>Tags</label>
