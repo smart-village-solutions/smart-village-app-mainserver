@@ -40,7 +40,7 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
   option :exclude_ids, type: types[GraphQL::Types::ID], with: :apply_exclude_ids
   option :tagging_strategy, type: TaggingStrategy, default: "ANY", with: :set_tagging_strategy
   option :tag_list, type: types[GraphQL::Types::String], with: :apply_tag_list
-  option :order, type: CategoriesOrder, default: "name_ASC", with: :apply_order
+  option :order, type: [CategoriesOrder], default: "name_ASC", with: :apply_order
 
   def apply_limit(scope, value)
     scope.limit(value)
@@ -67,19 +67,30 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
     scope.tagged_with(value, TAGGING_STRATEGIES[@tagging_strategy])
   end
 
-  def apply_order(scope, value)
-    # value is a string like "name_ASC"
-    # CategoriesOrder.values are defined in the CategoriesOrder enum
-    raise GraphQL::ExecutionError, "Ungültige Sortieroption" unless CategoriesOrder.values[value].present?
+  def apply_order(scope, values)
+    # secure that values is an array
+    orders = Array.wrap(values)
 
-    # value is a string like "name_ASC" or "position_DESC"
-    sort_field, sort_direction = value.split("_")
-    unless sort_field && %w[ASC DESC].include?(sort_direction)
-      raise GraphQL::ExecutionError, "Ungültige Sortieroptionen"
+    # values is list of string like ["name_ASC"]
+    # CategoriesOrder.values are defined in the CategoriesOrder enum
+    orders.each do |order_value|
+      unless CategoriesOrder.values.keys.include?(order_value)
+        raise GraphQL::ExecutionError, "Ungültige Sortieroption: #{order_value}"
+      end
     end
 
-    # sort by single order option
-    scope.order("#{sort_field} #{sort_direction}")
+    order_clauses = orders.map do |order_value|
+      sort_field, sort_direction = order_value.split("_")
+      sort_field = sort_field.underscore
+
+      unless sort_field && %w[ASC DESC].include?(sort_direction)
+        raise GraphQL::ExecutionError, "Ungültige Sortieroption: #{order_value}"
+      end
+
+      "#{sort_field} #{sort_direction}"
+    end
+
+    scope.order(order_clauses.join(", "))
   end
 
   def apply_orders(scope, _value)
