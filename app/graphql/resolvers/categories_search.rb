@@ -40,7 +40,7 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
   option :exclude_ids, type: types[GraphQL::Types::ID], with: :apply_exclude_ids
   option :tagging_strategy, type: TaggingStrategy, default: "ANY", with: :set_tagging_strategy
   option :tag_list, type: types[GraphQL::Types::String], with: :apply_tag_list
-  option :order, type: CategoriesOrder, default: "name_ASC"
+  option :order, type: CategoriesOrder, default: "name_ASC", with: :apply_order
 
   def apply_limit(scope, value)
     scope.limit(value)
@@ -68,46 +68,21 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
   end
 
   def apply_order(scope, value)
-    scope.order(value)
+    # value is a string like "name_ASC"
+    # CategoriesOrder.values are defined in the CategoriesOrder enum
+    raise GraphQL::ExecutionError, "Ungültige Sortieroption" unless CategoriesOrder.values[value].present?
+
+    # value is a string like "name_ASC" or "position_DESC"
+    sort_field, sort_direction = value.split("_")
+    unless sort_field && %w[ASC DESC].include?(sort_direction)
+      raise GraphQL::ExecutionError, "Ungültige Sortieroptionen"
+    end
+
+    # sort by single order option
+    scope.order("#{sort_field} #{sort_direction}")
   end
 
-  def apply_order_with_created_at_desc(scope)
-    scope.order("created_at DESC")
-  end
-
-  def apply_order_with_created_at_asc(scope)
-    scope.order("created_at ASC")
-  end
-
-  def apply_order_with_updated_at_desc(scope)
-    scope.order("updated_at DESC")
-  end
-
-  def apply_order_with_updated_at_asc(scope)
-    scope.order("updated_at ASC")
-  end
-
-  def apply_order_with_id_desc(scope)
-    scope.order("id DESC")
-  end
-
-  def apply_order_with_id_asc(scope)
-    scope.order("id ASC")
-  end
-
-  def apply_order_with_name_desc(scope)
-    scope.order("name DESC")
-  end
-
-  def apply_order_with_name_asc(scope)
-    scope.order("name ASC")
-  end
-
-  def apply_order_with_position_desc(scope)
-    scope.order("position DESC")
-  end
-
-  def apply_order_with_position_asc(scope)
-    scope.order("position ASC")
+  def apply_orders(scope, _value)
+    scope
   end
 end
