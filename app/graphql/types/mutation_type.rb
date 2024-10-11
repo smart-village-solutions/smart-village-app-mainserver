@@ -21,6 +21,7 @@ module Types
     field :create_generic_item_message, mutation: Mutations::CreateGenericItemMessage
     field :import_gtfs_feeds, mutation: Mutations::ImportGtfsFeeds
     field :redeem_quota_of_voucher, mutation: Mutations::RedeemQuotaOfVoucher
+    field :create_categories, mutation: Mutations::CreateCategories
 
     # Shout related mutations
     field :create_shout, mutation: Mutations::CreateShout

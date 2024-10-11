@@ -8,6 +8,7 @@ module Types
     field :parent, QueryTypes::CategoryType, null: true
     field :children, [QueryTypes::CategoryType], null: true
     field :position, Integer, null: true
+    field :created_at, GraphQL::Types::ISO8601DateTime, null: true
 
     field :news_items_count, Integer, null: true
     field :news_items, [QueryTypes::NewsItemType], null: true
