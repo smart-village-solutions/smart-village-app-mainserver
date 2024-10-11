@@ -1,3 +1,24 @@
+/* trick for sticky footer */
+body {
+  min-height: 100vh;
+  margin: 0;
+  position: relative;
+}
+
+body::after {
+  content: '';
+  display: block;
+  height: 40px; // same height as footer's height
+}
+
+footer {
+  bottom: 0;
+  height: 40px;
+  position: absolute;
+  width: 100%;
+}
+/* end trick sticky footer */
+
 .footer {
   background-color: #343a40;
 }
