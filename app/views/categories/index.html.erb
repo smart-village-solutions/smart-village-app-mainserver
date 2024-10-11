@@ -1,19 +1,15 @@
 <div class="row">
   <div class="col">
     <h1>Categories</h1>
+
     <p><%= link_to 'New Category', new_category_path, class: "btn btn-success" %></p>
 
-    <ul class="nav nav-tabs mb-4">
-      <li class="nav-item">
-        <%= link_to "Order By ID", categories_path(order: :id), class: "nav-link #{@order == :id ? 'active' : ''}" %>
-      </li>
-      <li class="nav-item">
-        <%= link_to "Order By Name", categories_path(order: :name), class: "nav-link #{@order == :name ? 'active' : ''}" %>
-      </li>
-      <li class="nav-item">
-        <%= link_to "Order By Position", categories_path(order: :position), class: "nav-link #{@order == :position ? 'active' : ''}" %>
-      </li>
-    </ul>
+    <span class="btn mb-3" style="cursor: default;margin-left: -8px;">Order by:</span>
+    <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Choose order">
+      <a href="<%= categories_path(order: :id) %>" class="btn <%= @order == :id ? 'btn-secondary' : 'btn-outline-secondary' %>">ID</a>
+      <a href="<%= categories_path(order: :name) %>" class="btn <%= @order == :name ? 'btn-secondary' : 'btn-outline-secondary' %>">Name</a>
+      <a href="<%= categories_path(order: :position) %>" class="btn <%= @order == :position ? 'btn-secondary' : 'btn-outline-secondary' %>">Position</a>
+    </div>
 
     <div class="category-index-tree">
       <%= render_categories(@categories.arrange, @order) if @categories.any? %>
