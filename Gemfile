@@ -29,6 +29,9 @@ gem "rack-cors"
 
 gem "icalendar"
 
+# no longer be part of the default gems since Ruby 3.4.0.
+gem "csv"
+
 # Execute interactive system calls
 gem "ruby_expect"
 
@@ -63,12 +66,12 @@ gem "devise-token_authenticatable"
 gem "doorkeeper"
 gem "jquery-rails"
 gem "jsoneditor-rails"
-gem "select2-rails"
 gem "mailjet"
 gem "mimemagic", ">= 0.3.10"
 gem "omniauth"
 gem "omniauth-keycloak"
-# todo: https://github.com/looorent/keycloak-api-rails
+gem "select2-rails"
+# TODO: https://github.com/looorent/keycloak-api-rails
 gem "omniauth-oauth2"
 
 gem "order_as_specified"
@@ -105,7 +108,7 @@ gem "kaminari"
 gem "activerecord-nulldb-adapter"
 
 # Swagger-based DSL for describing and testing API operations.
-gem 'rswag'
+gem "rswag"
 
 gem "bigdecimal"
 gem "mutex_m"

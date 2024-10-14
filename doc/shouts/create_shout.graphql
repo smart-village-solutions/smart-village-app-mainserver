@@ -18,6 +18,7 @@ mutation {
     location: {
       city: "city",
       street: "street",
+      zip: "zip",
       geoLocation: {
         longitude: 12.345,
       	latitude: 12.345

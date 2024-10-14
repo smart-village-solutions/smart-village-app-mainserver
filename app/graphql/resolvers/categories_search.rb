@@ -40,7 +40,7 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
   option :exclude_ids, type: types[GraphQL::Types::ID], with: :apply_exclude_ids
   option :tagging_strategy, type: TaggingStrategy, default: "ANY", with: :set_tagging_strategy
   option :tag_list, type: types[GraphQL::Types::String], with: :apply_tag_list
-  option :order, type: [CategoriesOrder], default: "name_ASC", with: :apply_order
+  option :order, type: [CategoriesOrder], default: ["name_ASC"], with: :apply_order
 
   def apply_limit(scope, value)
     scope.limit(value)
