@@ -16,5 +16,9 @@ end
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  ancestry        :string(255)
+#  municipality_id :integer
 #  icon_name       :string(255)
+#  payload         :text(65535)
+#  active          :boolean          default(TRUE)
+#  position        :integer          default(0)
 #

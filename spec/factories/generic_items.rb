@@ -13,22 +13,23 @@ end
 #
 # Table name: generic_items
 #
-#  id                    :bigint           not null, primary key
-#  generic_type          :string(255)
-#  author                :text(65535)
-#  publication_date      :datetime
-#  published_at          :datetime
-#  external_id           :text(65535)
-#  visible               :boolean          default(TRUE)
-#  title                 :text(65535)
-#  teaser                :text(65535)
-#  description           :text(65535)
-#  data_provider_id      :integer
-#  payload               :text(65535)
-#  ancestry              :string(255)
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  generic_itemable_type :string(255)
-#  generic_itemable_id   :integer
-#  member_id             :integer
+#  id                         :bigint           not null, primary key
+#  generic_type               :string(255)
+#  author                     :text(65535)
+#  publication_date           :datetime
+#  published_at               :datetime
+#  external_id                :text(65535)
+#  visible                    :boolean          default(TRUE)
+#  title                      :text(65535)
+#  teaser                     :text(65535)
+#  description                :text(65535)
+#  data_provider_id           :integer
+#  payload                    :text(65535)
+#  ancestry                   :string(255)
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  generic_itemable_type      :string(255)
+#  generic_itemable_id        :integer
+#  member_id                  :integer
+#  push_notifications_sent_at :datetime
 #

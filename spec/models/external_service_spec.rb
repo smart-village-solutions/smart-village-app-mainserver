@@ -9,6 +9,8 @@
 #  municipality_id :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  auth_path       :string(255)
+#  preparer_type   :string(255)
 #
 require 'rails_helper'
 

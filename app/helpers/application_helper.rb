@@ -48,16 +48,26 @@ module ApplicationHelper
     content_tag("ul", raw(category_tags))
   end
 
-  def render_categories(categories)
+  def render_categories(categories, order_by = :id)
     category_tags = ""
     categories.each do |category, subtree|
       tree_element = []
       element_buttons = []
 
-      tree_element << content_tag("span", "ID: #{category.id}", class: "badge badge-info")
+      if order_by == :position
+        tree_element << content_tag("span", "Pos: #{category.position}, ID: #{category.id}", class: "badge badge-info")
+      else
+        tree_element << content_tag("span", "ID: #{category.id}", class: "badge badge-info")
+      end
+
+      unless category.active
+        tree_element << content_tag("span", "inactive", class: "badge badge-danger")
+      end
+
       if category.icon_name.present?
         tree_element << content_tag("span", "Icon: #{category.icon_name}", class: "badge badge-secondary")
       end
+
       if category.contact.try(:email).present?
         tree_element << content_tag(
           "span",
@@ -67,13 +77,13 @@ module ApplicationHelper
           style: "cursor: help;"
         )
       end
-      tree_element << category.name
+      tree_element << content_tag("span", category.name, class: "#{category.active ? "" : "inactive"}")
       tree_element << content_tag("span", category.tags.map(&:name).map { |tag_name| I18n.t("data_resource.#{tag_name}.other") }.join(", "), class: "badge badge-light")
       element_buttons << link_to("New Child", new_category_path(parent_id: category.id), class: "btn btn-xs btn-outline-success")
       element_buttons << link_to("Edit", edit_category_path(category), class: "btn btn-xs btn-outline-secondary")
       element_buttons << link_to("Destroy", category, method: :delete, data: { confirm: "Are you sure? All children are destroyed as well!" }, class: "btn btn-xs btn-outline-danger")
       tree_element << content_tag("div", raw(element_buttons.join), class: "action-links")
-      tree_element << render_categories(subtree)
+      tree_element << render_categories(subtree, order_by)
       tree_element = tree_element.join(" ")
       category_tags << content_tag("li", raw(tree_element))
     end

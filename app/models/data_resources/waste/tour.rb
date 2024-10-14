@@ -13,9 +13,10 @@ end
 #
 # Table name: waste_tours
 #
-#  id         :bigint           not null, primary key
-#  title      :string(255)
-#  waste_type :string(255)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id              :bigint           not null, primary key
+#  title           :string(255)
+#  waste_type      :string(255)
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  municipality_id :integer
 #

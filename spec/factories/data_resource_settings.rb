@@ -19,4 +19,5 @@ end
 #  settings           :text(16777215)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  global_settings    :text(16777215)
 #

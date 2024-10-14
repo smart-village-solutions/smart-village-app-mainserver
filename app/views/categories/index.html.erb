@@ -4,8 +4,15 @@
 
     <p><%= link_to 'New Category', new_category_path, class: "btn btn-success" %></p>
 
+    <span class="btn mb-3" style="cursor: default;margin-left: -8px;">Order by:</span>
+    <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Choose order">
+      <a href="<%= categories_path(order: :id) %>" class="btn <%= @order == :id ? 'btn-secondary' : 'btn-outline-secondary' %>">ID</a>
+      <a href="<%= categories_path(order: :name) %>" class="btn <%= @order == :name ? 'btn-secondary' : 'btn-outline-secondary' %>">Name</a>
+      <a href="<%= categories_path(order: :position) %>" class="btn <%= @order == :position ? 'btn-secondary' : 'btn-outline-secondary' %>">Position</a>
+    </div>
+
     <div class="category-index-tree">
-      <%= render_categories(@categories.arrange) if @categories.any? %>
+      <%= render_categories(@categories.arrange, @order) if @categories.any? %>
     </div>
   </div>
 </div>

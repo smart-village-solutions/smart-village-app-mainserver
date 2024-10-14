@@ -7,6 +7,9 @@ module Types
     field :icon_name, String, null: true
     field :parent, QueryTypes::CategoryType, null: true
     field :children, [QueryTypes::CategoryType], null: true
+    field :position, Integer, null: true
+    field :updated_at, String, null: true
+    field :created_at, String, null: true
 
     field :news_items_count, Integer, null: true
     field :news_items, [QueryTypes::NewsItemType], null: true

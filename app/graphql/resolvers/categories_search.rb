@@ -5,7 +5,7 @@ require "search_object/plugin/graphql"
 class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
   include SearchObject.module(:graphql)
 
-  scope { Category.all }
+  scope { Category.active }
 
   type types[Types::QueryTypes::CategoryType]
 
@@ -18,6 +18,8 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
     value "id_ASC"
     value "name_DESC"
     value "name_ASC"
+    value "position_DESC"
+    value "position_ASC"
   end
 
   class TaggingStrategy < Types::BaseEnum
@@ -38,7 +40,7 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
   option :exclude_ids, type: types[GraphQL::Types::ID], with: :apply_exclude_ids
   option :tagging_strategy, type: TaggingStrategy, default: "ANY", with: :set_tagging_strategy
   option :tag_list, type: types[GraphQL::Types::String], with: :apply_tag_list
-  option :order, type: CategoriesOrder, default: "name_ASC"
+  option :order, type: [CategoriesOrder], default: "name_ASC", with: :apply_order
 
   def apply_limit(scope, value)
     scope.limit(value)
@@ -65,39 +67,33 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
     scope.tagged_with(value, TAGGING_STRATEGIES[@tagging_strategy])
   end
 
-  def apply_order(scope, value)
-    scope.order(value)
+  def apply_order(scope, values)
+    # secure that values is an array
+    orders = Array.wrap(values)
+
+    # values is list of string like ["name_ASC"]
+    # CategoriesOrder.values are defined in the CategoriesOrder enum
+    orders.each do |order_value|
+      unless CategoriesOrder.values.keys.include?(order_value)
+        raise GraphQL::ExecutionError, "Invalid sort option: #{order_value}"
+      end
+    end
+
+    order_clauses = orders.map do |order_value|
+      sort_field, sort_direction = order_value.split("_")
+      sort_field = sort_field.underscore
+
+      unless sort_field && %w[ASC DESC].include?(sort_direction)
+        raise GraphQL::ExecutionError, "Invalid sort option: #{order_value}"
+      end
+
+      "#{sort_field} #{sort_direction}"
+    end
+
+    scope.order(order_clauses.join(", "))
   end
 
-  def apply_order_with_created_at_desc(scope)
-    scope.order("created_at DESC")
-  end
-
-  def apply_order_with_created_at_asc(scope)
-    scope.order("created_at ASC")
-  end
-
-  def apply_order_with_updated_at_desc(scope)
-    scope.order("updated_at DESC")
-  end
-
-  def apply_order_with_updated_at_asc(scope)
-    scope.order("updated_at ASC")
-  end
-
-  def apply_order_with_id_desc(scope)
-    scope.order("id DESC")
-  end
-
-  def apply_order_with_id_asc(scope)
-    scope.order("id ASC")
-  end
-
-  def apply_order_with_name_desc(scope)
-    scope.order("name DESC")
-  end
-
-  def apply_order_with_name_asc(scope)
-    scope.order("name ASC")
+  def apply_orders(scope, _value)
+    scope
   end
 end
