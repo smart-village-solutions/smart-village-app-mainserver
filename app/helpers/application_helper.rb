@@ -53,16 +53,17 @@ module ApplicationHelper
     categories.each do |category, subtree|
       tree_element = []
       element_buttons = []
-      
+
       if order_by == :position
-        tree_element << content_tag("span", "Pos: #{category.position}", class: "badge badge-info")
+        tree_element << content_tag("span", "Pos: #{category.position}, ID: #{category.id}", class: "badge badge-info")
       else
         tree_element << content_tag("span", "ID: #{category.id}", class: "badge badge-info")
       end
-      
+
       if category.icon_name.present?
         tree_element << content_tag("span", "Icon: #{category.icon_name}", class: "badge badge-secondary")
       end
+
       if category.contact.try(:email).present?
         tree_element << content_tag(
           "span",
