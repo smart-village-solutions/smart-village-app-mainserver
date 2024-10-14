@@ -35,7 +35,7 @@ module Mutations
         # Extract children, if present
         children = attributes.delete(:children)
 
-        category = Category.where(attributes).first_or_initialize
+        category = Category.where(name: attributes[:name]).first_or_initialize(attributes)
         if category.new_record?
           category.parent = parent if parent
           category.save!
