@@ -22,6 +22,7 @@ class Category < ApplicationRecord
   store :payload, coder: JSON
 
   TAG_OPTIONS = ["event_record", "news_item", "point_of_interest", "tour"] + GenericItem::GENERIC_TYPES.keys.map { |gt| "generic_item_#{gt}" }
+
   scope :active, -> { where(active: true) }
 
   after_destroy :cleanup_data_resource_settings

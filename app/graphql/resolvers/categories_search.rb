@@ -75,7 +75,7 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
     # CategoriesOrder.values are defined in the CategoriesOrder enum
     orders.each do |order_value|
       unless CategoriesOrder.values.keys.include?(order_value)
-        raise GraphQL::ExecutionError, "Ungültige Sortieroption: #{order_value}"
+        raise GraphQL::ExecutionError, "Invalid sort option: #{order_value}"
       end
     end
 
@@ -84,7 +84,7 @@ class Resolvers::CategoriesSearch < GraphQL::Schema::Resolver
       sort_field = sort_field.underscore
 
       unless sort_field && %w[ASC DESC].include?(sort_direction)
-        raise GraphQL::ExecutionError, "Ungültige Sortieroption: #{order_value}"
+        raise GraphQL::ExecutionError, "Invalid sort option: #{order_value}"
       end
 
       "#{sort_field} #{sort_direction}"

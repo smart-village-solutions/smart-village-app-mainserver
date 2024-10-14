@@ -4,11 +4,10 @@ module Mutations
   class CreateCategories < BaseMutation
     description "Creates one or more categories with optional subcategories"
 
+    argument :categories, [Types::InputTypes::CategoryInput], required: true
+
     field :categories, [Types::QueryTypes::CategoryType], null: false
     field :errors, [String], null: false
-
-    # Argumente der Mutation
-    argument :categories, [Types::InputTypes::CategoryInput], required: true
 
     def resolve(categories:)
       created_categories = []
