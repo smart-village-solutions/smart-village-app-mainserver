@@ -86,8 +86,10 @@ class EventRecord < ApplicationRecord
 
     events_in_timespan.each do |event_record|
       # return the date_start of the event if the requested start_date is before event date_start
-      if start_date < event_record.dates.first.date_start
-        event_record.in_date_range_start_date = event_record.dates.first.date_start
+      current_events_date = event_record.date || event_record.dates.first
+
+      if start_date < current_events_date.date_start
+        event_record.in_date_range_start_date = current_events_date.date_start
       else
         event_record.in_date_range_start_date = start_date
       end
