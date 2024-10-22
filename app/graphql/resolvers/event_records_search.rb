@@ -71,7 +71,8 @@ class Resolvers::EventRecordsSearch < GraphQL::Schema::Resolver
   end
 
   def apply_skip(scope, value)
-    scope.offset(value)
+    # HINT: if there is a date range, offset will be applied later
+    scope.offset(value) unless params["dateRange"]
   end
 
   def apply_limit(scope, value)
