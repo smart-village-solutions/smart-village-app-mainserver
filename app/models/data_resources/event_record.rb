@@ -255,7 +255,7 @@ class EventRecord < ApplicationRecord
 
   # @return [Date]
   def list_date
-    if recurring? && date.present?
+    if date.present?
       return today_in_time_range(
         OpenStruct.new(
           date_start: date.date_start,
