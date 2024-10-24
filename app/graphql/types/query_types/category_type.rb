@@ -58,5 +58,9 @@ module Types
     field :tag_list, String, null: true
 
     field :contact, QueryTypes::ContactType, null: true
+
+    def children
+      object.filtered_active_children
+    end
   end
 end

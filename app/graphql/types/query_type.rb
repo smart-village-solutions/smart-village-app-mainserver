@@ -151,6 +151,8 @@ module Types
     end
 
     def category_tree
+      # TODO: active descendants of inactive children were filtered out this way. it needs to
+      #       respect `filtered_active_children` method somehow fot the category tree as well.
       Category.active.order(:name).select(:id, :name, :ancestry).arrange_serializable
     end
 

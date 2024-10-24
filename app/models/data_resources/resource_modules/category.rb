@@ -100,6 +100,26 @@ class Category < ApplicationRecord
     end
   end
 
+  def filtered_active_children
+    children.flat_map do |child|
+      if child.active?
+        [child]
+      else
+        child.filtered_active_descendants
+      end
+    end
+  end
+
+  def filtered_active_descendants
+    children.flat_map do |child|
+      if child.active?
+        [child]
+      else
+        child.filtered_active_descendants
+      end
+    end
+  end
+
   private
 
     # Set the active flag for all descendants to the same value as the parent
