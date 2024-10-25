@@ -382,6 +382,8 @@ class EventRecord < ApplicationRecord
     end
 
     def event_date_changed?
+      return false if dates.blank?
+
       date = dates.first
 
       date.date_start_changed? || date.date_end_changed? || date.time_start_changed? ||
