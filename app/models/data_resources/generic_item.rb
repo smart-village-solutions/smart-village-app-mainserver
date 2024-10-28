@@ -87,7 +87,7 @@ class GenericItem < ApplicationRecord # rubocop:disable Metrics/ClassLength
       data_provider.try(:municipality_id)
     end
     attribute :categories do
-      categories.map(&:name)
+      categories.active.map(&:name)
     end
     attribute :title do
       parsed_title

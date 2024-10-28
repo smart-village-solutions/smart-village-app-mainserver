@@ -41,5 +41,9 @@ module Types
     def point_of_interest
       object.generic_itemable if object.generic_itemable_type == "PointOfInterest"
     end
+
+    def categories
+      object.categories.active
+    end
   end
 end

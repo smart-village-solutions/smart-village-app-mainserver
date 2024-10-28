@@ -34,5 +34,9 @@ module Types
     def announcements
       object.announcements.upcoming_announcements(context[:current_user])
     end
+
+    def categories
+      object.categories.active
+    end
   end
 end

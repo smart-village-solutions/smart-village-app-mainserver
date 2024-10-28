@@ -45,7 +45,7 @@ class Tour < Attraction
       data_provider.try(:municipality_id)
     end
     attribute :categories do
-      categories.map(&:name)
+      categories.active.map(&:name)
     end
     attribute :location_name do
       location.try(:name)

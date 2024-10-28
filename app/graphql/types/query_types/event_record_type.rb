@@ -48,5 +48,9 @@ module Types
     def dates
       object.dates_upcoming
     end
+
+    def categories
+      object.categories.active
+    end
   end
 end

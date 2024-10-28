@@ -25,5 +25,9 @@ module Types
     field :payload, GraphQL::Types::JSON, null: true
     field :updated_at, String, null: true
     field :created_at, String, null: true
+
+    def categories
+      object.categories.active
+    end
   end
 end

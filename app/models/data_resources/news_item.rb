@@ -108,7 +108,7 @@ class NewsItem < ApplicationRecord
   # Sicherstellung der Abwärtskompatibilität seit 09/2020
   def category
     ActiveSupport::Deprecation.warn(":category is replaced by has_many :categories")
-    categories.first
+    categories.active.first
   end
 
   def content_for_facebook

@@ -186,7 +186,7 @@ class EventRecord < ApplicationRecord
       organizer.try(:name)
     end
     attribute :categories do
-      categories.map(&:name)
+      categories.active.map(&:name)
     end
     attribute :list_date do
       list_date
@@ -316,7 +316,7 @@ class EventRecord < ApplicationRecord
   # Sicherstellung der Abwärtskompatibilität seit 09/2020
   def category
     ActiveSupport::Deprecation.warn(":category is replaced by has_many :categories")
-    categories.first
+    categories.active.first
   end
 
   def content_for_facebook
