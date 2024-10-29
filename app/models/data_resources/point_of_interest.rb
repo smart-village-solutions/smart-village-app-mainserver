@@ -94,13 +94,14 @@ class PointOfInterest < Attraction
   end
 
   def unique_id
+    return external_id if external_id.present?
+
     fields = [name, type]
 
     first_address = addresses.first
     address_keys = %i[street zip city kind]
     address_fields = address_keys.map { |a| first_address.try(:send, a) }
 
-    # add opening hours to checksum for point of interests
     opening_hour_fields = []
     if opening_hours.present? && opening_hours.any?
       opening_hour_keys = %i[weekday date_from date_to time_from time_to open description]
@@ -110,6 +111,20 @@ class PointOfInterest < Attraction
     end
 
     generate_checksum(fields + address_fields + opening_hour_fields.flatten)
+  end
+
+  def compareable_attributes
+    except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id", "visible", "openingable_id", "addressable_id", "web_urlable_id", "mediaable_id", "contactable_id"]
+
+    list_of_attributes = {}
+    list_of_attributes.merge!(attributes.except(*except_attributes))
+    list_of_attributes.merge!(categories: categories.map { |category| category.attributes.except(*except_attributes) })
+    list_of_attributes.merge!(opening_hours: opening_hours.map { |opening_hour| opening_hour.attributes.except(*except_attributes) })
+    list_of_attributes.merge!(addresses: addresses.map { |address| address.attributes.except(*except_attributes) })
+    list_of_attributes.merge!(web_urls: web_urls.map { |web_url| web_url.attributes.except(*except_attributes) })
+    list_of_attributes.merge!(media_contents: media_contents.map { |media_content| media_content.attributes.except(*except_attributes) })
+
+    list_of_attributes
   end
 
   # get travel times for a specific date

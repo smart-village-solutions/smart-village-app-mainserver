@@ -83,6 +83,8 @@ class Tour < Attraction
   end
 
   def unique_id
+    return external_id if external_id.present?
+
     fields = [name, type]
 
     first_address = addresses.first
@@ -90,6 +92,18 @@ class Tour < Attraction
     address_fields = address_keys.map { |a| first_address.try(:send, a) }
 
     generate_checksum(fields + address_fields)
+  end
+
+  def compareable_attributes
+    except_attributes = ["id", "created_at", "updated_at", "tag_list", "category_id", "region_id", "visible", "addressable_id", "web_urlable_id", "mediaable_id", "contactable_id"]
+
+    list_of_attributes = {}
+    list_of_attributes.merge!(attributes.except(*except_attributes))
+    list_of_attributes.merge!(categories: categories.map { |category| category.attributes.except(*except_attributes) })
+    list_of_attributes.merge!(addresses: addresses.map { |address| address.attributes.except(*except_attributes) })
+    list_of_attributes.merge!(web_urls: web_urls.map { |web_url| web_url.attributes.except(*except_attributes) })
+
+    list_of_attributes
   end
 end
 
