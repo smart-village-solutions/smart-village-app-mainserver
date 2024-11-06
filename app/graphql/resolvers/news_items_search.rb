@@ -7,7 +7,36 @@ class Resolvers::NewsItemsSearch < GraphQL::Schema::Resolver
   include ExclusionFilter
   include JsonFilterParseable
 
-  scope { NewsItem.filtered_for_current_user(context[:current_user]).include_filtered_globals }
+  description "Searches for news items"
+
+  scope do
+    includes = []
+
+    begin
+      lookahead = context[:extras][:lookahead].selection(:news_items)
+      includes << :active_categories if lookahead.selects?(:categories)
+      includes << :data_provider if lookahead.selects?(:data_provider)
+      if lookahead.selects?(:address)
+        includes << :address
+        address_lookahead = lookahead.selection(:address)
+        includes << { address: :geo_location } if address_lookahead.selects?(:geo_location)
+      end
+      if lookahead.selects?(:content_blocks)
+        includes << :content_blocks
+        content_block_lookahead = lookahead.selection(:content_blocks)
+        if content_block_lookahead.selects?(:media_contents)
+          includes << { content_blocks: :media_contents }
+          media_content_lookahead = content_block_lookahead.selection(:media_contents)
+          includes << { content_blocks: { media_contents: :source_url } } if media_content_lookahead.selects?(:source_url)
+        end
+      end
+      includes << :source_url if lookahead.selects?(:source_url)
+    rescue
+      # ignore
+    end
+
+    NewsItem.filtered_for_current_user(context[:current_user]).include_filtered_globals.includes(includes)
+  end
 
   type types[Types::QueryTypes::NewsItemType]
 
