@@ -6,7 +6,58 @@ require "graphql/query_resolver"
 class Resolvers::PointsOfInterestSearch
   include SearchObject.module(:graphql)
 
-  scope { PointOfInterest.filtered_for_current_user(context[:current_user]) }
+  description "Searches for points of interest"
+
+  scope do
+    includes = []
+
+    begin
+      lookahead = context[:extras][:lookahead].selection(:points_of_interest)
+      includes << :categories if lookahead.selects?(:categories)
+      includes << :data_provider if lookahead.selects?(:data_provider)
+      if lookahead.selects?(:media_contents)
+        includes << :media_contents
+        media_content_lookahead = lookahead.selection(:media_contents)
+        includes << { media_contents: :source_url } if media_content_lookahead.selects?(:source_url)
+      end
+      if lookahead.selects?(:addresses)
+        includes << :addresses
+        address_lookahead = lookahead.selection(:addresses)
+        includes << { addresses: :geo_location } if address_lookahead.selects?(:geo_location)
+      end
+      if lookahead.selects?(:contact)
+        includes << :contact
+        contact_lookahead = lookahead.selection(:contact)
+        includes << { contact: :web_urls } if contact_lookahead.selects?(:web_urls)
+      end
+      includes << :web_urls if lookahead.selects?(:web_urls)
+      includes << :price_informations if lookahead.selects?(:price_informations)
+      includes << :opening_hours if lookahead.selects?(:opening_hours)
+      if lookahead.selects?(:operating_company)
+        includes << :operating_company
+        operating_company_lookahead = lookahead.selection(:operating_company)
+        includes << { operating_company: :address } if operating_company_lookahead.selects?(:address)
+
+        if operating_company_lookahead.selects?(:contact)
+          includes << { operating_company: :contact }
+          operating_company_contact_lookahead = operating_company_lookahead.selection(:contact)
+
+          if operating_company_contact_lookahead.selects?(:web_urls)
+            includes << { operating_company: { contact: :web_urls } }
+          end
+        end
+      end
+      if lookahead.selects?(:location)
+        includes << :location
+        location_lookahead = lookahead.selection(:location)
+        includes << { location: :geo_location } if location_lookahead.selects?(:geo_location)
+      end
+    rescue
+      # ignore
+    end
+
+    PointOfInterest.filtered_for_current_user(context[:current_user]).includes(includes)
+  end
 
   type types[Types::QueryTypes::PointOfInterestType]
 
