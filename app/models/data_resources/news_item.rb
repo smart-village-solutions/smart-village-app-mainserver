@@ -19,7 +19,7 @@ class NewsItem < ApplicationRecord
   has_one :address, as: :addressable, dependent: :destroy
   has_one :external_reference, as: :external, dependent: :destroy
   has_one :source_url, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
-  has_many :data_resource_categories, as: :data_resource
+  has_many :data_resource_categories, -> { where(data_resource_type: "NewsItem") }, foreign_key: :data_resource_id
   has_many :categories, through: :data_resource_categories
   has_many :content_blocks, as: :content_blockable, dependent: :destroy
 
