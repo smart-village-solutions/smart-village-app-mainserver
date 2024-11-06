@@ -22,7 +22,7 @@ class EventRecord < ApplicationRecord
   belongs_to :region, optional: true
   belongs_to :data_provider
 
-  has_many :data_resource_categories, as: :data_resource
+  has_many :data_resource_categories, -> { where(data_resource_type: "EventRecord") }, foreign_key: :data_resource_id
   has_many :categories, through: :data_resource_categories
   has_many :urls, as: :web_urlable, class_name: "WebUrl", dependent: :destroy
   has_one :organizer, as: :companyable, class_name: "OperatingCompany", dependent: :destroy

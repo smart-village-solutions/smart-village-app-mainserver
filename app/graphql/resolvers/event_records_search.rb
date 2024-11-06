@@ -6,23 +6,61 @@ require "graphql/query_resolver"
 class Resolvers::EventRecordsSearch
   include SearchObject.module(:graphql)
 
-  scope {
-    event_records = EventRecord.upcoming(context[:current_user])
+  description "Searches for event records"
+
+  scope do
+    includes = []
 
     begin
       lookahead = context[:extras][:lookahead].selection(:event_records)
-      event_records = event_records.upcoming_with_date_select if lookahead.selects?(:date)
-      event_records = event_records.includes(:addresses) if lookahead.selects?(:addresses)
-      event_records = event_records.includes(:categories) if lookahead.selects?(:categories)
-      event_records = event_records.includes(:data_provider) if lookahead.selects?(:data_provider)
+      includes << :categories if lookahead.selects?(:categories)
+      includes << :data_provider if lookahead.selects?(:data_provider)
+      if lookahead.selects?(:media_contents)
+        includes << :media_contents
+        media_content_lookahead = lookahead.selection(:media_contents)
+        includes << { media_contents: :source_url } if media_content_lookahead.selects?(:source_url)
+      end
+      if lookahead.selects?(:addresses)
+        includes << :addresses
+        address_lookahead = lookahead.selection(:addresses)
+        includes << { addresses: :geo_location } if address_lookahead.selects?(:geo_location)
+      end
+      if lookahead.selects?(:contacts)
+        includes << :contacts
+        contact_lookahead = lookahead.selection(:contacts)
+        includes << { contacts: :web_urls } if contact_lookahead.selects?(:web_urls)
+      end
+      includes << :urls if lookahead.selects?(:urls)
+      includes << :price_informations if lookahead.selects?(:price_informations)
+      if lookahead.selects?(:organizer)
+        includes << :organizer
+        organizer_lookahead = lookahead.selection(:organizer)
+        includes << { organizer: :address } if organizer_lookahead.selects?(:address)
+
+        if organizer_lookahead.selects?(:contact)
+          includes << { organizer: :contact }
+          organizer_contact_lookahead = organizer_lookahead.selection(:contact)
+
+          if organizer_contact_lookahead.selects?(:web_urls)
+            includes << { organizer: { contact: :web_urls } }
+          end
+        end
+      end
+      if lookahead.selects?(:location)
+        includes << :location
+        location_lookahead = lookahead.selection(:location)
+        includes << { location: :geo_location } if location_lookahead.selects?(:geo_location)
+      end
     rescue
       # ignore
     end
 
+    event_records = EventRecord.upcoming(context[:current_user]).includes(includes)
+
     # if the date is requested we need to return all records, because there will be different events
     # with the same id that only differ in date
     if lookahead.selects?(:date)
-      event_records
+      event_records.upcoming_with_date_select
     else
       event_records.distinct
     end
