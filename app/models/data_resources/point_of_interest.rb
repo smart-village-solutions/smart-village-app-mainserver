@@ -15,6 +15,7 @@ class PointOfInterest < Attraction
 
   has_many :data_resource_categories, -> { where(data_resource_type: "PointOfInterest") }, foreign_key: :data_resource_id
   has_many :categories, through: :data_resource_categories
+  has_many :active_categories, -> { where(active: true) }, through: :data_resource_categories, source: :category
   has_many :opening_hours, as: :openingable, dependent: :destroy
   has_many :price_informations, as: :priceable, class_name: "Price", dependent: :destroy
   has_many :lunches, dependent: :destroy
