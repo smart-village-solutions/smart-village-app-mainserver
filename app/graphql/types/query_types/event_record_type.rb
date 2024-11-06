@@ -50,7 +50,7 @@ module Types
     end
 
     def categories
-      object.categories.active
+      object.active_categories
     end
   end
 end
