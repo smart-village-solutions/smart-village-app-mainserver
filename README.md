@@ -2,7 +2,7 @@
 
 # Smart Village App - Main-Server
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/e3b4b85a95fa2edf58a4/maintainability)](https://codeclimate.com/github/ikuseiGmbH/smart-village-app-mainserver/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/e3b4b85a95fa2edf58a4/test_coverage)](https://codeclimate.com/github/ikuseiGmbH/smart-village-app-mainserver/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/e3b4b85a95fa2edf58a4/maintainability)](https://codeclimate.com/github/ikuseiGmbH/smart-village-app-mainserver/maintainability)
 
 Please visit the german website to get in touch with us and present your ideas and visions: https://smart-village.app.
 
