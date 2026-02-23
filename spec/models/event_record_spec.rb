@@ -37,6 +37,24 @@ RSpec.describe EventRecord, type: :model do
     event_record.save
   end
 
+  describe ".in_date_range" do
+    it "deduplicates same-day entries for the same event when chained joins multiply rows" do
+      event_record = create(:event_record)
+      date = Date.new(2026, 2, 23)
+
+      event_record.dates << create(:fixed_date, date_start: date, date_end: date)
+      event_record.addresses.create!(city: "Borsum", street: "Hauptstraße 1", zip: "31177")
+      event_record.addresses.create!(city: "Borsum", street: "Nebenstraße 2", zip: "31177")
+
+      result = EventRecord
+               .joins(:addresses)
+               .in_date_range(date, date, "listDate_ASC", nil)
+
+      expect(result.map(&:id)).to eq([event_record.id])
+      expect(result.map(&:list_date)).to eq([date])
+    end
+  end
+
   describe "#list_date" do
     context "with an event which has two future dates" do
       it "returns the date closest to now" do

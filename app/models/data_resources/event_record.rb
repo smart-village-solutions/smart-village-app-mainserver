@@ -73,6 +73,11 @@ class EventRecord < ApplicationRecord
       end
     end
 
+    # Keep one entry per event and in-range day.
+    # This prevents duplicate rows from chained joins (e.g. addresses), while still allowing
+    # multi-day events to appear once per day in a date range.
+    events_in_timespan = events_in_timespan.uniq { |event_record| [event_record.id, event_record.list_date] }
+
     if order == "listDate_ASC"
       events_in_timespan = events_in_timespan.sort_by(&:list_date)
     elsif order == "listDate_DESC"
