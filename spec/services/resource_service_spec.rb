@@ -225,4 +225,30 @@ RSpec.describe ResourceService, type: :service do
       end
     end
   end
+
+  describe "#update" do
+    it "persists a nested link change when the generic item's attributes are unchanged" do
+      provider = create(:data_provider, name: "Kachel-Redaktion")
+      create(:admin, data_provider: provider)
+      service = ResourceService.new(data_provider: provider)
+      original = service.perform(GenericItem, {
+        title: "Kachel",
+        generic_type: "COCKPIT_CARD",
+        external_id: "card-1097",
+        web_urls_attributes: [{ url: "https://example.org/old" }]
+      })
+
+      updated = service.perform(GenericItem, {
+        id: original.id,
+        force_create: false,
+        title: "Kachel",
+        generic_type: "COCKPIT_CARD",
+        external_id: "card-1097",
+        web_urls_attributes: [{ url: "https://example.org/new" }]
+      })
+
+      expect(updated.id).to eq(original.id)
+      expect(updated.reload.web_urls.pluck(:url)).to eq(["https://example.org/new"])
+    end
+  end
 end

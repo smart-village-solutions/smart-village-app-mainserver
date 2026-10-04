@@ -42,7 +42,8 @@ class ResourceService
 
     # skip create if record already exists and new record has the same attribute values as the new
     # record and the record is not marked as 'always_recreate'
-    if @external_resource.present? && unchanged_attributes? && !always_recreate?
+    if @old_resource_id.blank? && @external_resource.present? &&
+       unchanged_attributes? && !always_recreate?
       # we update the the `updated_at` of the resource anyways, even if no data is changed,
       # because the records date needs to be up to date regarding cleanup processes
       @external_resource.touch
